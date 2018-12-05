@@ -1,5 +1,5 @@
 {
-  "name" : "astelbe/sdk-php-dev",
+  "name" : "astelbe/sdk-php",
   "description" : "SDK used for a PHP Website to access Astel API and telecom data",
   "minimum-stability" : "dev",
   "license" : "proprietary",
