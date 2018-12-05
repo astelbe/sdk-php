@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/article.php3" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/commune.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/inc_cst.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/inc_header.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/include/tpl_0col/articleView.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/include/tpl_0col/contact.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/include/tpl_0col/formule_02.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/index.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/lang/FR/bruxelles.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/lang/FR/comparastel.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/lang/FR/general.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/tpl_0col.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/bruxelles/public_html/urlr.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/forum/public_html/FooterAstel.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/forum/public_html/HeaderAstel.php" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/www/public_html/spip/design/design_article.html" charset="ISO-8859-1" />
+    <file url="file://$PROJECT_DIR$/public_html_v1/www/public_html/spip/mes_fonctions.php3" charset="ISO-8859-1" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

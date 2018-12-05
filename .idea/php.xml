@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <PhpCSConfiguration tool_path="$PROJECT_DIR$/public_html/app/Vendor/bin/phpcs.bat" />
+    </phpcs_settings>
+  </component>
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/cakephp/cakephp" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/composer" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/google/apiclient" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/cakephp/cakephp-codesniffer" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/ccampbell/chromephp" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/globalcitizen/php-iban" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/squizlabs/php_codesniffer" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/phpunit-mock-objects" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/php-token-stream" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/guzzlehttp/promises" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/guzzlehttp/guzzle" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/mtdowling/jmespath.php" />
+      <path value="$PROJECT_DIR$/public_html/app/Vendor/aws/aws-sdk-php" />
+    </include_path>
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings load_method="CUSTOM_LOADER" custom_loader_path="$PROJECT_DIR$/public_html/app/Vendor/autoload.php" />
+    </phpunit_settings>
+  </component>
+</project>
