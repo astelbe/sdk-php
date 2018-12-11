@@ -150,6 +150,7 @@ abstract class QueryManager extends Singleton {
 		$headers = [
 			'Cache-Control: no-cache',
 			'Token: ' . $this->context->getPartnerToken(),
+			'x-api-key: ' . $this->context->getPartnerToken(),
 		];
 		curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);

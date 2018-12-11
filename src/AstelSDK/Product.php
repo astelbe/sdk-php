@@ -42,7 +42,6 @@ class Product extends QueryManager implements IApiConsumer {
 		$params = Hash::merge($default_params, $params);
 		$url = $this->addUrlParams($url, $params, true);
 		$this->setUrl($url);
-		
 		return $this->exec();
 	}
 	
