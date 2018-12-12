@@ -1,6 +1,8 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
+
+use AstelSDK\QueryManager;
 
 class Lead extends QueryManager implements IApiProducer {
 	
@@ -13,7 +15,7 @@ class Lead extends QueryManager implements IApiProducer {
 	
 	public function createFirst(array $data = []) {
 		$this->init();
-		$url = '/lead/';
+		$url = 'v2_00/lead/';
 		$this->setUrl($url);
 		
 		$defaultData = [
@@ -24,6 +26,6 @@ class Lead extends QueryManager implements IApiProducer {
 		
 		$this->setPost($data);
 		
-		return $this->exec(false);
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 }

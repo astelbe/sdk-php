@@ -1,7 +1,8 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
+use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
 /**
@@ -89,11 +90,11 @@ class Discount extends QueryManager implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
 		$this->init();
-		$url = '/discount';
+		$url = 'v2_00/discount';
 		$url = $this->addUrlParams($url, $params, true);
 		$this->setUrl($url);
 		
-		return $this->exec();
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 	
 	protected function getFirst(array $params = []) {
@@ -106,6 +107,6 @@ class Discount extends QueryManager implements IApiConsumer {
 		$url .= $id;
 		$this->setUrl($url);
 		
-		return $this->exec(true);
+		return $this->exec(self::RETURN_SINGLE_ELEMENT);
 	}
 }

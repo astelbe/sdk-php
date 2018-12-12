@@ -4,17 +4,19 @@ namespace AstelSDK;
 
 class AstelContext extends Singleton {
 	
+	protected $version = '2018121201';
+	
 	protected $env;
 	protected $partnerToken;
-	protected $isPrivate;
+	protected $isPrivate = null;
+	protected $language = 'FR';
 	
-	public function __construct($env = 'sta', $partnerToken = '', $isPrivate = true) {
+	public function __construct($env = 'sta', $partnerToken = '') {
 		if ($env === 'prod') {
 			$env = '';
 		}
 		$this->setEnv($env);
 		$this->setPartnerToken($partnerToken);
-		$this->setIsPrivate($isPrivate);
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 	}
@@ -55,9 +57,40 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
+	 * Determines if all API calls should be filtered by default by private / professional.
+	 * If not set, (set to null), no conditions are added to API calls
+	 *
 	 * @param mixed $isPrivate
 	 */
 	public function setIsPrivate($isPrivate) {
 		$this->isPrivate = $isPrivate;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getLanguage() {
+		return $this->language;
+	}
+	
+	/**
+	 * @param string $language
+	 */
+	public function setLanguage($language) {
+		$this->language = $language;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+	
+	/**
+	 * @param string $version
+	 */
+	public function setVersion($version) {
+		$this->version = $version;
 	}
 }
