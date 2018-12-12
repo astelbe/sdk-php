@@ -140,7 +140,7 @@ abstract class QueryManager extends Singleton {
 		);
 	}
 	
-	protected function setApiParticle($particle) {
+	public function setApiParticle($particle) {
 		$this->apiParticle = $particle;
 	}
 	
