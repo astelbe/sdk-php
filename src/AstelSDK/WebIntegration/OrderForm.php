@@ -45,25 +45,19 @@ class OrderForm extends QueryManager {
 		return $out;
 	}
 	
-	public function getBodyOnLoad() {
-		return 'onload="init()"';
-	}
-	
-	public function getHeaderScriptOrderProduct($productID) {
+	public function getScriptOrderProduct($productID) {
 		return '<script>
-			function init() {
-				/* setup the call below with paramaters:
-				* language: uppercase string (FR, NL, EN, DE)
-				* productId: the id of the product to buy
-				* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
-				* See ID list via API
-				*/
-				getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $productID . '\', \'orderForm\');
-			}
+			/* setup the call below with paramaters:
+			* language: uppercase string (FR, NL, EN, DE)
+			* productId: the id of the product to buy
+			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
+			* See ID list via API
+			*/
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $productID . '\', \'orderForm\');
 		</script>';
 	}
 	
-	public function getHeaderScriptOrderToken() {
+	public function getScriptOrderToken() {
 		global $_GET;
 		$params = [];
 		$params['token'] = Hash::get($_GET, 'token', '');
@@ -71,15 +65,13 @@ class OrderForm extends QueryManager {
 		$urlParams = http_build_query($params);
 		
 		return '<script>
-			function init() {
-				/* setup the call below with paramaters:
-				* language: uppercase string (FR, NL, EN, DE)
-				* productId: the id of the product to buy
-				* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
-				*/
-				
-				getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\');
-			}
+			/* setup the call below with paramaters:
+			* language: uppercase string (FR, NL, EN, DE)
+			* productId: the id of the product to buy
+			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
+			*/
+			
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\');
 			</script>
 		';
 	}

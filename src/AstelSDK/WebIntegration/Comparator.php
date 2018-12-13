@@ -44,7 +44,7 @@ class Comparator extends QueryManager {
 		return $out;
 	}
 	
-	public function getHeaderScriptOrderProduct() {
+	public function getScriptLoadComparator() {
 		global $_GET;
 		$getParams = [];
 		if (isset($_GET['code_postal']) && $_GET['code_postal'] != '') {
