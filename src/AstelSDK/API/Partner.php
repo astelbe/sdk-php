@@ -1,7 +1,8 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
+use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
 class Partner extends QueryManager implements IApiConsumer {
@@ -19,7 +20,7 @@ class Partner extends QueryManager implements IApiConsumer {
 		
 		return $result;
 	}
-
+	
 	protected function getFirst(array $params = []) {
 		$default_params = [
 			'contains' => ['CallCenter', 'LastOrderedProducts'],
@@ -27,10 +28,10 @@ class Partner extends QueryManager implements IApiConsumer {
 		$params = Hash::merge($default_params, $params);
 		
 		$this->init();
-		$url = '/partner/';
+		$url = 'v2_00/partner/';
 		$url = $this->addUrlParams($url, $params, true);
 		$this->setUrl($url);
 		
-		return $this->exec(true);
+		return $this->exec(self::RETURN_SINGLE_ELEMENT);
 	}
 }
