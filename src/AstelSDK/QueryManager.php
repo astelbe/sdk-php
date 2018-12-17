@@ -3,16 +3,12 @@
 namespace AstelSDK;
 
 use CakeUtility\Hash;
-use CakeUtility\Debugger;
 
-interface IApiConsumer {
-	public function find($type, array $params = []);
-}
-
-interface IApiProducer {
-	public function createFirst(array $params = []);
-}
-
+/**
+ * Class QueryManager
+ *
+ * @package AstelSDK
+ */
 abstract class QueryManager extends Singleton {
 	
 	private $ch;
@@ -20,6 +16,10 @@ abstract class QueryManager extends Singleton {
 	protected $context;
 	protected $cacheResults = []; // To use only for single product
 	protected $lastCallStatus = [];
+	protected $apiParticle = 'api';
+	const RETURN_SINGLE_ELEMENT = 1;
+	const RETURN_MULTIPLE_ELEMENTS = 0;
+	const RETURN_CONTENT = 2;
 	
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
@@ -136,8 +136,12 @@ abstract class QueryManager extends Singleton {
 		curl_setopt(
 			$this->ch,
 			CURLOPT_URL,
-			'https://api' . $this->context->getEnv() . '.astel.be/v2_00' . $url
+			'https://' . $this->apiParticle . $this->context->getEnv() . '.astel.be/' . $url
 		);
+	}
+	
+	public function setApiParticle($particle) {
+		$this->apiParticle = $particle;
 	}
 	
 	protected function setPost(array $data = []) {
@@ -156,7 +160,7 @@ abstract class QueryManager extends Singleton {
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
 	}
 	
-	protected function exec($return_single_object = false) {
+	protected function exec($return_type = self::RETURN_MULTIPLE_ELEMENTS) {
 		$output = curl_exec($this->ch);
 		$http_status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
 		$curl_errno = curl_errno($this->ch);
@@ -169,14 +173,20 @@ abstract class QueryManager extends Singleton {
 				$curl_errno . '): ' . $curl_error, 500);
 		} else {
 			if ($http_status !== 200) {
-				throw new DataException('An error occured when accessing internally the remote data. Error HTTP: ' . $http_status, 500);
+				throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' .
+					$http_status, 500);
 			} else {
 				if ($output === '') {
-					throw new DataException('An error occured when decoding the remote data. No return from API datasource.', 500);
+					throw new DataException('An error occurred when decoding the remote data. No return from API datasource.', 500);
 				} else {
+					if ($return_type === self::RETURN_CONTENT) {
+						// Return directly the content
+						return $output;
+					}
 					$returnArray = @json_decode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 					if ($returnArray === null) {
-						throw new DataException('An error occured when decoding the remote data : JSON error: ' . json_last_error_msg(), 500);
+						throw new DataException('An error occurred when decoding the remote data : JSON error: ' .
+							json_last_error_msg(), 500);
 					}
 				}
 			}
@@ -184,18 +194,20 @@ abstract class QueryManager extends Singleton {
 		$call_server_status = Hash::get($returnArray, '0.status', 0);
 		if ($call_server_status !== 1) {
 			$errorMsg = Hash::get($returnArray, '0.message', 'Unknown Error');
-			throw new DataException('An error occured when retrieving the remote data : API error: ' . $errorMsg, 500);
+			throw new DataException('An error occurred when retrieving the remote data : API error: ' . $errorMsg, 500);
 		}
 		
 		$this->lastCallStatus = $returnArray[0];
 		
-		if ($return_single_object) {
+		if ($return_type === self::RETURN_SINGLE_ELEMENT) {
 			// Return only element (array[1][0])
 			return Hash::get($this->cleanContentFromBr($returnArray), '1.0', []);
-		} else {
+		} elseif ($return_type === self::RETURN_MULTIPLE_ELEMENTS) {
 			// Return only elements (array[1])
 			return Hash::get($this->cleanContentFromBr($returnArray), '1', []);
 		}
+		
+		return false;
 	}
 	
 	/**

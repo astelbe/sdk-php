@@ -1,7 +1,8 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
+use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
 class Brand extends QueryManager implements IApiConsumer {
@@ -25,7 +26,7 @@ class Brand extends QueryManager implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
 		$this->init();
-		$url = '/brand';
+		$url = 'v2_00/brand';
 		$cond = [
 			'is_listable' => 1,
 		];
@@ -41,7 +42,7 @@ class Brand extends QueryManager implements IApiConsumer {
 		$url = $this->addUrlParams($url, $params, true);
 		$this->setUrl($url);
 		
-		return $this->exec();
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 	
 	protected function getFirst(array $params = []) {
@@ -50,10 +51,10 @@ class Brand extends QueryManager implements IApiConsumer {
 			return false;
 		}
 		$this->init();
-		$url = '/brand/';
+		$url = 'v2_00/brand/';
 		$url .= $id;
 		$this->setUrl($url);
 		
-		return $this->exec(true);
+		return $this->exec(self::RETURN_SINGLE_ELEMENT);
 	}
 }

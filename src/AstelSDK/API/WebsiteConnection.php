@@ -1,7 +1,8 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
+use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
 class WebsiteConnection extends QueryManager implements IApiConsumer {
@@ -32,10 +33,10 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 		$params = Hash::merge($default_params, $params);
 		
 		$this->init();
-		$url = '/website_connection/';
+		$url = 'v2_00/website_connection/';
 		$url = $this->addUrlParams($url, $params, true);
 		$this->setUrl($url);
 		
-		return $this->exec(false);
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 }
