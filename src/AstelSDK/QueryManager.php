@@ -17,6 +17,8 @@ abstract class QueryManager extends Singleton {
 	protected $cacheResults = []; // To use only for single product
 	protected $lastCallStatus = [];
 	protected $apiParticle = 'api';
+	private $lastUrl = '';
+	private $lastPostData = [];
 	const RETURN_SINGLE_ELEMENT = 1;
 	const RETURN_MULTIPLE_ELEMENTS = 0;
 	const RETURN_CONTENT = 2;
@@ -142,6 +144,7 @@ abstract class QueryManager extends Singleton {
 	}
 	
 	protected function setUrl($url) {
+		$this->lastUrl = $url;
 		curl_setopt(
 			$this->ch,
 			CURLOPT_URL,
@@ -154,6 +157,7 @@ abstract class QueryManager extends Singleton {
 	}
 	
 	protected function setPost(array $data = []) {
+		$this->lastPostData = $data;
 		curl_setopt($this->ch, CURLOPT_POST, true);
 		curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($data));
 	}
@@ -170,6 +174,60 @@ abstract class QueryManager extends Singleton {
 	}
 	
 	protected function exec($return_type = self::RETURN_MULTIPLE_ELEMENTS) {
+		$result = [];
+		try {
+			$result = $this->exec_process($return_type);
+		} catch (\Exception $e) {
+			$context = [
+				'token' => $this->context->getPartnerToken(),
+				'APIParticle' => $this->apiParticle,
+				'APIEnv' => $this->context->getEnv(),
+				'lastURL' => $this->lastUrl,
+				'lastPostData' => $this->lastPostData,
+			];
+			$this->log($e->getMessage(), 'fatal', $context); // Silent logging
+			
+			if ($this->context->isDebug()) {
+				throw $e; // Hard errors
+			}
+		}
+		
+		return $result;
+		
+	}
+	
+	protected function log($message, $level = 'notice', $context = []) {
+		return $this->context->log($message, $level, $context);
+	}
+	
+	/**
+	 * Replace </br> by <br> to respect W3C convention
+	 * called on exec before returning data
+	 *
+	 * @param $content
+	 *
+	 * @return array|mixed
+	 */
+	public function cleanContentFromBr($content) {
+		if (is_array($content)) {
+			$out = [];
+			foreach ($content as $k => $v) {
+				$out[$k] = $this->cleanContentFromBr($v);
+			}
+		} else {
+			$out = str_replace('</br>', '<br>', $content);
+		}
+		
+		return $out;
+	}
+	
+	/**
+	 * @param $return_type
+	 *
+	 * @return bool|mixed
+	 * @throws DataException
+	 */
+	protected function exec_process($return_type) {
 		$output = curl_exec($this->ch);
 		$http_status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
 		$curl_errno = curl_errno($this->ch);
@@ -217,27 +275,6 @@ abstract class QueryManager extends Singleton {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * Replace </br> by <br> to respect W3C convention
-	 * called on exec before returning data
-	 *
-	 * @param $content
-	 *
-	 * @return array|mixed
-	 */
-	public function cleanContentFromBr($content) {
-		if (is_array($content)) {
-			$out = [];
-			foreach ($content as $k => $v) {
-				$out[$k] = $this->cleanContentFromBr($v);
-			}
-		} else {
-			$out = str_replace('</br>', '<br>', $content);
-		}
-		
-		return $out;
 	}
 	
 }
