@@ -20,7 +20,7 @@ class Lead extends QueryManager implements IApiProducer {
 		
 		$defaultData = [
 			'referer_page' => 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
-			'user_ip' => $_SERVER['REMOTE_ADDR'],
+			'user_ip' => $this->getUserIP(),
 		];
 		$data = array_merge($defaultData, $data);
 		

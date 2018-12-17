@@ -29,6 +29,15 @@ abstract class QueryManager extends Singleton {
 	
 	}
 	
+	public function getUserIP() {
+		$ip = $_SERVER['REMOTE_ADDR'];
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		
+		return $ip;
+	}
+	
 	/**
 	 * TODO REMOVE
 	 *

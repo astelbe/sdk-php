@@ -23,7 +23,7 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		global $sLang;
-		$uniqueVisitorKey = md5($_SERVER['REMOTE_ADDR'] . $_SERVER['HTTP_USER_AGENT']);
+		$uniqueVisitorKey = md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
 		$default_params = [
 			'conditions' => [
 				'unique_visitor_key' => $uniqueVisitorKey,
