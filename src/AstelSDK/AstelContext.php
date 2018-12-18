@@ -7,18 +7,40 @@ class AstelContext extends Singleton {
 	protected $version = '2018121201';
 	
 	protected $env;
+	protected $debug;
+	public $Logger = null;
 	protected $partnerToken;
 	protected $isPrivate = null;
 	protected $language = 'FR';
 	
-	public function __construct($env = 'sta', $partnerToken = '') {
+	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '') {
 		if ($env === 'prod') {
 			$env = '';
 		}
 		$this->setEnv($env);
 		$this->setPartnerToken($partnerToken);
+		$this->setDebug($debug);
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
+		$this->Logger = new Logger($logPath, $this);
+	}
+	
+	public function log($message, $level = 'notice', $context = []) {
+		return $this->Logger->append($message, $level, $context);
+	}
+	
+	/**
+	 * @return mixed
+	 */
+	public function isDebug() {
+		return $this->debug;
+	}
+	
+	/**
+	 * @param mixed $debug
+	 */
+	public function setDebug($debug) {
+		$this->debug = $debug;
 	}
 	
 	/**
