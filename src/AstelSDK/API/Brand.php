@@ -33,7 +33,7 @@ class Brand extends QueryManager implements IApiConsumer {
 		if ($this->context->getIsPrivate()) {
 			$cond['is_private'] = 1;
 		} else {
-			$cond['is_professionnal'] = 1;
+			$cond['is_pro'] = 1;
 		}
 		$default_params = [
 			'conditions' => $cond,
