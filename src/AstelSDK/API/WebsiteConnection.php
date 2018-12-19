@@ -52,6 +52,7 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 			foreach ($cart['products'] as $k => $product) {
 				$brand_color = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.color_code');
 				$cart['products'][$k]['brand_color'] = $brand_color[0];
+				$cart['products'][$k]['banner'] = [];
 				if (empty($product['banner'][SCOPE_LANG])) {
 					$banner = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.logo.small');
 					$cart['products'][$k]['banner'][SCOPE_LANG] = $banner[0];
