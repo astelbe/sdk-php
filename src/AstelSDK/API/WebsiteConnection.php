@@ -58,7 +58,7 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 				$cart['products'][$k]['brand_color'] = $brand_color[0];
 				if (empty($product['banner'][SCOPE_LANG])) {
 					$banner = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.logo.small');
-					$cart['products'][$k]['banner'][SCOPE_LANG] = $banner[0];
+					$cart['products'][$k]['banner'] = $banner[0];
 				}
 				if ($product['discounted_price'] != 0 && $product['price'] !== $product['discounted_price']) {
 					$price = '<del class="text-lighter pr-1">' . $product['price'] . '</del> ' . Numbers::priceDisplayLocale($product['discounted_price']);
