@@ -23,10 +23,9 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		global $sLang;
-		$uniqueVisitorKey = md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
 		$default_params = [
 			'conditions' => [
-				'unique_visitor_key' => $uniqueVisitorKey,
+				'unique_visitor_key' => $this->getUniqueVisitorKey(),
 				'language' => $sLang,
 			],
 		];
@@ -82,7 +81,17 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	}
 	
 	public function clearCart() {
-		// TODO empty order session
-		return true;
+		$params = [
+			'conditions' => [
+				'unique_visitor_key' => $this->getUniqueVisitorKey(),
+			],
+		];
+		$this->init();
+		$url = 'v2_00/website_connection/cart';
+		$url = $this->addUrlParams($url, $params, true);
+		$this->setDelete();
+		$this->setUrl($url);
+		
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 }
