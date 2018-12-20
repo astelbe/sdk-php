@@ -9,10 +9,10 @@ class OrderForm extends QueryManager {
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [
-			'//order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion(),
+			'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion(),
 		];
 		if ($allRequired) {
-			$cssList[] = '//cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
 		}
 		
 		return $cssList;
@@ -20,8 +20,8 @@ class OrderForm extends QueryManager {
 	
 	public function getJSList() {
 		return [
-			'//files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
-			'//order' . $this->context->getEnv() . '.astel.be/orderForms/orderform.js?v=' . $this->context->getVersion(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
+			'https://order' . $this->context->getEnv() . '.astel.be/orderForms/orderform.js?v=' . $this->context->getVersion(),
 		];
 	}
 	
