@@ -8,10 +8,10 @@ class Comparator extends QueryManager {
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [
-			'//compare' . $this->context->getEnv() . '.astel.be/css/compare/comparator.css?v=' . $this->context->getVersion(),
+			'https://compare' . $this->context->getEnv() . '.astel.be/css/compare/comparator.css?v=' . $this->context->getVersion(),
 		];
 		if ($allRequired) {
-			$cssList[] = '//cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
 		}
 		
 		return $cssList;
@@ -19,8 +19,9 @@ class Comparator extends QueryManager {
 	
 	public function getJSList() {
 		return [
-			'//files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
-			'//compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' .
+			$this->context->getVersion(),
+			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
 	}
 	
