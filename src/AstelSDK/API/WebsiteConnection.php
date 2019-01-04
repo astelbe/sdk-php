@@ -23,10 +23,9 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		global $sLang;
-		$uniqueVisitorKey = md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
 		$default_params = [
 			'conditions' => [
-				'unique_visitor_key' => $uniqueVisitorKey,
+				'unique_visitor_key' => $this->getUniqueVisitorKey(),
 				'language' => $sLang,
 			],
 		];
@@ -52,9 +51,10 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 			foreach ($cart['products'] as $k => $product) {
 				$brand_color = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.color_code');
 				$cart['products'][$k]['brand_color'] = $brand_color[0];
+				$cart['products'][$k]['banner'] = [];
 				if (empty($product['banner'][SCOPE_LANG])) {
 					$banner = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.logo.small');
-					$cart['products'][$k]['banner'][SCOPE_LANG] = $banner[0];
+					$cart['products'][$k]['banner'] = $banner[0];
 				}
 				if ($product['discounted_price'] != 0 && $product['price'] !== $product['discounted_price']) {
 					$price = '<del class="text-lighter pr-1">' . $product['price'] . '</del> ' . Numbers::priceDisplayLocale($product['discounted_price']);
@@ -81,7 +81,17 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	}
 	
 	public function clearCart() {
-		// TODO empty order session
-		return true;
+		$params = [
+			'conditions' => [
+				'unique_visitor_key' => $this->getUniqueVisitorKey(),
+			],
+		];
+		$this->init();
+		$url = 'v2_00/website_connection/cart';
+		$url = $this->addUrlParams($url, $params, true);
+		$this->setDelete();
+		$this->setUrl($url);
+		
+		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 }

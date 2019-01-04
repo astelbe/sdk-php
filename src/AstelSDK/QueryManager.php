@@ -49,6 +49,10 @@ abstract class QueryManager extends Singleton {
 		$this->token = $token;
 	}
 	
+	public function getUniqueVisitorKey() {
+		return md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
+	}
+	
 	public function exists($id) {
 		$is_exit = $this->find('first', ['conditions' => ['id' => $id]]);
 		
@@ -160,6 +164,10 @@ abstract class QueryManager extends Singleton {
 		$this->lastPostData = $data;
 		curl_setopt($this->ch, CURLOPT_POST, true);
 		curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($data));
+	}
+	
+	protected function setDelete() {
+		curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 	}
 	
 	protected function init() {
