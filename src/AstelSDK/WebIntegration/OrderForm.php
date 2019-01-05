@@ -57,11 +57,14 @@ class OrderForm extends QueryManager {
 		</script>';
 	}
 	
-	public function getScriptOrderToken() {
+	public function getScriptOrderToken($extraParams = []) {
 		global $_GET;
 		$params = [];
 		$params['token'] = Hash::get($_GET, 'token', '');
 		$params['postal_code'] = Hash::get($_GET, 'postal_code', '');
+		foreach ($extraParams as $paramName => $paramValue) {
+			$params[$paramName] = $paramValue;
+		}
 		$urlParams = http_build_query($params);
 		
 		return '<script>
