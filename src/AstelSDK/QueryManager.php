@@ -19,6 +19,7 @@ abstract class QueryManager extends Singleton {
 	protected $apiParticle = 'api';
 	private $lastUrl = '';
 	private $lastPostData = [];
+	protected $lastReturnedData;
 	const RETURN_SINGLE_ELEMENT = 1;
 	const RETURN_MULTIPLE_ELEMENTS = 0;
 	const RETURN_CONTENT = 2;
@@ -192,7 +193,11 @@ abstract class QueryManager extends Singleton {
 				'APIEnv' => $this->context->getEnv(),
 				'lastURL' => $this->lastUrl,
 				'lastPostData' => $this->lastPostData,
+				'message' => $e->getMessage(),
 			];
+			if ($this->lastReturnedData !== null) {
+				$context['returned_content'] = $this->lastReturnedData;
+			}
 			$this->log($e->getMessage(), 'fatal', $context); // Silent logging
 			
 			if ($this->context->isDebug()) {
@@ -254,6 +259,7 @@ abstract class QueryManager extends Singleton {
 				if ($output === '') {
 					throw new DataException('An error occurred when decoding the remote data. No return from API datasource.', 500);
 				} else {
+					$this->lastReturnedData = $output;
 					if ($return_type === self::RETURN_CONTENT) {
 						// Return directly the content
 						return $output;
@@ -266,6 +272,7 @@ abstract class QueryManager extends Singleton {
 				}
 			}
 		}
+		$this->lastReturnedData = $returnArray;
 		$call_server_status = Hash::get($returnArray, '0.status', 0);
 		if ($call_server_status !== 1) {
 			$errorMsg = Hash::get($returnArray, '0.message', 'Unknown Error');
