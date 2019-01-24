@@ -51,8 +51,7 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 			foreach ($cart['products'] as $k => $product) {
 				$brand_color = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.color_code');
 				$cart['products'][$k]['brand_color'] = $brand_color[0];
-				$cart['products'][$k]['banner'] = [];
-				if (empty($product['banner'][SCOPE_LANG])) {
+				if (empty($product['banner'])) {
 					$banner = Hash::extract($operators, '{n}[id=' . $product['brand_id'] . '].fact_sheet.logo.small');
 					$cart['products'][$k]['banner'] = $banner[0];
 				}
@@ -73,7 +72,8 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 		}
 		$cart['total']['display_price'] = $totalPrice . ' ' . translate('per_month');
 		// Total cashback
-		$cart['total']['cashback_amount'] = ($cart['total']['cashback_amount'] == 0 ? $cart['total']['cashback_amount'] : Numbers::priceDisplayLocale($cart['total']['cashback_amount']));
+		$cart['total']['display_cashback_amount'] = ($cart['total']['cashback_amount'] == 0 ? $cart['total']['cashback_amount'] : Numbers::priceDisplayLocale($cart['total']['cashback_amount']));
+		$cart['total']['cashback_amount'] = $cart['total']['cashback_amount'];
 		$cart['order_link'] = Hash::get($websiteConnect, 'session.order_form.referer_page');
 		$cart['order_request_id'] = Hash::get($websiteConnect, 'session.order_form.order_request_id');
 		
