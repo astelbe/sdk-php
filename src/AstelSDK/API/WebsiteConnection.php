@@ -22,11 +22,10 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	}
 	
 	protected function getFirst(array $params = []) {
-		global $sLang;
 		$default_params = [
 			'conditions' => [
 				'unique_visitor_key' => $this->getUniqueVisitorKey(),
-				'language' => $sLang,
+				'language' => $this->context->getLanguage(),
 			],
 		];
 		$params = Hash::merge($default_params, $params);
