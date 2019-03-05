@@ -27,26 +27,23 @@ class Brand extends QueryManager implements IApiConsumer {
 	protected function getAll(array $params = []) {
 		$this->init();
 		$url = 'v2_00/brand';
-		$cond = [
+		$default_params = [
 			'is_listable' => 1,
 		];
 		if ($this->context->getIsPrivate()) {
-			$cond['is_private'] = 1;
+			$default_params['is_private'] = 1;
 		} else {
-			$cond['is_pro'] = 1;
+			$default_params['is_pro'] = 1;
 		}
-		$default_params = [
-			'conditions' => $cond,
-		];
 		$params = Hash::merge($default_params, $params);
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setUrl($url);
 		
 		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 	
 	protected function getFirst(array $params = []) {
-		$id = Hash::get($params, 'conditions.id');
+		$id = Hash::get($params, 'id');
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}

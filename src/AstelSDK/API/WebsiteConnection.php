@@ -23,15 +23,13 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'conditions' => [
-				'unique_visitor_key' => $this->getUniqueVisitorKey(),
-				'language' => $this->context->getLanguage(),
-			],
+			'unique_visitor_key' => $this->getUniqueVisitorKey(),
+			'language' => $this->context->getLanguage(),
 		];
 		$params = Hash::merge($default_params, $params);
 		$this->init();
 		$url = 'v2_00/website_connection/';
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setUrl($url);
 		
 		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
@@ -81,13 +79,11 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	public function clearCart() {
 		$params = [
-			'conditions' => [
-				'unique_visitor_key' => $this->getUniqueVisitorKey(),
-			],
+			'unique_visitor_key' => $this->getUniqueVisitorKey(),
 		];
 		$this->init();
 		$url = 'v2_00/website_connection/cart';
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setDelete();
 		$this->setUrl($url);
 		

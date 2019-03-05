@@ -109,17 +109,9 @@ abstract class QueryManager extends Singleton {
 	 *
 	 * @return $url string
 	 */
-	protected function addUrlParams($url, $params, $is_filter = false) {
-		$url_params = [];
-		if (!isset($params['conditions'])) {
-			$params['conditions'] = [];
-		}
-		
-		// Add params
-		$url_params = $this->arrayToURLGETParams($params['conditions'], 'filters', $is_filter);
-		if (isset($params['contain'])) {
-			$url_params = array_merge($url_params, $this->arrayToURLGETParams($params['contain'], 'contain', $is_filter));
-		}
+	protected function addUrlParams($url, array $params) {
+		// Add param
+		$url_params = $this->arrayToURLGETParams($params);
 		
 		$url_params = implode('&', $url_params);
 		if (!empty($url_params)) {
@@ -129,19 +121,16 @@ abstract class QueryManager extends Singleton {
 		return $url;
 	}
 	
-	protected function arrayToURLGETParams($params, $varName, $useVarName = false) {
+	protected function arrayToURLGETParams(array $params) {
 		$url_params = [];
 		foreach ($params as $k => $param) {
 			if (is_array($param)) {
 				foreach ($param as $tempId => $sub) {
-					$url_params[] = $varName . '[' . $k . '][' . $tempId . ']=' . $sub;
+					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
 				}
 			} else {
-				if (!$useVarName) {
-					$url_params[] = $k . '=' . $param;
-				} else {
-					$url_params[] = $varName . '[' . $k . ']=' . $param;
-				}
+				$url_params[] = $k . '=' . $param;
+				
 			}
 		}
 		
@@ -175,7 +164,6 @@ abstract class QueryManager extends Singleton {
 		$this->ch = curl_init();
 		$headers = [
 			'Cache-Control: no-cache',
-			'Token: ' . $this->context->getPartnerToken(),
 			'x-api-key: ' . $this->context->getPartnerToken(),
 		];
 		curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
@@ -273,23 +261,45 @@ abstract class QueryManager extends Singleton {
 			}
 		}
 		$this->lastReturnedData = $returnArray;
-		$call_server_status = Hash::get($returnArray, '0.status', 0);
+		
+		if (!empty($returnArray)) {
+			if ($return_type === self::RETURN_SINGLE_ELEMENT) {
+				$returnArray = $this->extractResultEmbedded($returnArray);
+			} elseif ($return_type === self::RETURN_MULTIPLE_ELEMENTS) {
+				foreach ($returnArray as $key => $returnElt) {
+					$returnArray[$key] = $this->extractResultEmbedded($returnElt);
+				}
+			}
+		}
+		
+		/*
+		 * TODO handled now with http codes
+		 $call_server_status = Hash::get($returnArray, '0.status', 0);
 		if ($call_server_status !== 1) {
 			$errorMsg = Hash::get($returnArray, '0.message', 'Unknown Error');
 			throw new DataException('An error occurred when retrieving the remote data : API error: ' . $errorMsg, 500);
+		}*/
+		
+		//$this->lastCallStatus = $returnArray[0];
+		
+		return $this->cleanContentFromBr($returnArray);
+		
+	}
+	
+	/**
+	 * @param array $resultArray
+	 *
+	 * @return array
+	 */
+	protected function extractResultEmbedded($resultArray) {
+		if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
+			foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
+				$resultArray[$embeddedModelName] = $this->extractResultEmbedded($embeddedValue);
+			}
+			unset($resultArray['_embedded']);
 		}
 		
-		$this->lastCallStatus = $returnArray[0];
-		
-		if ($return_type === self::RETURN_SINGLE_ELEMENT) {
-			// Return only element (array[1][0])
-			return Hash::get($this->cleanContentFromBr($returnArray), '1.0', []);
-		} elseif ($return_type === self::RETURN_MULTIPLE_ELEMENTS) {
-			// Return only elements (array[1])
-			return Hash::get($this->cleanContentFromBr($returnArray), '1', []);
-		}
-		
-		return false;
+		return $resultArray;
 	}
 	
 }

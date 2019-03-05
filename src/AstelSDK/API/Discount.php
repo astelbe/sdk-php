@@ -32,10 +32,8 @@ class Discount extends QueryManager implements IApiConsumer {
 		
 		$Product = Product::getInstance();
 		$associatedProducts = $Product->find('all', [
-				'conditions' => [
 					'brand_id' => BRAND_ID,
 					'id' => $associatedProductIds,
-				],
 			]
 		);
 		$discounts['products'] = $this->transformIdToReturnedArray($associatedProducts, 'id');
@@ -91,14 +89,14 @@ class Discount extends QueryManager implements IApiConsumer {
 	protected function getAll(array $params = []) {
 		$this->init();
 		$url = 'v2_00/discount';
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setUrl($url);
 		
 		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
 	}
 	
 	protected function getFirst(array $params = []) {
-		$id = Hash::get($params, 'conditions.id');
+		$id = Hash::get($params, 'id');
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}

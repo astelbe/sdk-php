@@ -47,10 +47,6 @@ if (!function_exists('debug')) {
  * @link https://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#debug
  */
 	function debug($var, $showHtml = null, $showFrom = true) {
-		if (ENV != 'dev') {
-			return;
-		}
-
 		$file = '';
 		$line = '';
 		$lineInfo = '';

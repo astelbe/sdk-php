@@ -23,13 +23,13 @@ class Partner extends QueryManager implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'contains' => ['CallCenter', 'LastOrderedProducts'],
+			'_embed' => 'last_ordered_products,call_center_open',
 		];
 		$params = Hash::merge($default_params, $params);
 		
 		$this->init();
 		$url = 'v2_00/partner/';
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setUrl($url);
 		
 		return $this->exec(self::RETURN_SINGLE_ELEMENT);

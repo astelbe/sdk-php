@@ -29,19 +29,16 @@ class Product extends QueryManager implements IApiConsumer {
 	protected function getAll(array $params = []) {
 		$this->init();
 		$url = 'v2_00/product';
-		$cond = [
+		$default_params = [
 			'is_visible' => 1,
 		];
 		if ($this->context->getIsPrivate()) {
-			$cond['is_private'] = 1;
+			$default_params['is_private'] = 1;
 		} else {
-			$cond['is_professionnal'] = 1;
+			$default_params['is_professionnal'] = 1;
 		}
-		$default_params = [
-			'conditions' => $cond,
-		];
 		$params = Hash::merge($default_params, $params);
-		$url = $this->addUrlParams($url, $params, true);
+		$url = $this->addUrlParams($url, $params);
 		$this->setUrl($url);
 		
 		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
