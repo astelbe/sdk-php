@@ -292,11 +292,18 @@ abstract class QueryManager extends Singleton {
 	 * @return array
 	 */
 	protected function extractResultEmbedded($resultArray) {
-		if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
-			foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
-				$resultArray[$embeddedModelName] = $this->extractResultEmbedded($embeddedValue);
+		if (isset($resultArray[0]) && !empty($resultArray[0])) {
+			foreach ($resultArray as $tmpID => $result) {
+				$resultArray[$tmpID] = $this->extractResultEmbedded($result);
 			}
-			unset($resultArray['_embedded']);
+		} else {
+			if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
+				foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
+					$resultArray[$embeddedModelName] = $this->extractResultEmbedded($embeddedValue);
+				}
+				unset($resultArray['_embedded']);
+			}
+			unset($resultArray['_links']);
 		}
 		
 		return $resultArray;
