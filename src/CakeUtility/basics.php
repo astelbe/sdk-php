@@ -33,7 +33,6 @@ namespace CakeUtility;
 
 
 if (!function_exists('debug')) {
-
 /**
  * Prints out debug information about given variable.
  *
