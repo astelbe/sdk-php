@@ -12,6 +12,7 @@ class Comparator extends QueryManager {
 		];
 		if ($allRequired) {
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
 		
 		return $cssList;
@@ -22,6 +23,7 @@ class Comparator extends QueryManager {
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' .
 			$this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
+			//'https://cdn.astel.be/libs/bootstrap/4.0.0/js/bootstrap.min.js'
 		];
 	}
 	
