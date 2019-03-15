@@ -8,12 +8,13 @@ use AstelSDK\QueryManager;
 class OrderForm extends QueryManager {
 	
 	public function getCSSList($allRequired = true) {
-		$cssList = [
-			'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion(),
-		];
+		$cssList = [];
+		
 		if ($allRequired) {
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
+		$cssList[] = 'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion();
 		
 		return $cssList;
 	}
