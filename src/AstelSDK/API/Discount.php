@@ -2,38 +2,20 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 use CakeUtility\Hash;
 
 /**
  * Class DiscountApi
  */
-class Discount extends QueryManager implements IApiConsumer {
-	
-	public function find($type, array $params = []) {
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first') {
-			$result = $this->getFirst($params);
-			
-		} elseif ($type === 'all') {
-			$result = $this->getAll($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class Discount extends Model implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
-		$this->init();
-		$url = 'v2_00/discount';
-		$url = $this->addUrlParams($url, $params);
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/discount');
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 	
 	protected function getFirst(array $params = []) {
@@ -41,11 +23,11 @@ class Discount extends QueryManager implements IApiConsumer {
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}
-		$this->init();
-		$url = '/discount/';
-		$url .= $id;
-		$this->setUrl($url);
+		unset($params['id']);
+		$query = $this->newQuery();
+		$query->setUrl('/discount/' . $id);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		return $query->exec();
 	}
 }

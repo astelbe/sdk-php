@@ -2,37 +2,23 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 use AstelSDK\Utils\Numbers;
 use CakeUtility\Hash;
 
-class WebsiteConnection extends QueryManager implements IApiConsumer {
-	public function find($type, array $params = []) {
-		$cacheKey = md5(print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first' || $type === 'all') {
-			$result = $this->getFirst($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class WebsiteConnection extends Model implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'unique_visitor_key' => $this->getUniqueVisitorKey(),
+			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
 			'language' => $this->context->getLanguage(),
 		];
 		$params = Hash::merge($default_params, $params);
-		$this->init();
-		$url = 'v2_00/website_connection/';
-		$url = $this->addUrlParams($url, $params);
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->addGETParams($params);
+		$query->setUrl('v2_00/website_connection/');
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 	
 	/**
@@ -79,14 +65,13 @@ class WebsiteConnection extends QueryManager implements IApiConsumer {
 	
 	public function clearCart() {
 		$params = [
-			'unique_visitor_key' => $this->getUniqueVisitorKey(),
+			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
 		];
-		$this->init();
-		$url = 'v2_00/website_connection/cart';
-		$url = $this->addUrlParams($url, $params);
-		$this->setDelete();
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/website_connection/cart');
+		$query->addGETParams($params);
+		$query->setHTTPMethod($query::HTTP_DELETE);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 }

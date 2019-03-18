@@ -2,16 +2,15 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 
-class PostalCodeProduct extends QueryManager {
+class PostalCodeProduct extends Model {
 	
 	public function isProductAvailableForPostalCode($postal_code, $productID, $retrieveCityName = 1) {
-		$this->init();
-		$url = 'v2_00/postal_code/product/available/' . $postal_code . '/' . $productID . '/' . $retrieveCityName;
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/postal_code/product/available/' . $postal_code . '/' . $productID . '/' . $retrieveCityName);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $this->exec();
 		
 	}
 }

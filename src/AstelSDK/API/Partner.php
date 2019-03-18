@@ -2,24 +2,10 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 use CakeUtility\Hash;
 
-class Partner extends QueryManager implements IApiConsumer {
-	
-	public function find($type, array $params = []) {
-		$cacheKey = md5(print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first' || $type === 'all') {
-			$result = $this->getFirst($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class Partner extends Model implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
@@ -27,11 +13,11 @@ class Partner extends QueryManager implements IApiConsumer {
 		];
 		$params = Hash::merge($default_params, $params);
 		
-		$this->init();
-		$url = 'v2_00/partner/';
-		$url = $this->addUrlParams($url, $params);
-		$this->setUrl($url);
+		$query = $this->newQuery();
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		$query->addGETParams($params);
+		$query->setUrl('v2_00/partner/');
+		
+		return $query->exec();
 	}
 }

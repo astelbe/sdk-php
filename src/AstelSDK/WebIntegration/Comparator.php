@@ -2,9 +2,15 @@
 
 namespace AstelSDK\WebIntegration;
 
-use AstelSDK\QueryManager;
+use AstelSDK\SDKModel;
+use AstelSDK\AstelContext;
+use AstelSDK\Singleton;
 
-class Comparator extends QueryManager {
+class Comparator extends Singleton {
+	
+	public function __construct() {
+		$this->context = AstelContext::getInstance();
+	}
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [];
@@ -23,7 +29,6 @@ class Comparator extends QueryManager {
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' .
 			$this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
-			//'https://cdn.astel.be/libs/bootstrap/4.0.0/js/bootstrap.min.js'
 		];
 	}
 	

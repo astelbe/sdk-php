@@ -2,46 +2,29 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 use CakeUtility\Hash;
 
-class Order extends QueryManager implements IApiConsumer {
-	
-	public function find($type, array $params = []) {
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first') {
-			$result = $this->getFirst($params);
-			
-		} elseif ($type === 'all') {
-			$result = $this->getAll($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class Order extends Model implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
-		$this->init();
-		$url = 'v1_10/getOrdersStatusList';
+		$query = $this->newQuery();
+		$query->setUrl('v1_10/getOrdersStatusList');
+		$query->addGETParams($params);
 		
-		$this->setUrl($url);
-		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 	
 	protected function getFirst(array $params = []) {
-		$id = Hash::get($params, 'conditions.id');
+		$id = Hash::get($params, 'id');
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}
-		$this->init();
-		$url = 'v1_10/getOrdersStatusList/' . $id;
-		$this->setUrl($url);
+		unset($params['id']);
+		$query = $this->newQuery();
+		$query->setUrl('v1_10/getOrdersStatusList/' . $id);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		return $query->exec();
 	}
 }

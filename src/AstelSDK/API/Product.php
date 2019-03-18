@@ -2,33 +2,16 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 use CakeUtility\Hash;
 
-class Product extends QueryManager implements IApiConsumer {
+class Product extends Model implements IApiConsumer {
 	
 	public $types = ['is_mobile', 'is_internet', 'is_tv', 'is_fix'];
 	
-	public function find($type, array $params = []) {
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first') {
-			$result = $this->getFirst($params);
-			
-		} elseif ($type === 'all') {
-			$result = $this->getAll($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
-	
 	protected function getAll(array $params = []) {
-		$this->init();
-		$url = 'v2_00/product';
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product');
 		$default_params = [
 			'is_visible' => 1,
 		];
@@ -38,10 +21,9 @@ class Product extends QueryManager implements IApiConsumer {
 			$default_params['is_professionnal'] = 1;
 		}
 		$params = Hash::merge($default_params, $params);
-		$url = $this->addUrlParams($url, $params);
-		$this->setUrl($url);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 	
 	protected function getFirst(array $params = []) {
@@ -49,12 +31,12 @@ class Product extends QueryManager implements IApiConsumer {
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}
-		$this->init();
-		$url = 'v2_00/product/';
-		$url .= $id;
-		$this->setUrl($url);
+		unset($params['id']);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product/' . $id);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		return $query->exec();
 	}
 	
 	public function transformResultArray(array $products) {

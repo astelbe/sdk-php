@@ -2,9 +2,9 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use AstelSDK\Model;
 
-class Lead extends QueryManager implements IApiProducer {
+class Lead extends Model implements IApiProducer {
 	
 	const CONTACT_TYPES = ['CALLBACK', 'MESSAGE'];
 	const CONTACT_TYPE_CALLBACK = 'CALLBACK';
@@ -14,18 +14,17 @@ class Lead extends QueryManager implements IApiProducer {
 	const CONTACT_TOPIC_AFTER_SALES = 'AFTER_SALES';
 	
 	public function createFirst(array $data = []) {
-		$this->init();
-		$url = 'v2_00/lead/';
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/lead/');
 		
 		$defaultData = [
-			'referer_page' => 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
-			'user_ip' => $this->getUserIP(),
+			'referer_page' => $this->context->getReferrer(),
+			'user_ip' => $this->context->getUserIP(),
 		];
-		$data = array_merge($defaultData, $data);
+		$data = Hash::merge($defaultData, $data);
 		
-		$this->setPost($data);
+		$query->addPOSTParams($data);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $this->exec();
 	}
 }

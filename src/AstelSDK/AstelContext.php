@@ -120,6 +120,29 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
+	 * @return mixed
+	 */
+	public function getUserIP() {
+		$ip = $_SERVER['REMOTE_ADDR'];
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		
+		return $ip;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getUniqueVisitorKey() {
+		return md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
+	}
+	
+	public function getReferrer() {
+		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+	
+	/**
 	 * Register functions:
 	 * - debug() for pretty display of debug information
 	 * - stacktrace() for easy stacktrace print

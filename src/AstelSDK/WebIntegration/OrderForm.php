@@ -2,10 +2,17 @@
 
 namespace AstelSDK\WebIntegration;
 
+use AstelSDK\APIQuery;
+use AstelSDK\Singleton;
+use AstelSDK\AstelContext;
 use CakeUtility\Hash;
-use AstelSDK\QueryManager;
+use AstelSDK\SDKModel;
 
-class OrderForm extends QueryManager {
+class OrderForm extends Singleton {
+	
+	public function __construct() {
+		$this->context = AstelContext::getInstance();
+	}
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [];
@@ -96,12 +103,11 @@ class OrderForm extends QueryManager {
 		if (null === $token || !preg_match('/^[a-f0-9]{32}$/', $token)) {
 			return 'no_valid_token_given';
 		}
-		$this->setApiParticle('order');
-		$this->init();
-		$this->setUrl('display/orderConfirmation/' . $this->context->getPartnerToken() . '/' . $token . '/' .
+		$query = new APIQuery('order');
+		$query->setUrl('display/orderConfirmation/' . $this->context->getPartnerToken() . '/' . $token . '/' .
 			$this->context->getLanguage());
 		
-		return $this->exec(self::RETURN_CONTENT);
+		return $query->exec();
 		
 	}
 }
