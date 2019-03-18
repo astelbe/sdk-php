@@ -1,6 +1,6 @@
 <?php
 
-namespace CakeUtility;
+use CakeUtility\Debugger;
 /**
  * Basic CakePHP functionality.
  *
@@ -31,8 +31,8 @@ namespace CakeUtility;
 	define('MONTH', 2592000);
 	define('YEAR', 31536000);
 
-
 if (!function_exists('debug')) {
+
 /**
  * Prints out debug information about given variable.
  *
@@ -81,7 +81,7 @@ if (!function_exists('stackTrace')) {
  * @see Debugger::trace()
  */
 	function stackTrace(array $options = array()) {
-		if (ENV != 'dev') {
+		if (defined(ENV) && ENV != 'dev') {
 			return;
 		}
 

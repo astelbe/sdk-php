@@ -55,6 +55,9 @@ class AstelContext extends Singleton {
 	 */
 	public function setEnv($env) {
 		$this->env = $env;
+		if (!defined('ENV')) {
+			define('ENV', $env);
+		}
 	}
 	
 	/**
@@ -114,5 +117,15 @@ class AstelContext extends Singleton {
 	 */
 	public function setVersion($version) {
 		$this->version = $version;
+	}
+	
+	/**
+	 * Register functions:
+	 * - debug() for pretty display of debug information
+	 * - stacktrace() for easy stacktrace print
+	 * - h() for htmlspecialchars
+	 */
+	public static function registerUtilsFunctions() {
+		include_once __DIR__ . '/../CakeUtility/basics.php';
 	}
 }
