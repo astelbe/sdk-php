@@ -13,6 +13,10 @@ class Discount extends Model implements IApiConsumer {
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/discount');
+		$default_params = [
+			'is_active' => true,
+		];
+		$params = Hash::merge($default_params, $params);
 		$query->addGETParams($params);
 		
 		return $query->exec();

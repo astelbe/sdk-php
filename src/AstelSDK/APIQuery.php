@@ -148,7 +148,7 @@ class APIQuery {
 			if ($this->lastReturnedData !== null) {
 				$context['returned_content'] = $this->lastReturnedData;
 			}
-			$this->log($e->getMessage(), 'fatal', $context); // Silent logging
+			$this->context->log($e->getMessage(), 'fatal', $context); // Silent logging
 			
 			if ($this->context->isDebug()) {
 				throw $e; // Hard errors
@@ -178,6 +178,7 @@ class APIQuery {
 				$curl_errno . '): ' . $curl_error, 500);
 		} else {
 			if ($http_status !== 200 && $http_status !== 204) {
+				// TODO Handles 4xx errors and validation errors
 				throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' .
 					$http_status, 500);
 			} else {
@@ -201,63 +202,7 @@ class APIQuery {
 		}
 		$this->lastReturnedData = $returnArray;
 		
-		if (!empty($returnArray)) {
-			// returns multiple elements
-			if (isset($returnArray[0])) {
-				foreach ($returnArray as $key => $returnElt) {
-					$returnArray[$key] = $this->extractResultEmbedded($returnElt);
-				}
-			} else {
-				// Single element
-				$returnArray = $this->extractResultEmbedded($returnArray);
-			}
-		}
-		
-		return $this->cleanContentFromBr($returnArray);
-		
+		return $returnArray;
 	}
 	
-	/**
-	 * @param array $resultArray
-	 *
-	 * @return array
-	 */
-	protected function extractResultEmbedded($resultArray) {
-		if (isset($resultArray[0]) && !empty($resultArray[0])) {
-			foreach ($resultArray as $tmpID => $result) {
-				$resultArray[$tmpID] = $this->extractResultEmbedded($result);
-			}
-		} else {
-			if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
-				foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
-					$resultArray[$embeddedModelName] = $this->extractResultEmbedded($embeddedValue);
-				}
-				unset($resultArray['_embedded']);
-			}
-			unset($resultArray['_links']);
-		}
-		
-		return $resultArray;
-	}
-	
-	/**
-	 * Replace </br> by <br> to respect W3C convention
-	 * called on exec before returning data
-	 *
-	 * @param $content
-	 *
-	 * @return array|mixed
-	 */
-	public function cleanContentFromBr($content) {
-		if (is_array($content)) {
-			$out = [];
-			foreach ($content as $k => $v) {
-				$out[$k] = $this->cleanContentFromBr($v);
-			}
-		} else {
-			$out = str_replace('</br>', '<br>', $content);
-		}
-		
-		return $out;
-	}
 }
