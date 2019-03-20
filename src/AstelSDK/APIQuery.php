@@ -86,11 +86,7 @@ class APIQuery {
 	
 	protected function setCurlUrl() {
 		$this->lastUrl = 'https://' . $this->apiParticle . $this->context->getEnv() . '.astel.be/' . $this->url . $this->urlParams;
-		curl_setopt(
-			$this->ch,
-			CURLOPT_URL,
-			$this->lastUrl
-		);
+		curl_setopt($this->ch, CURLOPT_URL, $this->lastUrl);
 	}
 	
 	public function setCurlPost() {
@@ -116,12 +112,22 @@ class APIQuery {
 			'x-api-key: ' . $this->context->getPartnerToken(),
 		];
 		$headers = $this->addHeader($defaultHeaders);
+		//curl_setopt($this->ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 		
 		curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($this->ch, CURLOPT_HEADER, 1);
 	}
 	
+	/**
+	 * @param null $return_type
+	 *
+	 * @return ApiResponse|bool|mixed
+	 * @throws \Exception
+	 */
 	public function exec($return_type = null) {
+		$result = new ApiResponse();
 		$this->init();
 		$this->setCurlUrl();
 		
@@ -133,9 +139,8 @@ class APIQuery {
 			$this->setCurlDelete();
 		}
 		
-		$result = [];
 		try {
-			$result = $this->exec_process($return_type);
+			$result = $this->exec_process($return_type, $result);
 		} catch (\Exception $e) {
 			$context = [
 				'token' => $this->context->getPartnerToken(),
@@ -156,7 +161,6 @@ class APIQuery {
 		}
 		
 		return $result;
-		
 	}
 	
 	/**
@@ -165,8 +169,14 @@ class APIQuery {
 	 * @return bool|mixed
 	 * @throws DataException
 	 */
-	public function exec_process($return_type) {
+	public function exec_process($return_type, ApiResponse $result) {
 		$output = curl_exec($this->ch);
+		
+		$header_size = curl_getinfo($this->ch, CURLINFO_HEADER_SIZE);
+		$header = substr($output, 0, $header_size);
+		$result->setHeader($header);
+		$body = substr($output, $header_size);
+		
 		$http_status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
 		$curl_errno = curl_errno($this->ch);
 		$curl_error = curl_error($this->ch);
@@ -183,26 +193,29 @@ class APIQuery {
 					$http_status, 500);
 			} else {
 				if ($http_status === 204) {
-					return [];
-				} elseif ($output === '') {
+					$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
+					$result->setResultDataArray([]);
+					
+					return $result;
+				} elseif ($body === '') {
 					throw new DataException('An error occurred when decoding the remote data. No return from API datasource.', 500);
 				} else {
-					$this->lastReturnedData = $output;
+					$this->lastReturnedData = $body;
 					if ($return_type === self::RETURN_CONTENT) {
 						// Return directly the content
-						return $output;
+						$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
+						$result->setResultDataRaw($body);
+						
+						return $result;
 					}
-					$returnArray = @json_decode($output, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-					if ($returnArray === null) {
-						throw new DataException('An error occurred when decoding the remote data : JSON error: ' .
-							json_last_error_msg(), 500);
-					}
+					$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
+					$result->setResultDataJson($body);
 				}
 			}
 		}
-		$this->lastReturnedData = $returnArray;
+		$this->lastReturnedData = $result->getResultData();
 		
-		return $returnArray;
+		return $result;
 	}
 	
 }

@@ -12,16 +12,14 @@ use CakeUtility\Hash;
 abstract class Model extends Singleton {
 	
 	protected $context;
-	protected $cacheResults = []; // To use only for single product
+	protected $cacheResults = [];
 	protected $apiParticle = 'api';
-	protected $lastQuery = null;
+	protected $lastQueryObject = null;
+	protected $lastFindParams = [];
+	protected $lastResponseObject = null;
 	
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
-	}
-	
-	protected function isInCache() {
-	
 	}
 	
 	public function setApiParticle($particle) {
@@ -31,28 +29,10 @@ abstract class Model extends Singleton {
 	/**
 	 * @return APIQuery object
 	 */
-	public function newQuery() {
-		$this->lastQuery = new APIQuery($this->apiParticle);
+	protected function newQuery() {
+		$this->lastQueryObject = new APIQuery($this->apiParticle);
 		
-		return $this->lastQuery;
-	}
-	
-	public function getNextElements() {
-		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the next elements)
-	}
-	
-	public function getPreviousElements() {
-		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the previous elements)
-	}
-	
-	public function getLastElements() {
-		// TODO pagination
-	}
-	
-	public function getCountElements() {
-		// TODO pagination
-		
-		// TODO Create a result object  with these options ?
+		return $this->lastQueryObject;
 	}
 	
 	public function exists($id) {
@@ -61,28 +41,60 @@ abstract class Model extends Singleton {
 		return $is_exit !== false && !empty($is_exit);
 	}
 	
-	public function find($type, array $params = []) {
+	public function find($type, array $params = [], $getFullResponseObject = false) {
+		$this->lastFindParams = ['type' => $type, 'params' => $params, 'getFullResponseObject' => $getFullResponseObject];
 		$cacheKey = md5($type . print_r($params, true));
 		if (isset($this->cacheResults[$cacheKey])) {
 			return $this->cacheResults[$cacheKey];
 		}
-		$returnArray = [];
+		$response = null;
 		if ($type === 'first') {
-			$first = $this->getFirst($params);
-			$returnArray = $this->extractResultEmbedded($first);
+			$response = $this->getFirst($params);
 		} elseif ($type === 'all') {
-			$all = $this->getAll($params);
-			if (!empty($all)) {
-				foreach ($all as $key => $returnElt) {
-					$returnArray[$key] = $this->extractResultEmbedded($returnElt);
-				}
+			$response = $this->getAll($params);
+		}
+		$this->lastResponseObject = clone $response;
+		
+		if ($response->valid()) {
+			foreach ($response as $key => $returnElt) {
+				$returnArray = $this->extractResultEmbedded($returnElt);
+				$response->setCurrent($returnArray);
 			}
 		}
-		$this->cacheResults[$cacheKey] = $returnArray;
 		
-		$returnArray = $this->cleanContentFromBr($returnArray);
+		$this->cacheResults[$cacheKey] = $response;
 		
-		return $returnArray;
+		if (!$getFullResponseObject) {
+			// return the arrayAll/arrayFind/count/raw version of the response
+			return $response->getResultDataAccordingFindType();
+		}
+		
+		return $response;
+	}
+	
+	public function findNextElements() {
+		$lastFindType = Hash::get($this->lastFindParams, 'type');
+		$this->lastResponseObject->rewind();
+		if ($lastFindType !== ApiResponse::FIND_TYPE_ALL || null === $this->lastResponseObject || !$this->lastResponseObject->valid()) {
+			return false;
+		}
+		//$link = $this->lastResponseObject->getPaginationLinks();
+		
+		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the next elements)
+	}
+	
+	public function findPreviousElements() {
+		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the previous elements)
+	}
+	
+	public function findLastElements() {
+		// TODO pagination
+	}
+	
+	public function findCountElements() {
+		// TODO pagination
+		
+		// TODO Create a result object  with these options ?
 	}
 	
 	/**
@@ -106,27 +118,6 @@ abstract class Model extends Singleton {
 		}
 		
 		return $resultArray;
-	}
-	
-	/**
-	 * Replace </br> by <br> to respect W3C convention
-	 * called on exec before returning data
-	 *
-	 * @param $content
-	 *
-	 * @return array|mixed
-	 */
-	public function cleanContentFromBr($content) {
-		if (is_array($content)) {
-			$out = [];
-			foreach ($content as $k => $v) {
-				$out[$k] = $this->cleanContentFromBr($v);
-			}
-		} else {
-			$out = str_replace('</br>', '<br>', $content);
-		}
-		
-		return $out;
 	}
 	
 	public function create(array $data = []) {

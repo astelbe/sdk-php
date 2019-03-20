@@ -28,6 +28,9 @@ class WebsiteConnection extends Model implements IApiConsumer {
 	 * @return (array) $cart
 	 */
 	public function getCart($websiteConnect, $operators) {
+		if (is_object($websiteConnect)) {
+			$websiteConnect = $websiteConnect->current();
+		}
 		$cart = Hash::get($websiteConnect, 'session.order_form.cart');
 		// Products
 		if (is_array($cart['products'])) {
