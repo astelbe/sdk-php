@@ -12,6 +12,7 @@ class AstelContext extends Singleton {
 	protected $partnerToken;
 	protected $isPrivate = null;
 	protected $language = 'FR';
+	protected $apiParticle = 'api';
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '') {
 		if ($env === 'prod') {
@@ -23,6 +24,14 @@ class AstelContext extends Singleton {
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
+	}
+	
+	public function setApiParticle($particle) {
+		$this->apiParticle = $particle;
+	}
+	
+	public function getApiParticle() {
+		return $this->apiParticle;
 	}
 	
 	public function log($message, $level = 'notice', $context = []) {

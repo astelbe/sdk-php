@@ -20,6 +20,7 @@ abstract class Model extends Singleton {
 	
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
+		$this->setApiParticle($this->context->getApiParticle());
 	}
 	
 	public function setApiParticle($particle) {
@@ -72,29 +73,63 @@ abstract class Model extends Singleton {
 		return $response;
 	}
 	
-	public function findNextElements() {
+	protected function findPaginate($paginationDirection) {
 		$lastFindType = Hash::get($this->lastFindParams, 'type');
 		$this->lastResponseObject->rewind();
-		if ($lastFindType !== ApiResponse::FIND_TYPE_ALL || null === $this->lastResponseObject || !$this->lastResponseObject->valid()) {
+		if ($lastFindType === ApiResponse::FIND_TYPE_ALL && null !== $this->lastResponseObject && $this->lastResponseObject->valid()) {
+			$collectionMetadata = $this->lastResponseObject->getCollectionMetadata();
+			if ($paginationDirection === 'count') {
+				return Hash::get($collectionMetadata, 'total_items');
+			}
+			$nextLink = Hash::get($collectionMetadata, '_links.' . $paginationDirection . '.href');
+			if (null !== $nextLink) {
+				$paramsNextElements = $this->urlToGetParamsArray($nextLink);
+				if ($paramsNextElements !== false) {
+					return $this->find('all', $paramsNextElements);
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	private function urlToGetParamsArray($url) {
+		if ($url === '') {
 			return false;
 		}
-		//$link = $this->lastResponseObject->getPaginationLinks();
+		$params = [];
+		$explodedGetParams = explode('?', $url, 2);
+		if (isset($explodedGetParams[1])) {
+			$params = $this->urlToGetParamsArrayHandlesParams($explodedGetParams[1]);
+		}
 		
-		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the next elements)
+		return $params;
+	}
+	
+	private function urlToGetParamsArrayHandlesParams($urlGetParams) {
+		$a = [];
+		foreach (explode('&', $urlGetParams) as $q) {
+			$p = explode('=', $q, 2);
+			$a[$p[0]] = isset ($p[1]) ? $p[1] : '';
+		}
+		
+		return $a;
+	}
+	
+	public function findNextElements() {
+		return $this->findPaginate('next');
 	}
 	
 	public function findPreviousElements() {
-		// TODO pagination, get next, $this->lastQuery (get the last query type, create a new one and query the previous elements)
+		return $this->findPaginate('previous');
 	}
 	
 	public function findLastElements() {
-		// TODO pagination
+		return $this->findPaginate('last');
 	}
 	
 	public function findCountElements() {
-		// TODO pagination
-		
-		// TODO Create a result object  with these options ?
+		return $this->findPaginate('count');
 	}
 	
 	/**
@@ -103,11 +138,19 @@ abstract class Model extends Singleton {
 	 * @return array
 	 */
 	protected function extractResultEmbedded($resultArray) {
-		if (isset($resultArray[0]) && !empty($resultArray[0])) {
-			foreach ($resultArray as $tmpID => $result) {
-				$resultArray[$tmpID] = $this->extractResultEmbedded($result);
+		if (isset($resultArray['_embedded']['items'])) {
+			// For Collection
+			if (empty($resultArray['_embedded']['items'])) {
+				$resultArray = [];
+			} else {
+				$res = [];
+				foreach ($resultArray['_embedded']['items'] as $tmpID => $result) {
+					$res[$tmpID] = $this->extractResultEmbedded($result);
+				}
+				$resultArray = $res;
 			}
 		} else {
+			// For Item
 			if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
 				foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
 					$resultArray[$embeddedModelName] = $this->extractResultEmbedded($embeddedValue);

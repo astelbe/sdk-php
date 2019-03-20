@@ -16,6 +16,7 @@ class APIResponse implements \Iterator {
 	const FIND_TYPE_COUNT = 'count';
 	
 	private $resultData = [];
+	private $collectionMetadata = [];
 	private $position = 0;
 	private $findType = self::FIND_TYPE_RAW;
 	private $resultHeaders = [];
@@ -60,6 +61,10 @@ class APIResponse implements \Iterator {
 		return $this->resultSuccessLevel;
 	}
 	
+	public function getCollectionMetadata() {
+		return $this->collectionMetadata;
+	}
+	
 	public function isResultSucess() {
 		return $this->resultSuccessLevel === self::RESULT_SUCESS;
 	}
@@ -94,10 +99,12 @@ class APIResponse implements \Iterator {
 	
 	public function setResultDataArray($data) {
 		if ($data !== null && !empty($data)) {
-			if (isset($data[0])) {
+			if (isset($data['_embedded']['items'])) {
 				// it means there is more than 1 element in the result : find('all'
 				$this->findType = self::FIND_TYPE_ALL;
-				$this->resultData = Hash::merge($this->resultData, $data);
+				$this->collectionMetadata = $data;
+				unset($this->collectionMetadata['_embedded']);
+				$this->resultData = Hash::merge($this->resultData, $data['_embedded']['items']);
 			} else {
 				// it means there is only 1 element in the result : find('first'
 				$this->findType = self::FIND_TYPE_FIRST;
