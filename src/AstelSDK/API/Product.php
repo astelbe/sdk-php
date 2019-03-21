@@ -2,10 +2,10 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 use CakeUtility\Hash;
 
-class Product extends Model implements IApiConsumer {
+class Product extends APIModel implements IApiConsumer {
 	
 	public $types = ['is_mobile', 'is_internet', 'is_tv', 'is_fix'];
 	

@@ -137,7 +137,7 @@ class APIResponse implements \Iterator {
 	}
 	
 	/**
-	 * @return array|mixed
+	 * @return array
 	 */
 	public function getResultDataAccordingFindType() {
 		if ($this->findType === self::FIND_TYPE_FIRST) {

@@ -2,9 +2,9 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 
-class Lead extends Model implements IApiProducer {
+class Lead extends APIModel implements IApiProducer {
 	
 	const CONTACT_TYPES = ['CALLBACK', 'MESSAGE'];
 	const CONTACT_TYPE_CALLBACK = 'CALLBACK';

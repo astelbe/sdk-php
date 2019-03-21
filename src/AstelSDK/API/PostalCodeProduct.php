@@ -2,9 +2,9 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 
-class PostalCodeProduct extends Model {
+class PostalCodeProduct extends APIModel {
 	
 	public function isProductAvailableForPostalCode($postal_code, $productID, $retrieveCityName = 1) {
 		$query = $this->newQuery();

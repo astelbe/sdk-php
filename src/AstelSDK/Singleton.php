@@ -2,7 +2,7 @@
 
 namespace AstelSDK;
 
-class Singleton {
+abstract class Singleton {
 	
 	protected static $instances;
 	

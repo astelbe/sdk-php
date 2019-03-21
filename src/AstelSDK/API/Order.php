@@ -2,10 +2,10 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 use CakeUtility\Hash;
 
-class Order extends Model implements IApiConsumer {
+class Order extends APIModel implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();

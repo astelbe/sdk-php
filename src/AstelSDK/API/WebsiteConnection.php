@@ -2,11 +2,11 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 use AstelSDK\Utils\Numbers;
 use CakeUtility\Hash;
 
-class WebsiteConnection extends Model implements IApiConsumer {
+class WebsiteConnection extends APIModel implements IApiConsumer {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [

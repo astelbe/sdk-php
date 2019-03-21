@@ -2,13 +2,13 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\Model;
+use AstelSDK\APIModel;
 use CakeUtility\Hash;
 
 /**
  * Class DiscountApi
  */
-class Discount extends Model implements IApiConsumer {
+class Discount extends APIModel implements IApiConsumer {
 	
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();

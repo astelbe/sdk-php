@@ -115,7 +115,8 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
-	 * @return string
+	 * @return string Used for appeding a string to every CSS / JS for web intergration in order to manage release /
+	 * customer navigator refresh of the cached ressource
 	 */
 	public function getVersion() {
 		return $this->version;
@@ -129,7 +130,7 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
-	 * @return mixed
+	 * @return string Direct user IP or forwarded IP if the SDK is behind a load balancer
 	 */
 	public function getUserIP() {
 		$ip = $_SERVER['REMOTE_ADDR'];

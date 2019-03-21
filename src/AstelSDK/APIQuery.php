@@ -123,11 +123,11 @@ class APIQuery {
 	/**
 	 * @param null $return_type
 	 *
-	 * @return ApiResponse|bool|mixed
+	 * @return APIResponse|bool|mixed
 	 * @throws \Exception
 	 */
 	public function exec($return_type = null) {
-		$result = new ApiResponse();
+		$result = new APIResponse();
 		$this->init();
 		$this->setCurlUrl();
 		
