@@ -3,6 +3,8 @@
 namespace AstelSDK;
 
 use CakeUtility\Hash;
+use AstelSDK\Utils\URL;
+use AstelSDK\Utils\HALOperations;
 
 /**
  * Class Model :
@@ -82,7 +84,7 @@ abstract class APIModel extends Singleton {
 		
 		if ($response->valid()) {
 			foreach ($response as $key => $returnElt) {
-				$returnArray = $this->interpretHALLogicToSimpleArray($returnElt);
+				$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
 				$response->setCurrent($returnArray);
 			}
 		}
@@ -170,7 +172,7 @@ abstract class APIModel extends Singleton {
 			}
 			$nextLink = Hash::get($collectionMetadata, '_links.' . $paginationDirection . '.href');
 			if (null !== $nextLink) {
-				$paramsNextElements = $this->urlToGetParamsArray($nextLink);
+				$paramsNextElements = Url::urlToGetParamsArray($nextLink);
 				if ($paramsNextElements !== false) {
 					return $this->find('all', $paramsNextElements);
 				}
@@ -178,70 +180,6 @@ abstract class APIModel extends Singleton {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * @param $url Full URL
-	 *
-	 * @return array|bool False if the url is invalid. Array [key->value] for GET elements of the given URL
-	 */
-	protected function urlToGetParamsArray($url) {
-		if ($url === '') {
-			return false;
-		}
-		$params = [];
-		$explodedGetParams = explode('?', $url, 2);
-		if (isset($explodedGetParams[1])) {
-			$params = $this->urlToGetParamsArrayHandlesParams($explodedGetParams[1]);
-		}
-		
-		return $params;
-	}
-	
-	/**
-	 * @param $urlGetParams
-	 *
-	 * @return array Transforms a url section containing the get params in an array of key->value
-	 */
-	protected function urlToGetParamsArrayHandlesParams($urlGetParams) {
-		$a = [];
-		foreach (explode('&', $urlGetParams) as $q) {
-			$p = explode('=', $q, 2);
-			$a[$p[0]] = isset ($p[1]) ? $p[1] : '';
-		}
-		
-		return $a;
-	}
-	
-	/**
-	 * @param array $resultArray
-	 *
-	 * @return array
-	 */
-	protected function interpretHALLogicToSimpleArray($resultArray) {
-		if (isset($resultArray['_embedded']['items'])) {
-			// For Collection
-			if (empty($resultArray['_embedded']['items'])) {
-				$resultArray = [];
-			} else {
-				$res = [];
-				foreach ($resultArray['_embedded']['items'] as $tmpID => $result) {
-					$res[$tmpID] = $this->interpretHALLogicToSimpleArray($result);
-				}
-				$resultArray = $res;
-			}
-		} else {
-			// For Item
-			if (isset($resultArray['_embedded']) && !empty($resultArray['_embedded'])) {
-				foreach ($resultArray['_embedded'] as $embeddedModelName => $embeddedValue) {
-					$resultArray[$embeddedModelName] = $this->interpretHALLogicToSimpleArray($embeddedValue);
-				}
-				unset($resultArray['_embedded']);
-			}
-			unset($resultArray['_links']);
-		}
-		
-		return $resultArray;
 	}
 	
 	public function transformIdToReturnedArray(array $array = [], $idName) {
