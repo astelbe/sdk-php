@@ -1,9 +1,12 @@
 # astelbe/sdk-php - Astel API Client Library for PHP
 
-It is a lightweight, Astel API client library for PHP. Our api docs documents all of the Astel APIs.
+It is a lightweight, Astel API client library for PHP. 
 
+## API Documentation
+Our swagger definition and documentation is available online: [SwaggerHub Astel Switch API V2_00](https://app.swaggerhub.com/apis/astel/switch/2_0).
+You can directly test the API with your partner api key via swagger on clicking on the Authorize Button.
 
-## Installation
+## SDK Installation
 
 [composer]: https://getcomposer.org
 
