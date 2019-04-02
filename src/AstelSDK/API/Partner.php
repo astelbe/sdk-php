@@ -16,7 +16,7 @@ class Partner extends APIModel implements IApiConsumer {
 		$query = $this->newQuery();
 		
 		$query->addGETParams($params);
-		$query->setUrl('v2_00/partner/');
+		$query->setUrl('v2_00/partner/me');
 		
 		return $query->exec();
 	}

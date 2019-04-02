@@ -80,6 +80,27 @@ abstract class APIModel extends Singleton {
 		} elseif ($type === self::FIND_TYPE_ALL) {
 			$response = $this->getAll($params);
 		}
+		$return = $this->returnResponse($response);
+		$this->cacheResults[$cacheKey] = $return;
+		
+		return $return;
+	}
+	
+	/**
+	 * Used to process and convert an APIResponse to a easily manipulable array
+	 *
+	 * @param APIResponse $response response of an API call
+	 *
+	 * @return array easily manipulable array with HAL logic interpreted
+	 */
+	protected function returnResponse($response) {
+		
+		if (is_bool($response)) {
+			$this->lastResponseObject = new APIResponse();
+			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);
+			
+			return $response;
+		}
 		$this->lastResponseObject = clone $response;
 		
 		if ($response->valid()) {
@@ -90,10 +111,7 @@ abstract class APIModel extends Singleton {
 		}
 		
 		// return the arrayAll/arrayFind/count/raw version of the response
-		$return = $response->getResultDataAccordingFindType();
-		$this->cacheResults[$cacheKey] = $return;
-		
-		return $return;
+		return $response->getResultDataAccordingFindType();
 	}
 	
 	/**
