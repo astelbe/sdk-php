@@ -1,8 +1,9 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
 use CakeUtility\Hash;
+use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\URL;
 use AstelSDK\Utils\HALOperations;
 

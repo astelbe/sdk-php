@@ -1,8 +1,9 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\API;
 
 use CakeUtility\Hash;
+use AstelSDK\Exception\DataException;
 
 class APIResponse implements \Iterator {
 	

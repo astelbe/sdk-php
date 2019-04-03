@@ -2,9 +2,8 @@
 
 namespace AstelSDK\WebIntegration;
 
-use AstelSDK\SDKModel;
 use AstelSDK\AstelContext;
-use AstelSDK\Singleton;
+use AstelSDK\Utils\Singleton;
 
 class Comparator extends Singleton {
 	

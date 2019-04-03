@@ -1,6 +1,8 @@
 <?php
 
 namespace AstelSDK;
+use AstelSDK\Utils\Singleton;
+use AstelSDK\Utils\Logger;
 
 class AstelContext extends Singleton {
 	

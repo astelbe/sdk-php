@@ -1,6 +1,6 @@
 <?php
 
-namespace AstelSDK;
+namespace AstelSDK\Utils;
 
 use CakeUtility\File;
 

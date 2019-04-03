@@ -2,11 +2,10 @@
 
 namespace AstelSDK\WebIntegration;
 
-use AstelSDK\APIQuery;
-use AstelSDK\Singleton;
+use AstelSDK\API\APIQuery;
+use AstelSDK\Utils\Singleton;
 use AstelSDK\AstelContext;
 use CakeUtility\Hash;
-use AstelSDK\SDKModel;
 
 class OrderForm extends Singleton {
 	

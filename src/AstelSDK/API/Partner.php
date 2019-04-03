@@ -2,10 +2,9 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\APIModel;
 use CakeUtility\Hash;
 
-class Partner extends APIModel implements IApiConsumer {
+class Partner extends APIModel {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
