@@ -11,8 +11,19 @@ class Product extends SDKModel {
 	const CONSUMER_TYPE_MEDIUM = 'MEDIUM';
 	const CONSUMER_TYPE_HEAVY = 'HEAVY';
 	const CONSUMER_TYPE_HEAVYINT = 'HEAVYINT';
+	const AVAILABILITY_ZONE_ALL_COUNTRY = ['BE' => 10];
 	
 	protected $associated_instance_name = '\AstelSDK\API\Product';
+	
+	public function isProductAvailableAllCountry(array $product) {
+		if (!empty($product)) {
+			$productAvailabilityZone = Hash::get($product, 'availability_zone_id');
+			
+			return $productAvailabilityZone === self::AVAILABILITY_ZONE_ALL_COUNTRY['BE'];
+		}
+		
+		return false;
+	}
 	
 	public function getProductNameById($id, $language) {
 		if (isset($id) && $id != '' && is_numeric($id)) {
