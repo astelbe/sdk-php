@@ -89,6 +89,40 @@ abstract class APIModel extends Singleton {
 	}
 	
 	/**
+	 * Finds all items with the following params.
+	 *
+	 * @param array $params Array containing all params that will be passed to the API
+	 *
+	 * @return array|mixed Return the API V2 Model representation
+	 */
+	public function findAll(array $params = []) {
+		if (!isset($params['count'])) {
+			$params['count'] = 'max';
+		}
+		if (!isset($params['page'])) {
+			$params['page'] = 1;
+		}
+		$maxTurns = 50;
+		$results = $this->find('all', $params);
+		if (!empty($results)) {
+			while (true) {
+				$resultNextPage = $this->findNextElements();
+				if ($resultNextPage !== false || empty($resultNextPage)) {
+					break;
+				}
+				$results = array_merge($results, $resultNextPage);
+				--$maxTurns;
+				if ($maxTurns <= 0) {
+					break;
+				}
+			}
+			
+		}
+		
+		return $results;
+	}
+	
+	/**
 	 * Used to process and convert an APIResponse to a easily manipulable array
 	 *
 	 * @param APIResponse $response response of an API call
@@ -96,7 +130,6 @@ abstract class APIModel extends Singleton {
 	 * @return array easily manipulable array with HAL logic interpreted
 	 */
 	protected function returnResponse($response) {
-		
 		if (is_bool($response)) {
 			$this->lastResponseObject = new APIResponse();
 			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);

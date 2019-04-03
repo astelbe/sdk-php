@@ -6,8 +6,6 @@ use CakeUtility\Hash;
 
 class Product extends APIModel {
 	
-	public $types = ['is_mobile', 'is_internet', 'is_tv', 'is_fix'];
-	
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/product');
@@ -68,37 +66,5 @@ class Product extends APIModel {
 		$response = $query->exec();
 		
 		return $this->returnResponse($response);
-	}
-	
-	public function transformResultArray(array $products) {
-		$out = [];
-		
-		foreach ($products as $product) {
-			$idProduct = Hash::get($product, 'id');
-			$out[$idProduct] = $product;
-		}
-		
-		return $out;
-	}
-	
-	public function getMfitType(array $product) {
-		$MFIT = '';
-		if ($product['is_mobile']) {
-			$MFIT .= 'M';
-		}
-		// Fixe
-		if ($product['is_fix']) {
-			$MFIT .= 'F';
-		}
-		// Internet
-		if ($product['is_internet']) {
-			$MFIT .= 'I';
-		}
-		// Tv
-		if ($product['is_tv']) {
-			$MFIT .= 'T';
-		}
-		
-		return $MFIT;
 	}
 }

@@ -3,6 +3,7 @@
 namespace AstelSDK\Model;
 
 use CakeUtility\Hash;
+use CakeUtility\Set;
 
 class Product extends SDKModel {
 	
@@ -12,6 +13,48 @@ class Product extends SDKModel {
 	const CONSUMER_TYPE_HEAVYINT = 'HEAVYINT';
 	
 	protected $associated_instance_name = '\AstelSDK\API\Product';
+	
+	public function getProductNameById($id, $language) {
+		if (isset($id) && $id != '' && is_numeric($id)) {
+			$product = $this->find('first', ['id' => $id]);
+			
+			return Hash::get($product, 'name.' . strtoupper($language), '');
+		}
+		
+		return '';
+	}
+	
+	public function productSelectListWithID() {
+		$prodDB = $this->findAll([]);
+		
+		return $this->productArrayToSelectableList($prodDB);
+	}
+	
+	/**
+	 * @param $prodDB
+	 *
+	 * @return array
+	 */
+	private function productArrayToSelectableList($prodDB) {
+		$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+		$outList = [];
+		foreach ($extractedList as $brand => $products) {
+			foreach ($products as $productID => $product_name) {
+				$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+			}
+		}
+		
+		// Order by product name
+		asort($outList);
+		
+		return $outList;
+	}
+	
+	public function productVariableSelectListWithID() {
+		$prodDB = $this->findAll(['is_hardware' => 1, 'is_variable' => 1]);
+		
+		return $this->productArrayToSelectableList($prodDB);
+	}
 	
 	public function isType(array $product, $type) {
 		if (null === $product || empty($product)) {
@@ -34,6 +77,24 @@ class Product extends SDKModel {
 		}
 		
 		return false;
+	}
+	
+	public function getMfitType(array $product) {
+		$MFIT = '';
+		if ($this->isType($product, 'M')) {
+			$MFIT .= 'M';
+		}
+		if ($this->isType($product, 'F')) {
+			$MFIT .= 'F';
+		}
+		if ($this->isType($product, 'I')) {
+			$MFIT .= 'I';
+		}
+		if ($this->isType($product, 'T')) {
+			$MFIT .= 'T';
+		}
+		
+		return $MFIT;
 	}
 	
 	public function isMobileSolo(array $product) {
