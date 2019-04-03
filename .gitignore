@@ -4,3 +4,4 @@
 !/.idea/encodings.xml
 !/.idea/php.xml
 vendor/*
+composer.lock

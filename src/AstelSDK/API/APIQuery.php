@@ -3,6 +3,7 @@
 namespace AstelSDK\API;
 
 use CakeUtility\Hash;
+use AstelSDK\AstelContext;
 use AstelSDK\Exception\DataException;
 
 class APIQuery {
