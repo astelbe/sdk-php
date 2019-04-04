@@ -25,6 +25,36 @@ class Product extends SDKModel {
 		return false;
 	}
 	
+	public function isAllProductsAvailableAllCountry(array $products) {
+		$nbrProducts = count($products);
+		$isAvailable = 0;
+		foreach ($products as $product) {
+			if ($this->isProductAvailableAllCountry($product)) {
+				$isAvailable++;
+			}
+		}
+		
+		return $isAvailable === $nbrProducts;
+	}
+	
+	public function isProductAvailableTmpProcessing($product_id, $searchTxt) {
+		$availablePostalCodes = $this->isAvailableSearch($product_id, $searchTxt);
+		// First postcode found should be available for sale
+		if (!empty($availablePostalCodes)) {
+			$isAvailable = true;
+			foreach ($availablePostalCodes as $pc) {
+				$isAvPc = Hash::get($pc, 'is_available');
+				$isAvailable = $isAvailable && $isAvPc;
+				// Get only the first one
+				break;
+			}
+			
+			return $isAvailable;
+		}
+		
+		return false;
+	}
+	
 	public function getProductNameById($id, $language) {
 		if (isset($id) && $id != '' && is_numeric($id)) {
 			$product = $this->find('first', ['id' => $id]);
