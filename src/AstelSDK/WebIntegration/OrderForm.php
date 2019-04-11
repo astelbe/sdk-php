@@ -105,8 +105,15 @@ class OrderForm extends Singleton {
 		$query = new APIQuery('order');
 		$query->setUrl('display/orderConfirmation/' . $this->context->getPartnerToken() . '/' . $token . '/' .
 			$this->context->getLanguage());
+		$result = $query->exec(APIQuery::RETURN_CONTENT);
+		$errorMessage = 'Confirmation page retrieval failure, please contact us.';
+		if ($result->isResultSucess()) {
+			$resultData = $result->getResultData();
+			
+			return Hash::get($resultData, '0', $errorMessage);
+		}
 		
-		return $query->exec();
+		return $errorMessage;
 		
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace AstelSDK\Model;
 
+use CakeUtility\Hash;
 use AstelSDK\Utils\Numbers;
 
 class WebsiteConnection extends SDKModel {
