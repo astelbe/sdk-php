@@ -138,6 +138,15 @@ class Product extends SDKModel {
 		return $MFIT;
 	}
 	
+	/**
+	 * @param array $product
+	 *
+	 * @return bool whether the telecom pack has a fixed part
+	 */
+	public function hasProductFixPackPlayPart(array $product) {
+		return $this->isType($product, 'F') || $this->isType($product, 'I') || $this->isType($product, 'T');
+	}
+	
 	public function isMobileSolo(array $product) {
 		if ($this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
