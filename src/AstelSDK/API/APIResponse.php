@@ -120,12 +120,34 @@ class APIResponse implements \Iterator {
 		} else {
 			$data = str_replace('</br>', '<br>', $data);
 			$returnArray = @json_decode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+			$returnArray = $this->setCorrectTypes($returnArray);
 			if ($returnArray === null) {
 				throw new DataException('An error occurred when decoding the remote data : JSON error: ' .
 					json_last_error_msg(), 500);
 			}
 		}
 		$this->setResultDataArray($returnArray);
+	}
+	
+	/**
+	 * Recursive function wandering through the result and setting right types (boolean specially)
+	 *
+	 * @param $resultArray
+	 *
+	 * @return array
+	 */
+	private function setCorrectTypes($resultArray) {
+		$out = [];
+		foreach ($resultArray as $key => $value) {
+			if ($value === 'false' || $value === 'true') {
+				$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+			} elseif (is_array($value)) {
+				$value = $this->setCorrectTypes($value);
+			}
+			$out[$key] = $value;
+		}
+		
+		return $out;
 	}
 	
 	public function setResultDataRaw($data) {
