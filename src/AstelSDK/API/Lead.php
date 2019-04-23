@@ -2,8 +2,18 @@
 
 namespace AstelSDK\API;
 
+use CakeUtility\Hash;
+
 class Lead extends APIModel {
 	
+	/**
+	 * @param array $data
+	 *
+	 * @return array
+	 * @throws \ValidationErrorException
+	 * @throws \AstelSDK\Exception\DataException
+	 * @throws \Exception
+	 */
 	public function createFirst(array $data = []) {
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/lead/');
@@ -16,6 +26,6 @@ class Lead extends APIModel {
 		
 		$query->addPOSTParams($data);
 		
-		return $this->exec();
+		return $query->exec();
 	}
 }

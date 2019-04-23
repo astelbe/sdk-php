@@ -126,6 +126,7 @@ class APIQuery {
 	 * @param null $return_type
 	 *
 	 * @return APIResponse|bool|mixed
+	 * @throws \AstelSDK\Exception\ValidationErrorException
 	 * @throws \Exception
 	 */
 	public function exec($return_type = null) {
@@ -180,6 +181,7 @@ class APIQuery {
 		$body = substr($output, $header_size);
 		
 		$http_status = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
+		$result->setHttpCode($http_status);
 		$curl_errno = curl_errno($this->ch);
 		$curl_error = curl_error($this->ch);
 		curl_close($this->ch);
@@ -189,29 +191,34 @@ class APIQuery {
 			throw new DataException('An error occurred when accessing internally the data. Error Curl (' .
 				$curl_errno . '): ' . $curl_error, 500);
 		} else {
-			if ($http_status !== 200 && $http_status !== 204) {
-				// TODO Handles 4xx errors and validation errors
-				throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' .
-					$http_status, 500);
+			if ($http_status !== 200 && $http_status !== 204 && $http_status !== 400) {
+				$result->setResultSuccessLevel(ApiResponse::RESULT_FAILURE);
+				$result->setResultDataRaw($body);
+				
+				return $result;
 			} else {
 				if ($http_status === 204) {
 					$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
 					$result->setResultDataArray([]);
 					
 					return $result;
-				} elseif ($body === '') {
-					throw new DataException('An error occurred when decoding the remote data. No return from API datasource.', 500);
 				} else {
 					$this->lastReturnedData = $body;
+					
+					if ($http_status === 400) {
+						$result->setResultSuccessLevel(ApiResponse::RESULT_VALIDATION_ERROR);
+					} else {
+						$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
+					}
 					if ($return_type === self::RETURN_CONTENT) {
 						// Return directly the content
-						$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
 						$result->setResultDataRaw($body);
 						
 						return $result;
+					} else {
+						$result->setResultDataJson($body);
 					}
-					$result->setResultSuccessLevel(ApiResponse::RESULT_SUCESS);
-					$result->setResultDataJson($body);
+					
 				}
 			}
 		}

@@ -21,6 +21,8 @@ class APIResponse implements \Iterator {
 	private $position = 0;
 	private $findType = self::FIND_TYPE_RAW;
 	private $resultHeaders = [];
+	private $http_code = 100;
+	
 	/**
 	 * @var string Gives the level of success of the API response. Default Failure.
 	 */
@@ -96,6 +98,14 @@ class APIResponse implements \Iterator {
 	
 	public function getHeader() {
 		return $this->resultHeaders;
+	}
+	
+	public function setHttpCode($http_code) {
+		$this->http_code = $http_code;
+	}
+	
+	public function getHttpCode() {
+		return $this->http_code;
 	}
 	
 	public function setResultDataArray($data) {

@@ -48,6 +48,7 @@ class Product extends APIModel {
 		$query->addGETParams(['_embed' => 'postal_code']);
 		
 		$response = $query->exec();
+		$this->handlesResponseThrows($response);
 		
 		return $this->returnResponse($response);
 	}
@@ -64,6 +65,7 @@ class Product extends APIModel {
 		$query->addGETParams(['_embed' => 'postal_code']);
 		
 		$response = $query->exec();
+		$this->handlesResponseThrows($response);
 		
 		return $this->returnResponse($response);
 	}

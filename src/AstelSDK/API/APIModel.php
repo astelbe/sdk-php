@@ -2,6 +2,8 @@
 
 namespace AstelSDK\API;
 
+use AstelSDK\Exception\DataException;
+use AstelSDK\Exception\ValidationErrorException;
 use CakeUtility\Hash;
 use AstelSDK\AstelContext;
 use AstelSDK\Utils\Singleton;
@@ -69,6 +71,8 @@ abstract class APIModel extends Singleton {
 	 * @return array Element returned by the API call in a simple structured array (API is using HAL convention, the
 	 * returned array abstracts the logic in a friendly manner)
 	 *
+	 * @throws ValidationErrorException For 400 errors
+	 * @throws DataException For 500 errors
 	 */
 	public function find($type = self::FIND_TYPE_ALL, array $params = []) {
 		$this->lastFindParams = ['type' => $type, 'params' => $params];
@@ -82,6 +86,7 @@ abstract class APIModel extends Singleton {
 		} elseif ($type === self::FIND_TYPE_ALL) {
 			$response = $this->getAll($params);
 		}
+		$this->handlesResponseThrows($response);
 		$return = $this->returnResponse($response);
 		$this->cacheResults[$cacheKey] = $return;
 		
@@ -130,14 +135,6 @@ abstract class APIModel extends Singleton {
 	 * @return array easily manipulable array with HAL logic interpreted
 	 */
 	protected function returnResponse($response) {
-		if (is_bool($response)) {
-			$this->lastResponseObject = new APIResponse();
-			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);
-			
-			return $response;
-		}
-		$this->lastResponseObject = clone $response;
-		
 		if ($response->valid()) {
 			foreach ($response as $key => $returnElt) {
 				$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
@@ -155,7 +152,7 @@ abstract class APIModel extends Singleton {
 	 * @return object|null After a find result is retrieved, you can call this function to retrieve the full response
 	 * object containing headers, and HAL info of API response.
 	 */
-	public function findLastFullResponseObject() {
+	public function getLastFullResponseObject() {
 		return $this->lastResponseObject;
 	}
 	
@@ -195,15 +192,37 @@ abstract class APIModel extends Singleton {
 		return $this->findPaginate('count');
 	}
 	
+	protected function handlesResponseThrows(APIResponse $response) {
+		if (is_bool($response)) {
+			$this->lastResponseObject = new APIResponse();
+			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);
+			
+			return $response;
+		}
+		$this->lastResponseObject = clone $response;
+		
+		if ($response->isResultFailure()) {
+			throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' . $this->lastResponseObject->getHttpCode(), 500);
+		}
+		if ($response->isResultValidationError()) {
+			throw new ValidationErrorException('Validations error during the input validation. Please correct input.', 400);
+		}
+	}
+	
 	/**
-	 * Allows the CRUD operation of Create / Update.
+	 *  Allows the CRUD operation of Create / Update.
 	 *
 	 * @param array $data
 	 *
-	 * @return boolean Success of the object creation
+	 * @return array Success of the object creation with validation warnings and extra info
+	 * @throws ValidationErrorException
+	 * @throws DataException
 	 */
 	public function create(array $data = []) {
-		return $this->createFirst($data);
+		$result = $this->createFirst($data);
+		$this->handlesResponseThrows($result);
+		
+		return $this->returnResponse($result); // In array form
 	}
 	
 	/**
