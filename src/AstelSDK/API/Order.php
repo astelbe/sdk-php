@@ -8,7 +8,7 @@ class Order extends APIModel {
 	
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();
-		$query->setUrl('v1_10/getOrdersStatusList');
+		$query->setUrl('v2_00/order');
 		$query->addGETParams($params);
 		
 		return $query->exec();
@@ -21,7 +21,7 @@ class Order extends APIModel {
 		}
 		unset($params['id']);
 		$query = $this->newQuery();
-		$query->setUrl('v1_10/getOrdersStatusList/' . $id);
+		$query->setUrl('v2_00/order/' . $id);
 		$query->addGETParams($params);
 		
 		return $query->exec();

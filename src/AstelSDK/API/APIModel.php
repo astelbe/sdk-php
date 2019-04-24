@@ -112,7 +112,7 @@ abstract class APIModel extends Singleton {
 		if (!empty($results)) {
 			while (true) {
 				$resultNextPage = $this->findNextElements();
-				if ($resultNextPage !== false || empty($resultNextPage)) {
+				if ($resultNextPage === false || empty($resultNextPage)) {
 					break;
 				}
 				$results = array_merge($results, $resultNextPage);
@@ -243,6 +243,9 @@ abstract class APIModel extends Singleton {
 				return Hash::get($collectionMetadata, 'total_items');
 			}
 			$nextLink = Hash::get($collectionMetadata, '_links.' . $paginationDirection . '.href');
+			if ($paginationDirection === 'next' && $nextLink === null) {
+				$nextLink = Hash::get($collectionMetadata, '_links.last.href');
+			}
 			if (null !== $nextLink) {
 				$paramsNextElements = Url::urlToGetParamsArray($nextLink);
 				if ($paramsNextElements !== false) {
