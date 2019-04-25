@@ -128,6 +128,9 @@ class Comparator extends QueryManager {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
+		$getParams['page_url'] = 'www.test.be';
+		$getParams['pageTitle'] = 'Page title';
+		$getParams['pageDescription'] = 'Page description';
 		$paramsURL = urlencode(base64_encode(serialize($getParams)));
 		
 		return '<script>
