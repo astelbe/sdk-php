@@ -148,13 +148,15 @@ class APIResponse implements \Iterator {
 	 */
 	private function setCorrectTypes($resultArray) {
 		$out = [];
-		foreach ($resultArray as $key => $value) {
-			if ($value === 'false' || $value === 'true') {
-				$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
-			} elseif (is_array($value)) {
-				$value = $this->setCorrectTypes($value);
+		if (is_array($resultArray) && !empty($resultArray)) {	
+			foreach ($resultArray as $key => $value) {
+				if ($value === 'false' || $value === 'true') {
+					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+				} elseif (is_array($value)) {
+					$value = $this->setCorrectTypes($value);
+				}
+				$out[$key] = $value;
 			}
-			$out[$key] = $value;
 		}
 		
 		return $out;
