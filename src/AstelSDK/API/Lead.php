@@ -2,30 +2,30 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
+use CakeUtility\Hash;
 
-class Lead extends QueryManager implements IApiProducer {
+class Lead extends APIModel {
 	
-	const CONTACT_TYPES = ['CALLBACK', 'MESSAGE'];
-	const CONTACT_TYPE_CALLBACK = 'CALLBACK';
-	const CONTACT_TYPE_MESSAGE = 'MESSAGE';
-	const CONTACT_TOPICS = ['LEAD', 'AFTER_SALES'];
-	const CONTACT_TOPIC_LEAD = 'LEAD';
-	const CONTACT_TOPIC_AFTER_SALES = 'AFTER_SALES';
-	
+	/**
+	 * @param array $data
+	 *
+	 * @return array
+	 * @throws \ValidationErrorException
+	 * @throws \AstelSDK\Exception\DataException
+	 * @throws \Exception
+	 */
 	public function createFirst(array $data = []) {
-		$this->init();
-		$url = 'v2_00/lead/';
-		$this->setUrl($url);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/lead/');
 		
 		$defaultData = [
-			'referer_page' => 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
-			'user_ip' => $this->getUserIP(),
+			'referer_page' => $this->context->getReferrer(),
+			'user_ip' => $this->context->getUserIP(),
 		];
-		$data = array_merge($defaultData, $data);
+		$data = Hash::merge($defaultData, $data);
 		
-		$this->setPost($data);
+		$query->addPOSTParams($data);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 }

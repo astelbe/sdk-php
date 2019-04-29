@@ -2,36 +2,21 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
-class Partner extends QueryManager implements IApiConsumer {
-	
-	public function find($type, array $params = []) {
-		$cacheKey = md5(print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first' || $type === 'all') {
-			$result = $this->getFirst($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class Partner extends APIModel {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'contains' => ['CallCenter', 'LastOrderedProducts'],
+			'_embed' => 'last_ordered_products,call_center_open',
 		];
 		$params = Hash::merge($default_params, $params);
 		
-		$this->init();
-		$url = 'v2_00/partner/';
-		$url = $this->addUrlParams($url, $params, true);
-		$this->setUrl($url);
+		$query = $this->newQuery();
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		$query->addGETParams($params);
+		$query->setUrl('v2_00/partner/me');
+		
+		return $query->exec();
 	}
 }

@@ -2,18 +2,25 @@
 
 namespace AstelSDK\WebIntegration;
 
+use AstelSDK\API\APIQuery;
+use AstelSDK\Utils\Singleton;
+use AstelSDK\AstelContext;
 use CakeUtility\Hash;
-use AstelSDK\QueryManager;
 
-class OrderForm extends QueryManager {
+class OrderForm extends Singleton {
+	
+	public function __construct() {
+		$this->context = AstelContext::getInstance();
+	}
 	
 	public function getCSSList($allRequired = true) {
-		$cssList = [
-			'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion(),
-		];
+		$cssList = [];
+		
 		if ($allRequired) {
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
+		$cssList[] = 'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion();
 		
 		return $cssList;
 	}
@@ -95,12 +102,18 @@ class OrderForm extends QueryManager {
 		if (null === $token || !preg_match('/^[a-f0-9]{32}$/', $token)) {
 			return 'no_valid_token_given';
 		}
-		$this->setApiParticle('order');
-		$this->init();
-		$this->setUrl('display/orderConfirmation/' . $this->context->getPartnerToken() . '/' . $token . '/' .
+		$query = new APIQuery('order');
+		$query->setUrl('display/orderConfirmation/' . $this->context->getPartnerToken() . '/' . $token . '/' .
 			$this->context->getLanguage());
+		$result = $query->exec(APIQuery::RETURN_CONTENT);
+		$errorMessage = 'Confirmation page retrieval failure, please contact us.';
+		if ($result->isResultSucess()) {
+			$resultData = $result->getResultData();
+			
+			return Hash::get($resultData, '0', $errorMessage);
+		}
 		
-		return $this->exec(self::RETURN_CONTENT);
+		return $errorMessage;
 		
 	}
 }

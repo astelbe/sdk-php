@@ -2,93 +2,71 @@
 
 namespace AstelSDK\API;
 
-use AstelSDK\QueryManager;
 use CakeUtility\Hash;
 
-class Product extends QueryManager implements IApiConsumer {
-	
-	public $types = ['is_mobile', 'is_internet', 'is_tv', 'is_fix'];
-	
-	public function find($type, array $params = []) {
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
-		$result = false;
-		if ($type === 'first') {
-			$result = $this->getFirst($params);
-			
-		} elseif ($type === 'all') {
-			$result = $this->getAll($params);
-		}
-		$this->cacheResults[$cacheKey] = $result;
-		
-		return $result;
-	}
+class Product extends APIModel {
 	
 	protected function getAll(array $params = []) {
-		$this->init();
-		$url = 'v2_00/product';
-		$cond = [
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product');
+		$default_params = [
 			'is_visible' => 1,
 		];
 		if ($this->context->getIsPrivate()) {
-			$cond['is_private'] = 1;
+			$default_params['is_private'] = 1;
 		} else {
-			$cond['is_professionnal'] = 1;
+			$default_params['is_professional'] = 1;
 		}
-		$default_params = [
-			'conditions' => $cond,
-		];
 		$params = Hash::merge($default_params, $params);
-		$url = $this->addUrlParams($url, $params, true);
-		$this->setUrl($url);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_MULTIPLE_ELEMENTS);
+		return $query->exec();
 	}
 	
 	protected function getFirst(array $params = []) {
-		$id = Hash::get($params, 'conditions.id');
+		$id = Hash::get($params, 'id');
 		if ($id === null || !is_numeric($id)) {
 			return false;
 		}
-		$this->init();
-		$url = 'v2_00/product/';
-		$url .= $id;
-		$this->setUrl($url);
+		unset($params['id']);
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product/' . $id);
+		$query->addGETParams($params);
 		
-		return $this->exec(self::RETURN_SINGLE_ELEMENT);
+		return $query->exec();
 	}
 	
-	public function transformResultArray(array $products) {
-		$out = [];
-		
-		foreach ($products as $product) {
-			$idProduct = Hash::get($product, 'id');
-			$out[$idProduct] = $product;
+	public function isAvailable($product_id, $postal_code_id) {
+		if ($product_id === null || !is_numeric($product_id)) {
+			return false;
 		}
+		if ($postal_code_id === null || !is_numeric($postal_code_id)) {
+			return false;
+		}
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product/' . $product_id . '/available/' . $postal_code_id);
+		$query->addGETParams(['_embed' => 'postal_code']);
 		
-		return $out;
+		$response = $query->exec();
+		$this->handlesResponseThrows($response);
+		
+		return $this->returnResponse($response);
 	}
 	
-	public function getMfitType(array $product) {
-		$MFIT = '';
-		if ($product['is_mobile']) {
-			$MFIT .= 'M';
+	public function isAvailableSearch($product_id, $searchTxt) {
+		if ($product_id === null || !is_numeric($product_id)) {
+			return false;
 		}
-		// Fixe
-		if ($product['is_fix']) {
-			$MFIT .= 'F';
+		if ($searchTxt === null || $searchTxt === '' || !is_numeric($searchTxt)) {
+			return false;
 		}
-		// Internet
-		if ($product['is_internet']) {
-			$MFIT .= 'I';
-		}
-		// Tv
-		if ($product['is_tv']) {
-			$MFIT .= 'T';
-		}
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/product/' . $product_id . '/available/search/' . base64_encode($searchTxt));
+		$query->addGETParams(['_embed' => 'postal_code']);
 		
-		return $MFIT;
+		$response = $query->exec();
+		$this->handlesResponseThrows($response);
+		
+		return $this->returnResponse($response);
 	}
 }

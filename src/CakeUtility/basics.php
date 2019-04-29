@@ -1,6 +1,6 @@
 <?php
 
-namespace CakeUtility;
+use CakeUtility\Debugger;
 /**
  * Basic CakePHP functionality.
  *
@@ -31,7 +31,6 @@ namespace CakeUtility;
 	define('MONTH', 2592000);
 	define('YEAR', 31536000);
 
-
 if (!function_exists('debug')) {
 
 /**
@@ -47,10 +46,6 @@ if (!function_exists('debug')) {
  * @link https://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#debug
  */
 	function debug($var, $showHtml = null, $showFrom = true) {
-		if (ENV != 'dev') {
-			return;
-		}
-
 		$file = '';
 		$line = '';
 		$lineInfo = '';
@@ -86,7 +81,7 @@ if (!function_exists('stackTrace')) {
  * @see Debugger::trace()
  */
 	function stackTrace(array $options = array()) {
-		if (ENV != 'dev') {
+		if (defined(ENV) && ENV != 'dev') {
 			return;
 		}
 
