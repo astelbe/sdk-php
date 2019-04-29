@@ -51,7 +51,7 @@ class Comparator extends Singleton {
 		return $out;
 	}
 	
-	public function getScriptLoadComparator() {
+	public function getScriptLoadComparator($title=null) {
 		global $_GET;
 		$getParams = [];
 		if (isset($_GET['code_postal']) && $_GET['code_postal'] != '') {
@@ -134,8 +134,14 @@ class Comparator extends Singleton {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
+
+		// Add page url and title for structured data in the plugin Comparator
+		$getParams['page_url'] = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		$getParams['page_title'] = $title;
+
 		$paramsURL = urlencode(base64_encode(serialize($getParams)));
-		
+
+
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
