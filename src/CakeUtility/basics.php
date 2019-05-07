@@ -1,6 +1,7 @@
 <?php
 
-namespace CakeUtility;
+use CakeUtility\Debugger;
+
 /**
  * Basic CakePHP functionality.
  *
@@ -23,82 +24,93 @@ namespace CakeUtility;
 /**
  * Basic defines for timing functions.
  */
+if (!defined('SECOND')) {
 	define('SECOND', 1);
+}
+if (!defined('MINUTE')) {
 	define('MINUTE', 60);
+}
+if (!defined('HOUR')) {
 	define('HOUR', 3600);
+}
+if (!defined('DAY')) {
 	define('DAY', 86400);
+}
+if (!defined('WEEK')) {
 	define('WEEK', 604800);
+}
+if (!defined('MONTH')) {
 	define('MONTH', 2592000);
+}
+if (!defined('YEAR')) {
 	define('YEAR', 31536000);
-
+}
 
 if (!function_exists('debug')) {
-
-/**
- * Prints out debug information about given variable.
- *
- * Only runs if debug level is greater than zero.
- *
- * @param mixed $var Variable to show debug information for.
- * @param bool $showHtml If set to true, the method prints the debug data in a browser-friendly way.
- * @param bool $showFrom If set to true, the method prints from where the function was called.
- * @return void
- * @link https://book.cakephp.org/2.0/en/development/debugging.html#basic-debugging
- * @link https://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#debug
- */
+	
+	/**
+	 * Prints out debug information about given variable.
+	 *
+	 * Only runs if debug level is greater than zero.
+	 *
+	 * @param mixed $var Variable to show debug information for.
+	 * @param bool $showHtml If set to true, the method prints the debug data in a browser-friendly way.
+	 * @param bool $showFrom If set to true, the method prints from where the function was called.
+	 *
+	 * @return void
+	 * @link https://book.cakephp.org/2.0/en/development/debugging.html#basic-debugging
+	 * @link https://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#debug
+	 */
 	function debug($var, $showHtml = null, $showFrom = true) {
-		if (ENV != 'dev') {
-			return;
-		}
-
 		$file = '';
 		$line = '';
 		$lineInfo = '';
 		if ($showFrom) {
-			$trace = Debugger::trace(array('start' => 1, 'depth' => 2, 'format' => 'array'));
+			$trace = Debugger::trace(['start' => 1, 'depth' => 2, 'format' => 'array']);
 			$file = $trace[0]['file'];
 			//$file = str_replace(array(CAKE_CORE_INCLUDE_PATH, ROOT), '', $trace[0]['file']);
 			$line = $trace[0]['line'];
 		}
-
+		
 		echo '<pre>';
 		echo "<b>$file.$line.</b>\n";
 		print_r($var);
 		echo '</pre>';
 	}
-
+	
 }
 
 if (!function_exists('stackTrace')) {
-
-/**
- * Outputs a stack trace based on the supplied options.
- *
- * ### Options
- *
- * - `depth` - The number of stack frames to return. Defaults to 999
- * - `args` - Should arguments for functions be shown? If true, the arguments for each method call
- *   will be displayed.
- * - `start` - The stack frame to start generating a trace from. Defaults to 1
- *
- * @param array $options Format for outputting stack trace
- * @return mixed Formatted stack trace
- * @see Debugger::trace()
- */
-	function stackTrace(array $options = array()) {
-		if (ENV != 'dev') {
+	
+	/**
+	 * Outputs a stack trace based on the supplied options.
+	 *
+	 * ### Options
+	 *
+	 * - `depth` - The number of stack frames to return. Defaults to 999
+	 * - `args` - Should arguments for functions be shown? If true, the arguments for each method call
+	 *   will be displayed.
+	 * - `start` - The stack frame to start generating a trace from. Defaults to 1
+	 *
+	 * @param array $options Format for outputting stack trace
+	 *
+	 * @return mixed Formatted stack trace
+	 * @see Debugger::trace()
+	 */
+	function stackTrace(array $options = []) {
+		if (defined(ENV) && ENV != 'dev') {
 			return;
 		}
-
-		$options += array('start' => 0);
+		
+		$options += ['start' => 0];
 		$options['start']++;
 		echo Debugger::trace($options);
 	}
-
+	
 }
 
 if (!function_exists('h')) {
-
+	
 	/**
 	 * Convenience method for htmlspecialchars.
 	 *
@@ -107,6 +119,7 @@ if (!function_exists('h')) {
 	 *    implement a `__toString` method. Otherwise the class name will be used.
 	 * @param bool $double Encode existing html entities
 	 * @param string $charset Character set to use when escaping. Defaults to config value in 'App.encoding' or 'UTF-8'
+	 *
 	 * @return string|array|object Wrapped text, Wrapped Array or Wrapped Object
 	 * @link https://book.cakephp.org/2.0/en/core-libraries/global-constants-and-functions.html#h
 	 */
@@ -114,10 +127,11 @@ if (!function_exists('h')) {
 		if (is_string($text)) {
 			//optimize for strings
 		} elseif (is_array($text)) {
-			$texts = array();
+			$texts = [];
 			foreach ($text as $k => $t) {
 				$texts[$k] = h($t, $double, $charset);
 			}
+			
 			return $texts;
 		} elseif (is_object($text)) {
 			if (method_exists($text, '__toString')) {
@@ -128,7 +142,7 @@ if (!function_exists('h')) {
 		} elseif (is_bool($text)) {
 			return $text;
 		}
-
+		
 		static $defaultCharset = false;
 		if ($defaultCharset === false) {
 			$defaultCharset = 'UTF-8';
@@ -139,7 +153,8 @@ if (!function_exists('h')) {
 		if (is_string($double)) {
 			$charset = $double;
 		}
+		
 		return htmlspecialchars($text, ENT_QUOTES, ($charset) ? $charset : $defaultCharset, $double);
 	}
-
+	
 }

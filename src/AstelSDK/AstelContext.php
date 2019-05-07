@@ -1,6 +1,8 @@
 <?php
 
 namespace AstelSDK;
+use AstelSDK\Utils\Singleton;
+use AstelSDK\Utils\Logger;
 
 class AstelContext extends Singleton {
 	
@@ -12,6 +14,7 @@ class AstelContext extends Singleton {
 	protected $partnerToken;
 	protected $isPrivate = null;
 	protected $language = 'FR';
+	protected $apiParticle = 'api';
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '') {
 		if ($env === 'prod') {
@@ -23,6 +26,14 @@ class AstelContext extends Singleton {
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
+	}
+	
+	public function setApiParticle($particle) {
+		$this->apiParticle = $particle;
+	}
+	
+	public function getApiParticle() {
+		return $this->apiParticle;
 	}
 	
 	public function log($message, $level = 'notice', $context = []) {
@@ -55,6 +66,9 @@ class AstelContext extends Singleton {
 	 */
 	public function setEnv($env) {
 		$this->env = $env;
+		if (!defined('ENV')) {
+			define('ENV', $env);
+		}
 	}
 	
 	/**
@@ -103,7 +117,8 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
-	 * @return string
+	 * @return string Used for appeding a string to every CSS / JS for web intergration in order to manage release /
+	 * customer navigator refresh of the cached ressource
 	 */
 	public function getVersion() {
 		return $this->version;
@@ -114,5 +129,38 @@ class AstelContext extends Singleton {
 	 */
 	public function setVersion($version) {
 		$this->version = $version;
+	}
+	
+	/**
+	 * @return string Direct user IP or forwarded IP if the SDK is behind a load balancer
+	 */
+	public function getUserIP() {
+		$ip = $_SERVER['REMOTE_ADDR'];
+		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}
+		
+		return $ip;
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getUniqueVisitorKey() {
+		return md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
+	}
+	
+	public function getReferrer() {
+		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+	
+	/**
+	 * Register functions:
+	 * - debug() for pretty display of debug information
+	 * - stacktrace() for easy stacktrace print
+	 * - h() for htmlspecialchars
+	 */
+	public static function registerUtilsFunctions() {
+		include_once __DIR__ . '/../CakeUtility/basics.php';
 	}
 }
