@@ -6,6 +6,16 @@ It is a lightweight, Astel API client library for PHP.
 Our swagger definition and documentation is available online: [SwaggerHub Astel Switch API V2_00](https://app.swaggerhub.com/apis/astel/switch/2_0).
 You can directly test the API with your partner api key via swagger on clicking on the Authorize Button.
 
+## API Usage and Example (Postman Export)
+A developer can also use Postman (https://www.getpostman.com/) to interact with the API. An export is [versioned in the export folder](https://github.com/astelbe/sdk-php/blob/master/export/Astel.postman_collection.json).
+
+Import the JSON file in Postman and set the following variables:
+ * {{env}}: Environment: '' for production, 'sta' for staging (test) environment
+ * {{token}}: Astel Partner security Token
+ * {{endpoint}}: set it to 'api'
+ 
+ You are good to go and use our API. Some Usage Examples are available in the corresponding Postman folder.
+
 ## SDK Installation
 
 [composer]: https://getcomposer.org
