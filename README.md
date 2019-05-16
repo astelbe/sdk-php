@@ -15,7 +15,7 @@ Import the JSON file in Postman and set the following variables:
  * {{endpoint}}: set it to 'api'
  
  You are good to go and use our API. Some Usage Examples are available in the corresponding Postman folder.
- 
+
  Some of the Endpoints uses an OPTIONS HTTP Method. Those are intended for querying extra information about the usage of the endpoint. If a developer wants to know the available query filters or orderings params, he can query those OPTIONS endpoints.
 
 ## SDK Installation
