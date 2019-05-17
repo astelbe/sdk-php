@@ -140,8 +140,7 @@ class Comparator extends Singleton {
 		$getParams['page_url'] = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$getParams['page_title'] = $title;
 		$serialize = serialize($getParams);
-		$base64 = URL::base64url_encode($serialize);
-		$paramsURL = urlencode($base64);
+		$paramsURL = URL::base64url_encode($serialize);
 		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
