@@ -88,10 +88,10 @@ class OrderForm extends Singleton {
 	
 	public function getBodyLoadHtml() {
 		return '<div id="orderForm">
-				<div class="loadOrderFormTxt">
-					<center><img class="loading-transparent"
-					src="https://cdn' . $this->context->getEnv() . '.astel.be/assets/astelbefr/img/loading-transparent.gif"></center>
-					<!--Image for loading-->
+				<div class="loadOrderFormTxt text-center">
+					<div class="spinner-border text-blue" role="status">
+						<span class="sr-only">Loading...</span>
+					</div>
 				</div>
 			</div> ';
 	}
