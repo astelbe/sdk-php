@@ -3,6 +3,7 @@
 namespace AstelSDK\API;
 
 use CakeUtility\Hash;
+use AstelSDK\Utils\URL;
 
 class Product extends APIModel {
 	
@@ -61,7 +62,7 @@ class Product extends APIModel {
 			return false;
 		}
 		$query = $this->newQuery();
-		$query->setUrl('v2_00/product/' . $product_id . '/available/search/' . base64_encode($searchTxt));
+		$query->setUrl('v2_00/product/' . $product_id . '/available/search/' . URL::base64url_encode($searchTxt));
 		$query->addGETParams(['_embed' => 'postal_code']);
 		
 		$response = $query->exec();
