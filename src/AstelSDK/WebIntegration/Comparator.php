@@ -16,7 +16,7 @@ class Comparator extends Singleton {
 		$cssList = [];
 		
 		if ($allRequired) {
-			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.3.1/css/bootstrap.min.css';
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
 		$cssList[] = 'https://compare' . $this->context->getEnv() . '.astel.be/css/compare/comparator.css?v=' . $this->context->getVersion();
