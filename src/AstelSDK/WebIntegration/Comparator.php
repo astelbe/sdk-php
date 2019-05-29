@@ -16,7 +16,7 @@ class Comparator extends Singleton {
 		$cssList = [];
 		
 		if ($allRequired) {
-			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.0.0/css/bootstrap.min.css';
+			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.3.1/css/bootstrap.min.css';
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
 		$cssList[] = 'https://compare' . $this->context->getEnv() . '.astel.be/css/compare/comparator.css?v=' . $this->context->getVersion();
@@ -150,7 +150,7 @@ class Comparator extends Singleton {
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
 				<div class="loadingImg text-center">
-					<div class="spinner-border text-blue" role="status">
+					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 				</div>
