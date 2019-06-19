@@ -13,10 +13,12 @@ class Product extends APIModel {
 		$default_params = [
 			'is_visible' => 1,
 		];
-		if ($this->context->getIsPrivate()) {
-			$default_params['is_private'] = 1;
-		} else {
-			$default_params['is_professional'] = 1;
+		if($this->context->getIsPrivate()!==null){
+			if ($this->context->getIsPrivate()) {
+				$default_params['is_private'] = 1;
+			} else {
+				$default_params['is_professional'] = 1;
+			}
 		}
 		$params = Hash::merge($default_params, $params);
 		$query->addGETParams($params);

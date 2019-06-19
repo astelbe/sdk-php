@@ -15,7 +15,7 @@ class Brand extends APIModel {
 		if ($this->context->getIsPrivate()) {
 			$default_params['is_private'] = 1;
 		} else {
-			$default_params['is_pro'] = 1;
+			$default_params['is_professional'] = 1;
 		}
 		$params = Hash::merge($default_params, $params);
 		$query->addGETParams($params);

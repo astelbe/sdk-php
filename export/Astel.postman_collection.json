@@ -38,10 +38,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/?brand_id=3&is_visible=true&is_internet=true",
 											"protocol": "https",
@@ -97,10 +93,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?id[]=1999&id[]=1998",
 											"protocol": "https",
@@ -151,10 +143,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?is_visible=true&is_private=true&brand_id=3",
 											"protocol": "https",
@@ -210,10 +198,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/postal_code?postal_code=6110",
 											"protocol": "https",
@@ -266,10 +250,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=play_description",
 											"protocol": "https",
@@ -317,10 +297,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=option_relations,option_group_relations",
 											"protocol": "https",
@@ -368,10 +344,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=option_relations/option,option_group_relations/option_group/options",
 											"protocol": "https",
@@ -419,10 +391,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option?_embed=commission",
 											"protocol": "https",
@@ -475,10 +443,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?count=2",
 											"protocol": "https",
@@ -525,10 +489,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product",
 											"protocol": "https",
@@ -569,10 +529,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?count=2&page=2",
 											"protocol": "https",
@@ -623,10 +579,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?count=100",
 											"protocol": "https",
@@ -679,10 +631,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?order=price&is_private=true&brand_id=3",
 											"protocol": "https",
@@ -737,10 +685,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?order=-price&is_private=true&brand_id=3",
 											"protocol": "https",
@@ -795,10 +739,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?order=-activation_fee,-price&is_private=true&brand_id=3",
 											"protocol": "https",
@@ -859,10 +799,6 @@
 												"value": "{{token}}"
 											}
 										],
-										"body": {
-											"mode": "raw",
-											"raw": ""
-										},
 										"url": {
 											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?order=-activation_fee,-price&is_private=true&brand_id=3&count=3&page=2&_embed=commission,subscription_periods/discounts",
 											"protocol": "https",
@@ -904,6 +840,81 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "product/compare example",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "d09fc658-1dec-4ba6-b81c-f853a2ee831a",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=0&is_mobile=1&is_fix=1&is_internet=1&mobile_small_qt=2&mobile_regular_qt=1&order=quality",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"product",
+												"compare"
+											],
+											"query": [
+												{
+													"key": "language",
+													"value": "FR"
+												},
+												{
+													"key": "is_professional",
+													"value": "0"
+												},
+												{
+													"key": "is_mobile",
+													"value": "1"
+												},
+												{
+													"key": "is_fix",
+													"value": "1"
+												},
+												{
+													"key": "is_internet",
+													"value": "1"
+												},
+												{
+													"key": "mobile_small_qt",
+													"value": "2"
+												},
+												{
+													"key": "mobile_regular_qt",
+													"value": "1"
+												},
+												{
+													"key": "order",
+													"value": "quality"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"_postman_isSubFolder": true
@@ -935,10 +946,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/",
 							"protocol": "https",
@@ -980,10 +987,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/availability_zone",
 							"protocol": "https",
@@ -1025,10 +1028,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/availability_zone",
 							"protocol": "https",
@@ -1070,10 +1069,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/availability_zone/10",
 							"protocol": "https",
@@ -1115,10 +1110,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand",
 							"protocol": "https",
@@ -1159,10 +1150,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand",
 							"protocol": "https",
@@ -1203,10 +1190,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand/3",
 							"protocol": "https",
@@ -1248,10 +1231,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount",
 							"protocol": "https",
@@ -1292,10 +1271,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount",
 							"protocol": "https",
@@ -1339,7 +1314,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474",
 							"protocol": "https",
@@ -1384,7 +1362,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474/subscription_periods",
 							"protocol": "https",
@@ -1597,10 +1578,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option",
 							"protocol": "https",
@@ -1641,10 +1618,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option",
 							"protocol": "https",
@@ -1685,10 +1658,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/1392",
 							"protocol": "https",
@@ -1730,10 +1699,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/1392/commission",
 							"protocol": "https",
@@ -1776,10 +1741,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option_group",
 							"protocol": "https",
@@ -1820,10 +1781,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option_group",
 							"protocol": "https",
@@ -1864,10 +1821,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option_group/1",
 							"protocol": "https",
@@ -1914,10 +1867,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order/",
 							"protocol": "https",
@@ -1964,10 +1913,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order/",
 							"protocol": "https",
@@ -2014,10 +1959,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order/125171",
 							"protocol": "https",
@@ -2064,10 +2005,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/",
 							"protocol": "https",
@@ -2114,10 +2051,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line",
 							"protocol": "https",
@@ -2163,10 +2096,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/129449",
 							"protocol": "https",
@@ -2213,10 +2142,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/129449/cashback",
 							"protocol": "https",
@@ -2264,10 +2189,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/129449/commission",
 							"protocol": "https",
@@ -2315,10 +2236,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/129449/workflow_steps",
 							"protocol": "https",
@@ -2361,10 +2278,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/partner/me",
 							"protocol": "https",
@@ -2406,10 +2319,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/partner/81/call_center_open",
 							"protocol": "https",
@@ -2452,10 +2361,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/partner/81/last_ordered_products",
 							"protocol": "https",
@@ -2499,10 +2404,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/postal_code?postal_code=5100",
 							"protocol": "https",
@@ -2550,10 +2451,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/postal_code/",
 							"protocol": "https",
@@ -2596,10 +2493,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/postal_code/100",
 							"protocol": "https",
@@ -2641,10 +2534,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product",
 							"protocol": "https",
@@ -2685,10 +2574,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product",
 							"protocol": "https",
@@ -2729,12 +2614,8 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=0&is_mobile=1&is_fix=1&mobile_small_qt=2&order=quality",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2745,6 +2626,32 @@
 								"v2_00",
 								"product",
 								"compare"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "FR"
+								},
+								{
+									"key": "is_professional",
+									"value": "0"
+								},
+								{
+									"key": "is_mobile",
+									"value": "1"
+								},
+								{
+									"key": "is_fix",
+									"value": "1"
+								},
+								{
+									"key": "mobile_small_qt",
+									"value": "2"
+								},
+								{
+									"key": "order",
+									"value": "quality"
+								}
 							]
 						}
 					},
@@ -2774,10 +2681,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare",
 							"protocol": "https",
@@ -2822,7 +2725,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999",
 							"protocol": "https",
@@ -2867,7 +2773,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/commission",
 							"protocol": "https",
@@ -2913,7 +2822,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/option_group_relations",
 							"protocol": "https",
@@ -2959,7 +2871,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/option_relations",
 							"protocol": "https",
@@ -3005,7 +2920,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/play_description",
 							"protocol": "https",
@@ -3051,7 +2969,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/subscription_periods",
 							"protocol": "https",
@@ -3097,7 +3018,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/web",
 							"protocol": "https",
@@ -3143,7 +3067,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/available/875?_embed=postal_code",
 							"protocol": "https",
@@ -3196,7 +3123,10 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/available/search/NjExMA==?_embed=postal_code",
 							"protocol": "https",
@@ -3247,10 +3177,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/status",
 							"protocol": "https",
@@ -3291,10 +3217,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/status",
 							"protocol": "https",
@@ -3335,10 +3257,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/status/1",
 							"protocol": "https",
@@ -3380,10 +3298,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/website_connection/?unique_visitor_key=5cd5e844b79cc8ebd99ff65cb49f4726&language=FR",
 							"protocol": "https",
@@ -3435,10 +3349,6 @@
 								"value": "{{token}}"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/website_connection",
 							"protocol": "https",
@@ -3485,10 +3395,6 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/website_connection/cart?unique_visitor_key=5cd5e844b79cc8ebd99ff65cb49f4726",
 							"protocol": "https",
