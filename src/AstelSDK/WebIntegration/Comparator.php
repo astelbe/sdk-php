@@ -65,17 +65,17 @@ class Comparator extends Singleton {
 			$is_mobile = (int)$_GET['mobile'];
 			if ($is_mobile == 1) {
 				$getParams['is_mobile'] = 1;
-				if (isset($_GET['mobile_small_qt']) && $_GET['mobile_small_qt'] > 0) {
-					$getParams['mobile_small_qt'] = $_GET['mobile_small_qt'];
+				if (isset($_GET['mobile_small_qt']) && $_GET['mobile_small_qt'] >= 0) {
+					$getParams['mobile_small_qt'] = (int)$_GET['mobile_small_qt'];
 				}
-				if (isset($_GET['mobile_regular_qt']) && $_GET['mobile_regular_qt'] > 0) {
-					$getParams['mobile_regular_qt'] = $_GET['mobile_regular_qt'];
+				if (isset($_GET['mobile_regular_qt']) && $_GET['mobile_regular_qt'] >= 0) {
+					$getParams['mobile_regular_qt'] = (int)$_GET['mobile_regular_qt'];
 				}
-				if (isset($_GET['mobile_heavy_qt']) && $_GET['mobile_heavy_qt'] > 0) {
-					$getParams['mobile_heavy_qt'] = $_GET['mobile_heavy_qt'];
+				if (isset($_GET['mobile_heavy_qt']) && $_GET['mobile_heavy_qt'] >= 0) {
+					$getParams['mobile_heavy_qt'] = (int)$_GET['mobile_heavy_qt'];
 				}
-				if (isset($_GET['mobile_heavy_int_qt']) && $_GET['mobile_heavy_int_qt'] > 0) {
-					$getParams['mobile_heavy_int_qt'] = $_GET['mobile_heavy_int_qt'];
+				if (isset($_GET['mobile_heavy_int_qt']) && $_GET['mobile_heavy_int_qt'] >= 0) {
+					$getParams['mobile_heavy_int_qt'] = (int)$_GET['mobile_heavy_int_qt'];
 				}
 			} else {
 				$getParams['is_mobile'] = 0;
