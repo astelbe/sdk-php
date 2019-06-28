@@ -135,6 +135,8 @@ class Comparator extends Singleton {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
+		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
+		$getParams['is_professional'] = $is_professional;
 		
 		// Add page url and title for structured data in the plugin Comparator
 		$getParams['page_url'] = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
