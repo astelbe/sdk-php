@@ -193,4 +193,22 @@ class Product extends SDKModel {
 		
 		return null;
 	}
+
+	/**
+	 * @param array $product. Required to give product with embeded subscription_periods/discounts
+	 */
+	public function countValidDiscounts(array $product) {
+		$subscription_periods = Hash::get($product, 'subscription_periods', []);
+		$countValidDiscounts = 0;
+		foreach($subscription_periods as $subscription_period){
+			$discounts = Hash::get($subscription_period, 'discounts', []);
+			foreach($discounts as $discount) {
+				if($discount['is_active']) {
+					$countValidDiscounts ++;
+				}
+			}
+		}
+
+		return $countValidDiscounts;
+	}
 }
