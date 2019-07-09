@@ -1,12 +1,12 @@
-# astelbe/sdk-php - Astel API Client Library for PHP
+# Astel API Client Library for PHP
 
 It is a lightweight, Astel API client library for PHP. 
 
-## API Documentation
+## Astel API Documentation
 Our swagger definition and documentation is available online: [SwaggerHub Astel Switch API V2_00](https://app.swaggerhub.com/apis/astel/switch/2_0).
 You can directly test the API with your partner api key via swagger on clicking on the Authorize Button.
 
-## API Usage and Example (Postman Export)
+## Astel API Usage and Example (Postman Export)
 A developer can also use Postman (https://www.getpostman.com/) to interact with the API. An export is [versioned in the export folder](https://github.com/astelbe/sdk-php/blob/master/export/Astel.postman_collection.json).
 
 Import the JSON file in Postman and set the following variables:
@@ -18,7 +18,7 @@ Import the JSON file in Postman and set the following variables:
 
  Some of the Endpoints uses an OPTIONS HTTP Method. Those are intended for querying extra information about the usage of the endpoint. If a developer wants to know the available query filters or orderings params, he can query those OPTIONS endpoints.
 
-## SDK Installation
+## Astel SDK Installation
 
 [composer]: https://getcomposer.org
 
@@ -39,7 +39,7 @@ or, simply, download an archive of our code and upload it on your application.
 
 See our developer site for more examples.
 
-### SDK Initialisation
+### Astel SDK Initialisation
 ```php
 // All methods require authentication. To get your Astel API Private Token credentials, contact us
 
@@ -118,4 +118,4 @@ request. Thanks!
 Just [submit a issue][submitanissue] if you need any help. And, of course, feel
 free to submit pull requests with bug fixes or changes.
 
-Don't hesitate to contact direction@astel.be for more info or help for your integration.
+Don't hesitate to contact Astel at direction@astel.be for more info or help for your integration.
