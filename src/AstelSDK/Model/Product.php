@@ -193,22 +193,36 @@ class Product extends SDKModel {
 		
 		return null;
 	}
-
+	
 	/**
-	 * @param array $product. Required to give product with embeded subscription_periods/discounts
+	 * @param array $product . Required to give product with embeded subscription_periods/discounts
 	 */
 	public function countValidDiscounts(array $product) {
 		$subscription_periods = Hash::get($product, 'subscription_periods', []);
 		$countValidDiscounts = 0;
-		foreach($subscription_periods as $subscription_period){
+		foreach ($subscription_periods as $subscription_period) {
 			$discounts = Hash::get($subscription_period, 'discounts', []);
-			foreach($discounts as $discount) {
-				if($discount['is_active']) {
-					$countValidDiscounts ++;
+			foreach ($discounts as $discount) {
+				if ($discount['is_active']) {
+					$countValidDiscounts++;
 				}
 			}
 		}
-
+		
 		return $countValidDiscounts;
+	}
+	
+	public function isUsageType(array $product, $play, $usage) {
+		$getPath = 'play_description.';
+		if ($play === 'M') {
+			$getPath .= 'mobile.consumer_caller_profile';
+		} elseif ($play === 'F') {
+			$getPath .= 'fix.consumer_caller_profile';
+		} elseif ($play === 'I') {
+			$getPath .= 'internet.consumer_profile';
+		}
+		$usageArray = Hash::get($product, $getPath, []);
+		
+		return in_array($usage, $usageArray);
 	}
 }
