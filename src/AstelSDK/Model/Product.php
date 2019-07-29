@@ -225,4 +225,8 @@ class Product extends SDKModel {
 		
 		return in_array($usage, $usageArray);
 	}
+	
+	public function isFeatured(array $product) {
+		return Hash::get($product, 'is_featured', false);
+	}
 }
