@@ -6,7 +6,7 @@ use AstelSDK\AstelContext;
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\URL;
 
-class Hardware extends Singleton {
+class HardwareShop extends Singleton {
 	
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
@@ -52,8 +52,12 @@ class Hardware extends Singleton {
 		return $out;
 	}
 	
-	public function getScriptLoadHardwareSelect($title = null) {
-		$serialize = serialize([]);
+	public function getScriptLoadHardwareSelect($brand_slug = null) {
+		$params = [];
+		if ($brand_slug !== null) {
+			$params['brand_slug'] = $brand_slug;
+		}
+		$serialize = serialize($params);
 		$paramsURL = URL::base64url_encode($serialize);
 		
 		return '<script>
@@ -61,8 +65,8 @@ class Hardware extends Singleton {
 		</script>';
 	}
 	
-	public function getScriptLoadHardwareDisplay($title = null) {
-		$serialize = serialize([]);
+	public function getScriptLoadHardwareDisplay($hardware_slug) {
+		$serialize = serialize(['slug' => $hardware_slug]);
 		$paramsURL = URL::base64url_encode($serialize);
 		
 		return '<script>
