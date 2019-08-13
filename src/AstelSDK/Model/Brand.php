@@ -36,4 +36,21 @@ class Brand extends SDKModel {
 		return [$fullStars, $halfStars, $emptyStars];
 	}
 	
+	public function numberPlayTelecom(array $brand){
+		$nbrPlay = 0;
+		if (Hash::get($brand, 'is_play.is_mobile', false)) {
+			$nbrPlay = $nbrPlay + 1;
+		}
+		if (Hash::get($brand, 'is_play.is_fix', false)) {
+			$nbrPlay = $nbrPlay + 1;
+		}
+		if (Hash::get($brand, 'is_play.is_internet', false)) {
+			$nbrPlay = $nbrPlay + 1;
+		}
+		if (Hash::get($brand, 'is_play.is_tv', false)) {
+			$nbrPlay = $nbrPlay + 1;
+		}
+		return $nbrPlay;
+	}
+	
 }

@@ -17,6 +17,7 @@ class Brand extends APIModel {
 		} else {
 			$default_params['is_professional'] = 1;
 		}
+		$default_params['order'] = 'display_weight_' . strtolower($this->context->getLanguage());
 		$params = Hash::merge($default_params, $params);
 		$query->addGETParams($params);
 		
