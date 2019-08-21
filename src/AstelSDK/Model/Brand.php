@@ -53,4 +53,27 @@ class Brand extends SDKModel {
 		return $nbrPlay;
 	}
 	
+	public function isType(array $brand, $type) {
+		if (null === $brand || empty($brand)) {
+			return false;
+		}
+		if (strtoupper($type) === 'M' && Hash::get($brand, 'is_play.is_mobile')) {
+			return true;
+		}
+		if (strtoupper($type) === 'F' && Hash::get($brand, 'is_play.is_fix')) {
+			return true;
+		}
+		if (strtoupper($type) === 'I' && Hash::get($brand, 'is_play.is_internet')) {
+			return true;
+		}
+		if (strtoupper($type) === 'T' && Hash::get($brand, 'is_play.is_tv')) {
+			return true;
+		}
+		if (strtoupper($type) === 'H' && Hash::get($brand, 'is_play.is_hardware')) {
+			return true;
+		}
+		
+		return false;
+	}
+	
 }
