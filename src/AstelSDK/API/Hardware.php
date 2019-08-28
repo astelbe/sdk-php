@@ -11,7 +11,7 @@ class Hardware extends APIModel {
 		$query->setUrl('v2_00/hardware');
 		$default_params = [
 		];
-		if($this->context->getIsPrivate()!==null){
+		if ($this->context->getIsPrivate() !== null) {
 			if ($this->context->getIsPrivate()) {
 				$default_params['is_private'] = 1;
 			} else {
@@ -19,6 +19,12 @@ class Hardware extends APIModel {
 			}
 		}
 		$params = Hash::merge($default_params, $params);
+		if (isset($params['search_slug'])) {
+			$params['search_slug'] = URL::base64url_encode($params['search_slug']);
+		}
+		if (isset($params['search_brand_slug'])) {
+			$params['search_brand_slug'] = URL::base64url_encode($params['search_brand_slug']);
+		}
 		$query->addGETParams($params);
 		
 		return $query->exec();

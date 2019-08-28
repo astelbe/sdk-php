@@ -3,6 +3,7 @@
 namespace AstelSDK\API;
 
 use CakeUtility\Hash;
+use AstelSDK\Utils\URL;
 
 class Brand extends APIModel {
 	
@@ -19,6 +20,9 @@ class Brand extends APIModel {
 		}
 		$default_params['order'] = 'display_weight_' . strtolower($this->context->getLanguage());
 		$params = Hash::merge($default_params, $params);
+		if (isset($params['search_slug'])) {
+			$params['search_slug'] = URL::base64url_encode($params['search_slug']);
+		}
 		$query->addGETParams($params);
 		
 		return $query->exec();
