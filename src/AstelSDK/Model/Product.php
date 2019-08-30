@@ -77,16 +77,17 @@ class Product extends SDKModel {
 	 * @return array
 	 */
 	private function productArrayToSelectableList($prodDB) {
-		$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
 		$outList = [];
-		foreach ($extractedList as $brand => $products) {
-			foreach ($products as $productID => $product_name) {
-				$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+		if (!empty($prodDB)) {
+			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+			foreach ($extractedList as $brand => $products) {
+				foreach ($products as $productID => $product_name) {
+					$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+				}
 			}
+			// Order by product name
+			asort($outList);
 		}
-		
-		// Order by product name
-		asort($outList);
 		
 		return $outList;
 	}
