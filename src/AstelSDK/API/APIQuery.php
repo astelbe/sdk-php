@@ -39,9 +39,19 @@ class APIQuery {
 		foreach ($params as $k => $param) {
 			if (is_array($param)) {
 				foreach ($param as $tempId => $sub) {
+					if ($sub === true) {
+						$sub = 'true';
+					} elseif ($sub === false) {
+						$sub = 'false';
+					}
 					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
 				}
 			} else {
+				if ($param === true) {
+					$param = 'true';
+				} elseif ($param === false) {
+					$param = 'false';
+				}
 				$url_params[] = $k . '=' . $param;
 				
 			}

@@ -28,7 +28,7 @@ class OrderForm extends Singleton {
 	public function getJSList() {
 		return [
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
-			'https://order' . $this->context->getEnv() . '.astel.be/orderForms/orderform.js?v=' . $this->context->getVersion(),
+			'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
 		];
 	}
 	

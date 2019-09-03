@@ -3,6 +3,8 @@ namespace AstelSDK\Utils;
 
 class Numbers {
 	public static function priceDisplayLocale($price) {
-		return (SCOPE_LANG == 'NL' ? '€' . $price : $price . ' €');
+		// TODO handles multiple language/locale for it
+		
+		return ($language == 'NL' ? '€' . $price : $price . ' €');
 	}
 }
