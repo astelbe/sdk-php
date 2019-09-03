@@ -120,57 +120,22 @@ class Product extends SDKModel {
 		return false;
 	}
 
-	public function getMfitType(array $product, $returnArray = false) {
-
-		if (!$returnArray) {
-
-			$MFIT = '';
-			if ($this->isType($product, 'M')) {
-				$MFIT .= 'M';
-			}
-			if ($this->isType($product, 'F')) {
-				$MFIT .= 'F';
-			}
-			if ($this->isType($product, 'I')) {
-				$MFIT .= 'I';
-			}
-			if ($this->isType($product, 'T')) {
-				$MFIT .= 'T';
-			}
-
-			return $MFIT;
-
-		} else {
-			$mfit = ['MFIT' => ''];
-
-			if ($product['is_mobile']) {
-				$mfit['MFIT'] .= 'M';
-				$mfit['slugs'][] = 'mobile';
-				$mfit['icons'][] = 'mobile';
-			}
-			// Fixe
-			if ($product['is_fix']) {
-				$mfit['MFIT'] .= 'F';
-				$mfit['slugs'][] = 'fix';
-				$mfit['icons'][] = 'phone';
-
-			}
-			// Internet
-			if ($product['is_internet']) {
-				$mfit['MFIT'] .= 'I';
-				$mfit['slugs'][] = 'internet';
-				$mfit['icons'][] = 'laptop';
-			}
-			// Tv
-			if ($product['is_tv']) {
-				$mfit['MFIT'] .= 'T';
-				$mfit['slugs'][] = 'tv';
-				$mfit['icons'][] = 'television';
-			}
-
-			return $mfit;
+	public function getMfitType(array $product) {
+		$MFIT = '';
+		if ($this->isType($product, 'M')) {
+			$MFIT .= 'M';
+		}
+		if ($this->isType($product, 'F')) {
+			$MFIT .= 'F';
+		}
+		if ($this->isType($product, 'I')) {
+			$MFIT .= 'I';
+		}
+		if ($this->isType($product, 'T')) {
+			$MFIT .= 'T';
 		}
 
+		return $MFIT;
 	}
 
 	/**
