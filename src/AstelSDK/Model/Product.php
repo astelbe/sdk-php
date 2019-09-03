@@ -6,25 +6,25 @@ use CakeUtility\Hash;
 use CakeUtility\Set;
 
 class Product extends SDKModel {
-
+	
 	const CONSUMER_TYPE_SMALL = 'SMALL';
 	const CONSUMER_TYPE_MEDIUM = 'MEDIUM';
 	const CONSUMER_TYPE_HEAVY = 'HEAVY';
 	const CONSUMER_TYPE_HEAVYINT = 'HEAVYINT';
 	const AVAILABILITY_ZONE_ALL_COUNTRY = ['BE' => 10];
-
+	
 	protected $associated_instance_name = '\AstelSDK\API\Product';
-
+	
 	public function isProductAvailableAllCountry(array $product) {
 		if (!empty($product)) {
 			$productAvailabilityZone = Hash::get($product, 'availability_zone_id');
-
+			
 			return $productAvailabilityZone === self::AVAILABILITY_ZONE_ALL_COUNTRY['BE'];
 		}
-
+		
 		return false;
 	}
-
+	
 	public function isAllProductsAvailableAllCountry(array $products) {
 		$nbrProducts = count($products);
 		$isAvailable = 0;
@@ -33,10 +33,10 @@ class Product extends SDKModel {
 				$isAvailable++;
 			}
 		}
-
+		
 		return $isAvailable === $nbrProducts;
 	}
-
+	
 	public function isProductAvailableTmpProcessing($product_id, $searchTxt) {
 		$availablePostalCodes = $this->isAvailableSearch($product_id, $searchTxt);
 		// First postcode found should be available for sale
@@ -48,55 +48,56 @@ class Product extends SDKModel {
 				// Get only the first one
 				break;
 			}
-
+			
 			return $isAvailable;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function getProductNameById($id, $language) {
 		if (isset($id) && $id != '' && is_numeric($id)) {
 			$product = $this->find('first', ['id' => $id]);
-
+			
 			return Hash::get($product, 'name.' . strtoupper($language), '');
 		}
-
+		
 		return '';
 	}
-
+	
 	public function productSelectListWithID() {
 		$prodDB = $this->findAll([]);
-
+		
 		return $this->productArrayToSelectableList($prodDB);
 	}
-
+	
 	/**
 	 * @param $prodDB
 	 *
 	 * @return array
 	 */
 	private function productArrayToSelectableList($prodDB) {
-		$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
 		$outList = [];
-		foreach ($extractedList as $brand => $products) {
-			foreach ($products as $productID => $product_name) {
-				$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+		if (!empty($prodDB)) {
+			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+			foreach ($extractedList as $brand => $products) {
+				foreach ($products as $productID => $product_name) {
+					$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+				}
 			}
+			// Order by product name
+			asort($outList);
 		}
-
-		// Order by product name
-		asort($outList);
-
+		
 		return $outList;
 	}
-
+	
 	public function productVariableSelectListWithID() {
 		$prodDB = $this->findAll(['is_hardware' => 1, 'is_variable' => 1]);
-
+		
 		return $this->productArrayToSelectableList($prodDB);
 	}
-
+	
 	public function isType(array $product, $type) {
 		if (null === $product || empty($product)) {
 			return false;
@@ -116,10 +117,10 @@ class Product extends SDKModel {
 		if (strtoupper($type) === 'H' && Hash::get($product, 'is_hardware')) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function getMfitType(array $product) {
 		$MFIT = '';
 		if ($this->isType($product, 'M')) {
@@ -134,10 +135,10 @@ class Product extends SDKModel {
 		if ($this->isType($product, 'T')) {
 			$MFIT .= 'T';
 		}
-
+		
 		return $MFIT;
 	}
-
+	
 	/**
 	 * @param array $product
 	 *
@@ -146,39 +147,39 @@ class Product extends SDKModel {
 	public function hasProductFixPackPlayPart(array $product) {
 		return $this->isType($product, 'F') || $this->isType($product, 'I') || $this->isType($product, 'T');
 	}
-
+	
 	public function isMobileSolo(array $product) {
 		if ($this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function isFixSolo($product) {
 		if (!$this->isType($product, 'M') && $this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function isInternetSolo($product) {
 		if (!$this->isType($product, 'M') && !$this->isType($product, 'F') && $this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function isTvSolo($product) {
 		if (!$this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && $this->isType($product, 'T')) {
 			return true;
 		}
-
+		
 		return false;
 	}
-
+	
 	public function getBiggerUsageType($type = Product::CONSUMER_TYPE_SMALL) {
 		switch ($type) {
 			case Product::CONSUMER_TYPE_SMALL:
@@ -190,10 +191,10 @@ class Product extends SDKModel {
 			case Product::CONSUMER_TYPE_HEAVYINT:
 				return null;
 		}
-
+		
 		return null;
 	}
-
+	
 	/**
 	 * @param array $product . Required to give product with embeded subscription_periods/discounts
 	 */
@@ -208,10 +209,10 @@ class Product extends SDKModel {
 				}
 			}
 		}
-
+		
 		return $countValidDiscounts;
 	}
-
+	
 	public function isUsageType(array $product, $play, $usage) {
 		$getPath = 'play_description.';
 		if ($play === 'M') {
@@ -222,10 +223,10 @@ class Product extends SDKModel {
 			$getPath .= 'internet.consumer_profile';
 		}
 		$usageArray = Hash::get($product, $getPath, []);
-
+		
 		return in_array($usage, $usageArray);
 	}
-
+	
 	public function isFeatured(array $product) {
 		return Hash::get($product, 'is_featured', false);
 	}
