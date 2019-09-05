@@ -16,10 +16,21 @@ class ProductCompare extends SDKModel {
 	public function similarProductsSetParams(array $product) {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'M')) {
+			$isMedium = 0;
+			$isHeavy = 0;
+			$isHeavyInt = 0;
+			// only the smallest usage type for this param
 			$isSmall = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_SMALL);
-			$isMedium = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_MEDIUM);
-			$isHeavy = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_HEAVY);
-			$isHeavyInt = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_HEAVYINT);
+			if ($isSmall == 0) {
+				$isMedium = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_MEDIUM);
+				if ($isMedium == 0) {
+					$isHeavy = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_HEAVY);
+					if ($isHeavy == 0) {
+						$isHeavyInt = (int)$Product->isUsageType($product, 'M', Product::CONSUMER_TYPE_HEAVYINT);
+						
+					}
+				}
+			}
 			$this->paramMobile(true, $isSmall, $isMedium, $isHeavy, $isHeavyInt);
 		}
 		if ($Product->isType($product, 'F')) {
