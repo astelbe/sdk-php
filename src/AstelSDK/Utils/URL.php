@@ -103,27 +103,27 @@ class URL {
 	}
 	
 	/**
-	 * Returns a string with all spaces converted to underscores (by default), accented
+	 * Returns a string with all spaces and underscores converted to -, accented
 	 * characters converted to non-accented characters, and non word characters removed.
 	 *
 	 * @param string $string the string you want to slug
-	 * @param string $replacement will replace keys in map
 	 *
 	 * @return string
-	 * @link https://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::slug
+	 * @author Based on cakephp slug function
 	 */
-	public static function slug($string, $replacement = '_') {
-		$quotedReplacement = preg_quote($replacement, '/');
+	public static function slug($string) {
+		$withoutUnderscore = str_replace('_', '-', $string);
+		$quotedReplacement = preg_quote('-', '/');
 		
 		$merge = [
 			'/[^\s\p{Zs}\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]/mu' => ' ',
-			'/[\s\p{Zs}]+/mu' => $replacement,
+			'/[\s\p{Zs}]+/mu' => '-',
 			sprintf('/^[%s]+|[%s]+$/', $quotedReplacement, $quotedReplacement) => '',
 		];
 		
 		$map = static::$_transliteration + $merge;
 		
-		return strtolower(preg_replace(array_keys($map), array_values($map), $string));
+		return strtolower(preg_replace(array_keys($map), array_values($map), $withoutUnderscore));
 	}
 	
 	/**
