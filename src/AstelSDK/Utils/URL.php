@@ -112,6 +112,7 @@ class URL {
 	 * @author Based on cakephp slug function
 	 */
 	public static function slug($string) {
+		$string = trim($string);
 		$withoutUnderscore = str_replace('_', '-', $string);
 		$quotedReplacement = preg_quote('-', '/');
 		
