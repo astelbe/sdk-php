@@ -135,15 +135,19 @@ abstract class APIModel extends Singleton {
 	 * @return array easily manipulable array with HAL logic interpreted
 	 */
 	protected function returnResponse($response) {
-		if ($response->valid()) {
-			foreach ($response as $key => $returnElt) {
-				$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
-				$response->setCurrent($returnArray);
+		if (is_object($response)) {
+			if ($response->valid()) {
+				foreach ($response as $key => $returnElt) {
+					$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
+					$response->setCurrent($returnArray);
+				}
 			}
+			
+			// return the arrayAll/arrayFind/count/raw version of the response
+			return $response->getResultDataAccordingFindType();
 		}
 		
-		// return the arrayAll/arrayFind/count/raw version of the response
-		return $response->getResultDataAccordingFindType();
+		return false;
 	}
 	
 	/**
@@ -192,7 +196,7 @@ abstract class APIModel extends Singleton {
 		return $this->findPaginate('count');
 	}
 	
-	protected function handlesResponseThrows(APIResponse $response) {
+	protected function handlesResponseThrows($response) {
 		if (is_bool($response)) {
 			$this->lastResponseObject = new APIResponse();
 			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);
