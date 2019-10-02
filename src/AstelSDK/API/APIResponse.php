@@ -148,7 +148,7 @@ class APIResponse implements \Iterator {
 	 */
 	private function setCorrectTypes($resultArray) {
 		$out = [];
-		if (is_array($resultArray) && !empty($resultArray)) {	
+		if (is_array($resultArray) && !empty($resultArray)) {
 			foreach ($resultArray as $key => $value) {
 				if ($value === 'false' || $value === 'true') {
 					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
@@ -174,7 +174,11 @@ class APIResponse implements \Iterator {
 	/**
 	 * @return array
 	 */
-	public function getResultDataAccordingFindType() {
+	public function getResultDataAccordingFindType($userRequestedType) {
+		if ($userRequestedType === self::FIND_TYPE_COUNT) {
+			return Hash::get($this->collectionMetadata, 'total_items');
+		}
+		
 		if ($this->findType === self::FIND_TYPE_FIRST) {
 			return $this->resultData[0];
 		}

@@ -27,6 +27,7 @@ abstract class APIModel extends Singleton {
 	
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
+	const FIND_TYPE_COUNT = 'count';
 	
 	/**
 	 * Model constructor.
@@ -85,9 +86,12 @@ abstract class APIModel extends Singleton {
 			$response = $this->getFirst($params);
 		} elseif ($type === self::FIND_TYPE_ALL) {
 			$response = $this->getAll($params);
+		} elseif ($type === self::FIND_TYPE_COUNT) {
+			$params['count'] = 1;
+			$response = $this->getAll($params);
 		}
 		$this->handlesResponseThrows($response);
-		$return = $this->returnResponse($response);
+		$return = $this->returnResponse($response, $type);
 		$this->cacheResults[$cacheKey] = $return;
 		
 		return $return;
@@ -131,10 +135,11 @@ abstract class APIModel extends Singleton {
 	 * Used to process and convert an APIResponse to a easily manipulable array
 	 *
 	 * @param APIResponse $response response of an API call
+	 * @param $type type of result requested 'first','all','count'
 	 *
 	 * @return array easily manipulable array with HAL logic interpreted
 	 */
-	protected function returnResponse($response) {
+	protected function returnResponse($response, $type) {
 		if (is_object($response)) {
 			if ($response->valid()) {
 				foreach ($response as $key => $returnElt) {
@@ -144,7 +149,7 @@ abstract class APIModel extends Singleton {
 			}
 			
 			// return the arrayAll/arrayFind/count/raw version of the response
-			return $response->getResultDataAccordingFindType();
+			return $response->getResultDataAccordingFindType($type);
 		}
 		
 		return false;
