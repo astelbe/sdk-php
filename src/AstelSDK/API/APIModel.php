@@ -19,11 +19,12 @@ use AstelSDK\Utils\HALOperations;
 abstract class APIModel extends Singleton {
 	
 	protected $context;
-	protected $cacheResults = [];
 	protected $apiParticle = 'api';
 	protected $lastQueryObject = null;
 	protected $lastFindParams = [];
 	protected $lastResponseObject = null;
+	protected $Cacher = null;
+	protected $cacheActive = false;
 	
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
@@ -37,6 +38,10 @@ abstract class APIModel extends Singleton {
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
 		$this->setApiParticle($this->context->getApiParticle());
+		$this->Cacher = $this->context->getCacher();
+		if ($this->Cacher !== null && is_object($this->Cacher)) {
+			$this->cacheActive = true;
+		}
 	}
 	
 	/**
@@ -46,6 +51,18 @@ abstract class APIModel extends Singleton {
 	 */
 	public function setApiParticle($particle) {
 		$this->apiParticle = $particle;
+	}
+	
+	public function isCacheActive() {
+		return $this->cacheActive;
+	}
+	
+	public function getCacher() {
+		return $this->Cacher;
+	}
+	
+	public function modelName() {
+		return strtolower(get_class($this));
 	}
 	
 	/**
@@ -77,9 +94,12 @@ abstract class APIModel extends Singleton {
 	 */
 	public function find($type = self::FIND_TYPE_ALL, array $params = []) {
 		$this->lastFindParams = ['type' => $type, 'params' => $params];
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
+		if ($this->isCacheActive()) {
+			$cacheKey = $this->getCacher()->uKey($this->modelName() . '_find', $this->lastFindParams);
+			$cachedContent = $this->getCacher()->get($cacheKey);
+			if (null !== $cachedContent) {
+				return $cachedContent;
+			}
 		}
 		$response = null;
 		if ($type === self::FIND_TYPE_FIRST) {
@@ -92,7 +112,9 @@ abstract class APIModel extends Singleton {
 		}
 		$this->handlesResponseThrows($response);
 		$return = $this->returnResponse($response, $type);
-		$this->cacheResults[$cacheKey] = $return;
+		if ($this->isCacheActive()) {
+			$this->getCacher()->add($cacheKey, $return);
+		}
 		
 		return $return;
 	}
