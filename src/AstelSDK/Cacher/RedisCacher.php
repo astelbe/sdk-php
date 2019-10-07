@@ -20,10 +20,10 @@ class RedisCacher extends ACacher implements ICacher {
 		$this->engine = $redis;
 	}
 	
-	public function add($key, $value) {
+	public function add($key, $value, $ttl_seconds = 3600) {
 		$value = json_encode($value);
 		
-		return $this->engine->set($this->env_particle . $key, $value);
+		return $this->engine->set($this->env_particle . $key, $value, ['ex' => $ttl_seconds]);
 	}
 	
 	public function get($key, $notFoundValue = null) {

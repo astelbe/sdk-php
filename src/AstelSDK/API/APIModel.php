@@ -24,7 +24,8 @@ abstract class APIModel extends Singleton {
 	protected $lastFindParams = [];
 	protected $lastResponseObject = null;
 	protected $Cacher = null;
-	protected $cacheActive = false;
+	
+	protected $customCacheTTL = null;
 	
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
@@ -39,9 +40,6 @@ abstract class APIModel extends Singleton {
 		$this->context = AstelContext::getInstance();
 		$this->setApiParticle($this->context->getApiParticle());
 		$this->Cacher = $this->context->getCacher();
-		if ($this->Cacher !== null && is_object($this->Cacher)) {
-			$this->cacheActive = true;
-		}
 	}
 	
 	/**
@@ -51,14 +49,6 @@ abstract class APIModel extends Singleton {
 	 */
 	public function setApiParticle($particle) {
 		$this->apiParticle = $particle;
-	}
-	
-	public function isCacheActive() {
-		return $this->cacheActive;
-	}
-	
-	public function getCacher() {
-		return $this->Cacher;
 	}
 	
 	public function modelName() {
@@ -94,13 +84,7 @@ abstract class APIModel extends Singleton {
 	 */
 	public function find($type = self::FIND_TYPE_ALL, array $params = []) {
 		$this->lastFindParams = ['type' => $type, 'params' => $params];
-		if ($this->isCacheActive()) {
-			$cacheKey = $this->getCacher()->uKey($this->modelName() . '_find', $this->lastFindParams);
-			$cachedContent = $this->getCacher()->get($cacheKey);
-			if (null !== $cachedContent) {
-				return $cachedContent;
-			}
-		}
+		
 		$response = null;
 		if ($type === self::FIND_TYPE_FIRST) {
 			$response = $this->getFirst($params);
@@ -112,9 +96,6 @@ abstract class APIModel extends Singleton {
 		}
 		$this->handlesResponseThrows($response);
 		$return = $this->returnResponse($response, $type);
-		if ($this->isCacheActive()) {
-			$this->getCacher()->add($cacheKey, $return);
-		}
 		
 		return $return;
 	}
@@ -133,6 +114,7 @@ abstract class APIModel extends Singleton {
 		if (!isset($params['page'])) {
 			$params['page'] = 1;
 		}
+		
 		$maxTurns = 50;
 		$results = $this->find('all', $params);
 		if (!empty($results)) {
@@ -260,7 +242,11 @@ abstract class APIModel extends Singleton {
 	 * @return APIQuery object New APIQuery Object
 	 */
 	protected function newQuery() {
-		$this->lastQueryObject = new APIQuery($this->apiParticle);
+		$ttl = $this->context->getCacheTTL();
+		if ($this->customCacheTTL !== null) {
+			$ttl = $this->customCacheTTL;
+		}
+		$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
 		
 		return $this->lastQueryObject;
 	}

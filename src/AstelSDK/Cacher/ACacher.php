@@ -7,6 +7,8 @@ abstract class ACacher {
 	protected $env_particle;
 	
 	public function uKey($key, $dataKey) {
-		return $key . '_' . md5(print_r($data, true));
+		$key = str_replace('\\', '_', $key);
+		
+		return $key . '_' . md5(print_r($dataKey, true));
 	}
 }

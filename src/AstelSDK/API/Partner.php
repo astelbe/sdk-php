@@ -6,6 +6,8 @@ use CakeUtility\Hash;
 
 class Partner extends APIModel {
 	
+	protected $customCacheTTL = 60;
+	
 	protected function getFirst(array $params = []) {
 		$default_params = [
 			'_embed' => 'last_ordered_products,call_center_open',

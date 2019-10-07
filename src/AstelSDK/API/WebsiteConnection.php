@@ -6,6 +6,8 @@ use CakeUtility\Hash;
 
 class WebsiteConnection extends APIModel {
 	
+	protected $customCacheTTL = 60;
+	
 	protected function getFirst(array $params = []) {
 		$default_params = [
 			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
