@@ -172,7 +172,7 @@ class APIQuery {
 		$this->preInitSetUrl();
 		if ($this->isCacheActive()) {
 			$paramsForCacheKey = ['lastURL' => $this->lastUrl, 'postParams' => $this->postParams, 'method' => $this->method, 'headers' => $this->headers, 'return_type' => $return_type];
-			$cacheKey = $this->getCacher()->uKey($this->modelName() . '_exec', $paramsForCacheKey);
+			$cacheKey = $this->getCacher()->uKey('query_exec', $paramsForCacheKey);
 			$result = $this->getCacher()->get($cacheKey);
 			if (null !== $result && !empty($result)) {
 				$responseObject = new APIResponse();
@@ -199,7 +199,7 @@ class APIQuery {
 				if ($result->getHttpCode() === 200 || $result->getHttpCode() === 204) {
 					// We don't cache 4xx and 5xx errors !
 					// uncomment this for having a trace every cache write
-					// debug('Caching - ' . $this->cacheTTL . 's - ' . $cacheKey);
+					//debug('Caching - ' . $this->cacheTTL . 's - ' . $cacheKey);
 					$this->getCacher()->add($cacheKey, $result, $this->cacheTTL);
 				}
 			}
