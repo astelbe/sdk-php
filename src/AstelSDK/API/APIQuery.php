@@ -28,7 +28,7 @@ class APIQuery {
 	const HTTP_POST = 'POST';
 	const HTTP_DELETE = 'DELETE';
 	
-	public function __construct($apiParticle, $Cacher, $cacheTTL) {
+	public function __construct($apiParticle, $Cacher = null, $cacheTTL = null) {
 		$this->apiParticle = $apiParticle;
 		$this->context = AstelContext::getInstance();
 		

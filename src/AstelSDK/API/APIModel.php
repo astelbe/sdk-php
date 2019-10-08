@@ -26,6 +26,7 @@ abstract class APIModel extends Singleton {
 	protected $Cacher = null;
 	
 	protected $customCacheTTL = null;
+	protected $disableCache = false;
 	
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
@@ -242,11 +243,15 @@ abstract class APIModel extends Singleton {
 	 * @return APIQuery object New APIQuery Object
 	 */
 	protected function newQuery() {
-		$ttl = $this->context->getCacheTTL();
-		if ($this->customCacheTTL !== null) {
-			$ttl = $this->customCacheTTL;
+		if ($this->disableCache) {
+			$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
+		} else {
+			$ttl = $this->context->getCacheTTL();
+			if ($this->customCacheTTL !== null) {
+				$ttl = $this->customCacheTTL;
+			}
+			$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
 		}
-		$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
 		
 		return $this->lastQueryObject;
 	}
