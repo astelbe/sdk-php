@@ -138,4 +138,39 @@ class URL {
 		return base64_decode(strtr($data, '-_', '+/') . str_repeat('=', 3 - (3 + strlen($data)) % 4));
 	}
 	
+	public static function arrayToGetParamString(array $params) {
+		$url_params = self::arrayToURLGETParams($params);
+		$url_params = implode('&', $url_params);
+		if (!empty($url_params)) {
+			return '?' . $url_params;
+		}
+		
+		return '';
+	}
+	
+	public static function arrayToURLGETParams(array $params) {
+		$url_params = [];
+		foreach ($params as $k => $param) {
+			if (is_array($param)) {
+				foreach ($param as $tempId => $sub) {
+					if ($sub === true) {
+						$sub = 'true';
+					} elseif ($sub === false) {
+						$sub = 'false';
+					}
+					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
+				}
+			} else {
+				if ($param === true) {
+					$param = 'true';
+				} elseif ($param === false) {
+					$param = 'false';
+				}
+				$url_params[] = $k . '=' . $param;
+				
+			}
+		}
+		
+		return $url_params;
+	}
 }

@@ -5,6 +5,7 @@ namespace AstelSDK\API;
 use CakeUtility\Hash;
 use AstelSDK\AstelContext;
 use AstelSDK\Exception\DataException;
+use AstelSDK\Utils\URL;
 
 class APIQuery {
 	protected $lastCallStatus = [];
@@ -59,32 +60,6 @@ class APIQuery {
 		return strtolower(get_class($this));
 	}
 	
-	public function arrayToURLGETParams(array $params) {
-		$url_params = [];
-		foreach ($params as $k => $param) {
-			if (is_array($param)) {
-				foreach ($param as $tempId => $sub) {
-					if ($sub === true) {
-						$sub = 'true';
-					} elseif ($sub === false) {
-						$sub = 'false';
-					}
-					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
-				}
-			} else {
-				if ($param === true) {
-					$param = 'true';
-				} elseif ($param === false) {
-					$param = 'false';
-				}
-				$url_params[] = $k . '=' . $param;
-				
-			}
-		}
-		
-		return $url_params;
-	}
-	
 	/**
 	 * @param      $url
 	 * @param      $params
@@ -97,13 +72,7 @@ class APIQuery {
 	 * @return $url string
 	 */
 	public function addGETParams(array $params) {
-		// Add param
-		$url_params = $this->arrayToURLGETParams($params);
-		
-		$url_params = implode('&', $url_params);
-		if (!empty($url_params)) {
-			$this->urlParams .= '?' . $url_params;
-		}
+		$this->urlParams = URL::arrayToGetParamString($params);
 		
 		return $this->urlParams;
 	}
