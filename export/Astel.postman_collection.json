@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ea49b153-9acf-42b7-a7ec-2717c3cd6fe2",
+		"_postman_id": "ec9e1d5a-54e2-4b5e-a923-1f66ddce45f6",
 		"name": "Astel",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -221,6 +221,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -409,6 +410,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -577,6 +579,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -774,10 +777,11 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
-							"name": "Embed Params",
+							"name": "Embed Params Copy",
 							"item": [
 								{
 									"name": "product/{id} with active discount",
@@ -811,7 +815,7 @@
 											"formdata": []
 										},
 										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/2139?_embed=subscription_periods/discounts&_embed_params=discounts(is_active=true)",
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/2139?_embed=subscription_periods/discounts&_embed_param=discounts(is_active=true)",
 											"protocol": "https",
 											"host": [
 												"{{endpoint}}{{env}}",
@@ -829,7 +833,7 @@
 													"value": "subscription_periods/discounts"
 												},
 												{
-													"key": "_embed_params",
+													"key": "_embed_param",
 													"value": "discounts(is_active=true)"
 												}
 											]
@@ -862,7 +866,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand?_embed=discounts/subscription_periods/product/web&_embed_params=discounts(is_active=true/order=weight/count=100),product(is_private=true/is_active=true)",
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand",
 											"protocol": "https",
 											"host": [
 												"{{endpoint}}{{env}}",
@@ -872,22 +876,13 @@
 											"path": [
 												"v2_00",
 												"brand"
-											],
-											"query": [
-												{
-													"key": "_embed",
-													"value": "discounts/subscription_periods/product/web"
-												},
-												{
-													"key": "_embed_params",
-													"value": "discounts(is_active=true/order=weight/count=100),product(is_private=true/is_active=true)"
-												}
 											]
 										}
 									},
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -960,9 +955,11 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1234,7 +1231,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand/3?_embed=web",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand/3",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1245,12 +1242,6 @@
 								"v2_00",
 								"brand",
 								"3"
-							],
-							"query": [
-								{
-									"key": "_embed",
-									"value": "web"
-								}
 							]
 						}
 					},
@@ -1410,7 +1401,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/284",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1420,7 +1411,7 @@
 							"path": [
 								"v2_00",
 								"discount",
-								"474"
+								"284"
 							]
 						}
 					},
@@ -1458,7 +1449,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474/subscription_periods",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/284/subscription_periods",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1468,178 +1459,8 @@
 							"path": [
 								"v2_00",
 								"discount",
-								"474",
+								"284",
 								"subscription_periods"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "lead/",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "e9658249-135a-4031-83bc-ef2dfa185e62",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Token",
-								"value": "{{token}}",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "language",
-									"value": "EN",
-									"type": "text"
-								},
-								{
-									"key": "contact_topic",
-									"value": "AFTER_SALES",
-									"type": "text"
-								},
-								{
-									"key": "order_id",
-									"value": "123456",
-									"type": "text"
-								},
-								{
-									"key": "contact_type",
-									"value": "CALLBACK",
-									"type": "text"
-								},
-								{
-									"key": "recipient_phone",
-									"value": "04846548",
-									"type": "text"
-								},
-								{
-									"key": "recipient_name",
-									"value": "Charles Vanbeneden",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/lead",
-							"protocol": "https",
-							"host": [
-								"{{endpoint}}{{env}}",
-								"astel",
-								"be"
-							],
-							"path": [
-								"v2_00",
-								"lead"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "lead/",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "484e028a-b1ff-48c4-92db-ff4587c133b6",
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "OPTIONS",
-						"header": [
-							{
-								"key": "Token",
-								"value": "{{token}}",
-								"disabled": true
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/x-www-form-urlencoded"
-							},
-							{
-								"key": "x-api-key",
-								"value": "{{token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "language",
-									"value": "EN",
-									"type": "text"
-								},
-								{
-									"key": "contact_topic",
-									"value": "AFTER_SALES",
-									"type": "text"
-								},
-								{
-									"key": "order_id",
-									"value": "123456",
-									"type": "text"
-								},
-								{
-									"key": "contact_type",
-									"value": "CALLBACK",
-									"type": "text"
-								},
-								{
-									"key": "recipient_phone",
-									"value": "04846548",
-									"type": "text"
-								},
-								{
-									"key": "recipient_name",
-									"value": "Charles Vanbeneden",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/lead",
-							"protocol": "https",
-							"host": [
-								"{{endpoint}}{{env}}",
-								"astel",
-								"be"
-							],
-							"path": [
-								"v2_00",
-								"lead"
 							]
 						}
 					},
@@ -1957,7 +1778,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2124?_embed=web",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2124?",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1975,10 +1796,6 @@
 									"key": "order",
 									"value": "price,activation_fee",
 									"disabled": true
-								},
-								{
-									"key": "_embed",
-									"value": "web"
 								}
 							]
 						}
@@ -2136,6 +1953,176 @@
 					"response": []
 				},
 				{
+					"name": "lead/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e9658249-135a-4031-83bc-ef2dfa185e62",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "language",
+									"value": "EN",
+									"type": "text"
+								},
+								{
+									"key": "contact_topic",
+									"value": "AFTER_SALES",
+									"type": "text"
+								},
+								{
+									"key": "order_id",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "contact_type",
+									"value": "CALLBACK",
+									"type": "text"
+								},
+								{
+									"key": "recipient_phone",
+									"value": "0484654818",
+									"type": "text"
+								},
+								{
+									"key": "recipient_name",
+									"value": "Charles Vanbeneden",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/lead",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"lead"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lead/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "484e028a-b1ff-48c4-92db-ff4587c133b6",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Token",
+								"value": "{{token}}",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "x-api-key",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "language",
+									"value": "EN",
+									"type": "text"
+								},
+								{
+									"key": "contact_topic",
+									"value": "AFTER_SALES",
+									"type": "text"
+								},
+								{
+									"key": "order_id",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "contact_type",
+									"value": "CALLBACK",
+									"type": "text"
+								},
+								{
+									"key": "recipient_phone",
+									"value": "04846548",
+									"type": "text"
+								},
+								{
+									"key": "recipient_name",
+									"value": "Charles Vanbeneden",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/lead",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"lead"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "option/",
 					"event": [
 						{
@@ -2240,7 +2227,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/250",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/37",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2250,7 +2237,7 @@
 							"path": [
 								"v2_00",
 								"option",
-								"250"
+								"37"
 							]
 						}
 					},
@@ -2541,7 +2528,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order/125171?_embed=order_lines",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order/125171",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2552,12 +2539,6 @@
 								"v2_00",
 								"order",
 								"125171"
-							],
-							"query": [
-								{
-									"key": "_embed",
-									"value": "order_lines"
-								}
 							]
 						}
 					},
@@ -2593,7 +2574,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/?_embed=commission/status,cashback/status",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2602,14 +2583,7 @@
 							],
 							"path": [
 								"v2_00",
-								"order_line",
-								""
-							],
-							"query": [
-								{
-									"key": "_embed",
-									"value": "commission/status,cashback/status"
-								}
+								"order_line"
 							]
 						}
 					},
@@ -3169,7 +3143,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?search_slug=",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -3185,6 +3159,10 @@
 									"key": "order",
 									"value": "price,activation_fee",
 									"disabled": true
+								},
+								{
+									"key": "search_slug",
+									"value": ""
 								}
 							]
 						}
@@ -3256,7 +3234,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=false&is_mobile=false&is_fix=true&is_internet=false&is_tv=1&order=delay&brand=3",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=false&is_mobile=true&is_fix=true&is_internet=true&is_tv=1&order=delay&brand=3&mobile_small_qt=2",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -3279,7 +3257,7 @@
 								},
 								{
 									"key": "is_mobile",
-									"value": "false"
+									"value": "true"
 								},
 								{
 									"key": "is_fix",
@@ -3287,7 +3265,7 @@
 								},
 								{
 									"key": "is_internet",
-									"value": "false"
+									"value": "true"
 								},
 								{
 									"key": "is_tv",
@@ -3300,6 +3278,10 @@
 								{
 									"key": "brand",
 									"value": "3"
+								},
+								{
+									"key": "mobile_small_qt",
+									"value": "2"
 								}
 							]
 						}
@@ -4150,7 +4132,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag_group?product_id=2290",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag_group",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -4160,12 +4142,6 @@
 							"path": [
 								"v2_00",
 								"tag_group"
-							],
-							"query": [
-								{
-									"key": "product_id",
-									"value": "2290"
-								}
 							]
 						}
 					},
@@ -4385,7 +4361,9 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
