@@ -5,6 +5,7 @@ namespace AstelSDK\API;
 use CakeUtility\Hash;
 use AstelSDK\AstelContext;
 use AstelSDK\Exception\DataException;
+use AstelSDK\Utils\URL;
 
 class APIQuery {
 	protected $lastCallStatus = [];
@@ -17,6 +18,8 @@ class APIQuery {
 	protected $urlParams = '';
 	protected $postParams = [];
 	protected $headers = [];
+	protected $Cacher = null;
+	protected $cacheTTL = null;
 	
 	protected $method = self::HTTP_GET;
 	
@@ -25,39 +28,36 @@ class APIQuery {
 	const HTTP_POST = 'POST';
 	const HTTP_DELETE = 'DELETE';
 	
-	public function __construct($apiParticle) {
+	public function __construct($apiParticle, $Cacher = null, $cacheTTL = null) {
 		$this->apiParticle = $apiParticle;
 		$this->context = AstelContext::getInstance();
+		
+		$this->Cacher = $Cacher;
+		if ($this->Cacher !== null && is_object($this->Cacher)) {
+			$this->cacheActive = true;
+		}
+		$this->cacheTTL = $cacheTTL;
+	}
+	
+	public function isCacheActive() {
+		// We write DATA, no cache for that
+		if ($this->method === self::HTTP_DELETE || $this->method === self::HTTP_POST) {
+			return false;
+		}
+		
+		return $this->cacheActive;
+	}
+	
+	public function getCacher() {
+		return $this->Cacher;
 	}
 	
 	public function getLastCallStatus() {
 		return $this->lastCallStatus;
 	}
 	
-	public function arrayToURLGETParams(array $params) {
-		$url_params = [];
-		foreach ($params as $k => $param) {
-			if (is_array($param)) {
-				foreach ($param as $tempId => $sub) {
-					if ($sub === true) {
-						$sub = 'true';
-					} elseif ($sub === false) {
-						$sub = 'false';
-					}
-					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
-				}
-			} else {
-				if ($param === true) {
-					$param = 'true';
-				} elseif ($param === false) {
-					$param = 'false';
-				}
-				$url_params[] = $k . '=' . $param;
-				
-			}
-		}
-		
-		return $url_params;
+	public function modelName() {
+		return strtolower(get_class($this));
 	}
 	
 	/**
@@ -72,13 +72,7 @@ class APIQuery {
 	 * @return $url string
 	 */
 	public function addGETParams(array $params) {
-		// Add param
-		$url_params = $this->arrayToURLGETParams($params);
-		
-		$url_params = implode('&', $url_params);
-		if (!empty($url_params)) {
-			$this->urlParams .= '?' . $url_params;
-		}
+		$this->urlParams = URL::arrayToGetParamString($params);
 		
 		return $this->urlParams;
 	}
@@ -94,11 +88,6 @@ class APIQuery {
 	
 	public function setUrl($url) {
 		$this->url = $url;
-	}
-	
-	protected function setCurlUrl() {
-		$this->lastUrl = 'https://' . $this->apiParticle . $this->context->getEnv() . '.astel.be/' . $this->url . $this->urlParams;
-		curl_setopt($this->ch, CURLOPT_URL, $this->lastUrl);
 	}
 	
 	public function setCurlPost() {
@@ -119,17 +108,25 @@ class APIQuery {
 	
 	protected function init() {
 		$this->ch = curl_init();
+		//curl_setopt($this->ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
+		curl_setopt($this->ch, CURLOPT_HTTPHEADER, $this->headers);
+		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->ch, CURLOPT_VERBOSE, 1);
+		curl_setopt($this->ch, CURLOPT_HEADER, 1);
+		curl_setopt($this->ch, CURLOPT_URL, $this->lastUrl);
+	}
+	
+	protected function preInitHeaders() {
 		$defaultHeaders = [
 			'Cache-Control: no-cache',
 			'x-api-key: ' . $this->context->getPartnerToken(),
 		];
-		$headers = $this->addHeader($defaultHeaders);
-		//curl_setopt($this->ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
 		
-		curl_setopt($this->ch, CURLOPT_HTTPHEADER, $headers);
-		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($this->ch, CURLOPT_VERBOSE, 1);
-		curl_setopt($this->ch, CURLOPT_HEADER, 1);
+		return $this->addHeader($defaultHeaders);
+	}
+	
+	protected function preInitSetUrl() {
+		$this->lastUrl = 'https://' . $this->apiParticle . $this->context->getEnv() . '.astel.be/' . $this->url . $this->urlParams;
 	}
 	
 	/**
@@ -140,27 +137,47 @@ class APIQuery {
 	 * @throws \Exception
 	 */
 	public function exec($return_type = null) {
-		$result = new APIResponse();
-		$this->init();
-		$this->setCurlUrl();
-		
-		if ($this->method === self::HTTP_GET) {
-			// we already set params with setCurlUrl()
-		} elseif ($this->method === self::HTTP_POST) {
-			$this->setCurlPost();
-		} elseif ($this->method === self::HTTP_DELETE) {
-			$this->setCurlDelete();
+		$this->preInitHeaders();
+		$this->preInitSetUrl();
+		if ($this->isCacheActive()) {
+			$paramsForCacheKey = ['lastURL' => $this->lastUrl, 'postParams' => $this->postParams, 'method' => $this->method, 'headers' => $this->headers, 'return_type' => $return_type];
+			$cacheKey = $this->getCacher()->uKey('query_exec', $paramsForCacheKey);
+			$result = $this->getCacher()->get($cacheKey);
+			if (null !== $result && !empty($result)) {
+				$responseObject = new APIResponse();
+				$responseObject->jsonUnSerialize($result); // retrieve the APIResponse object previously serialized into json
+				
+				$this->lastReturnedData = $responseObject->getResultData(); // TODO handle data raw
+				
+				return $responseObject;
+			}
 		}
-		
 		try {
+			$result = new APIResponse();
+			$this->init();
+			
+			if ($this->method === self::HTTP_GET) {
+				// we already set params with setCurlUrl()
+			} elseif ($this->method === self::HTTP_POST) {
+				$this->setCurlPost();
+			} elseif ($this->method === self::HTTP_DELETE) {
+				$this->setCurlDelete();
+			}
 			$result = $this->exec_process($return_type, $result);
+			if ($this->isCacheActive()) {
+				if ($result->getHttpCode() === 200 || $result->getHttpCode() === 204) {
+					// We don't cache 4xx and 5xx errors !
+					// uncomment this for having a trace every cache write
+					//debug('Caching - ' . $this->cacheTTL . 's - ' . $cacheKey);
+					$this->getCacher()->add($cacheKey, $result, $this->cacheTTL);
+				}
+			}
 		} catch (\Exception $e) {
 			$context = [
-				'token' => $this->context->getPartnerToken(),
-				'APIParticle' => $this->apiParticle,
-				'APIEnv' => $this->context->getEnv(),
 				'lastURL' => $this->lastUrl,
-				'lastPostData' => $this->lastPostData,
+				'method' => $this->method,
+				'postParams' => $this->lastPostData,
+				'headers' => $this->headers,
 				'message' => $e->getMessage(),
 			];
 			if ($this->lastReturnedData !== null) {

@@ -9,8 +9,9 @@ class ProductCompare extends APIModel {
 	
 	protected $default_params = [];
 	
-	protected function clear() {
+	public function clear() {
 		$this->default_params = [];
+		$this->cacheResults = []; // because we use default params, not direct find params
 	}
 	
 	protected function prepare() {

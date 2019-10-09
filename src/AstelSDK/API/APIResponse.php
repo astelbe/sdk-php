@@ -5,12 +5,11 @@ namespace AstelSDK\API;
 use CakeUtility\Hash;
 use AstelSDK\Exception\DataException;
 
-class APIResponse implements \Iterator {
+class APIResponse implements \Iterator, \JsonSerializable {
 	
 	const RESULT_SUCESS = 'success';
 	const RESULT_VALIDATION_ERROR = 'validation_error';
 	const RESULT_FAILURE = 'failure';
-	
 	const FIND_TYPE_RAW = 'raw';
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
@@ -27,6 +26,24 @@ class APIResponse implements \Iterator {
 	 * @var string Gives the level of success of the API response. Default Failure.
 	 */
 	private $resultSuccessLevel = self::RESULT_FAILURE;
+	
+	public function jsonSerialize() {
+		return [
+			'resultData' => $this->resultData,
+			'collectionMetadata' => $this->collectionMetadata,
+			'position' => $this->position,
+			'findType' => $this->findType,
+			'resultHeaders' => $this->resultHeaders,
+			'http_code' => $this->http_code,
+			'resultSuccessLevel' => $this->resultSuccessLevel,
+		];
+	}
+	
+	public function jsonUnSerialize($associateArray) {
+		foreach ($associateArray as $key => $value) {
+			$this->$key = $value;
+		}
+	}
 	
 	public function rewind() {
 		$this->position = 0;
@@ -148,7 +165,7 @@ class APIResponse implements \Iterator {
 	 */
 	private function setCorrectTypes($resultArray) {
 		$out = [];
-		if (is_array($resultArray) && !empty($resultArray)) {	
+		if (is_array($resultArray) && !empty($resultArray)) {
 			foreach ($resultArray as $key => $value) {
 				if ($value === 'false' || $value === 'true') {
 					$value = filter_var($value, FILTER_VALIDATE_BOOLEAN);
@@ -174,7 +191,11 @@ class APIResponse implements \Iterator {
 	/**
 	 * @return array
 	 */
-	public function getResultDataAccordingFindType() {
+	public function getResultDataAccordingFindType($userRequestedType) {
+		if ($userRequestedType === self::FIND_TYPE_COUNT) {
+			return Hash::get($this->collectionMetadata, 'total_items');
+		}
+		
 		if ($this->findType === self::FIND_TYPE_FIRST) {
 			return $this->resultData[0];
 		}

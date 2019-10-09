@@ -6,6 +6,8 @@ use CakeUtility\Hash;
 
 class WebsiteConnection extends APIModel {
 	
+	protected $disableCache = true;
+	
 	protected function getFirst(array $params = []) {
 		$default_params = [
 			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
@@ -26,7 +28,7 @@ class WebsiteConnection extends APIModel {
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/website_connection/cart');
 		$query->addGETParams($params);
-		$query->setHTTPMethod($query::HTTP_DELETE);
+		$query->setHTTPMethod(APIQuery::HTTP_DELETE);
 		
 		return $query->exec();
 	}
