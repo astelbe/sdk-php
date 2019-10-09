@@ -103,27 +103,28 @@ class URL {
 	}
 	
 	/**
-	 * Returns a string with all spaces converted to underscores (by default), accented
+	 * Returns a string with all spaces and underscores converted to -, accented
 	 * characters converted to non-accented characters, and non word characters removed.
 	 *
 	 * @param string $string the string you want to slug
-	 * @param string $replacement will replace keys in map
 	 *
 	 * @return string
-	 * @link https://book.cakephp.org/2.0/en/core-utility-libraries/inflector.html#Inflector::slug
+	 * @author Based on cakephp slug function
 	 */
-	public static function slug($string, $replacement = '_') {
-		$quotedReplacement = preg_quote($replacement, '/');
+	public static function slug($string) {
+		$string = trim($string);
+		$withoutUnderscore = str_replace('_', '-', $string);
+		$quotedReplacement = preg_quote('-', '/');
 		
 		$merge = [
 			'/[^\s\p{Zs}\p{Ll}\p{Lm}\p{Lo}\p{Lt}\p{Lu}\p{Nd}]/mu' => ' ',
-			'/[\s\p{Zs}]+/mu' => $replacement,
+			'/[\s\p{Zs}]+/mu' => '-',
 			sprintf('/^[%s]+|[%s]+$/', $quotedReplacement, $quotedReplacement) => '',
 		];
 		
 		$map = static::$_transliteration + $merge;
 		
-		return strtolower(preg_replace(array_keys($map), array_values($map), $string));
+		return strtolower(preg_replace(array_keys($map), array_values($map), $withoutUnderscore));
 	}
 	
 	/**
@@ -137,4 +138,39 @@ class URL {
 		return base64_decode(strtr($data, '-_', '+/') . str_repeat('=', 3 - (3 + strlen($data)) % 4));
 	}
 	
+	public static function arrayToGetParamString(array $params) {
+		$url_params = self::arrayToURLGETParams($params);
+		$url_params = implode('&', $url_params);
+		if (!empty($url_params)) {
+			return '?' . $url_params;
+		}
+		
+		return '';
+	}
+	
+	public static function arrayToURLGETParams(array $params) {
+		$url_params = [];
+		foreach ($params as $k => $param) {
+			if (is_array($param)) {
+				foreach ($param as $tempId => $sub) {
+					if ($sub === true) {
+						$sub = 'true';
+					} elseif ($sub === false) {
+						$sub = 'false';
+					}
+					$url_params[] = $k . '[' . $tempId . ']=' . $sub;
+				}
+			} else {
+				if ($param === true) {
+					$param = 'true';
+				} elseif ($param === false) {
+					$param = 'false';
+				}
+				$url_params[] = $k . '=' . $param;
+				
+			}
+		}
+		
+		return $url_params;
+	}
 }

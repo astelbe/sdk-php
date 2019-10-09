@@ -1,6 +1,7 @@
 <?php
 
 namespace AstelSDK;
+
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\Logger;
 
@@ -15,8 +16,10 @@ class AstelContext extends Singleton {
 	protected $isPrivate = null;
 	protected $language = 'FR';
 	protected $apiParticle = 'api';
+	public $Cacher = null;
+	protected $cacheTTL = 10800; // 3 hours
 	
-	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '') {
+	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
 			$env = '';
 		}
@@ -26,6 +29,7 @@ class AstelContext extends Singleton {
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
+		$this->Cacher = $cacherObject;
 	}
 	
 	public function setApiParticle($particle) {
@@ -34,6 +38,25 @@ class AstelContext extends Singleton {
 	
 	public function getApiParticle() {
 		return $this->apiParticle;
+	}
+	
+	public function setCacher($object) {
+		$this->Cacher = $object;
+	}
+	
+	public function getCacher() {
+		return $this->Cacher;
+	}
+	
+	/**
+	 * @param $ttl default ttl in s the cache is keeping values
+	 */
+	public function setCacheTTL($ttl) {
+		$this->cacheTTL = $ttl;
+	}
+	
+	public function getCacheTTL(){
+		return $this->cacheTTL;
 	}
 	
 	public function log($message, $level = 'notice', $context = []) {
