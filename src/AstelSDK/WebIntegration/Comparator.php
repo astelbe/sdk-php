@@ -55,14 +55,31 @@ class Comparator extends Singleton {
 	public function getScriptLoadComparator($title = null) {
 		global $_GET;
 		$getParams = [];
-		if (isset($_GET['code_postal']) && $_GET['code_postal'] != '') {
+		
+		$defaultGET = [
+			'mobile' => 0,
+			'fixe' => 0,
+			'internet' => 0,
+			'tv' => 0,
+			'illimite' => 0,
+			'3g' => 0,
+			'type' => 'fix',
+			'code_postal' => '',
+			'clasQ' => 2,
+			'usage' => 1,
+		];
+		if (!empty($_GET)) {
+			$_GET = array_merge($defaultGET, $_GET);
+		}
+		if (isset($_GET['code_postal']) && $_GET['code_postal'] !== '') {
 			$getParams['postal_code'] = $_GET['code_postal'];
 		}
-		if (isset($_GET['postal_code']) && $_GET['postal_code'] != '') {
+		if (isset($_GET['postal_code']) && $_GET['postal_code'] !== '') {
 			$getParams['postal_code'] = $_GET['postal_code'];
 		}
-		if (isset($_GET['mobile']) && $_GET['mobile'] != '') {
+		if (isset($_GET['mobile']) && $_GET['mobile'] !== '') {
 			$is_mobile = (int)$_GET['mobile'];
+			$getParams['is_mobile'] = 0;
 			if ($is_mobile == 1) {
 				$getParams['is_mobile'] = 1;
 				if (isset($_GET['mobile_small_qt']) && $_GET['mobile_small_qt'] >= 0) {
@@ -77,12 +94,12 @@ class Comparator extends Singleton {
 				if (isset($_GET['mobile_heavy_int_qt']) && $_GET['mobile_heavy_int_qt'] >= 0) {
 					$getParams['mobile_heavy_int_qt'] = (int)$_GET['mobile_heavy_int_qt'];
 				}
-			} else {
-				$getParams['is_mobile'] = 0;
 			}
+			
 		}
-		if (isset($_GET['fixe']) && $_GET['fixe'] != '') {
+		if (isset($_GET['fixe']) && $_GET['fixe'] !== '') {
 			$is_fix = (int)$_GET['fixe'];
+			$getParams['is_fix'] = 0;
 			if ($is_fix > 0) {
 				$getParams['is_fix'] = 1;
 				switch ($is_fix) {
@@ -96,12 +113,11 @@ class Comparator extends Singleton {
 						$getParams['fix_usage'] = 'HEAVYINT';
 						break;
 				}
-			} else {
-				$getParams['is_fix'] = 0;
 			}
 		}
-		if (isset($_GET['internet']) && $_GET['internet'] != '') {
+		if (isset($_GET['internet']) && $_GET['internet'] !== '') {
 			$is_internet = (int)$_GET['internet'];
+			$getParams['is_internet'] = 0;
 			if ($is_internet > 0) {
 				$getParams['is_internet'] = 1;
 				switch ($is_internet) {
@@ -115,19 +131,16 @@ class Comparator extends Singleton {
 						$getParams['internet_usage'] = 'HEAVY';
 						break;
 				}
-			} else {
-				$getParams['is_internet'] = 0;
 			}
 		}
-		if (isset($_GET['tv']) && $_GET['tv'] != '') {
+		if (isset($_GET['tv']) && $_GET['tv'] !== '') {
 			$is_tv = (int)$_GET['tv'];
+			$getParams['is_tv'] = 0;
 			if ($is_tv > 0) {
 				$getParams['is_tv'] = 1;
-			} else {
-				$getParams['is_tv'] = 0;
 			}
 		}
-		if (isset($_GET['clasQ']) && $_GET['clasQ'] != '') {
+		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '') {
 			// 0 = order by price
 			// 1 = order by quality
 			// 2 = order by quality/price
