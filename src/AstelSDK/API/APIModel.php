@@ -19,14 +19,18 @@ use AstelSDK\Utils\HALOperations;
 abstract class APIModel extends Singleton {
 	
 	protected $context;
-	protected $cacheResults = [];
 	protected $apiParticle = 'api';
 	protected $lastQueryObject = null;
 	protected $lastFindParams = [];
 	protected $lastResponseObject = null;
+	protected $Cacher = null;
+	
+	protected $customCacheTTL = null;
+	protected $disableCache = false;
 	
 	const FIND_TYPE_ALL = 'all';
 	const FIND_TYPE_FIRST = 'first';
+	const FIND_TYPE_COUNT = 'count';
 	
 	/**
 	 * Model constructor.
@@ -36,6 +40,7 @@ abstract class APIModel extends Singleton {
 	public function __construct() {
 		$this->context = AstelContext::getInstance();
 		$this->setApiParticle($this->context->getApiParticle());
+		$this->Cacher = $this->context->getCacher();
 	}
 	
 	/**
@@ -45,6 +50,10 @@ abstract class APIModel extends Singleton {
 	 */
 	public function setApiParticle($particle) {
 		$this->apiParticle = $particle;
+	}
+	
+	public function modelName() {
+		return strtolower(get_class($this));
 	}
 	
 	/**
@@ -76,19 +85,18 @@ abstract class APIModel extends Singleton {
 	 */
 	public function find($type = self::FIND_TYPE_ALL, array $params = []) {
 		$this->lastFindParams = ['type' => $type, 'params' => $params];
-		$cacheKey = md5($type . print_r($params, true));
-		if (isset($this->cacheResults[$cacheKey])) {
-			return $this->cacheResults[$cacheKey];
-		}
+		
 		$response = null;
 		if ($type === self::FIND_TYPE_FIRST) {
 			$response = $this->getFirst($params);
 		} elseif ($type === self::FIND_TYPE_ALL) {
 			$response = $this->getAll($params);
+		} elseif ($type === self::FIND_TYPE_COUNT) {
+			$params['count'] = 1;
+			$response = $this->getAll($params);
 		}
 		$this->handlesResponseThrows($response);
-		$return = $this->returnResponse($response);
-		$this->cacheResults[$cacheKey] = $return;
+		$return = $this->returnResponse($response, $type);
 		
 		return $return;
 	}
@@ -107,6 +115,7 @@ abstract class APIModel extends Singleton {
 		if (!isset($params['page'])) {
 			$params['page'] = 1;
 		}
+		
 		$maxTurns = 50;
 		$results = $this->find('all', $params);
 		if (!empty($results)) {
@@ -131,19 +140,24 @@ abstract class APIModel extends Singleton {
 	 * Used to process and convert an APIResponse to a easily manipulable array
 	 *
 	 * @param APIResponse $response response of an API call
+	 * @param $type type of result requested 'first','all','count'
 	 *
 	 * @return array easily manipulable array with HAL logic interpreted
 	 */
-	protected function returnResponse($response) {
-		if ($response->valid()) {
-			foreach ($response as $key => $returnElt) {
-				$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
-				$response->setCurrent($returnArray);
+	protected function returnResponse($response, $type) {
+		if (is_object($response)) {
+			if ($response->valid()) {
+				foreach ($response as $key => $returnElt) {
+					$returnArray = HALOperations::interpretHALLogicToSimpleArray($returnElt);
+					$response->setCurrent($returnArray);
+				}
 			}
+			
+			// return the arrayAll/arrayFind/count/raw version of the response
+			return $response->getResultDataAccordingFindType($type);
 		}
 		
-		// return the arrayAll/arrayFind/count/raw version of the response
-		return $response->getResultDataAccordingFindType();
+		return false;
 	}
 	
 	/**
@@ -192,7 +206,7 @@ abstract class APIModel extends Singleton {
 		return $this->findPaginate('count');
 	}
 	
-	protected function handlesResponseThrows(APIResponse $response) {
+	protected function handlesResponseThrows($response) {
 		if (is_bool($response)) {
 			$this->lastResponseObject = new APIResponse();
 			$this->lastResponseObject->setResultSuccessLevel(APIResponse::RESULT_FAILURE);
@@ -229,7 +243,15 @@ abstract class APIModel extends Singleton {
 	 * @return APIQuery object New APIQuery Object
 	 */
 	protected function newQuery() {
-		$this->lastQueryObject = new APIQuery($this->apiParticle);
+		if ($this->disableCache) {
+			$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
+		} else {
+			$ttl = $this->context->getCacheTTL();
+			if ($this->customCacheTTL !== null) {
+				$ttl = $this->customCacheTTL;
+			}
+			$this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
+		}
 		
 		return $this->lastQueryObject;
 	}

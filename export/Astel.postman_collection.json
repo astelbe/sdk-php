@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ea49b153-9acf-42b7-a7ec-2717c3cd6fe2",
+		"_postman_id": "ec9e1d5a-54e2-4b5e-a923-1f66ddce45f6",
 		"name": "Astel",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -221,199 +221,7 @@
 									"response": []
 								}
 							],
-							"_postman_isSubFolder": true
-						},
-						{
-							"name": "Embed",
-							"item": [
-								{
-									"name": "product/{id} (embed play_description)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "x-api-key",
-												"value": "{{token}}"
-											}
-										],
-										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=play_description",
-											"protocol": "https",
-											"host": [
-												"{{endpoint}}{{env}}",
-												"astel",
-												"be"
-											],
-											"path": [
-												"v2_00",
-												"product",
-												"1999"
-											],
-											"query": [
-												{
-													"key": "_embed",
-													"value": "play_description"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "product/{id} (embed two model)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "x-api-key",
-												"value": "{{token}}"
-											}
-										],
-										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=option_relations,option_group_relations",
-											"protocol": "https",
-											"host": [
-												"{{endpoint}}{{env}}",
-												"astel",
-												"be"
-											],
-											"path": [
-												"v2_00",
-												"product",
-												"1999"
-											],
-											"query": [
-												{
-													"key": "_embed",
-													"value": "option_relations,option_group_relations"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "product/{id} (recursive embedded model)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "x-api-key",
-												"value": "{{token}}"
-											}
-										],
-										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=option_relations/option,option_group_relations/option_group/options",
-											"protocol": "https",
-											"host": [
-												"{{endpoint}}{{env}}",
-												"astel",
-												"be"
-											],
-											"path": [
-												"v2_00",
-												"product",
-												"1999"
-											],
-											"query": [
-												{
-													"key": "_embed",
-													"value": "option_relations/option,option_group_relations/option_group/options"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "option/ (embed commission for collection)",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "8d9722ab-bd82-4a92-927b-8757eee6b244",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "x-api-key",
-												"value": "{{token}}"
-											}
-										],
-										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option?_embed=commission",
-											"protocol": "https",
-											"host": [
-												"{{endpoint}}{{env}}",
-												"astel",
-												"be"
-											],
-											"path": [
-												"v2_00",
-												"option"
-											],
-											"query": [
-												{
-													"key": "_embed",
-													"value": "commission"
-												}
-											]
-										}
-									},
-									"response": []
-								}
-							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -602,6 +410,7 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -770,6 +579,310 @@
 									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Embed",
+							"item": [
+								{
+									"name": "product/{id} (embed play_description)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=play_description",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"product",
+												"1999"
+											],
+											"query": [
+												{
+													"key": "_embed",
+													"value": "play_description"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "product/{id} (embed two model)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=option_relations,option_group_relations",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"product",
+												"1999"
+											],
+											"query": [
+												{
+													"key": "_embed",
+													"value": "option_relations,option_group_relations"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "product/{id} (recursive embedded model)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999?_embed=subscription_periods/discounts&_embed_params=discounts(is_active=false)",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"product",
+												"1999"
+											],
+											"query": [
+												{
+													"key": "_embed",
+													"value": "subscription_periods/discounts"
+												},
+												{
+													"key": "_embed_params",
+													"value": "discounts(is_active=false)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "option/ (embed commission for collection)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8d9722ab-bd82-4a92-927b-8757eee6b244",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option?_embed=commission",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"option"
+											],
+											"query": [
+												{
+													"key": "_embed",
+													"value": "commission"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Embed Params Copy",
+							"item": [
+								{
+									"name": "product/{id} with active discount",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/2139?_embed=subscription_periods/discounts&_embed_param=discounts(is_active=true)",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"product",
+												"2139"
+											],
+											"query": [
+												{
+													"key": "_embed",
+													"value": "subscription_periods/discounts"
+												},
+												{
+													"key": "_embed_param",
+													"value": "discounts(is_active=true)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "brand/ with active discounts and associated private products",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "043725fc-7ec0-42da-bbfe-e691bf7528e2",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand",
+											"protocol": "https",
+											"host": [
+												"{{endpoint}}{{env}}",
+												"astel",
+												"be"
+											],
+											"path": [
+												"v2_00",
+												"brand"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						},
 						{
@@ -840,86 +953,13 @@
 										}
 									},
 									"response": []
-								},
-								{
-									"name": "product/compare example",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"id": "d09fc658-1dec-4ba6-b81c-f853a2ee831a",
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "x-api-key",
-												"value": "{{token}}"
-											}
-										],
-										"url": {
-											"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=0&is_mobile=1&is_fix=1&is_internet=1&mobile_small_qt=2&mobile_regular_qt=1&order=quality",
-											"protocol": "https",
-											"host": [
-												"{{endpoint}}{{env}}",
-												"astel",
-												"be"
-											],
-											"path": [
-												"v2_00",
-												"product",
-												"compare"
-											],
-											"query": [
-												{
-													"key": "language",
-													"value": "FR"
-												},
-												{
-													"key": "is_professional",
-													"value": "0"
-												},
-												{
-													"key": "is_mobile",
-													"value": "1"
-												},
-												{
-													"key": "is_fix",
-													"value": "1"
-												},
-												{
-													"key": "is_internet",
-													"value": "1"
-												},
-												{
-													"key": "mobile_small_qt",
-													"value": "2"
-												},
-												{
-													"key": "mobile_regular_qt",
-													"value": "1"
-												},
-												{
-													"key": "order",
-													"value": "quality"
-												}
-											]
-										}
-									},
-									"response": []
 								}
 							],
+							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1208,6 +1248,48 @@
 					"response": []
 				},
 				{
+					"name": "brand/{id}/web",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c82f7064-bbe3-49b9-a14c-3c13fed6ea74",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/brand/3/web",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"brand",
+								"3",
+								"web"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "discount/",
 					"event": [
 						{
@@ -1319,7 +1401,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/284",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1329,7 +1411,7 @@
 							"path": [
 								"v2_00",
 								"discount",
-								"474"
+								"284"
 							]
 						}
 					},
@@ -1367,7 +1449,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/474/subscription_periods",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/discount/284/subscription_periods",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1377,8 +1459,494 @@
 							"path": [
 								"v2_00",
 								"discount",
-								"474",
+								"284",
 								"subscription_periods"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/2113?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"2113"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/{id}/declination_attribute_coverage",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/2290/declination_attribute_coverage?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"2290",
+								"declination_attribute_coverage"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2124?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination",
+								"2124"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/{id}/offers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2292/offers?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination",
+								"2292",
+								"offers"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/{id}/offers_summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2292/offers_summary?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination",
+								"2292",
+								"offers_summary"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "hardware/declination/{id}/web",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb3d71d5-d96f-4001-9591-274d957b95f7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/hardware/declination/2292/web?",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"hardware",
+								"declination",
+								"2292",
+								"web"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								}
 							]
 						}
 					},
@@ -1443,7 +2011,7 @@
 								},
 								{
 									"key": "recipient_phone",
-									"value": "04846548",
+									"value": "0484654818",
 									"type": "text"
 								},
 								{
@@ -1659,7 +2227,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/1392",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/option/37",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -1669,7 +2237,7 @@
 							"path": [
 								"v2_00",
 								"option",
-								"1392"
+								"37"
 							]
 						}
 					},
@@ -2006,7 +2574,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line/",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/order_line",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2015,8 +2583,7 @@
 							],
 							"path": [
 								"v2_00",
-								"order_line",
-								""
+								"order_line"
 							]
 						}
 					},
@@ -2296,6 +2863,47 @@
 					"response": []
 				},
 				{
+					"name": "partner/me",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bf9797ab-cd08-4286-8246-ef0eab950974",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/partner/me",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"partner",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "partner/{id}/call_center_open",
 					"event": [
 						{
@@ -2535,7 +3143,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product?search_slug=",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2545,6 +3153,17 @@
 							"path": [
 								"v2_00",
 								"product"
+							],
+							"query": [
+								{
+									"key": "order",
+									"value": "price,activation_fee",
+									"disabled": true
+								},
+								{
+									"key": "search_slug",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -2615,7 +3234,7 @@
 							}
 						],
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=0&is_mobile=1&is_fix=1&mobile_small_qt=2&order=quality",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/compare?language=FR&is_professional=false&is_mobile=true&is_fix=true&is_internet=true&is_tv=1&order=delay&brand=3&mobile_small_qt=2",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2634,23 +3253,35 @@
 								},
 								{
 									"key": "is_professional",
-									"value": "0"
+									"value": "false"
 								},
 								{
 									"key": "is_mobile",
-									"value": "1"
+									"value": "true"
 								},
 								{
 									"key": "is_fix",
+									"value": "true"
+								},
+								{
+									"key": "is_internet",
+									"value": "true"
+								},
+								{
+									"key": "is_tv",
 									"value": "1"
+								},
+								{
+									"key": "order",
+									"value": "delay"
+								},
+								{
+									"key": "brand",
+									"value": "3"
 								},
 								{
 									"key": "mobile_small_qt",
 									"value": "2"
-								},
-								{
-									"key": "order",
-									"value": "quality"
 								}
 							]
 						}
@@ -2730,7 +3361,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/2139",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2740,7 +3371,7 @@
 							"path": [
 								"v2_00",
 								"product",
-								"1999"
+								"2139"
 							]
 						}
 					},
@@ -2925,7 +3556,7 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/1999/play_description",
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/product/2124/play_description",
 							"protocol": "https",
 							"host": [
 								"{{endpoint}}{{env}}",
@@ -2935,7 +3566,7 @@
 							"path": [
 								"v2_00",
 								"product",
-								"1999",
+								"2124",
 								"play_description"
 							]
 						}
@@ -3275,6 +3906,296 @@
 					"response": []
 				},
 				{
+					"name": "tag/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag?product_id=2297",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "2297"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tag/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tag/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag/1",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tag_group/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag_group?product_id=2290",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag_group"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "2290"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tag_group/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag_group",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag_group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "tag_group/{id}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fe469a2a-f472-42b0-9e5e-3c6def7c32a8",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://{{endpoint}}{{env}}.astel.be/v2_00/tag_group/1",
+							"protocol": "https",
+							"host": [
+								"{{endpoint}}{{env}}",
+								"astel",
+								"be"
+							],
+							"path": [
+								"v2_00",
+								"tag_group",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "website_connection/",
 					"event": [
 						{
@@ -3440,7 +4361,9 @@
 						]
 					}
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }

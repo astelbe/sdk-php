@@ -77,16 +77,17 @@ class Product extends SDKModel {
 	 * @return array
 	 */
 	private function productArrayToSelectableList($prodDB) {
-		$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
 		$outList = [];
-		foreach ($extractedList as $brand => $products) {
-			foreach ($products as $productID => $product_name) {
-				$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+		if (!empty($prodDB)) {
+			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+			foreach ($extractedList as $brand => $products) {
+				foreach ($products as $productID => $product_name) {
+					$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
+				}
 			}
+			// Order by product name
+			asort($outList);
 		}
-		
-		// Order by product name
-		asort($outList);
 		
 		return $outList;
 	}
@@ -193,22 +194,40 @@ class Product extends SDKModel {
 		
 		return null;
 	}
-
+	
 	/**
-	 * @param array $product. Required to give product with embeded subscription_periods/discounts
+	 * @param array $product . Required to give product with embeded subscription_periods/discounts
 	 */
 	public function countValidDiscounts(array $product) {
 		$subscription_periods = Hash::get($product, 'subscription_periods', []);
 		$countValidDiscounts = 0;
-		foreach($subscription_periods as $subscription_period){
+		foreach ($subscription_periods as $subscription_period) {
 			$discounts = Hash::get($subscription_period, 'discounts', []);
-			foreach($discounts as $discount) {
-				if($discount['is_active']) {
-					$countValidDiscounts ++;
+			foreach ($discounts as $discount) {
+				if ($discount['is_active']) {
+					$countValidDiscounts++;
 				}
 			}
 		}
-
+		
 		return $countValidDiscounts;
+	}
+	
+	public function isUsageType(array $product, $play, $usage) {
+		$getPath = 'play_description.';
+		if ($play === 'M') {
+			$getPath .= 'mobile.consumer_caller_profile';
+		} elseif ($play === 'F') {
+			$getPath .= 'fix.consumer_caller_profile';
+		} elseif ($play === 'I') {
+			$getPath .= 'internet.consumer_profile';
+		}
+		$usageArray = Hash::get($product, $getPath, []);
+		
+		return in_array($usage, $usageArray);
+	}
+	
+	public function isFeatured(array $product) {
+		return Hash::get($product, 'is_featured', false);
 	}
 }

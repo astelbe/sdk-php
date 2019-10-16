@@ -13,7 +13,7 @@ class Product extends APIModel {
 		$default_params = [
 			'is_visible' => 1,
 		];
-		if($this->context->getIsPrivate()!==null){
+		if ($this->context->getIsPrivate() !== null) {
 			if ($this->context->getIsPrivate()) {
 				$default_params['is_private'] = 1;
 			} else {
@@ -21,6 +21,13 @@ class Product extends APIModel {
 			}
 		}
 		$params = Hash::merge($default_params, $params);
+		if (isset($params['search_slug'])) {
+			$params['search_slug'] = URL::base64url_encode($params['search_slug']);
+		}
+		if (isset($params['search_brand_slug'])) {
+			$params['search_brand_slug'] = URL::base64url_encode($params['search_brand_slug']);
+		}
+		
 		$query->addGETParams($params);
 		
 		return $query->exec();

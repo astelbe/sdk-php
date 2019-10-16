@@ -4,13 +4,21 @@ namespace AstelSDK\API;
 
 use CakeUtility\Hash;
 
-class Order extends APIModel {
-	
-	protected $customCacheTTL = 300; // 5 min
+class HardwareDeclination extends APIModel {
 	
 	protected function getAll(array $params = []) {
 		$query = $this->newQuery();
-		$query->setUrl('v2_00/order');
+		$query->setUrl('v2_00/hardware/declination');
+		$default_params = [
+		];
+		if ($this->context->getIsPrivate() !== null) {
+			if ($this->context->getIsPrivate()) {
+				$default_params['is_private'] = 1;
+			} else {
+				$default_params['is_professional'] = 1;
+			}
+		}
+		$params = Hash::merge($default_params, $params);
 		$query->addGETParams($params);
 		
 		return $query->exec();
@@ -23,7 +31,7 @@ class Order extends APIModel {
 		}
 		unset($params['id']);
 		$query = $this->newQuery();
-		$query->setUrl('v2_00/order/' . $id);
+		$query->setUrl('v2_00/hardware/declination/' . $id);
 		$query->addGETParams($params);
 		
 		return $query->exec();
