@@ -216,7 +216,7 @@ abstract class APIModel extends Singleton {
 		$this->lastResponseObject = clone $response;
 		
 		if ($response->isResultFailure()) {
-			throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' . $this->lastResponseObject->getHttpCode(), 500);
+			throw new DataException('An error occurred when accessing internally the remote data. Error HTTP: ' . $this->lastResponseObject->getHttpCode() . ' Data: ' . print_r($this->lastResponseObject->getResultData(), true), 500);
 		}
 		if ($response->isResultValidationError()) {
 			throw new ValidationErrorException('Validations error during the input validation. Please correct input.', 400);
