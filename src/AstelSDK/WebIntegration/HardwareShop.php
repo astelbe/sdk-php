@@ -52,10 +52,14 @@ class HardwareShop extends Singleton {
 		return $out;
 	}
 	
-	public function getScriptLoadHardwareSelect($brand_slug = null) {
+	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null) {
 		$params = [];
 		if ($brand_slug !== null) {
 			$params['brand_slug'] = $brand_slug;
+		}
+		if ($view !== null) {
+			$params['brand_slug'] = $brand_slug;
+			$params['view'] = $view;
 		}
 		$serialize = serialize($params);
 		$paramsURL = URL::base64url_encode($serialize);
