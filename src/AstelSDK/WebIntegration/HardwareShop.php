@@ -69,8 +69,8 @@ class HardwareShop extends Singleton {
 		</script>';
 	}
 	
-	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null) {
-		$serialize = serialize(['slug' => $hardware_slug, 'id' => $hardware_id]);
+	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false) {
+		$serialize = serialize(['slug' => $hardware_slug, 'id' => $hardware_id, 'hardwareIndexUrl' => $hardwareIndexUrl]);
 		$paramsURL = URL::base64url_encode($serialize);
 		
 		return '<script>
@@ -79,12 +79,12 @@ class HardwareShop extends Singleton {
 	}
 	
 	public function getBodyLoadHtml() {
-		return '<div id="hardwareDiv">
+		return '<article id="hardwareDiv" class="container">
 				<div class="loadingImg text-center">
 					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 				</div>
-			</div>';
+			</article>';
 	}
 }
