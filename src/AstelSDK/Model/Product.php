@@ -258,24 +258,4 @@ class Product extends SDKModel {
 		return $group;
 	}
 
-	public function getIncludedOptions (array $options) {
-		foreach($options as $k => $option) {
-			if ($option['is_mandatory'] != 1) {
-				unset($options[$k]);
-			}
-		}
-
-		return $options;
-	}
-
-	public function getOptionalOptions (array $options) {
-		foreach($options as $k => $option) {
-			if($option['is_mandatory'] == 1) {
-				unset($options[$k]);
-			}
-		}
-
-		return $options;
-	}
-
 }
