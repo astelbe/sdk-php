@@ -71,8 +71,13 @@ class HardwareShop extends Singleton {
 		</script>';
 	}
 
-	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false) {
-		$serialize = serialize(['slug' => $hardware_slug, 'id' => $hardware_id, 'hardwareIndexUrl' => $hardwareIndexUrl]);
+	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null) {
+		$serialize = serialize([
+			'slug' => $hardware_slug,
+			'id' => $hardware_id,
+			'hardwareIndexUrl' => $hardwareIndexUrl,
+			'offers_brand' => $offers_brand,
+		]);
 		$paramsURL = URL::base64url_encode($serialize);
 
 		return '<script>
