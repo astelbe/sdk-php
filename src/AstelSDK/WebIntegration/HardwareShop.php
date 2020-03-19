@@ -54,8 +54,7 @@ class HardwareShop extends Singleton {
 
 	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null) {
 		$params = [];
-		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
-		$params['is_professional'] = $is_professional;
+		$params['is_professional'] = $this->context->getIsProfessional();
 		if ($brand_slug !== null) {
 			$params['brand_slug'] = $brand_slug;
 		}
@@ -77,6 +76,7 @@ class HardwareShop extends Singleton {
 			'id' => $hardware_id,
 			'hardwareIndexUrl' => $hardwareIndexUrl,
 			'offers_brand' => $offers_brand,
+			'is_professional' => $this->context->getIsProfessional(),
 		]);
 		$paramsURL = URL::base64url_encode($serialize);
 
