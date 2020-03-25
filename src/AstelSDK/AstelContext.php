@@ -114,7 +114,15 @@ class AstelContext extends Singleton {
 	public function getisPrivate() {
 		return $this->isPrivate;
 	}
-	
+
+	/**
+	 * @return int (bool)
+	 */
+	public function getIsProfessional() {
+		$is_professional = ($this->getisPrivate() === 1 || $this->getisPrivate() === true || $this->getisPrivate() === null) ? 0 : 1;
+		return $is_professional;
+	}
+
 	/**
 	 * Determines if all API calls should be filtered by default by private / professional.
 	 * If not set, (set to null), no conditions are added to API calls
