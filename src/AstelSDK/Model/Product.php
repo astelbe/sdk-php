@@ -230,4 +230,32 @@ class Product extends SDKModel {
 	public function isFeatured(array $product) {
 		return Hash::get($product, 'is_featured', false);
 	}
+
+
+	public function getOptionRelationsGroupedByType (array $product) {
+		$options = Hash::get($product, 'option_relations', []);
+		$group = [];
+		foreach($options as $option) {
+			if(is_array($option['option']) && !empty($option['option'])) {
+				$group[Hash::get($option, 'option.type')][] = $option;
+			}
+		}
+
+		return $group;
+	}
+
+	public function getOptionGroupsGroupedByType (array $product, $is_mandatory = true) {
+		$options = Hash::get($product, 'option_group_relations', []);
+		$group = [];
+		foreach($options as $option) {
+			if(is_array($option['option_group']) && !empty($option['option_group'])) {
+				if(is_array(Hash::get($option, 'option_group.options')) && !empty(Hash::get($option, 'option_group.options')))
+				$group[Hash::get($option, 'option_group.type')][] = $option;
+			}
+
+		}
+
+		return $group;
+	}
+
 }
