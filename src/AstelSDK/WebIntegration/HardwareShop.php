@@ -59,7 +59,6 @@ class HardwareShop extends Singleton {
 			$params['brand_slug'] = $brand_slug;
 		}
 		if ($view !== null) {
-			$params['brand_slug'] = $brand_slug;
 			$params['view'] = $view;
 		}
 		$serialize = serialize($params);
