@@ -2,6 +2,7 @@
 
 namespace AstelSDK\Model;
 
+use AstelSDK\Utils\TypeTransform;
 use CakeUtility\Hash;
 use CakeUtility\Set;
 
@@ -230,32 +231,48 @@ class Product extends SDKModel {
 	public function isFeatured(array $product) {
 		return Hash::get($product, 'is_featured', false);
 	}
-
-
-	public function getOptionRelationsGroupedByType (array $product) {
+	
+	public function getOptionRelationsGroupedByType(array $product, $sort = []) {
 		$options = Hash::get($product, 'option_relations', []);
 		$group = [];
-		foreach($options as $option) {
-			if(is_array($option['option']) && !empty($option['option'])) {
+		foreach ($options as $option) {
+			if (is_array($option['option']) && !empty($option['option'])) {
 				$group[Hash::get($option, 'option.type')][] = $option;
 			}
 		}
-
+		if (!empty($sort)) {
+			foreach ($group as $play => $optionsPlay) {
+				$optionsPlay = TypeTransform::sortTwoLevel($optionsPlay, $sort['first'], $sort['second'], $sort['first_dir'], $sort['second_dir']);
+				$group[$play] = $optionsPlay;
+			}
+		}
+		
 		return $group;
 	}
-
-	public function getOptionGroupsGroupedByType (array $product, $is_mandatory = true) {
+	
+	public function getOptionGroupsGroupedByType(array $product, $sort = []) {
 		$options = Hash::get($product, 'option_group_relations', []);
 		$group = [];
-		foreach($options as $option) {
-			if(is_array($option['option_group']) && !empty($option['option_group'])) {
-				if(is_array(Hash::get($option, 'option_group.options')) && !empty(Hash::get($option, 'option_group.options')))
-				$group[Hash::get($option, 'option_group.type')][] = $option;
+		foreach ($options as $option) {
+			if (is_array($option['option_group']) && !empty($option['option_group'])) {
+				if (is_array(Hash::get($option, 'option_group.options')) && !empty(Hash::get($option, 'option_group.options'))) {
+					$group[Hash::get($option, 'option_group.type')][] = $option;
+				}
 			}
-
+			
 		}
-
+		if (!empty($sort)) {
+			foreach ($group as $play => $optionGroupsPlay) {
+				foreach ($optionGroupsPlay as $tmpID => $groupPlay) {
+					$optionGroupPlay = $groupPlay['option_group']['options'];
+					$optionGroupPlay = TypeTransform::sortTwoLevel($optionGroupPlay, $sort['first'], $sort['second'], $sort['first_dir'], $sort['second_dir']);
+					$group[$play][$tmpID]['option_group']['options'] = $optionGroupPlay;
+				}
+				
+			}
+		}
+		
 		return $group;
 	}
-
+	
 }
