@@ -1,6 +1,8 @@
 <?php
 
 namespace AstelSDK\Utils;
+use CakeUtility\Hash;
+use CakeUtility\Set;
 
 class TypeTransform {
 	
@@ -43,5 +45,37 @@ class TypeTransform {
 		}
 		
 		return false;
+	}
+	
+	public static function sortTwoLevel($array, $path, $secondPath, $order, $order2) {
+		$results = [];
+		$firstOrder = Set::sort($array, $path, $order);
+		if (isset($secondPath) && $secondPath !== '') {
+			$i = 0;
+			$toCount = count($firstOrder);
+			$currentValue = null;
+			$currentValueResultArray = [];
+			while ($i < $toCount) {
+				$thisCurrentValue = Hash::get($firstOrder, $i . '.' . str_replace('{n}.', '', $path));
+				if ($currentValue === null || $thisCurrentValue === $currentValue) {
+					//
+				} else {
+					$currentValueResultArray = Set::sort($currentValueResultArray, $secondPath, $order2);
+					$results = array_merge($results, $currentValueResultArray);
+					$currentValueResultArray = [];
+				}
+				$currentValueResultArray[] = $firstOrder[$i];
+				$currentValue = $thisCurrentValue;
+				$i++;
+			}
+			if (!empty($currentValueResultArray)) {
+				$currentValueResultArray = Set::sort($currentValueResultArray, $secondPath, $order2);
+				$results = array_merge($results, $currentValueResultArray);
+			}
+		} else {
+			$results = $firstOrder;
+		}
+		
+		return $results;
 	}
 }
