@@ -66,8 +66,8 @@ class Product extends SDKModel {
 		return '';
 	}
 	
-	public function productSelectListWithID() {
-		$prodDB = $this->findAll([]);
+	public function productSelectListWithID($conditions = []) {
+		$prodDB = $this->findAll($conditions);
 		
 		return $this->productArrayToSelectableList($prodDB);
 	}
