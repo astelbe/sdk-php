@@ -165,7 +165,7 @@ class AstelContext extends Singleton {
 	/**
 	 * @return string Direct user IP or forwarded IP if the SDK is behind a load balancer
 	 */
-	public function getUserIP() {
+	public static function getUserIP() {
 		$ip = $_SERVER['REMOTE_ADDR'];
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
 			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -177,11 +177,11 @@ class AstelContext extends Singleton {
 	/**
 	 * @return string
 	 */
-	public function getUniqueVisitorKey() {
-		return md5($this->getUserIP() . $_SERVER['HTTP_USER_AGENT']);
+	public static function getUniqueVisitorKey() {
+		return md5(self::getUserIP() . $_SERVER['HTTP_USER_AGENT']);
 	}
 	
-	public function getReferrer() {
+	public static function getReferrer() {
 		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 	
