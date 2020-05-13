@@ -55,7 +55,7 @@ class AstelContext extends Singleton {
 		$this->cacheTTL = $ttl;
 	}
 	
-	public function getCacheTTL(){
+	public function getCacheTTL() {
 		return $this->cacheTTL;
 	}
 	
@@ -114,15 +114,16 @@ class AstelContext extends Singleton {
 	public function getisPrivate() {
 		return $this->isPrivate;
 	}
-
+	
 	/**
 	 * @return int (bool)
 	 */
 	public function getIsProfessional() {
 		$is_professional = ($this->getisPrivate() === 1 || $this->getisPrivate() === true || $this->getisPrivate() === null) ? 0 : 1;
+		
 		return $is_professional;
 	}
-
+	
 	/**
 	 * Determines if all API calls should be filtered by default by private / professional.
 	 * If not set, (set to null), no conditions are added to API calls
@@ -166,7 +167,11 @@ class AstelContext extends Singleton {
 	 * @return string Direct user IP or forwarded IP if the SDK is behind a load balancer
 	 */
 	public static function getUserIP() {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		if (!isset($_SERVER['REMOTE_ADDR'])) {
+			$ip = 'console';
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
 			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
 		}
@@ -177,8 +182,8 @@ class AstelContext extends Singleton {
 	/**
 	 * @return string
 	 */
-	public static function getUniqueVisitorKey() {
-		return md5(self::getUserIP() . $_SERVER['HTTP_USER_AGENT']);
+	public static function getUniqueVisitorKey($salt = '') {
+		return md5(self::getUserIP() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $salt);
 	}
 	
 	public static function getReferrer() {
