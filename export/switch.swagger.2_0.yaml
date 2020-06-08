@@ -8,7 +8,7 @@ info:
     name: Grégoire Bourguignon
     url: https://www.astel.be/
 host: api.astel.be
-basePath: /
+basePath: /v2_00/
 securityDefinitions:
   api-key:
     type: apiKey
@@ -28,7 +28,7 @@ paths:
       summary: brand/{id}
       tags:
       - v2_00
-      operationId: V200BrandByIdGet
+      operationId: brand/{id}
       deprecated: false
       produces:
       - application/json
@@ -82,7 +82,7 @@ paths:
       summary: status/
       tags:
       - v2_00
-      operationId: V200StatusGet
+      operationId: status/
       deprecated: false
       produces:
       - application/json
@@ -131,7 +131,7 @@ paths:
       summary: postal_code/
       tags:
       - v2_00
-      operationId: V200PostalCodeGet
+      operationId: postal_code/
       deprecated: false
       produces:
       - application/json
@@ -180,7 +180,7 @@ paths:
       summary: product/
       tags:
       - v2_00
-      operationId: V200ProductGet
+      operationId: product/
       deprecated: false
       produces:
       - application/json
@@ -229,7 +229,7 @@ paths:
       summary: product/{id}
       tags:
       - v2_00
-      operationId: V200ProductByIdGet
+      operationId: product/{id}
       deprecated: false
       produces:
       - application/json
@@ -283,7 +283,7 @@ paths:
       summary: discount/
       tags:
       - v2_00
-      operationId: V200DiscountGet
+      operationId: discount/
       deprecated: false
       produces:
       - application/json
@@ -332,7 +332,7 @@ paths:
       summary: discount/{id}
       tags:
       - v2_00
-      operationId: V200DiscountByIdGet
+      operationId: discount/{id}
       deprecated: false
       produces:
       - application/json
@@ -386,7 +386,7 @@ paths:
       summary: partner/me
       tags:
       - v2_00
-      operationId: V200PartnerMeGet
+      operationId: partner/me
       deprecated: false
       produces:
       - application/json
@@ -435,7 +435,7 @@ paths:
       summary: brand/
       tags:
       - v2_00
-      operationId: V200BrandGet
+      operationId: brand/
       deprecated: false
       produces:
       - application/json
@@ -486,7 +486,7 @@ paths:
       summary: option/
       tags:
       - v2_00
-      operationId: V200OptionGet
+      operationId: option/
       deprecated: false
       produces:
       - application/json
@@ -535,7 +535,7 @@ paths:
       summary: option/{id}
       tags:
       - v2_00
-      operationId: V200OptionByIdGet
+      operationId: option/{id}
       deprecated: false
       produces:
       - application/json
@@ -588,7 +588,7 @@ paths:
       summary: option/{id}/commission
       tags:
       - v2_00
-      operationId: V200OptionCommissionByIdGet
+      operationId: option/{id}/commission
       deprecated: false
       produces:
       - application/json
@@ -641,7 +641,7 @@ paths:
       summary: option_group/
       tags:
       - v2_00
-      operationId: V200OptionGroupGet
+      operationId: option_group/
       deprecated: false
       produces:
       - application/json
@@ -689,7 +689,7 @@ paths:
       summary: option_group/{id}
       tags:
       - v2_00
-      operationId: V200OptionGroupByIdGet
+      operationId: option_group/{id}
       deprecated: false
       produces:
       - application/json
@@ -742,7 +742,7 @@ paths:
       summary: partner/{id}/last_ordered_products
       tags:
       - v2_00
-      operationId: V200PartnerLastOrderedProductsByIdGet
+      operationId: partner/{id}/last_ordered_products
       deprecated: false
       produces:
       - application/json
@@ -798,7 +798,7 @@ paths:
       summary: partner/{id}/call_center_open
       tags:
       - v2_00
-      operationId: V200PartnerCallCenterOpenByIdGet
+      operationId: partner/{id}/call_center_open
       deprecated: false
       produces:
       - application/json
@@ -852,7 +852,7 @@ paths:
       summary: availability_zone/
       tags:
       - v2_00
-      operationId: V200AvailabilityZoneGet
+      operationId: availability_zone/
       deprecated: false
       produces:
       - application/json
@@ -901,7 +901,7 @@ paths:
       summary: availability_zone/{id}
       tags:
       - v2_00
-      operationId: V200AvailabilityZoneByIdGet
+      operationId: availability_zone/{id}
       deprecated: false
       produces:
       - application/json
@@ -954,7 +954,7 @@ paths:
       summary: postal_code/{id}
       tags:
       - v2_00
-      operationId: V200PostalCodeByIdGet
+      operationId: postal_code/{id}
       deprecated: false
       produces:
       - application/json
@@ -1008,7 +1008,7 @@ paths:
       summary: product/{id}/play_description
       tags:
       - v2_00
-      operationId: V200ProductPlayDescriptionByIdGet
+      operationId: product/{id}/play_description
       deprecated: false
       produces:
       - application/json
@@ -1061,7 +1061,7 @@ paths:
       summary: product/{id}/commission
       tags:
       - v2_00
-      operationId: V200ProductCommissionByIdGet
+      operationId: product/{id}/commission
       deprecated: false
       produces:
       - application/json
@@ -1114,7 +1114,7 @@ paths:
       summary: product/{id}/web
       tags:
       - v2_00
-      operationId: V200ProductWebByIdGet
+      operationId: product/{id}/web
       deprecated: false
       produces:
       - application/json
@@ -1167,7 +1167,7 @@ paths:
       summary: product/{id}/subscription_period
       tags:
       - v2_00
-      operationId: V200ProductSubscriptionPeriodByIdGet
+      operationId: product/{id}/subscription_period
       deprecated: false
       produces:
       - application/json
@@ -1220,7 +1220,7 @@ paths:
       summary: product/{id}/option_relations
       tags:
       - v2_00
-      operationId: V200ProductOptionRelationsByIdGet
+      operationId: product/{id}/option_relations
       deprecated: false
       produces:
       - application/json
@@ -1273,7 +1273,7 @@ paths:
       summary: product/{id}/option_group_relations
       tags:
       - v2_00
-      operationId: V200ProductOptionGroupRelationsByIdGet
+      operationId: product/{id}/option_group_relations
       deprecated: false
       produces:
       - application/json
@@ -1327,7 +1327,7 @@ paths:
       summary: product/{id}/available/{postal_code_id}
       tags:
       - v2_00
-      operationId: V200ProductAvailableByIdAndPostalCodeIdGet
+      operationId: product/{id}/available/{postal_code_id}
       deprecated: false
       produces:
       - application/json
@@ -1385,7 +1385,7 @@ paths:
       summary: product/compare
       tags:
       - v2_00
-      operationId: V200ProductCompareGet
+      operationId: product/compare
       deprecated: false
       produces:
       - application/json
@@ -1520,7 +1520,7 @@ paths:
       summary: status/{id}
       tags:
       - v2_00
-      operationId: V200StatusByIdGet
+      operationId: status/{id}
       deprecated: false
       produces:
       - application/json
@@ -1574,7 +1574,7 @@ paths:
       summary: product/{id}/available/search/{txt_base_64}
       tags:
       - v2_00
-      operationId: V200ProductAvailableSearchByIdAndTxtBase64Get
+      operationId: product/{id}/available/search/{txt_base_64}
       deprecated: false
       produces:
       - application/json
@@ -1632,7 +1632,7 @@ paths:
       summary: lead/
       tags:
       - v2_00
-      operationId: V200LeadPost
+      operationId: lead/
       deprecated: false
       produces:
       - application/json
@@ -1739,7 +1739,7 @@ paths:
       summary: order/
       tags:
       - v2_00
-      operationId: V200OrderGet
+      operationId: order/
       deprecated: false
       produces:
       - application/json
@@ -1787,7 +1787,7 @@ paths:
       summary: order/{id}
       tags:
       - v2_00
-      operationId: V200OrderByIdGet
+      operationId: order/{id}
       deprecated: false
       produces:
       - application/json
@@ -1840,7 +1840,7 @@ paths:
       summary: order_line/
       tags:
       - v2_00
-      operationId: V200OrderLineGet
+      operationId: order_line/
       deprecated: false
       produces:
       - application/json
@@ -1888,7 +1888,7 @@ paths:
       summary: order_line/{id}
       tags:
       - v2_00
-      operationId: V200OrderLineByIdGet
+      operationId: order_line/{id}
       deprecated: false
       produces:
       - application/json
@@ -1941,7 +1941,7 @@ paths:
       summary: order_line/{id}/workflow_steps
       tags:
       - v2_00
-      operationId: V200OrderLineWorkflowStepsByIdGet
+      operationId: order_line/{id}/workflow_steps
       deprecated: false
       produces:
       - application/json
@@ -1994,7 +1994,7 @@ paths:
       summary: order_line/{id}/commission
       tags:
       - v2_00
-      operationId: V200OrderLineCommissionByIdGet
+      operationId: order_line/{id}/commission
       deprecated: false
       produces:
       - application/json
@@ -2047,7 +2047,7 @@ paths:
       summary: order_line/{id}/cashback
       tags:
       - v2_00
-      operationId: V200OrderLineCashbackByIdGet
+      operationId: order_line/{id}/cashback
       deprecated: false
       produces:
       - application/json
@@ -2100,7 +2100,7 @@ paths:
       summary: discount/{id}/subscription_periods
       tags:
       - v2_00
-      operationId: V200DiscountSubscriptionPeriodsByIdGet
+      operationId: discount/{id}/subscription_periods
       deprecated: false
       produces:
       - application/json
@@ -2154,7 +2154,7 @@ paths:
       summary: brand/{id}/web
       tags:
       - v2_00
-      operationId: V200BrandWebByIdGet
+      operationId: brand/{id}/web
       deprecated: false
       produces:
       - application/json
@@ -2208,7 +2208,7 @@ paths:
       summary: tag/
       tags:
       - v2_00
-      operationId: V200TagGet
+      operationId: tag/
       deprecated: false
       produces:
       - application/json
@@ -2259,7 +2259,7 @@ paths:
       summary: tag/{id}
       tags:
       - v2_00
-      operationId: V200TagByIdGet
+      operationId: tag/{id}
       deprecated: false
       produces:
       - application/json
@@ -2313,7 +2313,7 @@ paths:
       summary: tag_group/
       tags:
       - v2_00
-      operationId: V200TagGroupGet
+      operationId: tag_group/
       deprecated: false
       produces:
       - application/json
@@ -2364,7 +2364,7 @@ paths:
       summary: tag_group/{id}
       tags:
       - v2_00
-      operationId: V200TagGroupByIdGet
+      operationId: tag_group/{id}
       deprecated: false
       produces:
       - application/json
@@ -2418,7 +2418,7 @@ paths:
       summary: hardware/
       tags:
       - v2_00
-      operationId: V200HardwareGet
+      operationId: hardware/
       deprecated: false
       produces:
       - application/json
@@ -2467,7 +2467,7 @@ paths:
       summary: hardware/{id}
       tags:
       - v2_00
-      operationId: V200HardwareByIdGet
+      operationId: hardware/{id}
       deprecated: false
       produces:
       - application/json
@@ -2521,7 +2521,7 @@ paths:
       summary: hardware/declination/
       tags:
       - v2_00
-      operationId: V200HardwareDeclinationGet
+      operationId: hardware/declination/
       deprecated: false
       produces:
       - application/json
@@ -2570,7 +2570,7 @@ paths:
       summary: hardware/declination/{id}
       tags:
       - v2_00
-      operationId: V200HardwareDeclinationByIdGet
+      operationId: hardware/declination/{id}
       deprecated: false
       produces:
       - application/json
@@ -2624,7 +2624,7 @@ paths:
       summary: hardware/declination/{id}/web
       tags:
       - v2_00
-      operationId: V200HardwareDeclinationWebByIdGet
+      operationId: hardware/declination/{id}/web
       deprecated: false
       produces:
       - application/json
@@ -2861,11 +2861,23 @@ definitions:
       color_code:
         description: hexadecimal color code associated to the brand
         type: string
+      play_tv_channels_basic_package:
+        $ref: '#/definitions/TranslatedStringISO2String'
+      play_tv_hd_channels_basic_package:
+        $ref: '#/definitions/TranslatedStringISO2String'
+      cashback_tooltip:
+        $ref: '#/definitions/TranslatedStringISO2String'
+      bc_general_intro:
+        $ref: '#/definitions/TranslatedStringISO2String'
     required:
     - small_description
     - description
     - logo
     - color_code
+    - play_tv_channels_basic_package
+    - play_tv_hd_channels_basic_package
+    - cashback_tooltip
+    - bc_general_intro
   TranslatedStringISO2String:
     title: TranslatedStringISO2String
     type: object
@@ -3005,6 +3017,12 @@ definitions:
       banner:
         description: url of the banner illustrating the option
         type: string
+      duration_option:
+        description: Subscribing to this option engage the customer to this contract duration in month
+        type: string
+      duration_product:
+        description: Subscribing to this option overrides the contract duration of the associated product
+        type: string
     required:
     - id
     - brand_id
@@ -3020,6 +3038,8 @@ definitions:
     - question
     - type_description
     - banner
+    - duration_option
+    - duration_product
   OptionTypeDescription:
     title: OptionTypeDescription
     description: some characteristics associated to the given plays
@@ -3064,6 +3084,8 @@ definitions:
         description: textual, url friendly identifier of the brand (you can find this brand by its slug)
         type: string
       name:
+        $ref: '#/definitions/TranslatedStringISO2String'
+      short_name:
         $ref: '#/definitions/TranslatedStringISO2String'
       description:
         $ref: '#/definitions/TranslatedStringISO2String'
@@ -3142,6 +3164,16 @@ definitions:
         description: unique identifier of the zone where the product is sold
         type: integer
         format: int32
+      product_code:
+        description: Code identifying the product used and defined by the brand
+        type: string
+      ean:
+        description: EAN Code identifying the product used and defined by the brand
+        type: string
+      provider_cashback:
+        description: Cashback given to the customer directly by the brand
+        type: number
+        format: double
     required:
     - id
     - slug
@@ -3149,6 +3181,7 @@ definitions:
     - brand_name
     - brand_slug
     - name
+    - short_name
     - description
     - medium_description
     - short_description
@@ -3172,6 +3205,9 @@ definitions:
     - is_best_seller
     - is_featured
     - availability_zone_id
+    - product_code
+    - ean
+    - provider_cashback
   ProductTypeDescription:
     title: ProductTypeDescription
     description: product description depending on the different product type
@@ -3375,6 +3411,9 @@ definitions:
         format: int32
       price_description:
         $ref: '#/definitions/TranslatedStringISO2String'
+      is_base_package_provided:
+        description: true if the default basic package of channels of the brand are associated to this product
+        type: boolean
     required:
     - size_number_tv_min
     - size_number_tv_max
@@ -3383,6 +3422,7 @@ definitions:
     - number_tv_channel
     - number_hd_tv_channel
     - price_description
+    - is_base_package_provided
   Brands:
     title: Brands
     description: The Brands model is a collection model  that contains zero or more references to a set of Brand, and links that guide you on ways to interact with the Brands. The collection offers a paginated view of Brand.
@@ -4517,7 +4557,6 @@ definitions:
         type: string
   ISO2Language:
     title: ISO2Language
-    example: FR
     type: string
     enum:
     - FR
@@ -5137,6 +5176,10 @@ definitions:
       internal_name:
         description: internally used name of identifying the tag group
         type: string
+      weight:
+        description: used to order tag groups by its weight
+        type: integer
+        format: int32
     required:
     - id
     - is_hardware_feature
@@ -5144,6 +5187,7 @@ definitions:
     - type
     - translatable_name
     - internal_name
+    - weight
   TagGroups:
     title: TagGroups
     description: The TagGroups model is a collection model  that contains zero or more references to a set of TagGroup, and links that guide you on ways to interact with the TagGroups. The collection offers a paginated view of TagGroups.
