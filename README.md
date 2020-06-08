@@ -1,6 +1,8 @@
 # Astel API Client Library for PHP
 
-It is a lightweight, Astel API client library for PHP. 
+It is a lightweight, Astel API client library for PHP. The SDK is best suited for implementing some functionnalities on your own. For example: telecom product catalog listing, options, joint offer for comparing, ordering and sales reporting. The whole Astel.be website is written using this SDK and the API as source of data.
+
+You can either implement your own website using this SDK or use easily integrable [off-the-shelf tools - Web Integration Modules](https://github.com/astelbe/web-integration). These modules are injectable on any internet facing application or website by inserting some html tags in your own code.
 
 ## Astel API Documentation
 Our swagger definition and documentation is available online: [SwaggerHub Astel Switch API V2_00](https://app.swaggerhub.com/apis/astel/switch/2_0).
@@ -65,7 +67,7 @@ AstelSDK\AstelContext::registerUtilsFunctions();
 Now you are ready to call the API and retrieve data.
 
 ### Product Example
-```
+```php
 $Product = AstelSDK\Model\Product::getInstance();
 
 $products = $Product->find('all', [
@@ -85,7 +87,7 @@ debug($productVOOOne);
 It retrieves all VOO Products and their full description, the commission and cashback associated and web links for product page, and the second example retrieves a single product : Voo One.
  
 ### Discount Example:
-```
+```php
 $Discount = Discount::getInstance();
 
 $discounts = $Discount->find('all', [
