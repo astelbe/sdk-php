@@ -2,6 +2,7 @@
 
 namespace AstelSDK\API;
 
+use AstelSDK\AstelContext;
 use CakeUtility\Hash;
 
 class WebsiteConnection extends APIModel {
@@ -10,7 +11,7 @@ class WebsiteConnection extends APIModel {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
+			'unique_visitor_key' => AstelContext::getUniqueVisitorKey(),
 			'language' => $this->context->getLanguage(),
 		];
 		$params = Hash::merge($default_params, $params);
@@ -23,7 +24,7 @@ class WebsiteConnection extends APIModel {
 	
 	public function clearCart() {
 		$params = [
-			'unique_visitor_key' => $this->context->getUniqueVisitorKey(),
+			'unique_visitor_key' => AstelContext::getUniqueVisitorKey(),
 		];
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/website_connection/cart');
