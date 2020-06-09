@@ -1,12 +1,14 @@
-# astelbe/sdk-php - Astel API Client Library for PHP
+# Astel API Client Library for PHP
 
-It is a lightweight, Astel API client library for PHP. 
+It is a lightweight, Astel API client library for PHP. The SDK is best suited for implementing some functionnalities on your own. For example: telecom product catalog listing, options, joint offer for comparing, ordering and sales reporting. The whole Astel.be website is written using this SDK and the API as source of data.
 
-## API Documentation
+You can either implement your own website using this SDK or use easily integrable [off-the-shelf tools - Web Integration Modules](https://github.com/astelbe/web-integration). These modules are injectable on any internet facing application or website by inserting some html tags in your own code.
+
+## Astel API Documentation
 Our swagger definition and documentation is available online: [SwaggerHub Astel Switch API V2_00](https://app.swaggerhub.com/apis/astel/switch/2_0).
 You can directly test the API with your partner api key via swagger on clicking on the Authorize Button.
 
-## API Usage and Example (Postman Export)
+## Astel API Usage and Example (Postman Export)
 A developer can also use Postman (https://www.getpostman.com/) to interact with the API. An export is [versioned in the export folder](https://github.com/astelbe/sdk-php/blob/master/export/Astel.postman_collection.json).
 
 Import the JSON file in Postman and set the following variables:
@@ -16,7 +18,9 @@ Import the JSON file in Postman and set the following variables:
  
  You are good to go and use our API. Some Usage Examples are available in the corresponding Postman folder.
 
-## SDK Installation
+ Some of the Endpoints uses an OPTIONS HTTP Method. Those are intended for querying extra information about the usage of the endpoint. If a developer wants to know the available query filters or orderings params, he can query those OPTIONS endpoints.
+
+## Astel SDK Installation
 
 [composer]: https://getcomposer.org
 
@@ -25,21 +29,26 @@ Install via [Composer][composer].
 ```
 $ composer require astelbe/sdk-php
 ```
+And use in your PHP code:
+```php
+require_once 'vendor/autoload.php';
+```
 
+or, simply, download an archive of our code and upload it on your application.
 
 ## Usage
 
 
 See our developer site for more examples.
 
-### SDK Initialisation
+### Astel SDK Initialisation
 ```php
 // All methods require authentication. To get your Astel API Private Token credentials, contact us
 
 require_once 'vendor/autoload.php';
 
-use AstelSDK\API\Partner;
-use AstelSDK\API\Brand;
+use AstelSDK\Model\Partner;
+use AstelSDK\Model\Brand;
 
 $envParticle = ''; // '' for production, 'sta' for staging env
 $apiToken = '12345abcde'; // API Private Token provided by Astel
@@ -58,8 +67,8 @@ AstelSDK\AstelContext::registerUtilsFunctions();
 Now you are ready to call the API and retrieve data.
 
 ### Product Example
-```
-$Product = AstelSDK\API\Product::getInstance();
+```php
+$Product = AstelSDK\Model\Product::getInstance();
 
 $products = $Product->find('all', [
 	'_embed' => 'play_description,commission,web',
@@ -67,11 +76,18 @@ $products = $Product->find('all', [
 ]);
 
 debug($products);
+
+$productVOOOne = $Product->find('first', [
+	'id' => '1999', // VOO One
+	'_embed' => 'play_description,commission,web',
+]);
+
+debug($productVOOOne);
 ```
-It retrieves all VOO Products and their full description, the commission and cashback associated and web links for product page
+It retrieves all VOO Products and their full description, the commission and cashback associated and web links for product page, and the second example retrieves a single product : Voo One.
  
 ### Discount Example:
-```
+```php
 $Discount = Discount::getInstance();
 
 $discounts = $Discount->find('all', [
@@ -104,4 +120,4 @@ request. Thanks!
 Just [submit a issue][submitanissue] if you need any help. And, of course, feel
 free to submit pull requests with bug fixes or changes.
 
-Don't hesitate to contact direction@astel.be for more info or help for your integration.
+Don't hesitate to contact Astel at direction@astel.be for more info or help for your integration.
