@@ -136,6 +136,9 @@ class Product extends SDKModel {
 		if ($this->isType($product, 'T')) {
 			$MFIT .= 'T';
 		}
+		if ($this->isType($product, 'H')) {
+			$MFIT .= 'H';
+		}
 		
 		return $MFIT;
 	}
