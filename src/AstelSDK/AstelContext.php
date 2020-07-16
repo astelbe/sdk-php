@@ -179,11 +179,15 @@ class AstelContext extends Singleton {
 		return $ip;
 	}
 	
+	public static function getUserAgent() {
+		return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+	}
+	
 	/**
 	 * @return string
 	 */
 	public static function getUniqueVisitorKey($salt = '') {
-		return md5(self::getUserIP() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $salt);
+		return md5(self::getUserIP() . self::getUserAgent() . $salt);
 	}
 	
 	public static function getReferrer() {
