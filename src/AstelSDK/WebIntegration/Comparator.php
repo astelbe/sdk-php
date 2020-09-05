@@ -154,6 +154,7 @@ class Comparator extends Singleton {
 		// Add page url and title for structured data in the plugin Comparator
 		$getParams['page_url'] = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$getParams['page_title'] = $title;
+		$getParams['emulated_session_id'] = $this->context->getSessionID();
 		$serialize = serialize($getParams);
 		$paramsURL = URL::base64url_encode($serialize);
 		

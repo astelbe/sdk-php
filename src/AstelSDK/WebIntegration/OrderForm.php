@@ -72,6 +72,7 @@ class OrderForm extends Singleton {
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params[$paramName] = $paramValue;
 		}
+		$params['emulated_session_id'] = $this->context->getSessionID();
 		$urlParams = http_build_query($params);
 		
 		return '<script>
