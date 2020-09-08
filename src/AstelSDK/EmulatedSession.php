@@ -3,40 +3,72 @@
 namespace AstelSDK;
 
 use CakeUtility\Hash;
+use AstelSDK\Model\WebsiteConnection;
 
 class EmulatedSession {
 	
+	protected $context;
 	protected $sessionId = null;
 	protected $sessionSalt = null;
+	protected $WebsiteConnectionModel;
+	protected $connection;
 	
-	public function __construct() {
+	public function __construct(AstelContext $context) {
+		$this->context = $context;
+		$this->WebsiteConnectionModel = WebsiteConnection::getInstance();
 		$this->sessionInitiate();
 	}
 	
-	public function sessionInitiate() {
-		if ($this->sessionId === null) {
-			if (!isset($_COOKIE['emulated_session_id'])) {
-				// new visitor with new cookie, new session
-				$this->setCookieSessionID();
-			} else {
-				$this->sessionId = $_COOKIE['emulated_session_id'];
-				// visitor with already a cookie
+	protected function sessionInitiate() {
+		if (!isset($_COOKIE['session_id'])) {
+			// new visitor with new cookie, new session to create directly via websiteconnection
+			$this->setCookieSessionID();
+		} else {
+			$this->sessionId = $_COOKIE['session_id'];
+			// visitor with already a cookie, we then check the session via websiteconnection
+		}
+		try {
+			$websiteConnectData = $this->retrieveWebsiteConnection();
+			$websiteConnectDataSession = Hash::get($websiteConnectData, 'session');
+			if ($websiteConnectDataSession === null || empty($websiteConnectDataSession) || !$this->isSessionValid($websiteConnectDataSession)) {
+				// Needs to recreate session, invalid session
+				$this->destroyRestartSession();
+				$websiteConnectData = $this->retrieveWebsiteConnection();
 			}
+			$this->connection = $websiteConnectData;
+			$this->sessionSalt = Hash::get($websiteConnectData, 'session.session_salt');
+			
+		} catch (\Exception $exception) {
+			$this->context->log($exception->getMessage());
 		}
 	}
 	
-	private function setCookieSessionID() {
+	public function getConnectionData() {
+		return $this->connection;
+	}
+	
+	protected function retrieveWebsiteConnection() {
+		$connectParams = [];
+		$connectParams['session_id'] = $this->sessionId;
+		if ($this->sessionSalt !== null) {
+			$connectParams['session_salt'] = $this->sessionSalt;
+		}
+		
+		return $this->WebsiteConnectionModel->find('first', $connectParams);
+	}
+	
+	protected function setCookieSessionID() {
 		// cookie domain = this domain without the subdomain
 		$cookie_domain = substr($_SERVER['SERVER_NAME'], strpos($_SERVER['SERVER_NAME'], '.'));
 		$sessionTimeout = time() + 60 * 60 * 24 * 30;
 		$this->sessionSalt = self::generateSalt();
 		$this->sessionId = AstelContext::getUniqueVisitorKey($this->sessionSalt);
-		setcookie('emulated_session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
+		setcookie('session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
 	}
 	
-	public function destroySession() {
-		if (isset($_COOKIE['emulated_session_id'])) {
-			unset($_COOKIE['emulated_session_id']);
+	protected function destroyRestartSession() {
+		if (isset($_COOKIE['session_id'])) {
+			unset($_COOKIE['session_id']);
 			// reset the session ID to a new ID
 			$this->setCookieSessionID();
 			
@@ -46,9 +78,9 @@ class EmulatedSession {
 		return false;
 	}
 	
-	public function isSessionValid(array $session) {
+	protected function isSessionValid(array $session) {
 		$sessionSalt = Hash::get($session, 'session_salt');
-		$sessionId = Hash::get($session, 'token');
+		$sessionId = Hash::get($session, 'session_id');
 		$sessionIdShouldBe = AstelContext::getUniqueVisitorKey($sessionSalt);
 		
 		return $sessionId === $sessionIdShouldBe;

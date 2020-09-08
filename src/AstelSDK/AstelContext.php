@@ -19,7 +19,7 @@ class AstelContext extends Singleton {
 	protected $apiParticle = 'api';
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
-	public $session = null;
+	protected $session = null;
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
@@ -32,12 +32,21 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
-		
-		$this->session = new EmulatedSession();
+	}
+	
+	public function initSession() {
+		$this->session = new EmulatedSession($this);
 	}
 	
 	public function getSessionID() {
 		return $this->session->getSessionID();
+	}
+	public function getSessionSalt() {
+		return $this->session->getSessionSalt();
+	}
+	
+	public function getSession() {
+		return $this->session;
 	}
 	
 	public function setApiParticle($particle) {

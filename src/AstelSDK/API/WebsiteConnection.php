@@ -12,16 +12,20 @@ class WebsiteConnection extends APIModel {
 	
 	protected function getFirst(array $params = []) {
 		$default_params = [
-			'unique_visitor_key' => $this->context->getSessionID(),
 			'user_agent' => URL::base64url_encode(AstelContext::getUserAgent()),
 			'remote_ip' => AstelContext::getUserIP(),
 			'domain' => AstelContext::getCallingServerName(),
 			'language' => $this->context->getLanguage(),
 		];
-		$sessionSalt = $this->context->session->getSessionSalt();
-		if ($sessionSalt !== null) {
-			$default_params['session_salt'] = $sessionSalt;
+		
+		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
+			// there is already a current session open
+			$params['session_id'] = $this->context->getSession()->getSessionID();
+			if (!isset($params['session_salt'])) {
+				$params['session_salt'] = $this->context->getSession()->getSessionSalt();
+			}
 		}
+		
 		$params = Hash::merge($default_params, $params);
 		$query = $this->newQuery();
 		$query->addGETParams($params);
@@ -30,10 +34,12 @@ class WebsiteConnection extends APIModel {
 		return $query->exec();
 	}
 	
-	public function clearCart() {
-		$params = [
-			'unique_visitor_key' => AstelContext::getUniqueVisitorKey(),
-		];
+	public function clearCart(array $params = []) {
+		$default_params = [];
+		if ($this->context->getSession() !== null) {
+			$default_params['session_id'] = $this->context->getSession()->getSessionID();
+		}
+		$params = Hash::merge($default_params, $params);
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/website_connection/cart');
 		$query->addGETParams($params);

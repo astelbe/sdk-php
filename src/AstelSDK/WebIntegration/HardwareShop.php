@@ -61,7 +61,7 @@ class HardwareShop extends Singleton {
 		if ($view !== null) {
 			$params['view'] = $view;
 		}
-		$params['emulated_session_id'] = $this->context->getSessionID();
+		$params['session_id'] = $this->context->getSessionID();
 		$serialize = serialize($params);
 		$paramsURL = URL::base64url_encode($serialize);
 
