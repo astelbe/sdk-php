@@ -30,7 +30,7 @@ class EmulatedSession {
 		try {
 			$websiteConnectData = $this->retrieveWebsiteConnection();
 			$websiteConnectDataSession = Hash::get($websiteConnectData, 'session');
-			if ($websiteConnectDataSession === null || empty($websiteConnectDataSession) || !$this->isSessionValid($websiteConnectDataSession)) {
+			if ($websiteConnectDataSession === null || empty($websiteConnectDataSession) || !self::isSessionValid($websiteConnectDataSession)) {
 				// Needs to recreate session, invalid session
 				$this->destroyRestartSession();
 				$websiteConnectData = $this->retrieveWebsiteConnection();
@@ -78,10 +78,14 @@ class EmulatedSession {
 		return false;
 	}
 	
-	protected function isSessionValid(array $session) {
+	public static function isSessionValid(array $session, $currentData = []) {
 		$sessionSalt = Hash::get($session, 'session_salt');
 		$sessionId = Hash::get($session, 'session_id');
-		$sessionIdShouldBe = AstelContext::getUniqueVisitorKey($sessionSalt);
+		if (empty($currentData)) {
+			$sessionIdShouldBe = AstelContext::getUniqueVisitorKey($sessionSalt);
+		} else {
+			$sessionIdShouldBe = AstelContext::getUniqueVisitorKeyFromData($currentData);
+		}
 		
 		return $sessionId === $sessionIdShouldBe;
 	}

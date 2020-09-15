@@ -5,6 +5,7 @@ namespace AstelSDK;
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\Logger;
 use AstelSDK\Utils\TypeTransform;
+use CakeUtility\Hash;
 
 class AstelContext extends Singleton {
 	
@@ -41,6 +42,7 @@ class AstelContext extends Singleton {
 	public function getSessionID() {
 		return $this->session->getSessionID();
 	}
+	
 	public function getSessionSalt() {
 		return $this->session->getSessionSalt();
 	}
@@ -205,7 +207,6 @@ class AstelContext extends Singleton {
 			'compare',
 			'hardware',
 			'order',
-			'partner',
 		];
 		$serverName = $_SERVER['SERVER_NAME'];
 		$isReservedServerName = false;
@@ -226,7 +227,17 @@ class AstelContext extends Singleton {
 	 * @return string
 	 */
 	public static function getUniqueVisitorKey($salt = '') {
-		return md5(self::getCallingServerName() . self::getUserAgent() . $salt);
+		$data = [
+			'domain' => self::getCallingServerName(),
+			'user_agent' => self::getUserAgent(),
+			'session_salt' => $salt,
+		];
+		
+		return self::getUniqueVisitorKeyFromData($data);
+	}
+	
+	public static function getUniqueVisitorKeyFromData(array $data) {
+		return md5(Hash::get($data, 'domain', '') . Hash::get($data, 'user_agent', '') . Hash::get($data, 'session_salt', ''));
 	}
 	
 	public static function getReferrer() {
