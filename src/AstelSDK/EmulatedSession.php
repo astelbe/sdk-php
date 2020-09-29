@@ -35,15 +35,14 @@ class EmulatedSession {
 		}
 		try {
 			$websiteConnectData = $this->retrieveWebsiteConnection();
-			$websiteConnectDataSession = Hash::get($websiteConnectData, 'session');
-			if ($websiteConnectDataSession === null || empty($websiteConnectDataSession) || !self::isSessionValid($websiteConnectDataSession)) {
+			if ($websiteConnectData === null || empty($websiteConnectData) || !self::isSessionValid($websiteConnectData)) {
 				// Needs to recreate session, invalid session
 				$this->destroyRestartSession();
 				$websiteConnectData = $this->retrieveWebsiteConnection();
 			}
 			$this->connection = $websiteConnectData;
-			$collectedSessionId = Hash::get($websiteConnectData, 'session.session_id');
-			$this->sessionSalt = Hash::get($websiteConnectData, 'session.session_salt');
+			$collectedSessionId = Hash::get($websiteConnectData, 'session_id');
+			$this->sessionSalt = Hash::get($websiteConnectData, 'session_salt');
 			if ($collectedSessionId !== $this->sessionId) {
 				$this->setCookieSessionID($this->sessionSalt, $collectedSessionId);
 			}
@@ -60,14 +59,41 @@ class EmulatedSession {
 		return $this->connection;
 	}
 	
-	protected function retrieveWebsiteConnection() {
-		$connectParams = [];
-		$connectParams['session_id'] = $this->sessionId;
-		if ($this->sessionSalt !== null) {
-			$connectParams['session_salt'] = $this->sessionSalt;
+	public function sessionGet($path = '', $default = null) {
+		if ($path === '') {
+			if ($this->connection === null) {
+				return [];
+			}
+			
+			return $this->connection;
 		}
 		
-		return $this->WebsiteConnectionModel->find('first', $connectParams);
+		return Hash::get($this->connection, $path, $default);
+	}
+	
+	public function sessionRefresh($params = []) {
+		$this->connection = $this->retrieveWebsiteConnection($params);
+	}
+	
+	protected function retrieveWebsiteConnection($params = []) {
+		try {
+			$connectParams = [];
+			$connectParams['session_id'] = $this->sessionId;
+			if ($this->sessionSalt !== null) {
+				$connectParams['session_salt'] = $this->sessionSalt;
+			}
+			if (isset($params) && !empty($params)) {
+				$params = array_merge($params, $connectParams);
+			} else {
+				$params = $connectParams;
+			}
+			
+			return $this->WebsiteConnectionModel->find('first', $params);
+		} catch (Exception $e) {
+			$this->context->log('Error retrieving Website Connection');
+		}
+		
+		return [];
 	}
 	
 	protected function setCookieSessionID($session_salt = '', $session_id = '') {
