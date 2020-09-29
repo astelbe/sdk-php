@@ -13,6 +13,8 @@ class EmulatedSession {
 	protected $WebsiteConnectionModel;
 	protected $connection;
 	
+	protected $navigatorAcceptCookies = true;
+	
 	public function __construct(AstelContext $context) {
 		$this->context = $context;
 		$this->WebsiteConnectionModel = WebsiteConnection::getInstance();
@@ -23,6 +25,10 @@ class EmulatedSession {
 		if (!isset($_COOKIE['session_id'])) {
 			// new visitor with new cookie, new session to create directly via websiteconnection
 			$this->setCookieSessionID();
+			if (!isset($_COOKIE['session_id'])) {
+				$this->navigatorAcceptCookies = false;
+				$this->context->log('The customer has deactivated his cookies.');
+			}
 		} else {
 			$this->sessionId = $_COOKIE['session_id'];
 			// visitor with already a cookie, we then check the session via websiteconnection
@@ -36,11 +42,18 @@ class EmulatedSession {
 				$websiteConnectData = $this->retrieveWebsiteConnection();
 			}
 			$this->connection = $websiteConnectData;
+			$collectedSessionId = Hash::get($websiteConnectData, 'session.session_id');
 			$this->sessionSalt = Hash::get($websiteConnectData, 'session.session_salt');
-			
+			if ($collectedSessionId !== $this->sessionId) {
+				$this->setCookieSessionID($this->sessionSalt, $collectedSessionId);
+			}
 		} catch (\Exception $exception) {
 			$this->context->log($exception->getMessage());
 		}
+	}
+	
+	public function isNavigatorAcceptingCookies() {
+		return $this->navigatorAcceptCookies;
 	}
 	
 	public function getConnectionData() {
@@ -57,12 +70,20 @@ class EmulatedSession {
 		return $this->WebsiteConnectionModel->find('first', $connectParams);
 	}
 	
-	protected function setCookieSessionID() {
+	protected function setCookieSessionID($session_salt = '', $session_id = '') {
 		// cookie domain = this domain without the subdomain
 		$cookie_domain = substr($_SERVER['SERVER_NAME'], strpos($_SERVER['SERVER_NAME'], '.'));
 		$sessionTimeout = time() + 60 * 60 * 24 * 30;
-		$this->sessionSalt = self::generateSalt();
-		$this->sessionId = AstelContext::getUniqueVisitorKey($this->sessionSalt);
+		if ($session_salt === '') {
+			$this->sessionSalt = self::generateSalt();
+		} else {
+			$this->sessionSalt = $session_salt;
+		}
+		if ($session_id === '') {
+			$this->sessionId = AstelContext::getUniqueVisitorKey($this->sessionSalt);
+		} else {
+			$this->sessionId = $session_id;
+		}
 		setcookie('session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
 	}
 	
