@@ -310,6 +310,12 @@ class Product extends SDKModel {
 		return $biggest;
 	}
 	
+	/**
+	 * @param array $productData Need _embed "play_description" data
+	 * @param array $_GET_params
+	 *
+	 * @return array
+	 */
 	public function determineComparatorGetParamsFromUsage(array $productData = [], array $_GET_params = []) {
 		$_GET_params['mobile'] = 0;
 		if ($this->isType($productData, 'M')) {
