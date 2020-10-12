@@ -140,7 +140,7 @@ class Comparator extends Singleton {
 				$getParams['is_tv'] = 1;
 			}
 		}
-		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '') {
+		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '' && is_numeric($_GET['clasQ'])) {
 			// 0 = order by price
 			// 1 = order by quality
 			// 2 = order by quality/price
