@@ -140,7 +140,7 @@ class Comparator extends Singleton {
 				$getParams['is_tv'] = 1;
 			}
 		}
-		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '') {
+		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '' && is_numeric($_GET['clasQ'])) {
 			// 0 = order by price
 			// 1 = order by quality
 			// 2 = order by quality/price
@@ -154,6 +154,7 @@ class Comparator extends Singleton {
 		// Add page url and title for structured data in the plugin Comparator
 		$getParams['page_url'] = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 		$getParams['page_title'] = $title;
+		$getParams['session_id'] = $this->context->getSessionID();
 		$serialize = serialize($getParams);
 		$paramsURL = URL::base64url_encode($serialize);
 		
