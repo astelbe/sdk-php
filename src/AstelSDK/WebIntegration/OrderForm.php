@@ -49,6 +49,21 @@ class OrderForm extends AbstractWebIntegration {
 	}
 	
 	public function getScriptOrderProduct($productID) {
+		global $_GET;
+		
+		$params = ['data' => []];
+		$params['data']['product_id'] = $productID;
+		$postal_code = Hash::get($_GET, 'postal_code');
+		if ($postal_code !== null) {
+			$params['data']['postal_code'] = $postal_code;
+		}
+		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
+		if ($hardware_product_id !== null) {
+			$params['data']['hardware_product_id'] = $hardware_product_id;
+		}
+		
+		$params['data']['page_url'] = $this->getPageURL();
+		$urlParams = http_build_query($params);
 		return '<script>
 			/* setup the call below with paramaters:
 			* language: uppercase string (FR, NL, EN, DE)
@@ -56,7 +71,7 @@ class OrderForm extends AbstractWebIntegration {
 			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
 			* See ID list via API
 			*/
-			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $productID . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
 		</script>';
 	}
 	
@@ -76,6 +91,7 @@ class OrderForm extends AbstractWebIntegration {
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
+		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		
 		return '<script>

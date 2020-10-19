@@ -25,5 +25,9 @@ abstract class AbstractWebIntegration extends Singleton {
 		}
 		return $toDisplay;
 	}
+	
+	public function getPageURL(){
+		return $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
 
 }
