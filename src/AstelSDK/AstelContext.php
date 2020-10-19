@@ -40,11 +40,19 @@ class AstelContext extends Singleton {
 	}
 	
 	public function getSessionID() {
-		return $this->session->getSessionID();
+		if ($this->session !== null) {
+			return $this->session->getSessionID();
+		}
+		
+		return null;
 	}
 	
 	public function getSessionSalt() {
-		return $this->session->getSessionSalt();
+		if ($this->session !== null) {
+			return $this->session->getSessionSalt();
+		}
+		
+		return null;
 	}
 	
 	public function getSession() {
