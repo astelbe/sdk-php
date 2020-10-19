@@ -144,9 +144,8 @@ class Comparator extends AbstractWebIntegration {
 		}
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
-		
 		// Add page url and title for structured data in the plugin Comparator
-		$getParams['page_url'] = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$getParams['page_url'] = $this->getPageURL();
 		$getParams['page_title'] = $title;
 		$getParams['session_id'] = $this->context->getSessionID();
 		$serialize = serialize($getParams);
