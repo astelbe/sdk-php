@@ -12,6 +12,18 @@ class Product extends SDKModel {
 	const CONSUMER_TYPE_MEDIUM = 'MEDIUM';
 	const CONSUMER_TYPE_HEAVY = 'HEAVY';
 	const CONSUMER_TYPE_HEAVYINT = 'HEAVYINT';
+	const CONSUMER_TYPE_ORDER = [
+		self::CONSUMER_TYPE_SMALL => 0,
+		self::CONSUMER_TYPE_MEDIUM => 1,
+		self::CONSUMER_TYPE_HEAVY => 2,
+		self::CONSUMER_TYPE_HEAVYINT => 3,
+	];
+	const DEFAULT_MOBILE_USAGE = [
+		'mobile_small_qt' => 0,
+		'mobile_regular_qt' => 0,
+		'mobile_heavy_qt' => 0,
+		'mobile_heavy_int_qt' => 0,
+	];
 	const AVAILABILITY_ZONE_ALL_COUNTRY = ['BE' => 10];
 	
 	protected $associated_instance_name = '\AstelSDK\API\Product';
@@ -276,6 +288,110 @@ class Product extends SDKModel {
 		}
 		
 		return $group;
+	}
+	
+	public function getBiggestUsageInArray(array $usages) {
+		$biggest = null;
+		
+		foreach ($usages as $tmp => $usage) {
+			if ($biggest === null) {
+				$biggest = $usage;
+				continue;
+			}
+			if ($usage === Product::CONSUMER_TYPE_HEAVYINT) {
+				$biggest = Product::CONSUMER_TYPE_HEAVYINT;
+				break;
+			}
+			if (self::CONSUMER_TYPE_ORDER[$usage] > self::CONSUMER_TYPE_ORDER[$biggest]) {
+				$biggest = $usage;
+			}
+		}
+		
+		return $biggest;
+	}
+	
+	/**
+	 * @param array $productData Need _embed "play_description" data
+	 * @param array $_GET_params
+	 *
+	 * @return array
+	 */
+	public function determineComparatorGetParamsFromUsage(array $productData = [], array $_GET_params = []) {
+		$_GET_params['mobile'] = 0;
+		if ($this->isType($productData, 'M')) {
+			$_GET_params['mobile'] = 1;
+			$profile = Hash::get($productData, 'play_description.mobile.consumer_caller_profile');
+			if ($profile !== null) {
+				$biggestUsage = $this->getBiggestUsageInArray($profile);
+				if ($biggestUsage !== null) {
+					$_GET_params = array_merge(self::DEFAULT_MOBILE_USAGE, $_GET_params);
+					switch ($biggestUsage) {
+						case self::CONSUMER_TYPE_SMALL:
+							$_GET_params['mobile_small_qt'] = $_GET_params['mobile_small_qt'] + 1;
+							break;
+						case self::CONSUMER_TYPE_MEDIUM:
+							$_GET_params['mobile_regular_qt'] = $_GET_params['mobile_regular_qt'] + 1;
+							break;
+						case self::CONSUMER_TYPE_HEAVY:
+							$_GET_params['mobile_heavy_qt'] = $_GET_params['mobile_heavy_qt'] + 1;
+							break;
+						case self::CONSUMER_TYPE_HEAVYINT:
+							$_GET_params['mobile_heavy_int_qt'] = $_GET_params['mobile_heavy_int_qt'] + 1;
+							break;
+					}
+				}
+			}
+		}
+		$_GET_params['fixe'] = 0;
+		if ($this->isType($productData, 'F')) {
+			$_GET_params['fixe'] = 1;
+			$profile = Hash::get($productData, 'play_description.fix.consumer_caller_profile');
+			if ($profile !== null) {
+				$_GET_params['fix_usage'] = $this->getBiggestUsageInArray($profile);
+			}
+		}
+		$_GET_params['internet'] = 0;
+		if ($this->isType($productData, 'I')) {
+			$_GET_params['internet'] = 1;
+			$profile = Hash::get($productData, 'play_description.internet.consumer_profile');
+			if ($profile !== null) {
+				$_GET_params['internet_usage'] = $this->getBiggestUsageInArray($profile);
+			}
+		}
+		$_GET_params['tv'] = 0;
+		if ($this->isType($productData, 'T')) {
+			$_GET_params['tv'] = 1;
+		}
+		
+		return $_GET_params;
+	}
+	
+	/*
+	 * Used to determine get comparator param for a whole caddie. Each product data pass via  this->determineComparatorGetParamsFromUsage
+	 * then results are merged using this function
+	 */
+	public function determineComparatorGetParamsAddition(array $get1, array $get2) {
+		$get1 = Hash::merge(self::DEFAULT_MOBILE_USAGE, $get1);
+		$get2 = Hash::merge(self::DEFAULT_MOBILE_USAGE, $get2);
+		$get1['mobile'] += $get2['mobile'];
+		if ($get1['mobile'] > 1) {
+			$get1['mobile'] = 1;
+		}
+		$get1['fixe'] += $get2['fixe'];
+		$get1['internet'] += $get2['internet'];
+		$get1['tv'] += $get2['tv'];
+		$get1['mobile_small_qt'] += $get2['mobile_small_qt'];
+		$get1['mobile_regular_qt'] += $get2['mobile_regular_qt'];
+		$get1['mobile_heavy_qt'] += $get2['mobile_heavy_qt'];
+		$get1['mobile_heavy_int_qt'] += $get2['mobile_heavy_int_qt'];
+		if (isset($get2['fix_usage']) && $get2['fix_usage'] !== '') {
+			$get1['fix_usage'] = $get2['fix_usage'];
+		}
+		if (isset($get2['internet_usage']) && $get2['internet_usage'] !== '') {
+			$get1['internet_usage'] = $get2['internet_usage'];
+		}
+		
+		return $get1;
 	}
 	
 }

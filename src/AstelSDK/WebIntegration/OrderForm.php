@@ -60,17 +60,25 @@ class OrderForm extends Singleton {
 			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
 			* See ID list via API
 			*/
-			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $productID . '\', \'orderForm\');
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $productID . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
 		</script>';
 	}
 	
 	public function getScriptOrderToken($extraParams = []) {
 		global $_GET;
-		$params = [];
-		$params['token'] = Hash::get($_GET, 'token', '');
-		$params['postal_code'] = Hash::get($_GET, 'postal_code', '');
+		
+		$params = ['data' => []];
+		$params['data']['product_arrangement_token'] = Hash::get($_GET, 'token', '');
+		$postal_code = Hash::get($_GET, 'postal_code');
+		if ($postal_code !== null) {
+			$params['data']['postal_code'] = $postal_code;
+		}
+		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
+		if ($hardware_product_id !== null) {
+			$params['data']['hardware_product_id'] = $hardware_product_id;
+		}
 		foreach ($extraParams as $paramName => $paramValue) {
-			$params[$paramName] = $paramValue;
+			$params['data'][$paramName] = $paramValue;
 		}
 		$urlParams = http_build_query($params);
 		
@@ -81,7 +89,7 @@ class OrderForm extends Singleton {
 			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
 			*/
 			
-			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\');
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
 			</script>
 		';
 	}

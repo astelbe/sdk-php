@@ -4,6 +4,8 @@ namespace AstelSDK;
 
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\Logger;
+use AstelSDK\Utils\TypeTransform;
+use CakeUtility\Hash;
 
 class AstelContext extends Singleton {
 	
@@ -18,6 +20,7 @@ class AstelContext extends Singleton {
 	protected $apiParticle = 'api';
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
+	protected $session = null;
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
@@ -30,6 +33,30 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
+	}
+	
+	public function initSession() {
+		$this->session = new EmulatedSession($this);
+	}
+	
+	public function getSessionID() {
+		if ($this->session !== null) {
+			return $this->session->getSessionID();
+		}
+		
+		return null;
+	}
+	
+	public function getSessionSalt() {
+		if ($this->session !== null) {
+			return $this->session->getSessionSalt();
+		}
+		
+		return null;
+	}
+	
+	public function getSession() {
+		return $this->session;
 	}
 	
 	public function setApiParticle($particle) {
@@ -179,11 +206,46 @@ class AstelContext extends Singleton {
 		return $ip;
 	}
 	
+	public static function getUserAgent() {
+		return $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+	}
+	
+	public static function getCallingServerName() {
+		$reservedSubDomains = [
+			'compare',
+			'hardware',
+			'order',
+		];
+		$serverName = $_SERVER['SERVER_NAME'];
+		$isReservedServerName = false;
+		foreach ($reservedSubDomains as $sub_domain) {
+			if (TypeTransform::startsWith($serverName, $sub_domain) && TypeTransform::endsWith($serverName, 'astel.be')) {
+				$isReservedServerName = true;
+				break;
+			}
+		}
+		if ($isReservedServerName) {
+			$serverName = str_replace('https://', '', str_replace('http://', '', $_SERVER['HTTP_ORIGIN']));
+		}
+		
+		return $serverName;
+	}
+	
 	/**
 	 * @return string
 	 */
 	public static function getUniqueVisitorKey($salt = '') {
-		return md5(self::getUserIP() . $_SERVER['HTTP_USER_AGENT'] . $_SERVER['HTTP_ACCEPT_LANGUAGE'] . $salt);
+		$data = [
+			'domain' => self::getCallingServerName(),
+			'user_agent' => self::getUserAgent(),
+			'session_salt' => $salt,
+		];
+		
+		return self::getUniqueVisitorKeyFromData($data);
+	}
+	
+	public static function getUniqueVisitorKeyFromData(array $data) {
+		return md5(Hash::get($data, 'domain', '') . Hash::get($data, 'user_agent', '') . Hash::get($data, 'session_salt', ''));
 	}
 	
 	public static function getReferrer() {
