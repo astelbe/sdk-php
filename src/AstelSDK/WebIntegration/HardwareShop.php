@@ -2,15 +2,9 @@
 
 namespace AstelSDK\WebIntegration;
 
-use AstelSDK\AstelContext;
-use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\URL;
 
-class HardwareShop extends Singleton {
-	
-	public function __construct() {
-		$this->context = AstelContext::getInstance();
-	}
+class HardwareShop extends AbstractWebIntegration {
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [];
@@ -92,6 +86,7 @@ class HardwareShop extends Singleton {
 					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
+					' . $this->txtToDisplayNoCookieTechnicalIssue() . '
 				</div>
 			</article>';
 	}
