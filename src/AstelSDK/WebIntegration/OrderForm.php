@@ -73,6 +73,10 @@ class OrderForm extends Singleton {
 		if ($postal_code !== null) {
 			$params['data']['postal_code'] = $postal_code;
 		}
+		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
+		if ($hardware_product_id !== null) {
+			$params['data']['hardware_product_id'] = $hardware_product_id;
+		}
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
