@@ -56,6 +56,7 @@ class HardwareShop extends AbstractWebIntegration {
 			$params['view'] = $view;
 		}
 		$params['session_id'] = $this->context->getSessionID();
+		$params['page_url'] = $this->getPageURL();
 		$serialize = serialize($params);
 		$paramsURL = URL::base64url_encode($serialize);
 		
@@ -72,6 +73,7 @@ class HardwareShop extends AbstractWebIntegration {
 			'offers_brand' => $offers_brand,
 			'is_professional' => $this->context->getIsProfessional(),
 			'session_id' => $this->context->getSessionID(),
+			'page_url' => $this->getPageURL()
 		]);
 		$paramsURL = URL::base64url_encode($serialize);
 		

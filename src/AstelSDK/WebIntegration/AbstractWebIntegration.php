@@ -21,9 +21,13 @@ abstract class AbstractWebIntegration extends Singleton {
 		];
 		$toDisplay = '';
 		if (!EmulatedSession::isNavigatorAcceptingCookies()) {
-			$toDisplay = '<h2 style="color:red;">' . $noTraceTxt[$this->context->getLanguage()] . '</h2>';
+			$toDisplay = '<h2 style="color:blue;">' . $noTraceTxt[$this->context->getLanguage()] . '</h2>';
 		}
 		return $toDisplay;
+	}
+	
+	public function getPageURL(){
+		return $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
 }
