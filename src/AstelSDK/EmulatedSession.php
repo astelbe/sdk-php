@@ -53,9 +53,10 @@ class EmulatedSession {
 	}
 	
 	public static function isNavigatorAcceptingCookies() {
-		setcookie('test_write', 'abc', time() + 60 * 60);
+		$dataToRetrieve = md5('abc' . rand(0, 9999) . time());
+		setcookie('test_write', $dataToRetrieve, time() + 60 * 60);
 		
-		return isset($_COOKIE['test_write']) && $_COOKIE['test_write'] == 'abc';
+		return isset($_COOKIE['test_write']) && $_COOKIE['test_write'] === $dataToRetrieve;
 		//return $this->navigatorAcceptCookies;
 	}
 	
