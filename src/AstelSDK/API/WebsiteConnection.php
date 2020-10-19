@@ -3,6 +3,7 @@
 namespace AstelSDK\API;
 
 use AstelSDK\AstelContext;
+use AstelSDK\EmulatedSession;
 use CakeUtility\Hash;
 use AstelSDK\Utils\URL;
 
@@ -17,7 +18,10 @@ class WebsiteConnection extends APIModel {
 			'domain' => AstelContext::getCallingServerName(),
 			'language' => $this->context->getLanguage(),
 		];
-		
+		$default_params['no_trace'] = 1;
+		if (EmulatedSession::isNavigatorAcceptingCookies()) {
+			$default_params['no_trace'] = 0;
+		}
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
 			// there is already a current session open
 			$params['session_id'] = $this->context->getSession()->getSessionID();

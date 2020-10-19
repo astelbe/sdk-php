@@ -3,15 +3,11 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\API\APIQuery;
-use AstelSDK\Utils\Singleton;
+use AstelSDK\EmulatedSession;
 use AstelSDK\AstelContext;
 use CakeUtility\Hash;
 
-class OrderForm extends Singleton {
-	
-	public function __construct() {
-		$this->context = AstelContext::getInstance();
-	}
+class OrderForm extends AbstractWebIntegration {
 	
 	public function getCSSList($allRequired = true) {
 		$cssList = [];
@@ -95,11 +91,13 @@ class OrderForm extends Singleton {
 	}
 	
 	public function getBodyLoadHtml() {
+		
 		return '<div id="orderForm">
 				<div class="loadOrderFormTxt text-center">
 					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
+					' . $this->txtToDisplayNoCookieTechnicalIssue() . '
 				</div>
 			</div> ';
 	}

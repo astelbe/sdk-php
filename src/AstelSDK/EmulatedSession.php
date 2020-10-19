@@ -4,6 +4,7 @@ namespace AstelSDK;
 
 use CakeUtility\Hash;
 use AstelSDK\Model\WebsiteConnection;
+use AstelSDK\AstelContext;
 
 class EmulatedSession {
 	
@@ -27,7 +28,7 @@ class EmulatedSession {
 			$this->setCookieSessionID();
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
-				$this->context->log('The customer has deactivated his cookies.');
+				$this->context->log('The customer has deactivated his cookies - User Agent: ' . AstelContext::getUserAgent());
 			}
 		} else {
 			$this->sessionId = $_COOKIE['session_id'];
@@ -51,8 +52,12 @@ class EmulatedSession {
 		}
 	}
 	
-	public function isNavigatorAcceptingCookies() {
-		return $this->navigatorAcceptCookies;
+	public static function isNavigatorAcceptingCookies() {
+		$dataToRetrieve = md5('abc' . rand(0, 9999) . time());
+		setcookie('test_write', $dataToRetrieve, time() + 60 * 60);
+		
+		return isset($_COOKIE['test_write']) && $_COOKIE['test_write'] === $dataToRetrieve;
+		//return $this->navigatorAcceptCookies;
 	}
 	
 	public function getConnectionData() {
