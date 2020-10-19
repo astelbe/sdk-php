@@ -29,7 +29,7 @@ class EmulatedSession {
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
 				$userAgent = AstelContext::getUserAgent();
-				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot','Trident','MagpieRSS'];
+				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS'];
 				$isIgnored = false;
 				foreach ($ignoreUserAgentContain as $ignored) {
 					if (strpos($userAgent, $ignored) !== false) {
@@ -37,7 +37,7 @@ class EmulatedSession {
 						break;
 					}
 				}
-				if(!$isIgnored){
+				if (!$isIgnored) {
 					$this->context->log('The customer has deactivated his cookies - User Agent: ' . $userAgent);
 				}
 			}
@@ -63,12 +63,17 @@ class EmulatedSession {
 		}
 	}
 	
+	public static $acceptingCookies = null;
+	
 	public static function isNavigatorAcceptingCookies() {
-		$dataToRetrieve = md5('abc' . rand(0, 9999) . time());
-		setcookie('test_write', $dataToRetrieve, time() + 60 * 60);
+		if(isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== ''){
+			return true;
+		} else {
+			$cookie_domain = $_SERVER['SERVER_NAME'];
+			setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/',$cookie_domain,true,false);
+		}
 		
-		return isset($_COOKIE['test_write']) && $_COOKIE['test_write'] === $dataToRetrieve;
-		//return $this->navigatorAcceptCookies;
+		return isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== '';
 	}
 	
 	public function getConnectionData() {

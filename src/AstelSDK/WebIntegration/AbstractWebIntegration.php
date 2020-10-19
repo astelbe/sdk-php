@@ -21,7 +21,7 @@ abstract class AbstractWebIntegration extends Singleton {
 		];
 		$toDisplay = '';
 		if (!EmulatedSession::isNavigatorAcceptingCookies()) {
-			$toDisplay = '<h2 style="color:red;">' . $noTraceTxt[$this->context->getLanguage()] . '</h2>';
+			$toDisplay = '<h2 style="color:blue;">' . $noTraceTxt[$this->context->getLanguage()] . '</h2>';
 		}
 		return $toDisplay;
 	}
