@@ -29,7 +29,7 @@ class EmulatedSession {
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
 				$userAgent = AstelContext::getUserAgent();
-				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS'];
+				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS', 'UptimeRobot', 'MojeekBot','YandexBot'];
 				$isIgnored = false;
 				foreach ($ignoreUserAgentContain as $ignored) {
 					if (strpos($userAgent, $ignored) !== false) {
