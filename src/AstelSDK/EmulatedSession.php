@@ -88,6 +88,9 @@ class EmulatedSession {
 			
 			return $this->connection;
 		}
+		if ($this->connection === null) {
+			return null;
+		}
 		
 		return Hash::get($this->connection, $path, $default);
 	}
