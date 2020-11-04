@@ -42,6 +42,10 @@ class WebsiteConnection extends APIModel {
 		$default_params = [];
 		if ($this->context->getSession() !== null) {
 			$default_params['session_id'] = $this->context->getSession()->getSessionID();
+			$default_params['user_agent'] = URL::base64url_encode(AstelContext::getUserAgent());
+			$default_params['remote_ip'] = AstelContext::getUserIP();
+			$default_params['domain'] = AstelContext::getCallingServerName();
+			$default_params['language'] = $this->context->getLanguage();
 		}
 		$params = Hash::merge($default_params, $params);
 		$query = $this->newQuery();
