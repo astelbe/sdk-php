@@ -17,6 +17,7 @@ class WebsiteConnection extends APIModel {
 			'remote_ip' => AstelContext::getUserIP(),
 			'domain' => AstelContext::getCallingServerName(),
 			'language' => $this->context->getLanguage(),
+			'is_professional' => $this->context->getIsProfessional(),
 		];
 		$default_params['no_trace'] = 1;
 		if (EmulatedSession::isNavigatorAcceptingCookies()) {
