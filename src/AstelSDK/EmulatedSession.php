@@ -69,8 +69,7 @@ class EmulatedSession {
 		if(isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== ''){
 			return true;
 		} else {
-			$cookie_domain = $_SERVER['SERVER_NAME'];
-			setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/',$cookie_domain,true,false);
+			setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/','',true,false);
 		}
 		
 		return isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== '';
