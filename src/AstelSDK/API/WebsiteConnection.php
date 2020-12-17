@@ -18,6 +18,7 @@ class WebsiteConnection extends APIModel {
 			'domain' => AstelContext::getCallingServerName(),
 			'language' => $this->context->getLanguage(),
 			'is_professional' => $this->context->getIsProfessional(),
+			'_embed' => 'partner/last_ordered_products,partner/call_center_open'
 		];
 		$default_params['no_trace'] = 1;
 		if (EmulatedSession::isNavigatorAcceptingCookies()) {
