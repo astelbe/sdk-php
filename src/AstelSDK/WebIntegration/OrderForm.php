@@ -136,6 +136,5 @@ class OrderForm extends AbstractWebIntegration {
 		}
 		
 		return $errorMessage;
-		
 	}
 }
