@@ -20,7 +20,7 @@ abstract class SDKModel extends SingletonAssociated {
 	
 	public function getValidationObject() {
 		$response = $this->getLastFullResponseObject();
-		$data = $response->getResultDataAccordingFindType();
+		$data = $response->getResultDataAccordingFindType('first');
 		if ($data === null || empty($data)) {
 			$data = [];
 		}
