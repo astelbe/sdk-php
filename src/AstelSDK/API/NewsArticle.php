@@ -4,7 +4,16 @@ namespace AstelSDK\API;
 
 use CakeUtility\Hash;
 
-class NewsRender extends APIModel {
+class NewsArticle extends APIModel {
+	
+	protected function getAll(array $params = []) {
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/news/article');
+		
+		$query->addGETParams($params);
+		
+		return $query->exec();
+	}
 	
 	protected function getFirst(array $params = []) {
 		$query = $this->newQuery();
@@ -13,7 +22,7 @@ class NewsRender extends APIModel {
 			return false;
 		}
 		unset($params['id']);
-		$query->setUrl('v2_00/news/render/' . $id);
+		$query->setUrl('v2_00/news/article/' . $id);
 		$query->addGETParams($params);
 		
 		return $query->exec();
