@@ -60,7 +60,7 @@ class Product extends APIModel {
 		$response = $query->exec();
 		$this->handlesResponseThrows($response);
 		
-		return $this->returnResponse($response);
+		return $this->returnResponse($response, 'all');
 	}
 	
 	public function isAvailableSearch($product_id, $searchTxt) {
@@ -77,6 +77,6 @@ class Product extends APIModel {
 		$response = $query->exec();
 		$this->handlesResponseThrows($response);
 		
-		return $this->returnResponse($response);
+		return $this->returnResponse($response, 'all');
 	}
 }

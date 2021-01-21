@@ -236,7 +236,7 @@ abstract class APIModel extends Singleton {
 		$result = $this->createFirst($data);
 		$this->handlesResponseThrows($result);
 		
-		return $this->returnResponse($result); // In array form
+		return $this->returnResponse($result, 'first'); // In array form
 	}
 	
 	/**
