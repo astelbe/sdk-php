@@ -20,8 +20,8 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getJSList() {
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' .
-			$this->context->getVersion(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes.js?v=' . $this->context->getVersion() . '&lg=' . $this->context->getLanguage(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
 	}
