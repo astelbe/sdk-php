@@ -28,7 +28,7 @@ class Product extends SDKModel {
 	
 	protected $associated_instance_name = '\AstelSDK\API\Product';
 	
-	public function isProductAvailableAllCountry(array $product) {
+	public function isProductAvailableAllCountry($product) {
 		if (!empty($product)) {
 			$productAvailabilityZone = Hash::get($product, 'availability_zone_id');
 			
@@ -111,7 +111,7 @@ class Product extends SDKModel {
 		return $this->productArrayToSelectableList($prodDB);
 	}
 	
-	public function isType(array $product, $type) {
+	public function isType($product, $type) {
 		if (null === $product || empty($product)) {
 			return false;
 		}
@@ -134,7 +134,7 @@ class Product extends SDKModel {
 		return false;
 	}
 	
-	public function getMfitType(array $product) {
+	public function getMfitType($product) {
 		$MFIT = '';
 		if ($this->isType($product, 'M')) {
 			$MFIT .= 'M';
@@ -160,11 +160,11 @@ class Product extends SDKModel {
 	 *
 	 * @return bool whether the telecom pack has a fixed part
 	 */
-	public function hasProductFixPackPlayPart(array $product) {
+	public function hasProductFixPackPlayPart($product) {
 		return $this->isType($product, 'F') || $this->isType($product, 'I') || $this->isType($product, 'T');
 	}
 	
-	public function isMobileSolo(array $product) {
+	public function isMobileSolo($product) {
 		if ($this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
@@ -214,7 +214,7 @@ class Product extends SDKModel {
 	/**
 	 * @param array $product . Required to give product with embeded subscription_periods/discounts
 	 */
-	public function countValidDiscounts(array $product) {
+	public function countValidDiscounts($product) {
 		$subscription_periods = Hash::get($product, 'subscription_periods', []);
 		$countValidDiscounts = 0;
 		foreach ($subscription_periods as $subscription_period) {
@@ -229,7 +229,7 @@ class Product extends SDKModel {
 		return $countValidDiscounts;
 	}
 	
-	public function isUsageType(array $product, $play, $usage) {
+	public function isUsageType($product, $play, $usage) {
 		$getPath = 'play_description.';
 		if ($play === 'M') {
 			$getPath .= 'mobile.consumer_caller_profile';
@@ -247,7 +247,7 @@ class Product extends SDKModel {
 		return Hash::get($product, 'is_featured', false);
 	}
 	
-	public function getOptionRelationsGroupedByType(array $product, $sort = []) {
+	public function getOptionRelationsGroupedByType($product, $sort = []) {
 		$options = Hash::get($product, 'option_relations', []);
 		$group = [];
 		foreach ($options as $option) {
@@ -265,7 +265,7 @@ class Product extends SDKModel {
 		return $group;
 	}
 	
-	public function getOptionGroupsGroupedByType(array $product, $sort = []) {
+	public function getOptionGroupsGroupedByType($product, $sort = []) {
 		$options = Hash::get($product, 'option_group_relations', []);
 		$group = [];
 		foreach ($options as $option) {
@@ -290,7 +290,7 @@ class Product extends SDKModel {
 		return $group;
 	}
 	
-	public function getBiggestUsageInArray(array $usages) {
+	public function getBiggestUsageInArray($usages) {
 		$biggest = null;
 		
 		foreach ($usages as $tmp => $usage) {
@@ -316,7 +316,7 @@ class Product extends SDKModel {
 	 *
 	 * @return array
 	 */
-	public function determineComparatorGetParamsFromUsage(array $productData = [], array $_GET_params = []) {
+	public function determineComparatorGetParamsFromUsage($productData = [], $_GET_params = []) {
 		$_GET_params['mobile'] = 0;
 		if ($this->isType($productData, 'M')) {
 			$_GET_params['mobile'] = 1;
@@ -370,7 +370,7 @@ class Product extends SDKModel {
 	 * Used to determine get comparator param for a whole caddie. Each product data pass via  this->determineComparatorGetParamsFromUsage
 	 * then results are merged using this function
 	 */
-	public function determineComparatorGetParamsAddition(array $get1, array $get2) {
+	public function determineComparatorGetParamsAddition($get1, $get2) {
 		$get1 = Hash::merge(self::DEFAULT_MOBILE_USAGE, $get1);
 		$get2 = Hash::merge(self::DEFAULT_MOBILE_USAGE, $get2);
 		$get1['mobile'] += $get2['mobile'];
