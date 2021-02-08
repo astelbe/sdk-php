@@ -44,4 +44,10 @@ class RedisCacher extends ACacher implements ICacher {
 		return [];
 		// TODO: Implement keys() method.
 	}
+	
+	public function testConnection() {
+		$this->add('test', 'test2');
+		
+		return $this->get('test') === 'test2';
+	}
 }
