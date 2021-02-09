@@ -19,8 +19,9 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
+		$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes.js?v=' . $this->context->getVersion() . '&lg=' . $this->context->getLanguage(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_'.$this->context->getLanguage().'.js?v=' . $version_data,
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
@@ -70,6 +71,9 @@ class Comparator extends AbstractWebIntegration {
 		}
 		if (isset($_GET['postal_code']) && $_GET['postal_code'] !== '') {
 			$getParams['postal_code'] = $_GET['postal_code'];
+		}
+		if (isset($_GET['postal_code_id']) && $_GET['postal_code_id'] !== '') {
+			$getParams['postal_code_id'] = $_GET['postal_code_id'];
 		}
 		if (isset($_GET['mobile']) && $_GET['mobile'] !== '') {
 			$is_mobile = (int)$_GET['mobile'];
