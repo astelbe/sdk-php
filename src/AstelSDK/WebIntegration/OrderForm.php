@@ -22,8 +22,9 @@ class OrderForm extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
+		$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes.js?v=' . $this->context->getVersion() . '&lg=' . $this->context->getLanguage(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_'.$this->context->getLanguage().'.js?v=' . $version_data,
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
 		];
