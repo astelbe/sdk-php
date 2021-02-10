@@ -146,20 +146,35 @@ class Comparator extends AbstractWebIntegration {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
-		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
-		$getParams['is_professional'] = $is_professional;
-		// Add page url and title for structured data in the plugin Comparator
-		$getParams['page_url'] = $this->getPageURL();
 		$getParams['page_title'] = $title;
-		$getParams['session_id'] = $this->context->getSessionID();
-		$serialize = serialize($getParams);
-		$paramsURL = URL::base64url_encode($serialize);
+
+		$paramsURL = $this->getParamsUrl($getParams);
 		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
-	
+
+	public function getScriptLoadComparatorParameterBar() {
+
+		$paramsURL = $this->getParamsUrl();
+
+		return '<script>
+			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+		</script>';
+	}
+
+	private function getParamsUrl($getParams = []) {
+		$getParams['page_url'] = $this->getPageURL();
+		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
+		$getParams['is_professional'] = $is_professional;
+		$getParams['session_id'] = $this->context->getSessionID();
+		$serialize = serialize($getParams);
+		$paramsURL = URL::base64url_encode($serialize);
+
+		return $paramsURL;
+	}
+
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
 				<div class="loadingImg text-center">
