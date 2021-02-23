@@ -59,11 +59,14 @@ class OrderForm extends AbstractWebIntegration {
 		if ($postal_code !== null) {
 			$params['data']['postal_code'] = $postal_code;
 		}
+		$postal_code_id = Hash::get($_GET, 'postal_code_id');
+		if ($postal_code_id !== null) {
+			$params['data']['postal_code_id'] = $postal_code_id;
+		}
 		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
-		
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		return '<script>
@@ -85,6 +88,10 @@ class OrderForm extends AbstractWebIntegration {
 		$postal_code = Hash::get($_GET, 'postal_code');
 		if ($postal_code !== null) {
 			$params['data']['postal_code'] = $postal_code;
+		}
+		$postal_code_id = Hash::get($_GET, 'postal_code_id');
+		if ($postal_code_id !== null) {
+			$params['data']['postal_code_id'] = $postal_code_id;
 		}
 		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
 		if ($hardware_product_id !== null) {
