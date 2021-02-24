@@ -19,9 +19,14 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
-		$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
+		if ($this->context->getSession() === null) {
+			$version_data = md5(date('mdH'));
+		} else {
+			$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
+		}
+		
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_'.$this->context->getLanguage().'.js?v=' . $version_data,
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $version_data,
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
@@ -147,23 +152,23 @@ class Comparator extends AbstractWebIntegration {
 			$getParams['order_type'] = $order_type;
 		}
 		$getParams['page_title'] = $title;
-
+		
 		$paramsURL = $this->getParamsUrl($getParams);
 		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
-
+	
 	public function getScriptLoadComparatorParameterBar() {
-
+		
 		$paramsURL = $this->getParamsUrl();
-
+		
 		return '<script>
 			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
-
+	
 	private function getParamsUrl($getParams = []) {
 		$getParams['page_url'] = $this->getPageURL();
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
@@ -171,10 +176,10 @@ class Comparator extends AbstractWebIntegration {
 		$getParams['session_id'] = $this->context->getSessionID();
 		$serialize = serialize($getParams);
 		$paramsURL = URL::base64url_encode($serialize);
-
+		
 		return $paramsURL;
 	}
-
+	
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
 				<div class="loadingImg text-center">
