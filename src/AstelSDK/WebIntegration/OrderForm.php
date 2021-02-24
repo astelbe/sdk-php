@@ -22,8 +22,13 @@ class OrderForm extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
+		if ($this->context->getSession() === null) {
+			$version_data = md5(date('mdH'));
+		} else {
+			$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
+		}
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes.js?v=' . $this->context->getVersion() . '&lg=' . $this->context->getLanguage(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_'.$this->context->getLanguage().'.js?v=' . $version_data,
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
 		];
@@ -58,11 +63,14 @@ class OrderForm extends AbstractWebIntegration {
 		if ($postal_code !== null) {
 			$params['data']['postal_code'] = $postal_code;
 		}
+		$postal_code_id = Hash::get($_GET, 'postal_code_id');
+		if ($postal_code_id !== null) {
+			$params['data']['postal_code_id'] = $postal_code_id;
+		}
 		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
-		
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		return '<script>
@@ -84,6 +92,10 @@ class OrderForm extends AbstractWebIntegration {
 		$postal_code = Hash::get($_GET, 'postal_code');
 		if ($postal_code !== null) {
 			$params['data']['postal_code'] = $postal_code;
+		}
+		$postal_code_id = Hash::get($_GET, 'postal_code_id');
+		if ($postal_code_id !== null) {
+			$params['data']['postal_code_id'] = $postal_code_id;
 		}
 		$hardware_product_id = Hash::get($_GET, 'hardware_product_id');
 		if ($hardware_product_id !== null) {

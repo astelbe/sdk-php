@@ -19,8 +19,14 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
+		if ($this->context->getSession() === null) {
+			$version_data = md5(date('mdH'));
+		} else {
+			$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
+		}
+		
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes.js?v=' . $this->context->getVersion() . '&lg=' . $this->context->getLanguage(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $version_data,
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
@@ -70,6 +76,9 @@ class Comparator extends AbstractWebIntegration {
 		}
 		if (isset($_GET['postal_code']) && $_GET['postal_code'] !== '') {
 			$getParams['postal_code'] = $_GET['postal_code'];
+		}
+		if (isset($_GET['postal_code_id']) && $_GET['postal_code_id'] !== '') {
+			$getParams['postal_code_id'] = $_GET['postal_code_id'];
 		}
 		if (isset($_GET['mobile']) && $_GET['mobile'] !== '') {
 			$is_mobile = (int)$_GET['mobile'];
@@ -142,18 +151,33 @@ class Comparator extends AbstractWebIntegration {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
-		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
-		$getParams['is_professional'] = $is_professional;
-		// Add page url and title for structured data in the plugin Comparator
-		$getParams['page_url'] = $this->getPageURL();
 		$getParams['page_title'] = $title;
-		$getParams['session_id'] = $this->context->getSessionID();
-		$serialize = serialize($getParams);
-		$paramsURL = URL::base64url_encode($serialize);
+		
+		$paramsURL = $this->getParamsUrl($getParams);
 		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
+	}
+	
+	public function getScriptLoadComparatorParameterBar() {
+		
+		$paramsURL = $this->getParamsUrl();
+		
+		return '<script>
+			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+		</script>';
+	}
+	
+	private function getParamsUrl($getParams = []) {
+		$getParams['page_url'] = $this->getPageURL();
+		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
+		$getParams['is_professional'] = $is_professional;
+		$getParams['session_id'] = $this->context->getSessionID();
+		$serialize = serialize($getParams);
+		$paramsURL = URL::base64url_encode($serialize);
+		
+		return $paramsURL;
 	}
 	
 	public function getBodyLoadHtml() {
