@@ -6,7 +6,8 @@ use AstelSDK\Utils\Singleton;
 
 class SharedView extends Singleton {
 	
-	public function render($path, $params) {
+	public function render($path, $params = []) {
+		
 		$out = '';
 		ob_start();
 		// Include
@@ -18,3 +19,4 @@ class SharedView extends Singleton {
 		// TODO return string
 	}
 }
+
