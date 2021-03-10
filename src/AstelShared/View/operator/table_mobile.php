@@ -1,6 +1,5 @@
 <?php
 use CakeUtility\Hash;
-// TODO move helpers in sharedView
 ?>
 
 <section class="operator-products-table">
@@ -19,7 +18,7 @@ use CakeUtility\Hash;
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
 			<div class="col-lg-1">
-				<?php if ($col['name'] == 'download_speed' && Config::read('App.language') == 'NL') { ?>
+				<?php if ($col['name'] == 'download_speed' && $params['language'] == 'NL') { ?>
 					<div style="margin-top:-31px;">
 						<?= $col['name'] ?>
 					</div>
@@ -40,7 +39,6 @@ use CakeUtility\Hash;
 	</header>
 	
 	<?php foreach ($params['products'] as $k => $product) {
-		//debug($product);
 		?>
 		<!-- DESKTOP -->
 		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom ">
@@ -57,7 +55,7 @@ use CakeUtility\Hash;
 			// Generate the 3 specifics data columns
 			foreach ($params['custom-col'] as $col) { ?>
 				<div class="col-lg-1">
-					<?= GeneralHelper::getProductInfo($col['key_of_value'], $product); ?>
+					<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
 				</div>
 			<?php } ?>
 
@@ -71,23 +69,21 @@ use CakeUtility\Hash;
 				?>
 			</div>
 			<div class="col-lg-2">
-				<?= GeneralHelper::getDisplayedPrice($product, ['color-css-class' => 'color-operator', 'br-before-during-month' => true]) ?>
+				<?= $product['displayed_price'] ?>
 			</div>
 			<div class="col-lg-3 mt-2 text-center">
 
 				<div class="mb-2 cursor-pointer" data-toggle="modal" data-target="#modalExplainCashback">
 					<?php
-					$cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
-					if ($cashbackAmount != 0) {
-						echo ucfirst(strtolower(__d('general', 'header_cashback')));
-						echo GeneralHelper::cashbackBubble($cashbackAmount, 'sm'); ?>
-						<i class="fa fa-info pl-2"></i>
-					<?php } ?>
+					if(Hash::get($product, 'displayed_cashback', false)) {
+						echo Hash::get($product, 'displayed_cashback');
+					}
+					?>
 				</div>
 
-				<?= GeneralHelper::orderButton($product, ['class_btn_a' => 'mb-1', 'class_btn_span' => 'font-s-09']) ?>
+				<?= $product['order_button'] ?>
+				<?= $product['activation_price'] ?>
 
-				<?= GeneralHelper::getProductActivationPrice($product); ?>
 			</div>
 		</article>
 
@@ -107,12 +103,12 @@ use CakeUtility\Hash;
 					?>
 					<div>
 						<b><?= __d('product', 'tab_internet_label_'. $k) . '</b> ' .
-						GeneralHelper::getProductInfo($col['key_of_value'], $product, '_responsive'); ?>
+							self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 					</div>
 				<?php } ?>
 				
 				<?php
-				$price_description = Hash::get($product, 'play_description.' . $play_type . '.price_description.' . Config::read('App.language'));
+				$price_description = Hash::get($product, 'play_description.' . $play_type . '.price_description.' . $params['language']);
 				if ($price_description) {
 					//						echo '<p><b>' . __d('product', 'Bonus') . ':</b><br>' . $price_description . '</p>';
 					echo '<p class="mt-2">' . $price_description . '</p>';
@@ -121,22 +117,19 @@ use CakeUtility\Hash;
 			</section>
 			<section class="col-6 text-center">
 				<div class="font-s-11">
-					<?= GeneralHelper::getDisplayedPrice($product, ['color-css-class' => 'color-operator']) ?>
+					<?= $product['displayed_price'] ?>
 				</div>
 				<div class="text-center">
 					<div class="mb-2" data-toggle="modal" data-target="#modalExplainCashback">
 						<?php
-						$cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
-						if ($cashbackAmount != 0) {
-							echo ucfirst(strtolower(__d('general', 'header_cashback')));
-							echo GeneralHelper::cashbackBubble($cashbackAmount, 'sm'); ?>
-							<i class="fa fa-info pl-2"></i>
-						<?php } ?>
+						if(Hash::get($product, 'displayed_cashback', false)) {
+							echo Hash::get($product, 'displayed_cashback');
+						}
+						?>
 					</div>
 
-					<?= GeneralHelper::orderButton($product, ['class_btn_a' => 'mb-1', 'class_btn_span' => 'font-s-09']) ?>
-
-					<?= GeneralHelper::getProductActivationPrice($product, $VATD); ?>
+					<?= $product['order_button'] ?>
+					<?= $product['activation_price'] ?>
 				</div>
 			</section>
 		</article>
