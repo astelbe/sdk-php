@@ -19,7 +19,7 @@ use CakeUtility\Hash;
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
 			<div class="col-lg-1">
-				<?php if ($col['name'] == 'download_speed' && Config::read('App.language') == 'NL') { ?>
+				<?php if ($col['name'] == 'download_speed' && $params['language'] == 'NL') { ?>
 					<div style="margin-top:-31px;">
 						<?= $col['name'] ?>
 					</div>
