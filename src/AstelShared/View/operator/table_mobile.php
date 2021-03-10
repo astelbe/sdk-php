@@ -3,11 +3,13 @@ use CakeUtility\Hash;
 ?>
 
 <section class="operator-products-table">
-	<h2 class="my-3">
-		<span class="d-inline-block pr-2">
-			<?= $params['title']; ?>
-		</span>
-	</h2>
+	<?php if(Hash::get($params, 'title', false)) { ?>
+		<h2 class="my-3">
+			<span class="d-inline-block pr-2">
+				<?= $params['title']; ?>
+			</span>
+		</h2>
+	<?php } ?>
 
 	<header class="row d-none my-1 no-gutters d-lg-flex align-items-end text-center border-bottom border-blue text-blue font-weight-bold"
 			style="font-size:0.7rem;">
