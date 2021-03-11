@@ -40,12 +40,11 @@ use CakeUtility\Hash;
 		</div>
 	</header>
 	
-	<?php foreach ($params['products'] as $k => $product) {
-		?>
+	<?php foreach ($params['products'] as $k => $product) { ?>
 		<!-- DESKTOP -->
 		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom ">
 			<div class="col-lg-2 text-left">
-				<h3 class="mb-0 font-weight-bold">
+				<h3 class="mb-0 font-weight-bold font-s-1">
 					<a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
 						<?php
 						echo Hash::get($product, 'short_name.' . $params['language']);
@@ -63,7 +62,6 @@ use CakeUtility\Hash;
 
 			<div class="col-lg-2">
 				<?php
-				//debug($play_type);
 				$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
 				if ($price_description) {
 					echo $price_description;
@@ -104,7 +102,7 @@ use CakeUtility\Hash;
 				foreach ($params['custom-col'] as $col) {
 					?>
 					<div>
-						<b><?= __d('product', 'tab_internet_label_'. $k) . '</b> ' .
+						<b><?= $col['responsive_label'] . '</b> ' .
 							self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 					</div>
 				<?php } ?>
@@ -112,7 +110,6 @@ use CakeUtility\Hash;
 				<?php
 				$price_description = Hash::get($product, 'play_description.' . $play_type . '.price_description.' . $params['language']);
 				if ($price_description) {
-					//						echo '<p><b>' . __d('product', 'Bonus') . ':</b><br>' . $price_description . '</p>';
 					echo '<p class="mt-2">' . $price_description . '</p>';
 				}
 				?>
