@@ -6,6 +6,7 @@ use AstelSDK\Utils\TypeTransform;
 use CakeUtility\Hash;
 use CakeUtility\Set;
 
+
 class Product extends SDKModel {
 	
 	const CONSUMER_TYPE_SMALL = 'SMALL';
