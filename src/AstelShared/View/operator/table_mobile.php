@@ -19,7 +19,7 @@ use CakeUtility\Hash;
 		<?php
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
-			<div class="col-lg-1">
+			<div class="col">
 				<?php if ($col['name'] == 'download_speed' && $params['language'] == 'NL') { ?>
 					<div style="margin-top:-31px;">
 						<?= $col['name'] ?>
@@ -55,8 +55,8 @@ use CakeUtility\Hash;
 			<?php
 			// Generate the 3 specifics data columns
 			foreach ($params['custom-col'] as $col) { ?>
-				<div class="col-lg-1">
-					<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
+				<div class="col">
+                    <?= $product[$col['key_of_value']] ?>
 				</div>
 			<?php } ?>
 
