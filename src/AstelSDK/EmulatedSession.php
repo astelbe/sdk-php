@@ -134,7 +134,7 @@ class EmulatedSession {
 		} else {
 			$this->sessionId = $session_id;
 		}
-		setcookie('session_id_', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
+		setcookie('session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
 	}
 	
 	
