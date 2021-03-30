@@ -1,5 +1,28 @@
 <?php
 use CakeUtility\Hash;
+
+/**
+ * Common V1/V2 template used to display
+ * - packs
+ * - mobile
+ * - internet
+ * Specific displays are available for packs, as the columns are not the same kind
+ * Mobile and Internet custom_columns are separated by each play characteristic
+ * Packs columns are separate by play types
+ * This template contains desktop and mobile version. Some labels are only displayed on mobile version
+ * IE of required data :
+ * ['play_type' => [
+ *	'play_type' => 'play_name',
+ *	'title' => 'tab title',
+ *	'custom-col' => [[
+ *		'name' => 'column title',
+ *		'key_of_value' => 'product data key to display (custom)',
+ *		'responsive_label' => 'label for data - only for internet and mobile tab',
+ *	],]]
+ */
+
+$is_packs = $params['play_type'] === 'packs';
+
 ?>
 
 <section class="operator-products-table">
@@ -19,7 +42,7 @@ use CakeUtility\Hash;
 		<?php
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
-			<div class="col-lg-1">
+			<div class="col-lg<?= ($is_packs ? ' pl-1 text-left' : '')?>">
 				<?php if ($col['name'] == 'download_speed' && $params['language'] == 'NL') { ?>
 					<div style="margin-top:-31px;">
 						<?= $col['name'] ?>
@@ -29,9 +52,11 @@ use CakeUtility\Hash;
 				<?php } ?>
 			</div>
 		<?php } ?>
-		<div class="col-lg-2">
-			<?= $params['col-headers']['bonus'] ?>
-		</div>
+		<?php if(!$is_packs) {?>
+			<div class="col-lg-2">
+				<?= $params['col-headers']['bonus'] ?>
+			</div>
+		<?php } ?>
 		<div class="col-lg-2">
 			<?= $params['col-headers']['pack_price'] ?>
 		</div>
@@ -55,19 +80,20 @@ use CakeUtility\Hash;
 			<?php
 			// Generate the 3 specifics data columns
 			foreach ($params['custom-col'] as $col) { ?>
-				<div class="col-lg-1">
+				<div class="col pl-1<?= ($is_packs ? ' pl-1 text-left' : '')?>">
 					<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
 				</div>
 			<?php } ?>
-
-			<div class="col-lg-2">
-				<?php
-				$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
-				if ($price_description) {
-					echo $price_description;
-				}
-				?>
-			</div>
+			<?php if(!$is_packs) {?>
+				<div class="col-lg-2">
+					<?php
+					$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
+					if ($price_description) {
+						echo $price_description;
+					}
+					?>
+				</div>
+			<?php } ?>
 			<div class="col-lg-2">
 				<?= $product['displayed_price'] ?>
 			</div>
@@ -99,11 +125,14 @@ use CakeUtility\Hash;
 				</h3>
 				<?php
 				// Generate the 3 specifics data columns
-				foreach ($params['custom-col'] as $col) {
-					?>
-					<div>
-						<b><?= $col['responsive_label'] . '</b> ' .
-							self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
+				foreach ($params['custom-col'] as $col) { ?>
+					<div class="mb-2">
+						<?php if(!$is_packs) {?>
+							<b><?= $col['responsive_label'] ?></b>
+						<?php } else { ?>
+							<b><?= $col['name'] ?></b><br>
+						<?php } ?>
+						<?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 					</div>
 				<?php } ?>
 				
