@@ -8,19 +8,8 @@ use CakeUtility\Hash;
 class SharedView extends Singleton {
 	
 	public function render($path, $params = []) {
-
-//		$out = '';
-		//ob_start();
-		// Include
-		include_once __DIR__ . '/../AstelShared/View/' . $path . '.php';
-//		debug('ok');
-		//$out = ob_get_contents();
-		//ob_end_clean();
-		
-		//return $out;
-		// TODO return string
+		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
-
 
 	static function getProductInfo($playDescriptionPath, $product, $version, $responsive = null) {
 		$description = Hash::get($product, $playDescriptionPath, null);
