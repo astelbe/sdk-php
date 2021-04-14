@@ -49,7 +49,10 @@ $is_pack = $params['play_type'] === 'packs';
 		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom ">
 			<div class="col-lg-2 text-left">
 				<h3 class="mb-0 font-weight-bold font-s-1">
-					<a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+					<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+                        <?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
+                            echo Hash::get($product, 'brand_name') . ' ';
+                        } ?>
 						<?php
 						echo Hash::get($product, 'short_name.' . $params['language']);
 						?>
@@ -58,7 +61,8 @@ $is_pack = $params['play_type'] === 'packs';
 			</div>
 			<?php
 			// Generate the 3 specifics data columns
-			foreach ($params['custom-col'] as $col) { ?>
+			foreach ($params['custom-col'] as $col) {
+                ?>
 				<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
                     <?php if($is_pack) { ?>
                         <b><?= $col['responsive_label'] ?> </b>
