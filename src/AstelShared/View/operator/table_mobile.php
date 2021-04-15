@@ -46,7 +46,7 @@ $is_pack = $params['play_type'] === 'packs';
 	
 	<?php foreach ($params['products'] as $k => $product) { ?>
 		<!-- DESKTOP -->
-		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom ">
+		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<div class="col-lg-2 text-left">
 				<h3 class="mb-0 font-weight-bold font-s-1">
 					<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
