@@ -113,7 +113,7 @@ $is_pack = $params['play_type'] === 'packs';
 				// Generate the 3 specifics data columns
 				foreach ($params['custom-col'] as $col) {
 					?>
-					<div class="mb-2">
+					<div class="<?= ($is_pack ? 'mb-2' : '' )?>">
                         <?php if($is_pack) { ?>
                             <div class="mb-1 font-weight-bold"><?= $col['name'] ?></div>
                             <b><?= $col['responsive_label'] ?> </b>
