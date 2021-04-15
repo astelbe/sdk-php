@@ -100,7 +100,7 @@ $is_pack = $params['play_type'] === 'packs';
 		</article>
 
 		<!-- MOBILE -->
-		<article class="row d-flex d-lg-none my-2 border-bottom pb-3">
+		<article class="row d-flex d-lg-none my-2 border-bottom pb-3 text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<section class="col-6" class="text-left">
 				<h3 class="font-weight-bold">
 					<a class="color-operator"
