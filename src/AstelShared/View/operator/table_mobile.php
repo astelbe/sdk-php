@@ -23,14 +23,16 @@ use CakeUtility\Hash;
 
 $is_packs = $params['play_type'] === 'packs';
 
+$is_pack = $params['play_type'] === 'packs';
 ?>
 
-<section class="operator-products-table">
+<section class="operator-products-table mb-5">
 	<?php if(Hash::get($params, 'title', false)) { ?>
-		<h2 class="my-3">
+		<h2 class="mt-3 mb-2">
 			<span class="d-inline-block pr-2">
 				<?= $params['title']; ?>
 			</span>
+            <span class="d-inline-block pl-3"><?= $params['fa-icon'] ?></span>
 		</h2>
 	<?php } ?>
 
@@ -42,7 +44,7 @@ $is_packs = $params['play_type'] === 'packs';
 		<?php
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
-			<div class="col-lg<?= ($is_packs ? ' pl-1 text-left' : '')?>">
+			<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
 				<?php if ($col['name'] == 'download_speed' && $params['language'] == 'NL') { ?>
 					<div style="margin-top:-31px;">
 						<?= $col['name'] ?>
@@ -52,11 +54,11 @@ $is_packs = $params['play_type'] === 'packs';
 				<?php } ?>
 			</div>
 		<?php } ?>
-		<?php if(!$is_packs) {?>
-			<div class="col-lg-2">
-				<?= $params['col-headers']['bonus'] ?>
-			</div>
-		<?php } ?>
+        <?php if(!$is_pack) { ?>
+            <div class="col-lg-2">
+                <?= $params['col-headers']['bonus'] ?>
+            </div>
+        <?php } ?>
 		<div class="col-lg-2">
 			<?= $params['col-headers']['pack_price'] ?>
 		</div>
@@ -67,10 +69,13 @@ $is_packs = $params['play_type'] === 'packs';
 	
 	<?php foreach ($params['products'] as $k => $product) { ?>
 		<!-- DESKTOP -->
-		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom ">
+		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<div class="col-lg-2 text-left">
 				<h3 class="mb-0 font-weight-bold font-s-1">
-					<a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+					<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+                        <?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
+                            echo Hash::get($product, 'brand_name') . ' ';
+                        } ?>
 						<?php
 						echo Hash::get($product, 'short_name.' . $params['language']);
 						?>
@@ -79,21 +84,25 @@ $is_packs = $params['play_type'] === 'packs';
 			</div>
 			<?php
 			// Generate the 3 specifics data columns
-			foreach ($params['custom-col'] as $col) { ?>
-				<div class="col pl-1<?= ($is_packs ? ' pl-1 text-left' : '')?>">
-					<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
+			foreach ($params['custom-col'] as $col) {
+                ?>
+				<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
+                    <?php if($is_pack) { ?>
+                        <b><?= $col['responsive_label'] ?> </b>
+                    <?php } ?>
+                    <?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 				</div>
 			<?php } ?>
-			<?php if(!$is_packs) {?>
-				<div class="col-lg-2">
-					<?php
-					$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
-					if ($price_description) {
-						echo $price_description;
-					}
-					?>
-				</div>
-			<?php } ?>
+            <?php if(!$is_pack) { ?>
+                <div class="col-lg-2">
+                    <?php
+                    $price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
+                    if ($price_description) {
+                        echo $price_description;
+                    }
+                    ?>
+                </div>
+            <?php } ?>
 			<div class="col-lg-2">
 				<?= $product['displayed_price'] ?>
 			</div>
@@ -125,14 +134,14 @@ $is_packs = $params['play_type'] === 'packs';
 				</h3>
 				<?php
 				// Generate the 3 specifics data columns
-				foreach ($params['custom-col'] as $col) { ?>
-					<div class="mb-2">
-						<?php if(!$is_packs) {?>
-							<b><?= $col['responsive_label'] ?></b>
-						<?php } else { ?>
-							<b><?= $col['name'] ?></b><br>
-						<?php } ?>
-						<?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
+				foreach ($params['custom-col'] as $col) {
+					?>
+					<div class="<?= ($is_pack ? 'mb-2' : '' )?>">
+                        <?php if($is_pack) { ?>
+                            <div class="mb-1 font-weight-bold"><?= $col['name'] ?></div>
+                            <b><?= $col['responsive_label'] ?> </b>
+                        <?php } ?>
+                        <?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 					</div>
 				<?php } ?>
 				
