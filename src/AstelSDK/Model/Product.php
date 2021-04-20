@@ -394,5 +394,12 @@ class Product extends SDKModel {
 		
 		return $get1;
 	}
-	
+
+	public function orderByDisplayedPrice ($products) {
+		foreach ($products as $k => $product) {
+			$products[$k]['displayed_price'] = $product['discounted_price'] > 0 ? $product['discounted_price'] : $product['price'];
+		}
+		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
+		return $ordered_products;
+	}
 }
