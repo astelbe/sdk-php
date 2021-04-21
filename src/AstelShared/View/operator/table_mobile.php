@@ -1,5 +1,28 @@
 <?php
 use CakeUtility\Hash;
+
+/**
+ * Common V1/V2 template used to display
+ * - packs
+ * - mobile
+ * - internet
+ * Specific displays are available for packs, as the columns are not the same kind
+ * Mobile and Internet custom_columns are separated by each play characteristic
+ * Packs columns are separate by play types
+ * This template contains desktop and mobile version. Some labels are only displayed on mobile version
+ * IE of required data :
+ * ['play_type' => [
+ *	'play_type' => 'play_name',
+ *	'title' => 'tab title',
+ *	'custom-col' => [[
+ *		'name' => 'column title',
+ *		'key_of_value' => 'product data key to display (custom)',
+ *		'responsive_label' => 'label for data - only for internet and mobile tab',
+ *	],]]
+ */
+
+$is_packs = $params['play_type'] === 'packs';
+
 $is_pack = $params['play_type'] === 'packs';
 ?>
 
