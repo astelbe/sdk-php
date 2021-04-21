@@ -110,7 +110,7 @@ $is_pack = $params['play_type'] === 'packs';
 			</div>
 			<div class="col-lg-3 mt-2 text-center">
 
-				<div class="mb-2 cursor-pointer" data-toggle="modal" data-target="#modalExplainCashback">
+				<div class="mb-2 cursor-pointer">
 					<?php
 					if(Hash::get($product, 'displayed_cashback', false)) {
 						echo Hash::get($product, 'displayed_cashback');
@@ -161,7 +161,7 @@ $is_pack = $params['play_type'] === 'packs';
 					<?= $product['displayed_price'] ?>
 				</div>
 				<div class="text-center">
-					<div class="mb-2" data-toggle="modal" data-target="#modalExplainCashback">
+					<div class="mb-2">
 						<?php
 						if(Hash::get($product, 'displayed_cashback', false)) {
 							echo Hash::get($product, 'displayed_cashback');
