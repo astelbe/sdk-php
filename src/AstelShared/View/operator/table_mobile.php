@@ -21,8 +21,6 @@ use CakeUtility\Hash;
  *	],]]
  */
 
-$is_packs = $params['play_type'] === 'packs';
-
 $is_pack = $params['play_type'] === 'packs';
 ?>
 
@@ -71,15 +69,19 @@ $is_pack = $params['play_type'] === 'packs';
 		<!-- DESKTOP -->
 		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<div class="col-lg-2 text-left">
-				<h3 class="mb-0 font-weight-bold font-s-1">
-					<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+				<h3 class="mb-0 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+                    <?php if ($params['version'] != 'cake') { ?>
+					    <a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+                    <?php } ?>
                         <?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
                             echo Hash::get($product, 'brand_name') . ' ';
                         } ?>
 						<?php
 						echo Hash::get($product, 'short_name.' . $params['language']);
 						?>
-					</a>
+                    <?php if ($params['version'] != 'cake') { ?>
+                        </a>
+                    <?php } ?>
 				</h3>
 			</div>
 			<?php
@@ -125,12 +127,14 @@ $is_pack = $params['play_type'] === 'packs';
 		<!-- MOBILE -->
 		<article class="row d-flex d-lg-none my-2 border-bottom pb-3 text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<section class="col-6" class="text-left">
-				<h3 class="font-weight-bold">
-					<a class="color-operator"
-							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
-						<?php
-						echo Hash::get($product, 'short_name.' . $params['language']);
-						?>                    </a>
+				<h3 class="font-weight-bold color-operator">
+                    <?php if ($params['version'] != 'cake') { ?>
+					    <a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+                    <?php } ?>
+						<?= Hash::get($product, 'short_name.' . $params['language']); ?>
+                    <?php if ($params['version'] != 'cake') { ?>
+                        </a>
+                    <?php } ?>
 				</h3>
 				<?php
 				// Generate the 3 specifics data columns
