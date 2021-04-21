@@ -92,7 +92,7 @@ $is_pack = $params['play_type'] === 'packs';
                     <?php if($is_pack) { ?>
                         <b><?= $col['responsive_label'] ?> </b>
                     <?php } ?>
-                    <?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
+                    <?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
 				</div>
 			<?php } ?>
             <?php if(!$is_pack) { ?>
@@ -138,21 +138,20 @@ $is_pack = $params['play_type'] === 'packs';
 				</h3>
 				<?php
 				// Generate the 3 specifics data columns
-				foreach ($params['custom-col'] as $col) {
-					?>
+                foreach ($params['custom-col'] as $k => $col) {
+                    ?>
 					<div class="<?= ($is_pack ? 'mb-2' : '' )?>">
                         <?php if($is_pack) { ?>
                             <div class="mb-1 font-weight-bold"><?= $col['name'] ?></div>
-                            <b><?= $col['responsive_label'] ?> </b>
                         <?php } ?>
+                            <b><?= $col['responsive_label'] ?> </b>
                         <?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
 					</div>
 				<?php } ?>
-				
 				<?php
-				$price_description = Hash::get($product, 'play_description.' . $play_type . '.price_description.' . $params['language']);
+				$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
 				if ($price_description) {
-					echo '<p class="mt-2">' . $price_description . '</p>';
+					echo '<p class="mt-2" style="font-size:12px;">' . $price_description . '</p>';
 				}
 				?>
 			</section>
