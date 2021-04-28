@@ -7,17 +7,6 @@ use CakeUtility\Set;
 
 class TypeTransform {
 	
-	public static function isJson($string) {
-		try {
-			@json_decode($string);
-			
-			return (json_last_error() == JSON_ERROR_NONE);
-		} catch (Exception $e) {
-		}
-		
-		return false;
-	}
-	
 	public static function unserializeRecursive($val) {
 		//$pattern = "/.*\{(.*)\}/";
 		if (self::is_serialized($val)) {
