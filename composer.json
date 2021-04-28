@@ -15,7 +15,8 @@
   "autoload" : {
 	"psr-0" : {
 	  "AstelSDK" : "src/",
-	  "CakeUtility" : "src/"
+	  "CakeUtility" : "src/",
+	  "AstelShared" : "src/"
 	},
 	"files" : [
 	  "src/CakeUtility/basics.php"
