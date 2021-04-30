@@ -33,7 +33,7 @@ $is_pack = $params['play_type'] === 'packs';
             <span class="d-inline-block pl-3"><?= $params['fa-icon'] ?></span>
 		</h2>
 	<?php } ?>
-
+	
 	<header class="row d-none my-1 no-gutters d-lg-flex align-items-end text-center border-bottom border-blue text-blue font-weight-bold"
 			style="font-size:0.7rem;">
 		<div class="col-lg-2 text-left">
