@@ -36,9 +36,6 @@ $is_pack = $params['play_type'] === 'packs';
 
 	<header class="row d-none my-1 no-gutters d-lg-flex align-items-end text-center border-bottom border-blue text-blue font-weight-bold"
 			style="font-size:0.7rem;">
-		<div class="col-lg-2 text-left">
-			<?= $params['col-headers']['product'] ?>
-		</div>
 		<?php
 		// Generate the specifics data columns
 		foreach ($params['custom-col'] as $col) { ?>
@@ -68,22 +65,23 @@ $is_pack = $params['play_type'] === 'packs';
 	<?php foreach ($params['products'] as $k => $product) { ?>
 		<!-- DESKTOP -->
 		<article class="row d-none d-lg-flex my-2 no-gutters align-items-start text-center border-bottom text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
-			<div class="col-lg-2 text-left">
-				<h3 class="mb-0 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+            <div class="col-12 mb-2">
+                <h3 class="mb-0 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
                     <?php if ($params['version'] != 'cake') { ?>
-					    <a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
-                    <?php } ?>
+                    <a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+                        <?php } ?>
                         <?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
                             echo Hash::get($product, 'brand_name') . ' ';
                         } ?>
-						<?php
-						echo Hash::get($product, 'short_name.' . $params['language']);
-						?>
-                    <?php if ($params['version'] != 'cake') { ?>
-                        </a>
-                    <?php } ?>
-				</h3>
-			</div>
+                        <?php
+                        echo Hash::get($product, 'short_name.' . $params['language']);
+                        ?>
+                        <?php if ($params['version'] != 'cake') { ?>
+                    </a>
+                <?php } ?>
+                </h3>
+            </div>
+
 			<?php
 			// Generate the 3 specifics data columns
 			foreach ($params['custom-col'] as $col) {
@@ -108,7 +106,7 @@ $is_pack = $params['play_type'] === 'packs';
 			<div class="col-lg-2">
 				<?= $product['displayed_price'] ?>
 			</div>
-			<div class="col-lg-3 mt-2 text-center">
+			<div class="col-lg-2 mt-2 text-center">
 
 				<div class="mb-2 cursor-pointer">
 					<?php
