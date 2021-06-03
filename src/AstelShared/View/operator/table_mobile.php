@@ -105,9 +105,11 @@ $is_pack = $params['play_type'] === 'packs';
 				<?php if(!$is_pack) { ?>
 					<div class="col-lg-2">
 						<?php
-						$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
-						if ($price_description) {
+						$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language'], '-');
+						if (!empty($price_description)) {
 							echo $price_description;
+						} else {
+							echo '<div class="text-center">-</div>';
 						}
 						?>
 					</div>
@@ -124,7 +126,9 @@ $is_pack = $params['play_type'] === 'packs';
 					<?php } ?>
 
 					<?= $product['order_button'] ?>
-					<?= $product['activation_price'] ?>
+					<div class="font-s-08 mt-1">
+						<?= $product['activation_price'] ?>
+					</div>
 
 				</div>
 			</div>
