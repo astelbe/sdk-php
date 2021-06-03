@@ -26,7 +26,7 @@ $is_pack = $params['play_type'] === 'packs';
 
 <section class="operator-products-table mb-5">
 	<?php if(Hash::get($params, 'title', false)) { ?>
-		<h2 class="mt-3 mb-4 mb-lg-3 text-center text-lg-left">
+		<h2 class="mt-2 mb-4 mb-lg-3 text-center text-lg-left">
 			<span class="d-inline-block pr-2">
 				<?= $params['title']; ?>
 			</span>
@@ -69,7 +69,7 @@ $is_pack = $params['play_type'] === 'packs';
 	<?php foreach ($params['products'] as $k => $product) { ?>
 		<!-- DESKTOP -->
 		<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
-			<h3 class="mb-1  bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+			<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
 				<?php if ($params['version'] != 'cake') { ?>
 				<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
 					<?php } ?>
