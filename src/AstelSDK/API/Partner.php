@@ -23,12 +23,10 @@ class Partner extends APIModel {
 	}
 
 	public function login (array $params = []) {
-
         $query = $this->newQuery();
-
         $query->addPOSTParams($params);
         $query->setUrl('v2_00/partner/login');
-
-        return $query->exec();
+        $response = $query->exec();
+        return $response->getResultData()[0];
     }
 }
