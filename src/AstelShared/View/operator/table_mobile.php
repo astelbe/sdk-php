@@ -36,6 +36,12 @@ $is_pack = $params['play_type'] === 'packs';
 
 	<header class="row d-none my-2 no-gutters p-2 d-lg-flex align-items-end text-center border-bottom border-blue text-blue font-weight-bold"
 			style="font-size:0.7rem;">
+		<?php if (Hash::get($params, 'show_index', false) === true) { ?>
+			<div class="col-1 text-left">
+				<?= __d('products', 'rank'); ?>
+			</div>
+		<?php } ?>
+
 		<?php if (Hash::get($params, 'display_col_logo', false) === true) { ?>
 			<div class="col-1">
 			</div>
@@ -70,6 +76,11 @@ $is_pack = $params['play_type'] === 'packs';
 		<!-- DESKTOP -->
 		<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+				<?php if (Hash::get($params, 'show_index', false) === true) { ?>
+					<span class="pr-3">	# <?= $k ?></span>
+					</div>
+				<?php } ?>
+
 				<?php if ($params['version'] != 'cake') { ?>
 				<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
 					<?php } ?>
@@ -84,6 +95,7 @@ $is_pack = $params['play_type'] === 'packs';
 			<?php } ?>
             </h3>
 			<div class="row no-gutters p-2">
+
 				<?php if (Hash::get($params, 'display_col_logo', false) === true) { ?>
 
 					<div class="col-1">
