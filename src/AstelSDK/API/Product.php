@@ -79,4 +79,25 @@ class Product extends APIModel {
 		
 		return $this->returnResponse($response, 'all');
 	}
+
+	/*
+	 * Play type name has to be passed without 'is_'.
+	 * 'mobile' but not 'is_mobile'
+	 */
+	public function getByPlayTypes($play_types = array(), $conditions = array()) {
+		if (!empty($play_types)) {
+			$play_conditions = [
+				'is_mobile' => false,
+				'is_fix' => false,
+				'is_internet' => false,
+				'is_tv' => false,
+			];
+			foreach ($play_types as $play_type) {
+
+				$play_conditions['is_' . $play_type] = true;
+			}
+			$conditions = array_merge($conditions, $play_conditions);
+		}
+		return $this->findAll($conditions);
+	}
 }
