@@ -66,7 +66,11 @@ $is_pack = $params['play_type'] === 'packs';
 		</div>
 	</header>
 	
-	<?php foreach ($params['products'] as $k => $product) { ?>
+	<?php foreach ($params['products'] as $k => $product) {
+	    if (isset($params['max_length']) && $k >= $params['max_length']) {
+	        break;
+        }
+        ?>
 		<!-- DESKTOP -->
 		<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 			<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
