@@ -24,6 +24,17 @@ class WebsiteConnection extends APIModel {
 		if (EmulatedSession::isNavigatorAcceptingCookies()) {
 			$default_params['no_trace'] = 0;
 		}
+
+		if(isset($_GET) && isset($_GET['p'])) {
+			$params['partner_referral_token'] = $_GET['p'];
+		}
+
+		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
+			// there is already a current session open
+			$params['session_id'] = $this->context->getSession()->getSessionID();
+			
+		}
+		
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
 			// there is already a current session open
 			$params['session_id'] = $this->context->getSession()->getSessionID();

@@ -16,6 +16,7 @@ class AstelContext extends Singleton {
 	public $Logger = null;
 	protected $partnerToken;
 	protected $isPrivate = null;
+	protected $referralToken = null;
 	protected $language = 'FR';
 	protected $apiParticle = 'api';
 	public $Cacher = null;
@@ -250,6 +251,13 @@ class AstelContext extends Singleton {
 	
 	public static function getReferrer() {
 		return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+	}
+	
+	/**
+	 * @param string $token
+	 */
+	public function setPartnerReferralToken($token) {
+		$this->partner_referral_token = $token;
 	}
 	
 	/**
