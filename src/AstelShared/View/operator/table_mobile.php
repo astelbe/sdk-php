@@ -53,11 +53,11 @@ $is_pack = $params['play_type'] === 'packs';
 				<?php } ?>
 			</div>
 		<?php } ?>
-        <?php if(!$is_pack) { ?>
+        <?php //if(!$is_pack) { ?>
             <div class="col-lg-2">
                 <?= $params['col-headers']['bonus'] ?>
             </div>
-        <?php } ?>
+        <?php //} ?>
 		<div class="col-lg-2">
 			<?= $params['col-headers']['pack_price'] ?>
 		</div>
@@ -113,7 +113,20 @@ $is_pack = $params['play_type'] === 'packs';
 						}
 						?>
 					</div>
-				<?php } ?>
+				<?php } else {
+				    $bonus = false;
+				    foreach ($product['play_description'] as $play_type => $description) {
+				        $price_description = Hash::get((array)$description, 'price_description.' . $params['language'], false);
+				        if ($price_description !== false) {
+                            $bonus .= '<div class="my-1"><b>' . $play_type . '</b> : ' . Hash::get($description, 'price_description.' . $params['language']) . '</div>';
+				        }
+                    }
+				    if ($bonus !== false) {
+				        echo '<div class="col">';
+				        echo $bonus;
+				        echo '</div>';
+                    }
+                }?>
 				<div class="col-lg-2 text-center">
 					<?= $product['displayed_price_desktop'] ?>
 				</div>
