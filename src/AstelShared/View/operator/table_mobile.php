@@ -52,12 +52,23 @@ $is_pack = $params['play_type'] === 'packs';
 					<?= $col['name'] ?>
 				<?php } ?>
 			</div>
+            <?php
+            // add internet and gsm or fix bonus column
+            if (in_array($params['code'], ['IT', 'MI'])) {
+                switch ($col['key_of_value']) {
+                    case 'packs_column_internet' :
+                    case 'packs_column_mobile' :
+                    case 'packs_column_tv' :
+                        echo '<div class="col text-left">Bonus</div>';
+                        break;
+                }
+            } ?>
 		<?php } ?>
-        <?php //if(!$is_pack) { ?>
+        <?php  if (!in_array($params['code'], ['IT', 'MI'])) { ?>
             <div class="col-lg-2">
                 <?= $params['col-headers']['bonus'] ?>
             </div>
-        <?php //} ?>
+        <?php } ?>
 		<div class="col-lg-2">
 			<?= $params['col-headers']['pack_price'] ?>
 		</div>
@@ -101,6 +112,22 @@ $is_pack = $params['play_type'] === 'packs';
 						<?php } ?>
 						<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
 					</div>
+                    <?php
+                   // add internet and gsm or fix bonus column
+                        if (in_array($params['code'], ['IT', 'MI'])) {
+                        switch ($col['key_of_value']) {
+                            case 'packs_column_internet' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.internet.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                            case 'packs_column_mobile' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.mobile.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                            case 'packs_column_tv' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.tv.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                        }
+                    } ?>
+
 				<?php } ?>
 				<?php if(!$is_pack) { ?>
 					<div class="col-lg-2">
@@ -113,19 +140,7 @@ $is_pack = $params['play_type'] === 'packs';
 						}
 						?>
 					</div>
-				<?php } else {
-				    $bonus = false;
-				    foreach ($product['play_description'] as $play_type => $description) {
-				        $price_description = Hash::get((array)$description, 'price_description.' . $params['language'], false);
-				        if ($price_description !== false) {
-                            $bonus .= '<div class="my-1"><b>' . $play_type . '</b> : ' . Hash::get($description, 'price_description.' . $params['language']) . '</div>';
-				        }
-                    }
-				    if ($bonus !== false) {
-				        echo '<div class="col">';
-				        echo $bonus;
-				        echo '</div>';
-                    }
+				<?php }
                 }?>
 				<div class="col-lg-2 text-center">
 					<?= $product['displayed_price_desktop'] ?>
