@@ -55,13 +55,7 @@ $is_pack = $params['play_type'] === 'packs';
             <?php
             // add internet and gsm or fix bonus column
             if (in_array($params['code'], ['IT', 'MI'])) {
-                switch ($col['key_of_value']) {
-                    case 'packs_column_internet' :
-                    case 'packs_column_mobile' :
-                    case 'packs_column_tv' :
-                        echo '<div class="col text-left">Bonus</div>';
-                        break;
-                }
+                echo '<div class="col text-left">' . $params['bonus_header'][$col['key_of_value']] . '</div>';
             } ?>
 		<?php } ?>
         <?php  if (!in_array($params['code'], ['IT', 'MI'])) { ?>
@@ -140,8 +134,7 @@ $is_pack = $params['play_type'] === 'packs';
 						}
 						?>
 					</div>
-				<?php }
-                }?>
+				<?php } ?>
 				<div class="col-lg-2 text-center">
 					<?= $product['displayed_price_desktop'] ?>
 				</div>
