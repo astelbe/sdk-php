@@ -184,14 +184,17 @@ $is_pack = $params['play_type'] === 'packs';
 				<div class="font-s-11 mb-3">
 					<?= $product['displayed_price_responsive'] ?>
 				</div>
-				<div class="d-flex justify-content-around text-center">
+				<div class="text-center">
 					<?php if(Hash::get($product, 'displayed_cashback', false)) { ?>
-						<div class="mb-2">
+						<div class="mb-3">
 							<?php echo Hash::get($product, 'displayed_cashback'); ?>
 						</div>
 					<?php } ?>
-					<div class="text-left pl-1">
+					<div class="mb-3">
+
 						<?= $product['order_button'] ?>
+					</div>
+					<div class="pb-3">
 						<?= $product['activation_price'] ?>
 					</div>
 				</div>
