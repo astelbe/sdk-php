@@ -74,5 +74,39 @@ class SharedView extends Singleton {
 				return __d($domain, $key, $params);
 		}
 	}
+
+	public function renderStar($quality_score) {
+
+
+		$html = '<div class="d-inline">';
+
+		$quality = $quality_score / 20;
+		$quality = ceil($quality * 2) / 2;
+		?>
+		<?php
+		$s = 0;
+		$fullStars = floor($quality);
+		while ($s < $fullStars) {
+			$html  .= '<i class="fa fa-star fa-lg"></i>';
+			$s++;
+		}
+		$halfStars = ceil($quality) - $fullStars;
+		$s = 0;
+		while ($s < $halfStars) {
+			$html  .= '<i class="fa fa-star-half-o fa-lg"></i>';
+			$s++;
+		}
+		$emptyStats = 5 - $fullStars - $halfStars;
+		$s = 0;
+		while ($s < $emptyStats) {
+			$html  .= '<i class="fa fa-star-o fa-lg"></i>';
+			$s++;
+		}
+
+		$html .= '</div>';
+
+		return $html;
+
+	}
 }
 
