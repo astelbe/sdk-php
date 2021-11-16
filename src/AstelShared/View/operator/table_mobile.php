@@ -57,7 +57,8 @@ $is_pack = $params['play_type'] === 'packs';
                 echo '<div class="col text-left">' . $params['bonus_header'][$col['key_of_value']] . '</div>';
             } ?>
 		<?php } ?>
-        <?php  if (!in_array($params['code'], ['IT', 'MI'])) { ?>
+        <?php
+		if (!in_array($params['code'], ['MIT', 'MFIT', 'IT', 'MI', 'FI', 'FT', 'FIT'])) { ?>
             <div class="col-lg-2">
                 <?= $params['col-headers']['bonus'] ?>
             </div>
@@ -118,16 +119,17 @@ $is_pack = $params['play_type'] === 'packs';
 					</div>
                     <?php
                    // add internet and gsm or fix bonus column
+
                         if (in_array($params['code'], ['IT', 'MI'])) {
                         switch ($col['key_of_value']) {
                             case 'packs_column_internet' :
-                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.internet.price_description.' . $params['language'], '-') . '</div>';
+                                echo '<div class="col pl-1 text-lighter">' . Hash::get($product, 'play_description.internet.price_description.' . $params['language'], '-') . '</div>';
                                 break;
                             case 'packs_column_mobile' :
-                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.mobile.price_description.' . $params['language'], '-') . '</div>';
+                                echo '<div class="col pl-1 text-lighter">' . Hash::get($product, 'play_description.mobile.price_description.' . $params['language'], '-') . '</div>';
                                 break;
                             case 'packs_column_tv' :
-                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.tv.price_description.' . $params['language'], '-') . '</div>';
+                                echo '<div class="col pl-1 text-lighter">' . Hash::get($product, 'play_description.tv.price_description.' . $params['language'], '-') . '</div>';
                                 break;
                         }
                     } ?>
