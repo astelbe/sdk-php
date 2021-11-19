@@ -52,8 +52,13 @@ $is_pack = $params['play_type'] === 'packs';
 					<?= $col['name'] ?>
 				<?php } ?>
 			</div>
+            <?php
+            // add internet and gsm or fix bonus column
+            if (in_array($params['code'], ['IT', 'MI'])) {
+                echo '<div class="col text-left">' . $params['bonus_header'][$col['key_of_value']] . '</div>';
+            } ?>
 		<?php } ?>
-        <?php if(!$is_pack) { ?>
+        <?php  if (!in_array($params['code'], ['MIT', 'MFIT', 'IT', 'MI', 'FI', 'FT', 'FIT'])) { ?>
             <div class="col-lg-2">
                 <?= $params['col-headers']['bonus'] ?>
             </div>
@@ -66,23 +71,33 @@ $is_pack = $params['play_type'] === 'packs';
 		</div>
 	</header>
 	
-	<?php foreach ($params['products'] as $k => $product) { ?>
+	<?php foreach ($params['products'] as $k => $product) { 
+	    if (isset($params['max_length']) && $k >= $params['max_length']) {
+	        break;
+        }
+        ?>
 		<!-- DESKTOP -->
 		<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
-			<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
-				<?php if ($params['version'] != 'cake') { ?>
-				<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
-					<?php } ?>
-					<?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
-						echo Hash::get($product, 'brand_name') . ' ';
-					} ?>
-					<?php
-					echo Hash::get($product, 'short_name.' . $params['language']);
-					?>
-					<?php if ($params['version'] != 'cake') { ?>
-				</a>
-			<?php } ?>
-            </h3>
+      <h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+          <?php if (Hash::get($params, 'show_index', false) === true) { ?>
+            <span class="pr-3">N°<?= $k + 1 ?></span>
+          <?php } ?>
+          <?php if ($params['version'] != 'cake') { ?>
+            <a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+              <?php } ?>
+              <?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
+                echo Hash::get($product, 'brand_name') . ' ';
+              } ?>
+              <?php
+              echo Hash::get($product, 'short_name.' . $params['language']);
+              ?>
+              <?php if ($params['version'] != 'cake') { ?>
+            </a>
+          <?php } ?>
+          <?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
+            <span class="ml-2"><?= self::renderStar($product['quality_score']) ?></span>
+          <?php } ?>
+        </h3>
 			<div class="row no-gutters p-2">
 				<?php if (Hash::get($params, 'display_col_logo', false) === true) { ?>
 
@@ -101,6 +116,22 @@ $is_pack = $params['play_type'] === 'packs';
 						<?php } ?>
 						<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
 					</div>
+                    <?php
+                   // add internet and gsm or fix bonus column
+                        if (in_array($params['code'], ['IT', 'MI'])) {
+                        switch ($col['key_of_value']) {
+                            case 'packs_column_internet' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.internet.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                            case 'packs_column_mobile' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.mobile.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                            case 'packs_column_tv' :
+                                echo '<div class="col pl-1">' . Hash::get($product, 'play_description.tv.price_description.' . $params['language'], '-') . '</div>';
+                                break;
+                        }
+                    } ?>
+
 				<?php } ?>
 				<?php if(!$is_pack) { ?>
 					<div class="col-lg-2">
@@ -140,6 +171,9 @@ $is_pack = $params['play_type'] === 'packs';
 				<?php if ($params['version'] != 'cake') { ?>
 				<a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
 					<?php } ?>
+          <?php if (Hash::get($params, 'show_index', false) === true) { ?>
+            <span class="pr-3">N°<?= $k + 1 ?></span>
+          <?php } ?>
 					<?php if(Hash::Get($params, 'options.display_operator_in_product_name', false)) {
 						echo Hash::get($product, 'brand_name') . ' ';
 					} ?>
@@ -147,6 +181,11 @@ $is_pack = $params['play_type'] === 'packs';
 					<?php if ($params['version'] != 'cake') { ?>
 				</a>
 			<?php } ?>
+      <?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
+					<div class="my-2">
+						<?= self::renderStar($product['quality_score']) ?>
+					</div>
+				<?php } ?>
 			</h3>
 			<section class="row no-gutters px-2" class="text-left">
 				<?php
@@ -172,15 +211,17 @@ $is_pack = $params['play_type'] === 'packs';
 				<div class="font-s-11 mb-3">
 					<?= $product['displayed_price_responsive'] ?>
 				</div>
-				<div class="d-flex justify-content-around text-center">
+				<div class="text-center">
+					<div class="pb-3">
+						<?= $product['activation_price'] ?>
+					</div>
 					<?php if(Hash::get($product, 'displayed_cashback', false)) { ?>
-						<div class="mb-2">
+						<div class="mb-3">
 							<?php echo Hash::get($product, 'displayed_cashback'); ?>
 						</div>
 					<?php } ?>
-					<div class="text-left pl-1">
+					<div class="pb-3">
 						<?= $product['order_button'] ?>
-						<?= $product['activation_price'] ?>
 					</div>
 				</div>
 			</section>
