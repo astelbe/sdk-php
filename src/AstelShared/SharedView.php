@@ -11,7 +11,15 @@ class SharedView extends Singleton {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
 
-	static function getProductInfo($playDescriptionPath, $product, $version, $responsive = null) {
+	/**
+	 * @param $playDescriptionPath in $product array
+	 * @param $product
+	 * @param string $version. 'front' or 'cake', to get the domain name used in translation keys
+	 * @param null $responsive
+	 *
+	 * @return null|string $description
+	 */
+	static function getTranslatedPlayDescription($playDescriptionPath, $product, $version = 'front', $responsive = null) {
 		$description = Hash::get($product, $playDescriptionPath, null);
 		if (!$description) {
 			return null;
@@ -24,7 +32,7 @@ class SharedView extends Singleton {
 
 		switch ($playDescriptionPath) {
 
-			// Mobile
+			// MOBILE
 			case 'play_description.mobile.included_minutes_calls' :
 				if ($description == 'UNLIMITED') {
 					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $version);
@@ -46,7 +54,7 @@ class SharedView extends Singleton {
 					return self::getTranslation($translation_domain, 'tab_mobile_sms', $version, $description);
 				}
 				break;
-			// Internet
+			// INTERNET
 			case 'play_description.internet.bandwidth_download' :
 				return self::getTranslation($translation_domain, 'tab_internet_mbps', $version, $description);
 				break;
@@ -59,6 +67,19 @@ class SharedView extends Singleton {
 				} else {
 					return self::getTranslation($translation_domain, 'tab_mobile_gb_data', $version, $description);
 				}
+			// FIX
+			case 'play_description.fix.included_minutes_calls' :
+				if ($description == 'UNLIMITED') {
+					return d__('product', 'tab_mobile_unlimited_call');
+				} else if ($description == 'EWE') {
+					return d__('product', 'tel_EWE');
+				} else {
+					if ($description == 0) {
+						return '/';
+					}
+					return d__('product', 'tab_mobile_minutes' . $responsive, $description);
+				}
+			// TV : info has no translation keys with data injected
 			default:
 				return $description;
 		}
