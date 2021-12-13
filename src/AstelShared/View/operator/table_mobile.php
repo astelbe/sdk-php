@@ -108,13 +108,19 @@ $is_pack = $params['play_type'] === 'packs';
 
 				<?php
 				// Generate specifics data columns
+				/**
+				 * If packs, $col['key_of_value'] contains the data already processed for each plays
+				 * If solo, $col['key_of_value'] is the $product array path to the data
+				 */
 				foreach ($params['custom-col'] as $col) {
 					?>
 					<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
 						<?php if($is_pack) { ?>
 							<b><?= $col['responsive_label'] ?></b>
-						<?php } ?>
-						<?= self::getProductInfo($col['key_of_value'], $product, $params['version']); ?>
+							<?= $col['key_of_value'] ?>
+						<?php } else { ?>
+							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
+						<?php }?>
 					</div>
                     <?php
                    // add internet and gsm or fix bonus column
@@ -197,7 +203,11 @@ $is_pack = $params['play_type'] === 'packs';
 							<div class="mb-1 font-weight-bold"><?= $col['name'] ?></div>
 						<?php } ?>
 						<?= $col['responsive_label'] ?>
-						<?= self::getProductInfo($col['key_of_value'], $product, $params['version'], '_responsive'); ?>
+						<?php if($is_pack) { ?>
+							<?= $col['key_of_value'] ?>
+						<?php } else { ?>
+							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
+						<?php }?>
 					</div>
 				<?php } ?>
 				<?php

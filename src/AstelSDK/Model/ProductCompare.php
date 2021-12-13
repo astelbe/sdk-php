@@ -72,5 +72,5 @@ class ProductCompare extends SDKModel {
 		
 		return $extracted;
 	}
-	
+
 }
