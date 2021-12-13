@@ -87,7 +87,7 @@ It retrieves the 50 first active VOO discounts, order them by weight and retrive
 
 ## Supported Platforms
 
-* PHP 5.6 or higher
+* PHP 7.0 or higher
 
 
 ## How to contribute
