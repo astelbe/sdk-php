@@ -76,7 +76,7 @@ $params['bonus_header'] = [
 		</div>
 	</header>
 	
-	<?php foreach ($params['products'] as $k => $product) { 
+	<?php foreach ($params['products'] as $k => $product) {
 	    if (isset($params['max_length']) && $k >= $params['max_length']) {
 	        break;
         }
@@ -122,7 +122,7 @@ $params['bonus_header'] = [
 					<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
 						<?php if($is_pack) { ?>
 							<b><?= $col['responsive_label'] ?></b>
-							<?= $col['key_of_value'] ?>
+							<?= $product[$col['key_of_value']] ?>
 						<?php } else { ?>
 							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
 						<?php }?>
@@ -209,7 +209,7 @@ $params['bonus_header'] = [
 						<?php } ?>
 						<?= $col['responsive_label'] ?>
 						<?php if($is_pack) { ?>
-							<?= $col['key_of_value'] ?>
+							<?= $product[$col['key_of_value']] ?>
 						<?php } else { ?>
 							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
 						<?php }?>
