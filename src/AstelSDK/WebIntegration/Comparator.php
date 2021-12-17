@@ -151,6 +151,9 @@ class Comparator extends AbstractWebIntegration {
 			$order_type = (int)$_GET['clasQ'];
 			$getParams['order_type'] = $order_type;
 		}
+		if (isset($_GET['is_static_display'])) {
+			$getParams['is_static_display'] = $_GET['is_static_display'];
+		}
 		$getParams['page_title'] = $title;
 		
 		$paramsURL = $this->getParamsUrl($getParams);
