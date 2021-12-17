@@ -4,12 +4,48 @@ namespace AstelShared;
 
 use AstelSDK\Utils\Singleton;
 use CakeUtility\Hash;
+use AstelSDK\AstelContext;
+use AstelSDK\Model\PostalCode;
 
 class SharedView extends Singleton {
 	
 	public function render($path, $params = []) {
+
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
+
+	public function postalCodeTypeahead ($options = []) {
+		$this->context = AstelContext::getInstance();
+		$PostalCode = PostalCode::getInstance();
+		$typeahead = new Typeahead($options);
+		// Filled with session postal code
+		$postal_code_id = $this->context->getSession()->sessionGet('postal_code_id');
+		if ($postal_code_id) {
+			$full_postal_code = $PostalCode->find('first', ['id' => $postal_code_id]);
+			if (!empty($full_postal_code)) {
+				$typeahead->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . Hash::get($full_postal_code, 'name.' . $this->context->getLanguage());
+				$typeahead->hidden_input_value = $postal_code_id;
+			}
+		}
+		echo $typeahead->render($options);
+	}
+
+	// TODO move in typeahead class
+	public function getTypeaheadScripts () {
+		$this->context = AstelContext::getInstance();
+		$out = '';
+		$jsList = [
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $this->context->getVersionData(),
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $this->context->getVersion(),
+		];
+		foreach ($jsList as $js) {
+			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
+		}
+
+		return $out;
+	}
+
+
 
 	/**
 	 * @param $playDescriptionPath in $product array

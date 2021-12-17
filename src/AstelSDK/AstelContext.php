@@ -269,4 +269,17 @@ class AstelContext extends Singleton {
 	public static function registerUtilsFunctions() {
 		include_once __DIR__ . '/../CakeUtility/basics.php';
 	}
+
+	/**
+	 * @return string md5 of last_update_time|current_time
+	 * Used to deal with css or js files versions
+	 */
+	public function getVersionData () {
+		if ($this->getSession() === null) {
+			$version_data = md5(date('mdH'));
+		} else {
+			$version_data = md5($this->getSession()->sessionGet('website.last_update_time'));
+		}
+		return $version_data;
+	}
 }

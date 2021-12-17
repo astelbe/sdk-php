@@ -19,14 +19,8 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
-		if ($this->context->getSession() === null) {
-			$version_data = md5(date('mdH'));
-		} else {
-			$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
-		}
-		
 		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $version_data,
+			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $this->context->getVersionData(),
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
