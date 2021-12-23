@@ -22,6 +22,11 @@ use CakeUtility\Hash;
  */
 
 $is_pack = $params['play_type'] === 'packs';
+$params['bonus_header'] = [
+	'packs_column_internet' => 'Bonus ' . self::getTranslation('general', 'internet', $params['version']),
+	'packs_column_mobile' => 'Bonus ' . self::getTranslation('general', 'mobile', $params['version']),
+	'packs_column_tv' => 'Bonus ' . self::getTranslation('general', 'tv', $params['version']),
+];
 ?>
 
 <section class="operator-products-table mb-5">
@@ -71,7 +76,7 @@ $is_pack = $params['play_type'] === 'packs';
 		</div>
 	</header>
 	
-	<?php foreach ($params['products'] as $k => $product) { 
+	<?php foreach ($params['products'] as $k => $product) {
 	    if (isset($params['max_length']) && $k >= $params['max_length']) {
 	        break;
         }
@@ -117,7 +122,7 @@ $is_pack = $params['play_type'] === 'packs';
 					<div class="col<?= ($is_pack ? ' pl-1 text-left' : '') ?>">
 						<?php if($is_pack) { ?>
 							<b><?= $col['responsive_label'] ?></b>
-							<?= $col['key_of_value'] ?>
+							<?= $product[$col['key_of_value']] ?>
 						<?php } else { ?>
 							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
 						<?php }?>
@@ -204,7 +209,7 @@ $is_pack = $params['play_type'] === 'packs';
 						<?php } ?>
 						<?= $col['responsive_label'] ?>
 						<?php if($is_pack) { ?>
-							<?= $col['key_of_value'] ?>
+							<?= $product[$col['key_of_value']] ?>
 						<?php } else { ?>
 							<?= self::getTranslatedPlayDescription($col['key_of_value'], $product, $params['version']); ?>
 						<?php }?>
