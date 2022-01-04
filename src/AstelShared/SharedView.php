@@ -14,12 +14,13 @@ class SharedView extends Singleton {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
 
-	public function postalCodeTypeahead ($options = []) {
+	public function getPostalCodeTypeahead ($options = []) {
 		$this->context = AstelContext::getInstance();
 		$PostalCode = PostalCode::getInstance();
 		$typeahead = new Typeahead($options);
 		// Filled with session postal code
-		$postal_code_id = $this->context->getSession()->sessionGet('postal_code_id');
+		// TODO $this->context->getSession() est null en V2
+		// $postal_code_id = $this->context->getSession()->sessionGet('postal_code_id');
 		if ($postal_code_id) {
 			$full_postal_code = $PostalCode->find('first', ['id' => $postal_code_id]);
 			if (!empty($full_postal_code)) {
@@ -27,7 +28,7 @@ class SharedView extends Singleton {
 				$typeahead->hidden_input_value = $postal_code_id;
 			}
 		}
-		echo $typeahead->render($options);
+		return $typeahead->getHtml($options);
 	}
 
 	// TODO move in typeahead class

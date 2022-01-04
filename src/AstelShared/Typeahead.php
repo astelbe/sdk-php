@@ -41,7 +41,7 @@ class Typeahead extends Singleton {
 
 
 
-	public function render() {
+	public function getHtml() {
 		$random_string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(5/strlen($x)) )),1,7);
 		$label = $this->label ? '<label for="' . $random_string . '">' . $this->label . '</label>' : '';
 
