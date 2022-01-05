@@ -14,21 +14,20 @@ class AstelContext extends Singleton {
 	protected $env;
 	protected $debug;
 	public $Logger = null;
-	protected $partnerToken;
+	protected $partnerId;
 	protected $isPrivate = null;
-	protected $referralToken = null;
 	protected $language = 'FR';
 	protected $apiParticle = 'api';
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
 	
-	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
+	public function __construct($env = 'sta', $partnerId = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
 			$env = '';
 		}
 		$this->setEnv($env);
-		$this->setPartnerToken($partnerToken);
+		$this->setPartnerId($partnerId);
 		$this->setDebug($debug);
 		parent::__construct();
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
@@ -125,15 +124,15 @@ class AstelContext extends Singleton {
 	/**
 	 * @return string
 	 */
-	public function getPartnerToken() {
-		return $this->partnerToken;
+	public function getPartnerId() {
+		return $this->partnerId;
 	}
 	
 	/**
-	 * @param string $partnerToken
+	 * @param string $partnerId
 	 */
-	public function setPartnerToken($partnerToken) {
-		$this->partnerToken = $partnerToken;
+	public function setPartnerId($partnerId) {
+		$this->partnerId = $partnerId;
 	}
 	
 	/**
@@ -254,10 +253,10 @@ class AstelContext extends Singleton {
 	}
 	
 	/**
-	 * @param string $token
+	 * @param string $partnerId
 	 */
-	public function setPartnerReferralToken($token) {
-		$this->partner_referral_token = $token;
+	public function setPartnerReferralId($partnerId) {
+		$this->partner_referral_id = $partnerId;
 	}
 	
 	/**
