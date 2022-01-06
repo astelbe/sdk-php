@@ -5,7 +5,6 @@ namespace AstelShared;
 use AstelSDK\Utils\Singleton;
 use CakeUtility\Hash;
 use AstelSDK\AstelContext;
-use AstelSDK\Model\PostalCode;
 
 class SharedView extends Singleton {
 	
@@ -14,30 +13,39 @@ class SharedView extends Singleton {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
 
+
+	/**
+	 * @param array $options
+	 * - 'full_postal_code' array - Postal code from db, get by postal_code_id from session
+	 * - other options : cf AstelShared/Typeahead.php attributes and __construct
+	 *
+	 * @return string - typeahead's html
+	 */
+	// TODO Params non de callback apiGateway
 	public function getPostalCodeTypeahead ($options = []) {
-		$this->context = AstelContext::getInstance();
-		$PostalCode = PostalCode::getInstance();
+		$Context = AstelContext::getInstance();
 		$typeahead = new Typeahead($options);
-		// Filled with session postal code
-		// TODO $this->context->getSession() est null en V2
-		// $postal_code_id = $this->context->getSession()->sessionGet('postal_code_id');
-		if ($postal_code_id) {
-			$full_postal_code = $PostalCode->find('first', ['id' => $postal_code_id]);
-			if (!empty($full_postal_code)) {
-				$typeahead->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . Hash::get($full_postal_code, 'name.' . $this->context->getLanguage());
-				$typeahead->hidden_input_value = $postal_code_id;
+		$full_postal_code = Hash::get($options,'full_postal_code', null);
+		if (!empty($full_postal_code)) {
+			// BC, OrderRequest postal codes are already processed with the translated name in 'city_name'
+			if (Hash::get($full_postal_code, 'city_name', null)) {
+				$name = Hash::get($full_postal_code, 'city_name', null);
+			} else {
+				$name = Hash::get($full_postal_code, 'name.' . $Context->getLanguage());
 			}
+			$typeahead->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . $name;
+			$typeahead->hidden_input_value = Hash::get($full_postal_code, 'id') ;
 		}
 		return $typeahead->getHtml($options);
 	}
 
 	// TODO move in typeahead class
 	public function getTypeaheadScripts () {
-		$this->context = AstelContext::getInstance();
+		$Context = AstelContext::getInstance();
 		$out = '';
 		$jsList = [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $this->context->getVersionData(),
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $this->context->getVersion(),
+			'https://files' . $Context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $Context->getLanguage() . '.js?v=' . $Context->getVersionData(),
+			'https://files' . $Context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $Context->getVersion(),
 		];
 		foreach ($jsList as $js) {
 			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
