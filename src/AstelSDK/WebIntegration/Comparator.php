@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
 	
@@ -19,12 +20,13 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
-		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $this->context->getVersionData(),
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $this->context->getVersion(),
+		$Typeahead = Typeahead::getInstance();
+		$typeahead_js = $Typeahead->getJsList();
+		$comparator_js = [
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
+		return array_merge($typeahead_js, $comparator_js);
 	}
 	
 	public function getCSS($allRequired = true) {

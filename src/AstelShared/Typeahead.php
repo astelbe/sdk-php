@@ -28,7 +28,7 @@ class Typeahead extends Singleton {
 	public $hidden_input_name = 'hidden_input_name'; //hidden_input_name (input used when submitting the form)
 	public $hidden_input_value = ''; //hidden_input_value (input used when submitting the form)
 
-	public function __construct($options = []) {
+	public function assignAttributes ($options = []) {
 		$attributes_as_options = [
 			'typeahead_id', 'label','placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value',
 		];
@@ -39,7 +39,50 @@ class Typeahead extends Singleton {
 		}
 	}
 
+	public function getJsList () {
+		$Context = AstelContext::getInstance();
+		return [
+			'https://files' . $Context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $Context->getLanguage() . '.js?v=' . $Context->getVersionData(),
+			'https://files' . $Context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $Context->getVersion(),
+		];
+	}
 
+
+
+	public function getTypeaheadScripts () {
+		$out = '';
+		foreach ($this->getJsList() as $js) {
+			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
+		}
+
+		return $out;
+	}
+
+
+	/**
+	 * @param array $options
+	 * - 'full_postal_code' array - Postal code from db, get by postal_code_id from session
+	 * - other options : cf class attributes
+	 *
+	 * @return string - typeahead's html
+	 */
+	// TODO Params non de callback apiGateway
+	public function getPostalCodeTypeahead ($options = []) {
+		$Context = AstelContext::getInstance();
+		$this->assignAttributes($options);
+		$full_postal_code = Hash::get($options,'full_postal_code', null);
+		if (!empty($full_postal_code)) {
+			// BC, OrderRequest postal codes are already processed with the translated name in 'city_name'
+			if (Hash::get($full_postal_code, 'city_name', null)) {
+				$name = Hash::get($full_postal_code, 'city_name', null);
+			} else {
+				$name = Hash::get($full_postal_code, 'name.' . $Context->getLanguage());
+			}
+			$this->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . $name;
+			$this->hidden_input_value = Hash::get($full_postal_code, 'id') ;
+		}
+		return $this->getHtml($options);
+	}
 
 	public function getHtml() {
 		$random_string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(5/strlen($x)) )),1,7);

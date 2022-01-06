@@ -13,49 +13,6 @@ class SharedView extends Singleton {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
 
-
-	/**
-	 * @param array $options
-	 * - 'full_postal_code' array - Postal code from db, get by postal_code_id from session
-	 * - other options : cf AstelShared/Typeahead.php attributes and __construct
-	 *
-	 * @return string - typeahead's html
-	 */
-	// TODO Params non de callback apiGateway
-	public function getPostalCodeTypeahead ($options = []) {
-		$Context = AstelContext::getInstance();
-		$typeahead = new Typeahead($options);
-		$full_postal_code = Hash::get($options,'full_postal_code', null);
-		if (!empty($full_postal_code)) {
-			// BC, OrderRequest postal codes are already processed with the translated name in 'city_name'
-			if (Hash::get($full_postal_code, 'city_name', null)) {
-				$name = Hash::get($full_postal_code, 'city_name', null);
-			} else {
-				$name = Hash::get($full_postal_code, 'name.' . $Context->getLanguage());
-			}
-			$typeahead->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . $name;
-			$typeahead->hidden_input_value = Hash::get($full_postal_code, 'id') ;
-		}
-		return $typeahead->getHtml($options);
-	}
-
-	// TODO move in typeahead class
-	public function getTypeaheadScripts () {
-		$Context = AstelContext::getInstance();
-		$out = '';
-		$jsList = [
-			'https://files' . $Context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $Context->getLanguage() . '.js?v=' . $Context->getVersionData(),
-			'https://files' . $Context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $Context->getVersion(),
-		];
-		foreach ($jsList as $js) {
-			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
-		}
-
-		return $out;
-	}
-
-
-
 	/**
 	 * @param $playDescriptionPath in $product array
 	 * @param $product
