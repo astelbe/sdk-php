@@ -68,4 +68,30 @@ class WebsiteConnection extends APIModel {
 		
 		return $query->exec();
 	}
+
+	public function updateSessionPostalCode (array $params = []) {
+		$postal_code = Hash::get($params, 'postal_code_id', false);
+		if ($postal_code && ctype_digit($postal_code) && strlen($postal_code) == 4) {
+			$default_params = [];
+			if ($this->context->getSession() !== null) {
+				$default_params['session_id'] = $this->context->getSession()->getSessionID();
+				$default_params['user_agent'] = URL::base64url_encode(AstelContext::getUserAgent());
+				$default_params['remote_ip'] = AstelContext::getUserIP();
+				$default_params['domain'] = AstelContext::getCallingServerName();
+				$default_params['language'] = $this->context->getLanguage();
+			} else {
+				// TODO ?
+			}
+			$params = Hash::merge($default_params, $params);
+			$query = $this->newQuery();
+			$query->setUrl('v2_00/website_connection/' . $default_params['session_id']);
+			$query->addPOSTParams($params);
+			$query->setHTTPMethod(APIQuery::HTTP_POST);
+
+			return $query->exec();
+		} else {
+
+			return ['error' => 'no postal code founded'];
+		}
+	}
 }

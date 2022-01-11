@@ -8,11 +8,12 @@ use AstelSDK\AstelContext;
 class Typeahead extends Singleton {
 
 	/**
-	 * Typeahead have an hidden_input to pass value in form. to avoid Chrome autocomplete, input name is randomized,
+	 * Typeahead has an hidden_input to pass value in form. to avoid Chrome autocomplete, input name is randomized,
 	 * then its value is taken to fill the hidden_input
 	 * For postal codes, input value is code + name, and hidden is only zip code. Backend only need zip code
-	 * Js script : public_html/app/Plugin/FilesAstelBe/View/DJs/astel_content_injector.ctp
 	 * I.e for postal code, "1000 - Bruxelles" is displayed but "1000" is passed
+	 *
+	 * Js script : public_html/app/Plugin/FilesAstelBe/View/DJs/typeahead.ctp
 	 *
 	 * Css is in astel_standalone.css
 	 *
@@ -47,8 +48,6 @@ class Typeahead extends Singleton {
 		];
 	}
 
-
-
 	public function getTypeaheadScripts () {
 		$out = '';
 		foreach ($this->getJsList() as $js) {
@@ -58,7 +57,6 @@ class Typeahead extends Singleton {
 		return $out;
 	}
 
-
 	/**
 	 * @param array $options
 	 * - 'full_postal_code' array - Postal code from db, get by postal_code_id from session
@@ -66,7 +64,6 @@ class Typeahead extends Singleton {
 	 *
 	 * @return string - typeahead's html
 	 */
-	// TODO Params non de callback apiGateway
 	public function getPostalCodeTypeahead ($options = []) {
 		$Context = AstelContext::getInstance();
 		$this->assignAttributes($options);

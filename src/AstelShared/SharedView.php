@@ -4,7 +4,6 @@ namespace AstelShared;
 
 use AstelSDK\Utils\Singleton;
 use CakeUtility\Hash;
-use AstelSDK\AstelContext;
 
 class SharedView extends Singleton {
 	
