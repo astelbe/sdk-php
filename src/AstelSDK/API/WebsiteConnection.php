@@ -25,8 +25,8 @@ class WebsiteConnection extends APIModel {
 			$default_params['no_trace'] = 0;
 		}
 
-		if(isset($_GET) && isset($_GET['p'])) {
-			$params['partner_referral_token'] = $_GET['p'];
+		if(isset($_GET) && isset($_GET['promo'])) {
+			$params['partner_referral_id'] = $_GET['promo'];
 		}
 
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
