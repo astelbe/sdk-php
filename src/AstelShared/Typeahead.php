@@ -28,10 +28,11 @@ class Typeahead extends Singleton {
 	public $show_clear_button = false;
 	public $hidden_input_name = 'hidden_input_name'; //hidden_input_name (input used when submitting the form)
 	public $hidden_input_value = ''; //hidden_input_value (input used when submitting the form)
+    public $show_button_validate = false;
 
 	public function assignAttributes ($options = []) {
 		$attributes_as_options = [
-			'typeahead_id', 'label','placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value',
+			'typeahead_id', 'label','placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value', 'show_button_validate'
 		];
 		foreach ($attributes_as_options as $option) {
 			if (isset($options[$option])) {
@@ -85,6 +86,9 @@ class Typeahead extends Singleton {
 		$random_string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(5/strlen($x)) )),1,7);
 		$label = $this->label ? '<label for="' . $random_string . '">' . $this->label . '</label>' : '';
 
+
+
+
 		$html = '
 			<div class="mb-2">' . $label . '</div>
 			<div class="d-flex mb-2">
@@ -99,15 +103,24 @@ class Typeahead extends Singleton {
 							placeholder="' . __d('CoreAstelBe', 'Postal code and city placeholder') . '"
 							' . ($this->disabled ? ' disabled="disabled" ' : '') .'
 							autocomplete="unknown"
+							style="height:36px"
 						/>
 						<ul class="typeahead__results" id="typeahead__results' . $this->typeahead_id . '"></ul>
 					</div>
 				</div>';
+		if ($this->show_button_validate) {
+
+					$html .= '<div class="btn btn-primary ml-2" id="typeahead__validate_button' . $this->typeahead_id . '" style="height:38px">
+					    <i class="fa fa-arrow-right"></i>
+					</div>';
+        }
 		$html .= $this->show_clear_button ?
-			'<div class="pl-2 pt-2" id="typeahead_clear_btn">
+			'<div class="pl-2 pt-2" id="typeahead_clear_btn' . $this->typeahead_id . '">
 				<i class="fa fa-times-circle text-muted font-s-12" aria-hidden="true"></i>
 			</div>' : '';
 		$html .= '</div>';
+
+
 
 		// Hidden input
 		$html .= '<input type="hidden" id="typeahead__hidden_input' . $this->typeahead_id . '" name="' . $this->hidden_input_name . '" value="' . $this->hidden_input_value . '">';
