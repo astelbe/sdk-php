@@ -85,10 +85,6 @@ class Typeahead extends Singleton {
 	public function getHtml() {
 		$random_string = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(5/strlen($x)) )),1,7);
 		$label = $this->label ? '<label for="' . $random_string . '">' . $this->label . '</label>' : '';
-
-
-
-
 		$html = '
 			<div class="mb-2">' . $label . '</div>
 			<div class="d-flex mb-2">
@@ -100,7 +96,7 @@ class Typeahead extends Singleton {
 							name="' . $random_string . '"
 							class="typeahead__input form-control required border-0' . ($this->input_value == '' ? ' input_not_complete' : ' input_complete') . '"
 							id="typeahead__input' . $this->typeahead_id . '" value="' . $this->input_value . '"
-							placeholder="' . __d('CoreAstelBe', 'Postal code and city placeholder') . '"
+							placeholder="' . $this->placeholder . '"
 							' . ($this->disabled ? ' disabled="disabled" ' : '') .'
 							autocomplete="unknown"
 							style="height:36px"
