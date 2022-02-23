@@ -112,27 +112,44 @@ abstract class APIModel extends Singleton {
 		if (!isset($params['count'])) {
 			$params['count'] = 'max';
 		}
+
+//		TODO cette version findAll ne fontionne pas : les _embed ne sont pas repris dans la pagination
+//		if (!isset($params['page'])) {
+//			$params['page'] = 1;
+//		}
+//		$maxTurns = 50;
+//		$results = $this->find('all', $params);
+//		if (!empty($results)) {
+//			while (true) {
+//				$resultNextPage = $this->findNextElements();
+//				if ($resultNextPage === false || empty($resultNextPage)) {
+//					break;
+//				}
+//				$results = array_merge($results, $resultNextPage);
+//				--$maxTurns;
+//				if ($maxTurns <= 0) {
+//					break;
+//				}
+//			}
+//
+//		}
+
+		// TODO Patch tempoaraire
+		$results = [];
 		if (!isset($params['page'])) {
-			$params['page'] = 1;
+			$params['page'] = 0;
 		}
-		
-		$maxTurns = 50;
-		$results = $this->find('all', $params);
-		if (!empty($results)) {
-			while (true) {
-				$resultNextPage = $this->findNextElements();
-				if ($resultNextPage === false || empty($resultNextPage)) {
-					break;
-				}
-				$results = array_merge($results, $resultNextPage);
-				--$maxTurns;
-				if ($maxTurns <= 0) {
-					break;
-				}
+		while (true) {
+			$params['page'] ++;
+			$resultNextPage = $this->find('all', $params);
+			$count = $this->findCountElements();
+			if ($count == false) {
+				break;
 			}
-			
+			$results = array_merge($results, $resultNextPage);
 		}
-		
+
+
 		return $results;
 	}
 	
