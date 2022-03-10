@@ -105,3 +105,4 @@ Just [submit a issue][submitanissue] if you need any help. And, of course, feel
 free to submit pull requests with bug fixes or changes.
 
 Don't hesitate to contact Astel at direction@astel.be for more info or help for your integration.
+

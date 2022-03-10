@@ -8,6 +8,7 @@ use CakeUtility\Hash;
 class SharedView extends Singleton {
 	
 	public function render($path, $params = []) {
+
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
 	}
 
