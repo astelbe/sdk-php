@@ -22,7 +22,7 @@ use CakeUtility\Hash;
  *    ],]]
  */
 
-$is_pack = $params['play_type'] === 'packs';
+$is_pack = $params['tab_type'] === 'packs';
 $params['bonus_header'] = [
 	'packs_column_internet' => 'Bonus ' . self::getTranslation('general', 'internet', $params['version']),
 	'packs_column_mobile' => 'Bonus ' . self::getTranslation('general', 'mobile', $params['version']),
@@ -151,6 +151,7 @@ $params['bonus_header'] = [
 					<?php if (!$is_pack) { ?>
 						<div class="col-lg-2">
 							<?php
+							debug($params['play_type']);
 							$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language'], '-');
 							if (!empty($price_description)) {
 								echo $price_description;
@@ -219,7 +220,7 @@ $params['bonus_header'] = [
 							<?php } ?>
 						</div>
 					<?php } ?>
-					<?php
+					<?php debug($params['play_type']);
 					$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
 					if ($price_description) {
 						echo '<p class="mt-2" style="font-size:12px;">' . $price_description . '</p>';
