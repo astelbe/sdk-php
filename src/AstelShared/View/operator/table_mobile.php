@@ -22,7 +22,7 @@ use CakeUtility\Hash;
  *    ],]]
  */
 
-$is_pack = $params['play_type'] === 'packs';
+$is_pack = $params['tab_type'] === 'packs';
 $params['bonus_header'] = [
 	'packs_column_internet' => 'Bonus ' . self::getTranslation('general', 'internet', $params['version']),
 	'packs_column_mobile' => 'Bonus ' . self::getTranslation('general', 'mobile', $params['version']),
