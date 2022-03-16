@@ -42,7 +42,7 @@ $params['bonus_header'] = [
 
 	<header class="row d-none my-2 no-gutters p-2 d-lg-flex align-items-end text-center border-bottom border-blue text-blue font-weight-bold"
 			style="font-size:0.7rem;">
-		<?php if (Hash::get($params, 'display_col_logo', false) === true) { ?>
+		<?php if (Hash::get($params, 'options.display_col_logo', false) === true) { ?>
 			<div class="col-1">
 			</div>
 		<?php } ?>
@@ -108,7 +108,7 @@ $params['bonus_header'] = [
 					<?php } ?>
 				</h3>
 				<div class="row no-gutters p-2">
-					<?php if (Hash::get($params, 'display_col_logo', false) === true) { ?>
+					<?php if (Hash::get($params, 'options.display_col_logo', false) === true) { ?>
 
 						<div class="col-1">
 							<img width="80" src="<?= Hash::get($product, 'brand.fact_sheet.logo.small') ?>" alt="<?= Hash::get($product, 'brand.name') ?>"/>
