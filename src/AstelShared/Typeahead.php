@@ -115,6 +115,8 @@ class Typeahead extends Singleton {
 				<i class="fa fa-times-circle text-muted font-s-12" aria-hidden="true"></i>
 			</div>' : '';
 		$html .= '</div>';
+		// Error message : no matching CP
+		$html .= '<div class="alert alert-danger d-none" id="typeahead_no_matching_result_message' . $this->typeahead_id . '" role="alert">'.__d('CoreAstelBe', 'sorry no matching postal code').'</div>';
 
 
 
