@@ -84,25 +84,25 @@ $params['bonus_header'] = [
 		?>
 		<!-- DESKTOP -->
 		<div id="product<?= Hash::get($product, 'id') ?>" class="pt-1">
-
-
 			<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 				<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
 					<?php if ($params['version'] != 'cake') { ?>
-					<a class="color-operator text-<?= Hash::get($product, 'brand_slug') ?>" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
-						<?php } ?>
-						<?php if (Hash::Get($params, 'options.display_operator_in_product_name', false)) {
-							echo Hash::get($product, 'brand_name') . ' ';
-						} ?>
-						<?php
-						echo Hash::get($product, 'short_name.' . $params['language']);
-						?>
-						<?php if ($params['version'] != 'cake') { ?>
-					</a>
-				<?php } ?>
+						<a
+							class="color-operator text-<?= Hash::get($product, 'brand_slug') ?> gtm-product-click"
+							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>"
+							data-product-details='<?=json_encode($product['gtm_product_click_details']) ?>'
+						>
+					<?php } ?>
+					<?php if (Hash::Get($params, 'options.display_operator_in_product_name', false)) {
+						echo Hash::get($product, 'brand_name') . ' ';
+					} ?>
+					<?= Hash::get($product, 'short_name.' . $params['language']); ?>
+					<?php if ($params['version'] != 'cake') { ?>
+						</a>
+					<?php } ?>
 					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
 						<span class="ml-2"><?= self::renderStar($product['quality_score']) ?></span>
 					<?php } ?>
@@ -184,7 +184,7 @@ $params['bonus_header'] = [
 			<article class="d-lg-none my-3 border text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 				<h3 class="font-weight-bold color-operator bg-lighter p-2 mb-2">
 					<?php if ($params['version'] != 'cake') { ?>
-					<a class="color-operator" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>">
+					<a class="color-operator gtm-product-click" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>" data-product-details='<?=json_encode($product['gtm_product_click_details']) ?>'>
 						<?php } ?>
 						<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 							<span class="pr-3">N°<?= $k + 1 ?></span>
