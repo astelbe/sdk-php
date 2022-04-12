@@ -219,7 +219,7 @@ $params['bonus_header'] = [
 							<?php } ?>
 						</div>
 					<?php } ?>
-					<?php debug($params['play_type']);
+					<?php
 					$price_description = Hash::get($product, 'play_description.' . $params['play_type'] . '.price_description.' . $params['language']);
 					if ($price_description) {
 						echo '<p class="mt-2" style="font-size:12px;">' . $price_description . '</p>';
