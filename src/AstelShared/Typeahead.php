@@ -76,7 +76,7 @@ class Typeahead extends Singleton {
 			} else {
 				$name = Hash::get($full_postal_code, 'name.' . $Context->getLanguage());
 			}
-			$this->input_value = Hash::get($full_postal_code, 'postal_code') . ' - ' . $name;
+			$this->input_value = Hash::get($full_postal_code, 'postal_code') . ' ' . $name;
 			$this->hidden_input_value = Hash::get($full_postal_code, 'id') ;
 		}
 		return $this->getHtml($options);
