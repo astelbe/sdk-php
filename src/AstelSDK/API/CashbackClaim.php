@@ -19,6 +19,7 @@ class CashbackClaim extends APIModel {
 		$query->setUrl('v2_00/cashback_claim/');
 		
 		$defaultData = [
+			'referer_page' => $this->context->getReferrer(),
 			'user_ip' => $this->context->getUserIP(),
 		];
 		$data = Hash::merge($defaultData, $data);
