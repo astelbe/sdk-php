@@ -17,7 +17,7 @@ class CashbackClaim extends APIModel {
 	public function createFirst(array $data = []) {
 		$query = $this->newQuery();
 		$query->setUrl('v2_00/order/cashback_claim/');
-		
+
 		$defaultData = [
 			'user_ip' => $this->context->getUserIP(),
 		];
