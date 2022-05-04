@@ -4,7 +4,7 @@ namespace AstelSDK\API;
 
 use CakeUtility\Hash;
 
-class CashbackClaim extends APIModel {
+class OrderCashbackClaim extends APIModel {
 	
 	/**
 	 * @param array $data
@@ -20,10 +20,10 @@ class CashbackClaim extends APIModel {
 
 		$defaultData = [
 			'user_ip' => $this->context->getUserIP(),
+			'language' => $this->context->getLanguage()
 		];
 		$data = Hash::merge($defaultData, $data);
 
-		
 		$query->addPOSTParams($data);
 
 		return $query->exec();
