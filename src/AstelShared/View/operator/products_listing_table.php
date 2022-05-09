@@ -20,6 +20,10 @@ use CakeUtility\Hash;
  *        'key_of_value' => 'product data key to display (custom)',
  *        'responsive_label' => 'label for data - only for internet and mobile tab',
  *    ],]]
+ * Params options :
+ * - display_col_logo (bool) default false : add a col with logo for multi-brand listing
+ * - disabled_product_link (bool)  default false : product are not clickable, for INTBRU who hasn't single product page
+ * - display_operator_in_product_name (bool) default false : prefixe product name with operator, for multi-brand listing
  */
 
 $is_pack = $params['tab_type'] === 'packs';
@@ -89,7 +93,7 @@ $params['bonus_header'] = [
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
-					<?php if ($params['version'] != 'cake') { ?>
+					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) !== true) { ?>
 						<a
 							class="color-operator text-<?= Hash::get($product, 'brand_slug') ?> gtm-product-click"
 							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>"
@@ -100,7 +104,7 @@ $params['bonus_header'] = [
 						echo Hash::get($product, 'brand_name') . ' ';
 					} ?>
 					<?= Hash::get($product, 'short_name.' . $params['language']); ?>
-					<?php if ($params['version'] != 'cake') { ?>
+                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) !== true) { ?>
 						</a>
 					<?php } ?>
 					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
