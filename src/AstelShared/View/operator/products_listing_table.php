@@ -93,7 +93,7 @@ $params['bonus_header'] = [
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
-					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) !== true) { ?>
+					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 						<a
 							class="color-operator text-<?= Hash::get($product, 'brand_slug') ?> gtm-product-click"
 							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>"
@@ -104,7 +104,7 @@ $params['bonus_header'] = [
 						echo Hash::get($product, 'brand_name') . ' ';
 					} ?>
 					<?= Hash::get($product, 'short_name.' . $params['language']); ?>
-                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) !== true) { ?>
+                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 						</a>
 					<?php } ?>
 					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
@@ -187,7 +187,7 @@ $params['bonus_header'] = [
 			<!-- MOBILE -->
 			<article class="d-lg-none my-3 border text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 				<h3 class="font-weight-bold color-operator bg-lighter p-2 mb-2">
-					<?php if ($params['version'] != 'cake') { ?>
+                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 					<a class="color-operator gtm-product-click" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>" data-product-details='<?=json_encode($product['gtm_product_click_details']) ?>'>
 						<?php } ?>
 						<?php if (Hash::get($params, 'show_index', false) === true) { ?>
@@ -197,7 +197,7 @@ $params['bonus_header'] = [
 							echo Hash::get($product, 'brand_name') . ' ';
 						} ?>
 						<?= Hash::get($product, 'short_name.' . $params['language']); ?>
-						<?php if ($params['version'] != 'cake') { ?>
+                        <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 					</a>
 				<?php } ?>
 					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
