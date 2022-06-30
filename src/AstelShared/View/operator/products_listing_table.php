@@ -103,8 +103,12 @@ $params['bonus_header'] = [
 					<?php if ($params['version'] != 'cake') { ?>
 						</a>
 					<?php } ?>
-					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
-						<span class="ml-2"><?= self::renderStar($product['quality_score']) ?></span>
+					<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+						<div class="position-relative d-inline-block cursor-pointer modalClick" data-toggle="modal" data-target="#modalQualityStars" style="display:inline-block">
+							<div class="ml-3"><?= self::renderStar($product['quality_score']) ?>
+								<i class="fa fa-info pl-2"></i>
+							</div>
+						</div>
 					<?php } ?>
 				</h3>
 				<div class="row no-gutters p-2">
@@ -171,6 +175,12 @@ $params['bonus_header'] = [
 							</div>
 						<?php } ?>
 
+						<?php if (Hash::Get($params, 'options.display_activation_time', false)) { ?>
+							<div class="mb-2">
+								<?= __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' =>$product['max_activation_time']]) ?>
+							</div>
+						<?php } ?>
+
 						<?= $product['order_button'] ?>
 						<div class="font-s-08 mt-1">
 							<?= $product['activation_price'] ?>
@@ -196,9 +206,11 @@ $params['bonus_header'] = [
 						<?php if ($params['version'] != 'cake') { ?>
 					</a>
 				<?php } ?>
-					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
-						<div class="my-2">
-							<?= self::renderStar($product['quality_score']) ?>
+					<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+						<div class="position-relative d-inline-block cursor-pointer modalClick" data-toggle="modal" data-target="#modalQualityStars" style="display:inline-block">
+							<div class="my-2"><?= self::renderStar($product['quality_score']) ?>
+								<i class="fa fa-info pl-2"></i>
+							</div>
 						</div>
 					<?php } ?>
 				</h3>
@@ -239,6 +251,11 @@ $params['bonus_header'] = [
 								<?php echo Hash::get($product, 'displayed_cashback'); ?>
 							</div>
 						<?php } ?>
+						<?php if (Hash::Get($params, 'options.display_activation_time', false)) { ?>
+							<div class="mb-2">
+								<?= __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' =>$product['max_activation_time']]) ?>
+							</div>
+						<?php } ?>
 						<div class="pb-3">
 							<?= $product['order_button'] ?>
 						</div>
@@ -248,3 +265,21 @@ $params['bonus_header'] = [
 		</div>
 	<?php } ?>
 </section>
+<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+<div class="modal fade" id="modalQualityStars" tabindex="-1" role="dialog" aria-labelledby="modalQualityStars" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					<?php echo __d('general', 'quality_modal_title'); ?>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<?php echo __d('general', 'quality_info'); ?>
+			</div>
+	</div>
+</div>
+<?php } ?>
