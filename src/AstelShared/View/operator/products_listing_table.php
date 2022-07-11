@@ -93,7 +93,7 @@ $params['bonus_header'] = [
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
-					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
+					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != true) { ?>
 						<a
 							class="color-operator text-<?= Hash::get($product, 'brand_slug') ?> gtm-product-click"
 							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>"
