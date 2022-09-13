@@ -25,8 +25,8 @@ class WebsiteConnection extends APIModel {
 			$default_params['no_trace'] = 0;
 		}
 
-		if($params['session_id'] && isset($params['promo'])) {
-			$params['partner_referral_id'] = $params['promo'];
+		if($params['session_id'] && isset($this->context->partner_referral_id)) {
+			$params['partner_referral_id'] = $this->context->partner_referral_id;
 		}
 
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
