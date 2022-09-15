@@ -29,6 +29,10 @@ class WebsiteConnection extends APIModel {
 			$params['partner_referral_id'] = $this->context->partner_referral_id;
 		}
 
+    if($params['session_id'] && isset($this->context->has_user_cookie_consent)) {
+      $params['has_user_cookie_consent'] = $this->context->has_user_cookie_consent;
+    }
+
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
 			// there is already a current session open
 			$params['session_id'] = $this->context->getSession()->getSessionID();

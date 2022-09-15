@@ -258,6 +258,13 @@ class AstelContext extends Singleton {
 	public function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
+
+  /**
+   * @param bool
+   */
+  public function setHasUserCookieConsent($has_user_cookie_consent) {
+    $this->has_user_cookie_consent = $has_user_cookie_consent;
+  }
 	
 	/**
 	 * Register functions:

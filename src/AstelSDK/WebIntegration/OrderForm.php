@@ -72,6 +72,7 @@ class OrderForm extends AbstractWebIntegration {
 		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
+
 		return '<script>
 			/* setup the call below with paramaters:
 			* language: uppercase string (FR, NL, EN, DE)
@@ -85,7 +86,6 @@ class OrderForm extends AbstractWebIntegration {
 	
 	public function getScriptOrderToken($extraParams = []) {
 		global $_GET;
-		
 		$params = ['data' => []];
 		$params['data']['product_arrangement_token'] = Hash::get($_GET, 'token', '');
 		$postal_code = Hash::get($_GET, 'postal_code');
@@ -105,7 +105,11 @@ class OrderForm extends AbstractWebIntegration {
 		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
-		
+
+    // TODO
+    $AstelContext = AstelContext::getInstance();
+    $AstelContext->setHasUserCookieConsent('true');
+
 		return '<script>
 			/* setup the call below with paramaters:
 			* language: uppercase string (FR, NL, EN, DE)
