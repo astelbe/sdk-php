@@ -260,6 +260,13 @@ class AstelContext extends Singleton {
 	}
 
   /**
+   * @return bool
+   */
+  public function getHasUserCookieConsent() {
+    return $this->has_user_cookie_consent;
+  }
+
+  /**
    * @param bool
    */
   public function setHasUserCookieConsent($has_user_cookie_consent) {
