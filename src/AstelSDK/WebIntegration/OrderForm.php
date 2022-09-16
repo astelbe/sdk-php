@@ -106,9 +106,9 @@ class OrderForm extends AbstractWebIntegration {
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 
-    // TODO
-    $AstelContext = AstelContext::getInstance();
-    $AstelContext->setHasUserCookieConsent('true');
+		if($extraParams['has_user_cookie_consent']) {
+			EmulatedSession::setHasUserCookieConsent();
+		}
 
 		return '<script>
 			/* setup the call below with paramaters:

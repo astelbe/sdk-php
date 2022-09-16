@@ -75,6 +75,16 @@ class EmulatedSession {
 		return isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== '';
 	}
 	
+	public static function setHasUserCookieConsent() {
+		if(isset($_COOKIE['has_user_cookie_consent']) && $_COOKIE['has_user_cookie_consent'] !== ''){
+			return true;
+		} else {
+			setcookie('has_user_cookie_consent', 'unknown', time() + 60 * 60,'/','',true,false);
+		}
+		
+		return isset($_COOKIE['has_user_cookie_consent']) && $_COOKIE['has_user_cookie_consent'] !== '';
+	}
+	
 	public function getConnectionData() {
 		return $this->connection;
 	}
