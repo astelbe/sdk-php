@@ -70,9 +70,8 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
-		$has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent');
-		if ($has_user_cookie_consent !== null) {
-			$params['data']['has_user_cookie_consent'] = $has_user_cookie_consent;
+		if(Hash::get($_GET, 'has_user_cookie_consent')) {
+			EmulatedSession::setHasUserCookieConsent();
 		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
