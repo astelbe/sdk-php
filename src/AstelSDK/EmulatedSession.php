@@ -79,10 +79,10 @@ class EmulatedSession {
 		if(isset($_COOKIE['has_user_cookie_consent']) && $_COOKIE['has_user_cookie_consent'] !== ''){
 			return true;
 		} else {
-			setcookie('has_user_cookie_consent', 'unknown', time() + 60 * 60,'/','',true,false);
+			setcookie('hasCookieUserConsent', 'unknown', time() + 60 * 60,'/','',true,false);
 		}
 		
-		return isset($_COOKIE['has_user_cookie_consent']) && $_COOKIE['has_user_cookie_consent'] !== '';
+		return isset($_COOKIE['hasCookieUserConsent']) && $_COOKIE['hasCookieUserConsent'] !== '';
 	}
 	
 	public function getConnectionData() {
