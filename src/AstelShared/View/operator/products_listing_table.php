@@ -20,6 +20,10 @@ use CakeUtility\Hash;
  *        'key_of_value' => 'product data key to display (custom)',
  *        'responsive_label' => 'label for data - only for internet and mobile tab',
  *    ],]]
+ * Params options :
+ * - display_col_logo (bool) default false : add a col with logo for multi-brand listing
+ * - disabled_product_link (bool)  default false : product are not clickable, for INTBRU who hasn't single product page
+ * - display_operator_in_product_name (bool) default false : prefixe product name with operator, for multi-brand listing
  */
 
 $is_pack = $params['tab_type'] === 'packs';
@@ -89,7 +93,7 @@ $params['bonus_header'] = [
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
-					<?php if ($params['version'] != 'cake') { ?>
+					<?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != true) { ?>
 						<a
 							class="color-operator text-<?= Hash::get($product, 'brand_slug') ?> gtm-product-click"
 							href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>"
@@ -100,11 +104,15 @@ $params['bonus_header'] = [
 						echo Hash::get($product, 'brand_name') . ' ';
 					} ?>
 					<?= Hash::get($product, 'short_name.' . $params['language']); ?>
-					<?php if ($params['version'] != 'cake') { ?>
+                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 						</a>
 					<?php } ?>
-					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
-						<span class="ml-2"><?= self::renderStar($product['quality_score']) ?></span>
+					<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+						<div class="position-relative d-inline-block cursor-pointer modalClick" data-toggle="modal" data-target="#modalQualityStars" style="display:inline-block">
+							<div class="ml-3"><?= self::renderStar($product['quality_score']) ?>
+								<i class="fa fa-info pl-2"></i>
+							</div>
+						</div>
 					<?php } ?>
 				</h3>
 				<div class="row no-gutters p-2">
@@ -171,6 +179,12 @@ $params['bonus_header'] = [
 							</div>
 						<?php } ?>
 
+						<?php if (Hash::Get($params, 'options.display_activation_time', false)) { ?>
+							<div class="mb-2">
+								<?= __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' =>$product['max_activation_time']]) ?>
+							</div>
+						<?php } ?>
+
 						<?= $product['order_button'] ?>
 						<div class="font-s-08 mt-1">
 							<?= $product['activation_price'] ?>
@@ -183,7 +197,7 @@ $params['bonus_header'] = [
 			<!-- MOBILE -->
 			<article class="d-lg-none my-3 border text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 				<h3 class="font-weight-bold color-operator bg-lighter p-2 mb-2">
-					<?php if ($params['version'] != 'cake') { ?>
+                    <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 					<a class="color-operator gtm-product-click" href="<?= Hash::get($product, 'web.product_sheet_url.' . $params['language']) ?>" data-product-details='<?=json_encode($product['gtm_product_click_details']) ?>'>
 						<?php } ?>
 						<?php if (Hash::get($params, 'show_index', false) === true) { ?>
@@ -193,12 +207,14 @@ $params['bonus_header'] = [
 							echo Hash::get($product, 'brand_name') . ' ';
 						} ?>
 						<?= Hash::get($product, 'short_name.' . $params['language']); ?>
-						<?php if ($params['version'] != 'cake') { ?>
+                        <?php if ($params['version'] != 'cake' && Hash::Get($params, 'options.disabled_product_link', false) != 1) { ?>
 					</a>
 				<?php } ?>
-					<?php if (Hash::get($params, 'display_quality_stars', false) === true) { ?>
-						<div class="my-2">
-							<?= self::renderStar($product['quality_score']) ?>
+					<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+						<div class="position-relative d-inline-block cursor-pointer modalClick" data-toggle="modal" data-target="#modalQualityStars" style="display:inline-block">
+							<div class="my-2"><?= self::renderStar($product['quality_score']) ?>
+								<i class="fa fa-info pl-2"></i>
+							</div>
 						</div>
 					<?php } ?>
 				</h3>
@@ -239,6 +255,11 @@ $params['bonus_header'] = [
 								<?php echo Hash::get($product, 'displayed_cashback'); ?>
 							</div>
 						<?php } ?>
+						<?php if (Hash::Get($params, 'options.display_activation_time', false)) { ?>
+							<div class="mb-2">
+								<?= __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' =>$product['max_activation_time']]) ?>
+							</div>
+						<?php } ?>
 						<div class="pb-3">
 							<?= $product['order_button'] ?>
 						</div>
@@ -248,3 +269,21 @@ $params['bonus_header'] = [
 		</div>
 	<?php } ?>
 </section>
+<?php if (Hash::get($params, 'options.display_quality_stars', false) === true) { ?>
+<div class="modal fade" id="modalQualityStars" tabindex="-1" role="dialog" aria-labelledby="modalQualityStars" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					<?php echo __d('general', 'quality_modal_title'); ?>
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<?php echo __d('general', 'quality_info'); ?>
+			</div>
+	</div>
+</div>
+<?php } ?>
