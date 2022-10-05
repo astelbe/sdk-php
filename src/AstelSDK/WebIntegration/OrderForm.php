@@ -107,6 +107,12 @@ class OrderForm extends AbstractWebIntegration {
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
+		
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['data']['username'] = $username;
+		}
+		
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		
