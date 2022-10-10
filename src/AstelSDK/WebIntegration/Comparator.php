@@ -151,6 +151,10 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
+		if (isset($_GET['username'])) {
+			$getParams['username'] = $_GET['username'];
+		}
+		
 		$getParams['page_title'] = $title;
 		
 		$paramsURL = $this->getParamsUrl($getParams);
