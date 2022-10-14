@@ -51,8 +51,8 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getScriptLoadComparator($title = null) {
 		global $_GET;
+
 		$getParams = [];
-		
 		$defaultGET = [
 			'mobile' => 0,
 			'fixe' => 0,
