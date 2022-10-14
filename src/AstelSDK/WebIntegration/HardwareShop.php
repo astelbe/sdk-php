@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use CakeUtility\Hash;
 
 class HardwareShop extends AbstractWebIntegration {
 	
@@ -47,6 +48,8 @@ class HardwareShop extends AbstractWebIntegration {
 	}
 	
 	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null) {
+		global $_GET;
+
 		$params = [];
 		$params['is_professional'] = $this->context->getIsProfessional();
 		if ($brand_slug !== null) {
@@ -57,7 +60,14 @@ class HardwareShop extends AbstractWebIntegration {
 		}
 		$params['session_id'] = $this->context->getSessionID();
 		$params['page_url'] = $this->getPageURL();
+		
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['username'] = $username;
+		}
+		
 		$serialize = serialize($params);
+
 		$paramsURL = URL::base64url_encode($serialize);
 		
 		return '<script>
@@ -66,6 +76,9 @@ class HardwareShop extends AbstractWebIntegration {
 	}
 	
 	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null) {
+		global $_GET;
+		
+		$username = Hash::get($_GET, 'username');
 		$serialize = serialize([
 			'slug' => $hardware_slug,
 			'id' => $hardware_id,
@@ -73,7 +86,8 @@ class HardwareShop extends AbstractWebIntegration {
 			'offers_brand' => $offers_brand,
 			'is_professional' => $this->context->getIsProfessional(),
 			'session_id' => $this->context->getSessionID(),
-			'page_url' => $this->getPageURL()
+			'page_url' => $this->getPageURL(),
+			'username' => $username
 		]);
 		$paramsURL = URL::base64url_encode($serialize);
 		
