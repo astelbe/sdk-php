@@ -70,8 +70,12 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
+		if(Hash::get($_GET, 'has_user_cookie_consent')) {
+			EmulatedSession::setHasUserCookieConsent();
+		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
+
 		return '<script>
 			/* setup the call below with paramaters:
 			* language: uppercase string (FR, NL, EN, DE)
@@ -85,7 +89,6 @@ class OrderForm extends AbstractWebIntegration {
 	
 	public function getScriptOrderToken($extraParams = []) {
 		global $_GET;
-		
 		$params = ['data' => []];
 		$params['data']['product_arrangement_token'] = Hash::get($_GET, 'token', '');
 		$postal_code = Hash::get($_GET, 'postal_code');
@@ -105,7 +108,11 @@ class OrderForm extends AbstractWebIntegration {
 		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
-		
+
+		if($extraParams['has_user_cookie_consent']) {
+			EmulatedSession::setHasUserCookieConsent();
+		}
+
 		return '<script>
 			/* setup the call below with paramaters:
 			* language: uppercase string (FR, NL, EN, DE)
