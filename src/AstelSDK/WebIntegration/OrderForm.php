@@ -70,6 +70,10 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['data']['username'] = $username;
+		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		return '<script>
@@ -100,9 +104,15 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['data']['username'] = $username;
+		}
+		
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
+		
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 		
