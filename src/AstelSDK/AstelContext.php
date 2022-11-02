@@ -258,7 +258,7 @@ class AstelContext extends Singleton {
 	public function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
-	
+ 
 	/**
 	 * Register functions:
 	 * - debug() for pretty display of debug information
