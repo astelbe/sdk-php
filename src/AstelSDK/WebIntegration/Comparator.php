@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
 	
@@ -19,17 +20,13 @@ class Comparator extends AbstractWebIntegration {
 	}
 	
 	public function getJSList() {
-		if ($this->context->getSession() === null) {
-			$version_data = md5(date('mdH'));
-		} else {
-			$version_data = md5($this->context->getSession()->sessionGet('website.last_update_time'));
-		}
-		
-		return [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $this->context->getLanguage() . '.js?v=' . $version_data,
+		$Typeahead = Typeahead::getInstance();
+		$typeahead_js = $Typeahead->getJsList();
+		$comparator_js = [
 			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
 			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
 		];
+		return array_merge($typeahead_js, $comparator_js);
 	}
 	
 	public function getCSS($allRequired = true) {
@@ -54,8 +51,8 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getScriptLoadComparator($title = null) {
 		global $_GET;
+
 		$getParams = [];
-		
 		$defaultGET = [
 			'mobile' => 0,
 			'fixe' => 0,
@@ -154,6 +151,10 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
+		if (isset($_GET['username'])) {
+			$getParams['username'] = $_GET['username'];
+		}
+		
 		$getParams['page_title'] = $title;
 		
 		$paramsURL = $this->getParamsUrl($getParams);

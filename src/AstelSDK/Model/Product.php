@@ -402,4 +402,23 @@ class Product extends SDKModel {
 		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
 		return $ordered_products;
 	}
+
+	/**
+	 * @param $tag_group_id
+	 * @param $product
+	 *
+	 * return mixed (bool) false if empty | (array) tags
+	 */
+	public function getTags( $tag_group_id, $product) {
+		$tags = false;
+		$product_tags = Hash::get($product, 'tag', null);
+		if(is_array($product_tags)) {
+			foreach ($product_tags as $tag) {
+				if(Hash::get($tag, 'tag_group_id', null) == $tag_group_id) {
+					$tags[] = $tag;
+				}
+			}
+		}
+		return $tags;
+	}
 }
