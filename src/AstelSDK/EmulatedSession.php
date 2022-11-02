@@ -75,14 +75,6 @@ class EmulatedSession {
 		return isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== '';
 	}
 	
-	public static function setHasUserCookieConsent($has_user_cookie_consent = null) {
-        if ($has_user_cookie_consent !== null) {
-            setcookie('hasCookieUserConsent', $has_user_cookie_consent, time() + 60 * 60,'/','',true,false);
-        } else {
-            setcookie('hasCookieUserConsent', 'unknown', time() + 60 * 60,'/','',true,false);
-        }
-	}
-	
 	public function getConnectionData() {
 		return $this->connection;
 	}
