@@ -71,9 +71,14 @@ class OrderForm extends AbstractWebIntegration {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
 
-		if(Hash::get($_GET, 'has_user_cookie_consent')) {
-			EmulatedSession::setHasUserCookieConsent();
-    }
+        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+        $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+        if($has_user_cookie_consent !== false) {
+            EmulatedSession::setHasUserCookieConsent($has_user_cookie_consent);
+        } elseif (isset($extraParams['has_user_cookie_consent'])) {
+            EmulatedSession::setHasUserCookieConsent($extraParams['has_user_cookie_consent']);
+        }
+
 		$username = Hash::get($_GET, 'username');
 		if ($username !== null) {
 			$params['data']['username'] = $username;
@@ -113,7 +118,6 @@ class OrderForm extends AbstractWebIntegration {
 		if ($username !== null) {
 			$params['data']['username'] = $username;
 		}
-		
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
@@ -121,9 +125,13 @@ class OrderForm extends AbstractWebIntegration {
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 
-		if($extraParams['has_user_cookie_consent']) {
-			EmulatedSession::setHasUserCookieConsent();
-		}
+        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+        $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+		if($has_user_cookie_consent !== false) {
+            EmulatedSession::setHasUserCookieConsent($has_user_cookie_consent);
+        } elseif (isset($extraParams['has_user_cookie_consent'])) {
+            EmulatedSession::setHasUserCookieConsent($extraParams['has_user_cookie_consent']);
+        }
 
 		return '<script>
 			/* setup the call below with paramaters:
