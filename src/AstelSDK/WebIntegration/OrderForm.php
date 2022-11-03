@@ -70,8 +70,14 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
-		if(Hash::get($_GET, 'has_user_cookie_consent')) {
-			EmulatedSession::setHasUserCookieConsent();
+
+        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+        $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['data']['username'] = $username;
+
 		}
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
@@ -83,7 +89,8 @@ class OrderForm extends AbstractWebIntegration {
 			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
 			* See ID list via API
 			*/
-			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' .
+			$this->context->getSessionID() . '\', \'' . $has_user_cookie_consent . '\' );
 		</script>';
 	}
 	
@@ -103,15 +110,23 @@ class OrderForm extends AbstractWebIntegration {
 		if ($hardware_product_id !== null) {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
+		$username = Hash::get($_GET, 'username');
+		if ($username !== null) {
+			$params['data']['username'] = $username;
+		}
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
+		
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 
-		if($extraParams['has_user_cookie_consent']) {
-			EmulatedSession::setHasUserCookieConsent();
-		}
+        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+		if(Hash::get($_GET, 'has_user_cookie_consent', false)) {
+			$has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+        } elseif (isset($extraParams['has_user_cookie_consent'])) {
+			$has_user_cookie_consent = $extraParams['has_user_cookie_consent'];
+        }
 
 		return '<script>
 			/* setup the call below with paramaters:
@@ -120,7 +135,7 @@ class OrderForm extends AbstractWebIntegration {
 			* i.e.: getAstelOrderForm("FR", 1191, "orderForm");
 			*/
 			
-			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\');
+			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\', \'' . $has_user_cookie_consent . '\');
 			</script>
 		';
 	}
