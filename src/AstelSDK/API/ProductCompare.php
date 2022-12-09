@@ -96,14 +96,20 @@ class ProductCompare extends APIModel {
 		}
 	}
 	
-	public function paramTv($is_tv = true) {
+	
+	public function paramTv($is_tv = true, $usage = 'WITH_DECODER') {
 		if (empty($this->default_params)) {
 			$this->prepare();
 		}
 		if ($is_tv) {
 			$this->default_params['is_tv'] = 1;
+			if ($usage !== 'WITH_DECODER' && $usage !== 'FROM_APPLICATION') {
+				throw new ValidationErrorException('Validations error during the param validation. Please correct input. Tv Usage.', 400);
+			}
+			$this->default_params['tv_usage'] = $usage;
 		} else {
 			$this->default_params['is_tv'] = 0;
+			unset($this->default_params['tv_usage']);
 		}
 	}
 	
@@ -183,7 +189,6 @@ class ProductCompare extends APIModel {
 		if (empty($this->default_params)) {
 			$this->prepare();
 		}
-		
 		$params = Hash::merge($this->default_params, $params);
 		$query->addGETParams($params);
 		
