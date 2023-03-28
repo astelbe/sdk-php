@@ -70,7 +70,7 @@ class Typeahead extends Singleton {
     {
         $Context = AstelContext::getInstance();
         $language = Hash::get($options, 'language');
-        if($language !== 'FR') {
+        if($language) {
             $Context->setLanguage($language);
         }
 		$this->assignAttributes($options);
