@@ -51,8 +51,8 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getScriptLoadComparator($title = null) {
 		global $_GET;
+
 		$getParams = [];
-		
 		$defaultGET = [
 			'mobile' => 0,
 			'fixe' => 0,
@@ -151,6 +151,10 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
+		if (isset($_GET['username'])) {
+			$getParams['username'] = $_GET['username'];
+		}
+		
 		$getParams['page_title'] = $title;
 		
 		$paramsURL = $this->getParamsUrl($getParams);
