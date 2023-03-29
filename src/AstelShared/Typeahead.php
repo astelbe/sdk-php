@@ -66,8 +66,13 @@ class Typeahead extends Singleton {
 	 *
 	 * @return string - typeahead's html
 	 */
-	public function getPostalCodeTypeahead ($options = []) {
-		$Context = AstelContext::getInstance();
+	public function getPostalCodeTypeahead ($options = [])
+    {
+        $Context = AstelContext::getInstance();
+        $language = Hash::get($options, 'language');
+        if($language) {
+            $Context->setLanguage($language);
+        }
 		$this->assignAttributes($options);
 		$full_postal_code = Hash::get($options,'full_postal_code', null);
 		if (!empty($full_postal_code)) {
