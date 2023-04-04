@@ -151,6 +151,7 @@ class EmulatedSession {
 	public static function isSessionValid(array $session, $currentData = []) {
 		$sessionSalt = Hash::get($session, 'session_salt');
 		$sessionId = Hash::get($session, 'session_id');
+		
 		if (empty($currentData)) {
 			$sessionIdShouldBe = AstelContext::getUniqueVisitorKey($sessionSalt);
 		} else {
