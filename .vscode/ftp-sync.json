@@ -1,0 +1,15 @@
+{
+  "remotePath": "/var/www/astel/public_html/app/Vendor/astelbe/sdk-php",
+  "host": "st3.astel.be",
+  "username": "ec2-user",
+  "password": "",
+  "port": 22,
+  "protocol": "sftp",
+  "uploadOnSave": true,
+  "privateKeyPath": "/Users/michaelgodefroid/.ssh/astel.pem",
+  "ignore": [
+    "\\.vscode",
+    "\\.git",
+    "\\.DS_Store"
+  ]
+}
