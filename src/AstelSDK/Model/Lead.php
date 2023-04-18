@@ -11,5 +11,6 @@ class Lead extends SDKModel {
 	const CONTACT_TOPICS = ['LEAD', 'AFTER_SALES'];
 	const CONTACT_TOPIC_LEAD = 'LEAD';
 	const CONTACT_TOPIC_AFTER_SALES = 'AFTER_SALES';
-	
+	const CONTACT_TOPIC_GDPR = 'GDPR';
+
 }
