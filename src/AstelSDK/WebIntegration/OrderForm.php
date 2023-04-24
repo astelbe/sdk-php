@@ -154,6 +154,7 @@ class OrderForm extends AbstractWebIntegration {
 	
 	public function getOrderConfirmation() {
 		global $_GET;
+		
 		$token = Hash::get($_GET, 'token');
 		if (null === $token || !preg_match('/^[a-f0-9]{32}$/', $token)) {
 			return 'no_valid_token_given';
