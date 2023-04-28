@@ -200,7 +200,8 @@ class AstelContext extends Singleton {
 			$ip = $_SERVER['REMOTE_ADDR'];
 		}
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] !== '') {
-			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			$ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+                        $ip = trim(end($ip_addresses));
 		}
 		
 		return $ip;
