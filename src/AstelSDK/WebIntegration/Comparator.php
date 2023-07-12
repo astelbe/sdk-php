@@ -53,6 +53,9 @@ class Comparator extends AbstractWebIntegration {
 		global $_GET;
 
 		$getParams = [];
+
+		// Process $_GET params
+        // Be aware that $_GET param names are not the same in comparator scripts
 		$defaultGET = [
 			'mobile' => 0,
 			'fixe' => 0,
@@ -62,12 +65,14 @@ class Comparator extends AbstractWebIntegration {
 			'3g' => 0,
 			'type' => 'fix',
 			'code_postal' => '',
-			'clasQ' => 2,
+			'order_type' => 2,
 			'usage' => 1,
 		];
 		if (!empty($_GET)) {
 			$_GET = array_merge($defaultGET, $_GET);
 		}
+
+		// Postal code : accept 'code_postal', 'postal_code' or 'postal_code_id' if id is given
 		if (isset($_GET['code_postal']) && $_GET['code_postal'] !== '') {
 			$getParams['postal_code'] = $_GET['code_postal'];
 		}
@@ -77,6 +82,8 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['postal_code_id']) && $_GET['postal_code_id'] !== '') {
 			$getParams['postal_code_id'] = $_GET['postal_code_id'];
 		}
+
+		// Mobile
 		if (isset($_GET['mobile']) && $_GET['mobile'] !== '') {
 			$is_mobile = (int)$_GET['mobile'];
 			$getParams['is_mobile'] = 0;
@@ -97,8 +104,10 @@ class Comparator extends AbstractWebIntegration {
 			}
 			
 		}
-		if (isset($_GET['fixe']) && $_GET['fixe'] !== '') {
-			$is_fix = (int)$_GET['fixe'];
+		// Fix
+		// Can use 'fixe' or 'fix'. Comp V2 code send url with 'fix'
+        $is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
+        if($is_fix !== false) {
 			$getParams['is_fix'] = 0;
 			if ($is_fix > 0) {
 				$getParams['is_fix'] = 1;
@@ -109,12 +118,14 @@ class Comparator extends AbstractWebIntegration {
 					case 3:
 						$getParams['fix_usage'] = 'HEAVY';
 						break;
-					case 5:
+					case 4:
 						$getParams['fix_usage'] = 'HEAVYINT';
 						break;
 				}
 			}
 		}
+
+		// Internet
 		if (isset($_GET['internet']) && $_GET['internet'] !== '') {
 			$is_internet = (int)$_GET['internet'];
 			$getParams['is_internet'] = 0;
@@ -133,30 +144,44 @@ class Comparator extends AbstractWebIntegration {
 				}
 			}
 		}
+
+		// Tv
 		if (isset($_GET['tv']) && $_GET['tv'] !== '') {
 			$is_tv = (int)$_GET['tv'];
 			$getParams['is_tv'] = 0;
 			if ($is_tv > 0) {
 				$getParams['is_tv'] = 1;
+                switch ($is_tv) {
+                    case 2:
+                        $getParams['tv_usage'] = 'WITH_DECODER';
+                        break;
+                    case 3:
+                        $getParams['tv_usage'] = 'FROM_APPLICATION';
+                        break;
+                }
 			}
 		}
-		if (isset($_GET['clasQ']) && $_GET['clasQ'] !== '' && is_numeric($_GET['clasQ'])) {
+
+		// Order by
+		if (isset($_GET['order_type']) && $_GET['order_type'] !== '' && is_numeric($_GET['order_type'])) {
 			// 0 = order by price
 			// 1 = order by quality
 			// 2 = order by quality/price
 			// 3 = order by delay
-			$order_type = (int)$_GET['clasQ'];
+			// 4 = order by savings
+			$order_type = (int)$_GET['order_type'];
 			$getParams['order_type'] = $order_type;
 		}
+
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
+
 		if (isset($_GET['username'])) {
 			$getParams['username'] = $_GET['username'];
 		}
 		
 		$getParams['page_title'] = $title;
-		
 		$paramsURL = $this->getParamsUrl($getParams);
 		
 		return '<script>

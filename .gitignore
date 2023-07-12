@@ -5,3 +5,5 @@
 !/.idea/php.xml
 vendor/*
 composer.lock
+
+.vscode/
