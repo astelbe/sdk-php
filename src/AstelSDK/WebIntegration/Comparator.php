@@ -104,9 +104,10 @@ class Comparator extends AbstractWebIntegration {
 			}
 			
 		}
+		// Fix
 		// Can use 'fixe' or 'fix'. Comp V2 code send url with 'fix'
-		if ((isset($_GET['fixe']) && $_GET['fixe'] !== '') || (isset($_GET['fix']) && $_GET['fix'] !== '')) {
-			$is_fix = (int)$_GET['fixe'];
+        $is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
+        if($is_fix !== false) {
 			$getParams['is_fix'] = 0;
 			if ($is_fix > 0) {
 				$getParams['is_fix'] = 1;
