@@ -1,7 +1,7 @@
 <?php
 
 use CakeUtility\Hash;
-//debug($params);
+debug($params);
 ?>
 <h3>PRODUCT CARDS</h3>
 <div class="row">
