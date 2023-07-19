@@ -25,6 +25,7 @@ use CakeUtility\Hash;
  * - disabled_product_link (bool)  default false : product are not clickable, for INTBRU who hasn't single product page
  * - display_operator_in_product_name (bool) default false : prefixe product name with operator, for multi-brand listing
  */
+debug($params);
 
 $is_pack = $params['tab_type'] === 'packs';
 $params['bonus_header'] = [
