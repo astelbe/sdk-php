@@ -67,6 +67,7 @@ class Comparator extends AbstractWebIntegration {
 			'code_postal' => '',
 			'order_type' => 2,
 			'usage' => 1,
+			'is_student' => 0,
 		];
 		if (!empty($_GET)) {
 			$_GET = array_merge($defaultGET, $_GET);
@@ -171,6 +172,12 @@ class Comparator extends AbstractWebIntegration {
 			// 4 = order by savings
 			$order_type = (int)$_GET['order_type'];
 			$getParams['order_type'] = $order_type;
+		}
+
+		// Order by
+		if (isset($_GET['is_student']) && $_GET['is_student'] !== '' && is_numeric($_GET['is_student'])) {
+			$isStudent = (int)$_GET['is_student'];
+			$getParams['is_student'] = $isStudent;
 		}
 
 		if (isset($_GET['is_static_display'])) {
