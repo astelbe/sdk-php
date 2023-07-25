@@ -174,11 +174,11 @@ class Comparator extends AbstractWebIntegration {
 			$getParams['order_type'] = $order_type;
 		}
 
-		// Order by
+		// Is student filter
 		if (isset($_GET['is_student']) && $_GET['is_student'] !== '' && is_numeric($_GET['is_student'])) {
-			$isStudent = (int)$_GET['is_student'];
+			$isStudent = (int)$_GET['is_student']; 
 			$getParams['is_student'] = $isStudent;
-		}
+		}  
 
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
