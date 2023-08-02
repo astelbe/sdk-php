@@ -17,7 +17,8 @@ function getFirst(array &$array) {
 	$lastBrandName = null;
 	foreach ($params['products'] as $product) : ?>
 	<div class="col-md-12">
-<!--		<div class="col-md-3"> 4cols-->
+<!--			4cols-->
+<!--		<div class="col-md-3">-->
 		<!--		2cols-->
 <!--		<div class="col-md-6">-->
 		<!--	3cols-->
@@ -37,15 +38,16 @@ function getFirst(array &$array) {
 						}
 						
 						$brandName = $play['brand_name'];
-//						//debug($brandName);
+					
 //
-//						// Skip if the brand name is -1 or empty
-//						if ($brandName === -1 || empty($brandName)) {
-//							continue;
-//						}
+						// Skip if the brand name is -1 or empty
+						if ($brandName === -1 || empty($brandName)) {
+							continue;
+						}
 						
 						// Count the number of products for each brand
-//						$brandCounts[$brandName] = isset($brandCounts[$brandName]) ? $brandCounts[$brandName] + 1 : 1;
+						$brandCounts[$brandName] = isset($brandCounts[$brandName]) ? $brandCounts[$brandName] + 1 : 1;
+						
 //						debug($brandCounts);
 						
 						$nbrProducts = $product['total_pricings']['number_products'];
@@ -55,18 +57,21 @@ function getFirst(array &$array) {
 						$displayedData = [];
 						$i = 1;
 						
+					
+						
 						//$productMobileIDs = $play['id'];
 						//debug($product);
-						//$productMobileIDs = Hash::combine($product, 'product_M.{n}.product_id', 'product_M.{n}.product_id');
+						$productMobileIDs = Hash::combine($product, 'products.{n}.id', 'products.{n}.id');
 						$displayedData['block' . $i] = [];
 						$displayedData['block' . $i]['lenght'] = 1;
-						$displayedData['block' . $i]['products']['id'][] = $play['id'];
+						$displayedData['block' . $i]['products']['id'][] = $productMobileIDs;
+//						debug($productMobileIDs);
 						$displayedData['block' . $i]['nbrProducts'] = !empty($play['play_description']['play']) ? count($play['play_description']['play']) : -1;
 						$displayedData['block' . $i]['type'] = 'M';
 						$displayedData['block' . $i]['type_name'] = __d('CompareAstelBe', 'mobile');
 						
-//						$productInternetIDs = Hash::combine($product, 'products.products.id', 'products.products.id');
-//						$productInternetID = getFirst($productInternetIDs);
+						$productInternetIDs = Hash::combine($product, 'products.{n}.id', 'products.{n}.id');
+						$productInternetID = getFirst($productInternetIDs);
 						$internetCountProduct = !empty($play['play_description']['internet']) ? count($play['play_description']['internet']) : -1;
 						if ($internetCountProduct > 0 && in_array($productInternetID, $displayedData['block' . $i]['productIDs'], false)) {
 							$displayedData['block' . $i]['lenght'] += 1;
@@ -74,14 +79,16 @@ function getFirst(array &$array) {
 							$i++;
 							$displayedData['block' . $i] = [];
 							$displayedData['block' . $i]['lenght'] = 1;
-							$displayedData['block' . $i]['products']['id'][] = 	$play['id'];
+							$displayedData['block' . $i]['products']['id'][] = 	$productInternetIDs;
+//							debug($productInternetIDs);
 							$displayedData['block' . $i]['nbrProducts'] = $internetCountProduct;
 							$displayedData['block' . $i]['type'] = 'I';
 							$displayedData['block' . $i]['type_name'] = __d('CompareAstelBe', 'internet');
 						}
 						
-						$productFixIDs = Hash::combine($product, 'product_F.{n}.product_id', 'product_F.{n}.product_id');
+						$productFixIDs = Hash::combine($product, 'products.{n}.id', 'products.{n}.id');
 						$productFixID = getFirst($productFixIDs);
+//						debug($productFixID);
 						$fixCountProduct = !empty($productTypeF) ? count($productTypeF) : -1;
 						if ($fixCountProduct > 0 && in_array($productFixID, $displayedData['block' . $i]['productIDs'], false)) {
 							$displayedData['block' . $i]['lenght'] += 1;
@@ -89,14 +96,14 @@ function getFirst(array &$array) {
 							$i++;
 							$displayedData['block' . $i] = [];
 							$displayedData['block' . $i]['lenght'] = 1;
-							$displayedData['block' . $i]['products']['id'][] = $play['id'];
+							$displayedData['block' . $i]['products']['id'][] = 	$productFixIDs;
 							$displayedData['block' . $i]['nbrProducts'] = $fixCountProduct;
 							$displayedData['block' . $i]['type'] = 'F';
 							$displayedData['block' . $i]['type_name'] = __d('CompareAstelBe', 'fix');
 							$displayedData['block' . $i]['product'] = $product;
 						}
 						
-						$productTvIDs = Hash::combine($product, 'product_T.{n}.product_id', 'product_T.{n}.product_id');
+						$productTvIDs = Hash::combine($product, 'products.{n}.id', 'products.{n}.id');
 						$productTvID = getFirst($productTvIDs);
 						$tvCountProduct = !empty($productTypeTv) ? count($productTypeTv) : -1;
 						if ($tvCountProduct > 0 && in_array($productTvID, $displayedData['block' . $i]['productIDs'], false)) {
@@ -105,7 +112,7 @@ function getFirst(array &$array) {
 							$i++;
 							$displayedData['block' . $i] = [];
 							$displayedData['block' . $i]['lenght'] = 1;
-							$displayedData['block' . $i]['products']['id'][]= $play['id'];
+							$displayedData['block' . $i]['products']['id'][]= $productTvIDs;
 							$displayedData['block' . $i]['nbrProducts'] = $tvCountProduct;
 							$displayedData['block' . $i]['type'] = 'T';
 							$displayedData['block' . $i]['type_name'] = __d('CompareAstelBe', 'television');
@@ -119,17 +126,26 @@ function getFirst(array &$array) {
 							while ($y <= count($displayedData)) {
 								if ($displayedData['block' . $x]['nbrProducts'] != -1) {
 									$displayedData['block' . $x]['lenght'] = $displayedData['block' . $x]['lenght'] + $displayedData['block' . $y]['lenght'];
-									
-									
+
 									// Retrieve the cashback total
 									$cashbackTotal = $product['total_pricings']['total_cashback'];
+									echo "<h2 class='float-right py-1 px-3 ml-auto' style='color:#fff; background-color: #f23078;'>€ " . $cashbackTotal . " cashback</h2><br>";
 									
-									// Display the cashback total
-									echo"<div class='d-flex'>";
-										echo "<h2 class='py-1 px-3 ml-auto' style='color:#fff; background-color: #f23078;'>€ " . $cashbackTotal . " cashback</h2><br>";
-									echo "</div>";
-
-
+									$productBrand = Hash::extract($product, 'products.{n}.brand_name');
+//									debug($productBrand);
+									
+									$typeName = Hash::extract($displayedData, 'block' . $x . '.type_name');
+//									debug($typeName);
+									
+									foreach ($typeName as $type) {
+										echo '<div>' . $type . '</div>';
+									}
+									
+									echo "<h2 class='mt-4'>";
+									foreach ($productBrand as $brand) {
+										echo '<div>' . $brand . '</div>';
+									}
+									echo "</h2>";
 
 									unset($displayedData['block' . $y]);
 								}
@@ -138,13 +154,33 @@ function getFirst(array &$array) {
 							$x++;
 						}
 						
+						foreach ($displayedData as $blockName => $block) {
+							
+							// if brand name length is duplicated display only once the brand name
+							$productId = $block['products']['id'];
+							
+//							if (in_array($productId, $displayedProductIds)) {
+//								continue; // Skip if product ID already displayed
+//							}
+////
+							
+//							echo "<h2 class='mt-4'>{$brandName}</h2>";
+//							echo $block['type_name'];
+							
+							// Add the product ID to the displayedProductIds array
+//							$displayedProductIds[] = $productId;
+//							debug($block['products']['id']);
 						
+						}
+						
+							echo "<h2>Total : " . $product['total_pricings']['total_price'] . "</h2>";
+					
 //						<!-- block div wrapper that contain the combinations -->
-						echo "<h2 class='mt-4'>{$brandName}</h2>";
-						echo $displayedData['block' . $x]['type_name'];
-						echo '<pre>';
-						print_r($displayedData);
-						echo '</pre>';
+//						echo "<h2 class='mt-4'>{$brandName}</h2>";
+//						echo $displayedData['block' . $x]['type_name'];
+//						echo '<pre>';
+//						print_r($displayedData);
+//						echo '</pre>';
 //						<!-- end row result -->
 
 						$index++;
