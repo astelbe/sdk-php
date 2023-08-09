@@ -14,12 +14,12 @@ foreach ($params['products'] as $product) {
 	$totalPrice = $product['total_price'];
 //	debug($brandName);
 	?>
-	<div class="col-md-3">
-		<div class="card-body">
+	<div class="col-md-3 mb-5">
+		<div class="px-3 py-4 shadow h-100">
 	<?php
+	echo $totalCashback;
 	echo $brandName;
 	echo $shortName;
-	echo $totalCashback;
 	echo $totalPrice;
 	?>
 		</div>
