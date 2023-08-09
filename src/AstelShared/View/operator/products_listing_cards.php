@@ -4,41 +4,33 @@ use CakeUtility\Hash;
 //debug($params);
 //debug($params['products']);
 
-foreach ($params['products'] as $product) {
-	debug($product);
-}
-
-
-//foreach ($params['products'] as $product) {
-//	$totalCashback = $product['total_cashback'];
-//	debug($totalCashback);
-//	$totalPrice = $product['total_price'];
-//	// ... Rest of the rendering logic
-//}
-
-//$index = 0;
-//
-//foreach ($params['products'] as $product) {
-//	$names = $product['name'];
-//	$brandNames = $product['brand_name'];
-//
-//	foreach ($names as $index => $name) {
-//		$brandName = $brandNames[$index];
-//
-//		echo "<h2>{$name}</h2>";
-//		echo "<p>Brand: {$brandName}</p>";
-//	}
-//
-////	$index++;
-//}
-
-//foreach ($params['products'] as $key => $product) {
-//	if ($key === "name") {
-//		echo "<h2>{$product}</h2>";
-//	}
-//}
-
 ?>
+<div class="row">
+	<div>
+<?php
+foreach ($params['products'] as $product) {
+	$brandName = $product['brand_name'];
+	$shortName = $product['short_name'];
+	$totalCashback = $product['total_cashback'];
+	$totalPrice = $product['total_price'];
+//	debug($brandName);
+	?>
+<!--	<div class="col-md-3">-->
+<!--		<div>-->
+	<?php
+	echo $brandName;
+	echo $shortName;
+	echo $totalCashback;
+	echo $totalPrice;
+	?>
+<!--		</div>-->
+<!--	</div>-->
+<?php
+}
+?>
+	</div>
+</div>
+
 <!--<h3>PRODUCT CARDS</h3>-->
 <!--<div class="row">-->
 <!--	--><?php //foreach ($params['products'] as $product) : ?>
