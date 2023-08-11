@@ -12,21 +12,18 @@ foreach ($params['products'] as $product) {
 	$brandName = $product['brand_name'];
 	$shortName = $product['short_name'];
 	$totalCashback = $product['total_cashback'];
-	$totalPrice = $product['total_price'];
-//	$mobileIncludedCalls = $product['play_description']['included_minutes_calls'];
-//	debug($mobileIncludedCalls);
 	
+	$totalPrice = $product['total_price_without_discount'];
+	$discountedPrice = $product['total_price'];
+	
+	// mobile
 	$mobileDescription = $product['play_description']['mobile'];
-//	debug($mobileDescription[0]['included_data_volume']);
-	
 	$mobileData = $mobileDescription['included_data_volume'];
-	
 	$mobileMinuteCalls = $mobileDescription['included_minutes_calls'];
-//	debug($mobileDescription[0]['included_minutes_calls']);
 	$mobileSms = $mobileDescription['included_sms'];
 	
+	// internet
 	$internetDescription = $product['play_description']['internet'];
-//	debug($product['play_description']['internet']);
 	$internetSpeed = $internetDescription['bandwidth_download'];
 	$internetVolume = $internetDescription['bandwidth_volume'];
 	
@@ -68,13 +65,14 @@ foreach ($params['products'] as $product) {
 	echo $tvDecoderApplication;
 
 	// fix
+	if (isset($fixMinutesCalls) && $fixMinutesCalls !== NULL) {
 	echo '<h3>'. 'Fix :' . '</h3>';
 	echo $fixMinutesCalls;
+	}
 	
 	
-	
-//	echo $mobile;
 	echo $totalPrice;
+	echo $discountedPrice;
 	?>
 		</div>
 	</div>
