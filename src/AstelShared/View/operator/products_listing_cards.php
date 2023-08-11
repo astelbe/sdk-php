@@ -8,18 +8,47 @@ use CakeUtility\Hash;
 <div class="row">
 <?php
 foreach ($params['products'] as $product) {
+//	debug($product);
+	
 	$brandName = $product['brand_name'];
 	$shortName = $product['short_name'];
 	$totalCashback = $product['total_cashback'];
 	$totalPrice = $product['total_price'];
-//	debug($brandName);
+//	$mobileIncludedCalls = $product['play_description']['included_minutes_calls'];
+//	debug($mobileIncludedCalls);
+	
+	$mobileDescription = $product['play_description']['mobile'];
+//	debug($mobileDescription[0]['included_data_volume']);
+	
+	$mobileData = $mobileDescription['included_data_volume'];
+	
+	$mobileMinuteCalls = $mobileDescription['included_minutes_calls'];
+//	debug($mobileDescription[0]['included_minutes_calls']);
+	$mobileSms = $mobileDescription['included_sms'];
+//	debug($mobileMinuteCalls);
+	
+//	foreach ($product as $p) {
+//		$includedMinuteCalls = $p['play_description']['mobile']['included_minutes_calls'];
+//		debug($includedMinuteCalls);
+//	}
+	
+	
 	?>
 	<div class="col-md-3 mb-5">
-		<div class="px-3 py-4 shadow h-100">
+		<div class="px-3 py-4 shadow h-100 rounded-lg">
 	<?php
 	echo $totalCashback;
 	echo $brandName;
 	echo $shortName;
+	
+	if (isset($mobileMinuteCalls) || isset($mobileSms)) {
+		echo '<span>'. 'GSM :' . '</span>';
+		echo $mobileData;
+		echo $mobileMinuteCalls;
+		echo $mobileSms;
+	}
+	
+//	echo $mobile;
 	echo $totalPrice;
 	?>
 		</div>
