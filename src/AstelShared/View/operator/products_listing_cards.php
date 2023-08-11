@@ -8,7 +8,6 @@ use CakeUtility\Hash;
 <div class="row">
 <?php
 foreach ($params['products'] as $product) {
-//	debug($product);
 	
 	$brandName = $product['brand_name'];
 	$shortName = $product['short_name'];
@@ -25,12 +24,22 @@ foreach ($params['products'] as $product) {
 	$mobileMinuteCalls = $mobileDescription['included_minutes_calls'];
 //	debug($mobileDescription[0]['included_minutes_calls']);
 	$mobileSms = $mobileDescription['included_sms'];
-//	debug($mobileMinuteCalls);
 	
-//	foreach ($product as $p) {
-//		$includedMinuteCalls = $p['play_description']['mobile']['included_minutes_calls'];
-//		debug($includedMinuteCalls);
-//	}
+	$internetDescription = $product['play_description']['internet'];
+//	debug($product['play_description']['internet']);
+	$internetSpeed = $internetDescription['bandwidth_download'];
+	$internetVolume = $internetDescription['bandwidth_volume'];
+	
+	// tv
+	$tvDescription = $product['play_description']['tv'];
+	$tvChannels = $tvDescription['number_tv_channel'];
+	
+	// tv decoder
+	$tvDecoderApplication = $tvDescription['size_number_tv_max'];
+
+	// fix
+	$fixDescription = $product['play_description']['fix'];
+	$fixMinutesCalls = $fixDescription['included_minutes_calls'];
 	
 	
 	?>
@@ -42,11 +51,27 @@ foreach ($params['products'] as $product) {
 	echo $shortName;
 	
 	if (isset($mobileMinuteCalls) || isset($mobileSms)) {
-		echo '<span>'. 'GSM :' . '</span>';
+		echo '<h3>'. 'GSM :' . '</h3>';
 		echo $mobileData;
 		echo $mobileMinuteCalls;
 		echo $mobileSms;
 	}
+	
+	echo '<h3>'. 'Internet :' . '</h3>';
+	echo $internetSpeed;
+	echo $internetVolume;
+	
+	echo '<h3>'. 'TV :' . '</h3>';
+	echo $tvChannels;
+	
+	echo '<h3>'. 'TV Decoder Application :' . '</h3>';
+	echo $tvDecoderApplication;
+
+	// fix
+	echo '<h3>'. 'Fix :' . '</h3>';
+	echo $fixMinutesCalls;
+	
+	
 	
 //	echo $mobile;
 	echo $totalPrice;
