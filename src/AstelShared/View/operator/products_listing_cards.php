@@ -15,6 +15,7 @@ foreach ($params['products'] as $product) {
 	
 	$totalPrice = $product['total_price_without_discount'];
 	$discountedPrice = $product['total_price'];
+	$totalPriceDuration = $product['total_price_discount_duration'];
 	
 	// mobile
 	$mobileDescription = $product['play_description']['mobile'];
@@ -70,9 +71,12 @@ foreach ($params['products'] as $product) {
 	echo $fixMinutesCalls;
 	}
 	
-	
-	echo $totalPrice;
+	echo '<p class="result-setup-price mt-5">';
 	echo $discountedPrice;
+	echo $totalPriceDuration;
+	echo $totalPrice;
+	echo '</p>';
+
 	?>
 		</div>
 	</div>
