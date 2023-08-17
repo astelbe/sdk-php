@@ -70,24 +70,60 @@ foreach ($params['products'] as $product) {
 	echo '<div class="my-5">' . $toggle . '</div>';
 	
 	if (isset($mobileMinuteCalls) || isset($mobileSms)) {
-		echo '<h3>'. 'GSM :' . '</h3>';
-		echo $mobileData;
-		echo $mobileMinuteCalls;
-		echo $mobileSms;
-		echo $mobilePriceDescription;
+		?>
+			<div class="col-lg-12">
+				<h4>GSM:</h4>
+					<div class="d-inline-flex p-2">
+					<?= $mobileData ?>
+					<?= $mobileMinuteCalls ?>
+					<?= $mobileSms ?>
+					</div>
+					<div class="col-lg-12">
+						<?= $mobilePriceDescription ?>
+					</div>
+				</div>
+		<?php
 	}
 	
-	echo '<h3>'. 'Internet :' . '</h3>';
-	echo $internetSpeed;
-	echo $internetVolume;
-	echo $internetDescription;
+	if (isset($internetSpeed) || isset($internetVolume)) {
+		?>
+			<div class="col-lg-12 mt-4">
+				<h4>Internet:</h4>
+					<div class="d-inline-flex p-2">
+					<?= $internetSpeed ?>
+					<?= $internetVolume ?>
+					</div>
+					<div class="col-lg-12">
+						<?= $internetDescription ?>
+					</div>
+				</div>
+		<?php
+	}
 	
-	echo '<h3>'. 'TV :' . '</h3>';
-	echo $tvChannels;
+	if (isset($tvChannels)) {
+		?>
+			<div class="col-lg-12 mt-4">
+				<h4>TV:</h4>
+					<div class="d-inline-flex p-2">
+					<?= $tvChannels ?>
+					</div>
+				<h4>TV Decoder Application :</h4>
+					<div class="d-inline-flex p-2">
+					<?= $tvDecoderApplication ?>
+					</div>
+					<div class="col-lg-12">
+						<?= $tvDescription ?>
+					</div>
+				</div>
+		<?php
+	}
 	
-	echo '<h3>'. 'TV Decoder Application :' . '</h3>';
-	echo $tvDecoderApplication;
-	echo $tvDescription;
+//	echo '<h3>'. 'TV :' . '</h3>';
+//	echo $tvChannels;
+	
+//	echo '<h3>'. 'TV Decoder Application :' . '</h3>';
+//	echo $tvDecoderApplication;
+//	echo $tvDescription;
 
 	// fix
 	if (isset($fixMinutesCalls) && $fixMinutesCalls !== '') {
