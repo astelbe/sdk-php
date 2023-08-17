@@ -17,6 +17,13 @@ foreach ($params['products'] as $product) {
 	$discountedPrice = $product['total_price'];
 	$totalPriceDuration = $product['total_price_discount_duration'];
 	
+	$orderUrl = $product['order_url'];
+	$quality_score = $product['quality_score'];
+	$full_activation_price = $product['full_activation_pack_price'];
+	//debug($full_activation_price);
+	
+	$full_setup_price = $product['full_total_setup_price'];
+	
 	// mobile
 	$mobileDescription = $product['play_description']['mobile'];
 	$mobileData = $mobileDescription['included_data_volume'];
@@ -38,6 +45,7 @@ foreach ($params['products'] as $product) {
 	// fix
 	$fixDescription = $product['play_description']['fix'];
 	$fixMinutesCalls = $fixDescription['included_minutes_calls'];
+	
 	
 	
 	?>
@@ -72,10 +80,42 @@ foreach ($params['products'] as $product) {
 	}
 	
 	echo '<p class="result-setup-price mt-5">';
+
+	echo $quality_score;
 	echo $discountedPrice;
 	echo $totalPriceDuration;
 	echo $totalPrice;
+	echo $full_setup_price;
 	echo '</p>';
+	
+	//debug($quality_score);
+
+	
+//	$quality_score = $product['quality_score'] / 20;
+//	$quality_score = ceil($quality_score[0] * 2) / 2;
+//	debug($quality_score);
+
+//	$s = 0;
+//	$full_stars = floor($quality_score);
+//	while ($s < $full_stars) {
+//			echo '<i style="color:#feb916" class="fas fa-star fa-lg"></i>';
+//			$s++;
+//	}
+//	$half_stars = ceil($quality_score) - $full_stars;
+//	$s = 0;
+//	while ($s < $half_stars) {
+//			echo '<i style="color:#feb916" class="fa fa-star-half-o fa-lg"></i>';
+//			$s++;
+//	}
+//	$empty_starts = 5 - $full_stars - $half_stars;
+//	$s = 0;
+//	while ($s < $empty_starts) {
+//			echo '<i style="color:#feb916" class="fa fa-star-o fa-lg"></i>';
+//			$s++;
+//	}
+
+	
+	echo  $orderUrl;
 
 	?>
 		</div>
