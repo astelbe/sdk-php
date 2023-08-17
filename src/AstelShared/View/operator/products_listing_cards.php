@@ -28,27 +28,33 @@ foreach ($params['products'] as $product) {
 //	debug($reduced_setup_price);
 	$total_savings = $product['products_total_savings'];
 	
+	$toggle = $product['toggle'];
+	
 	// mobile
-	$mobileDescription = $product['play_description']['mobile'];
-	$mobileData = $mobileDescription['included_data_volume'];
-	$mobileMinuteCalls = $mobileDescription['included_minutes_calls'];
-	$mobileSms = $mobileDescription['included_sms'];
+	$mobile = $product['play_description']['mobile'];
+	$mobileData = $mobile['included_data_volume'];
+	$mobileMinuteCalls = $mobile['included_minutes_calls'];
+	$mobileSms = $mobile['included_sms'];
+	$mobilePriceDescription = $mobile['price_description'];
 	
 	// internet
-	$internetDescription = $product['play_description']['internet'];
-	$internetSpeed = $internetDescription['bandwidth_download'];
-	$internetVolume = $internetDescription['bandwidth_volume'];
+	$internet = $product['play_description']['internet'];
+	$internetSpeed = $internet['bandwidth_download'];
+	$internetVolume = $internet['bandwidth_volume'];
+	$internetDescription = $internet['price_description'];
 	
 	// tv
-	$tvDescription = $product['play_description']['tv'];
-	$tvChannels = $tvDescription['number_tv_channel'];
+	$tv = $product['play_description']['tv'];
+	$tvChannels = $tv['number_tv_channel'];
+	$tvDescription = $tv['price_description'];
 	
 	// tv decoder
-	$tvDecoderApplication = $tvDescription['size_number_tv_max'];
+	$tvDecoderApplication = $tv['size_number_tv_max'];
 
 	// fix
-	$fixDescription = $product['play_description']['fix'];
-	$fixMinutesCalls = $fixDescription['included_minutes_calls'];
+	$fix = $product['play_description']['fix'];
+	$fixMinutesCalls = $fix['included_minutes_calls'];
+	$fixDescription = $fix['price_description'];
 	
 	
 	
@@ -57,31 +63,40 @@ foreach ($params['products'] as $product) {
 		<div class="px-3 py-4 shadow h-100 rounded-lg">
 	<?php
 	echo $totalCashback;
+	
 	echo $brandName;
 	echo $shortName;
+	
+	echo '<div class="my-5">' . $toggle . '</div>';
 	
 	if (isset($mobileMinuteCalls) || isset($mobileSms)) {
 		echo '<h3>'. 'GSM :' . '</h3>';
 		echo $mobileData;
 		echo $mobileMinuteCalls;
 		echo $mobileSms;
+		echo $mobilePriceDescription;
 	}
 	
 	echo '<h3>'. 'Internet :' . '</h3>';
 	echo $internetSpeed;
 	echo $internetVolume;
+	echo $internetDescription;
 	
 	echo '<h3>'. 'TV :' . '</h3>';
 	echo $tvChannels;
 	
 	echo '<h3>'. 'TV Decoder Application :' . '</h3>';
 	echo $tvDecoderApplication;
+	echo $tvDescription;
 
 	// fix
-	if (isset($fixMinutesCalls) && $fixMinutesCalls !== NULL) {
+	if (isset($fixMinutesCalls) && $fixMinutesCalls !== '') {
 	echo '<h3>'. 'Fix :' . '</h3>';
 	echo $fixMinutesCalls;
+	echo $fixDescription;
 	}
+	
+
 	
 	echo '<p class="result-setup-price mt-5">';
 
