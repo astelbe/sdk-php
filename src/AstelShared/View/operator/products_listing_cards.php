@@ -23,6 +23,10 @@ foreach ($params['products'] as $product) {
 	//debug($full_activation_price);
 	
 	$full_setup_price = $product['full_total_setup_price'];
+//	debug($full_setup_price);
+	$reduced_setup_price = $product['reduced_total_setup_price'];
+//	debug($reduced_setup_price);
+	$total_savings = $product['products_total_savings'];
 	
 	// mobile
 	$mobileDescription = $product['play_description']['mobile'];
@@ -82,10 +86,15 @@ foreach ($params['products'] as $product) {
 	echo '<p class="result-setup-price mt-5">';
 
 	echo $quality_score;
+	echo '<h5>TOTAL : </h5>';
 	echo $discountedPrice;
 	echo $totalPriceDuration;
-	echo $totalPrice;
+	echo '<span>, puis ' . $totalPrice . '</span>';
+	echo '<div><span>Activation et installation : </span>';
 	echo $full_setup_price;
+	echo $reduced_setup_price;
+	echo '<div>' . $total_savings . '</div>';
+	echo '</div>';
 	echo '</p>';
 	
 	//debug($quality_score);
