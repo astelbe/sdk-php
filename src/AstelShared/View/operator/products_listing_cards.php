@@ -104,33 +104,31 @@ foreach ($params['products'] as $product) {
 		?>
 			<div class="col-lg-12 mt-4">
 				<h4>TV:</h4>
-					<div class="d-inline-flex p-2">
-					<?= $tvChannels ?>
-					</div>
-				<h4>TV Decoder Application :</h4>
-					<div class="d-inline-flex p-2">
+					<div class="d-inline-flex flex-column-reverse p-2">
 					<?= $tvDecoderApplication ?>
+					<?= $tvChannels ?>
 					</div>
 					<div class="col-lg-12">
 						<?= $tvDescription ?>
 					</div>
-				</div>
+			</div>
 		<?php
 	}
 	
-//	echo '<h3>'. 'TV :' . '</h3>';
-//	echo $tvChannels;
-	
-//	echo '<h3>'. 'TV Decoder Application :' . '</h3>';
-//	echo $tvDecoderApplication;
-//	echo $tvDescription;
-
 	// fix
-	if (isset($fixMinutesCalls) && $fixMinutesCalls !== '') {
-	echo '<h3>'. 'Fix :' . '</h3>';
-	echo $fixMinutesCalls;
-	echo $fixDescription;
-	}
+	if (!empty($fixMinutesCalls)) {
+		?>
+		<div class="col-lg-12 mt-4">
+			<h4>Fix:</h4>
+				<div class="d-inline-flex p-2">
+				<?= $fixMinutesCalls ?>
+				</div>
+				<div class="col-lg-12">
+					<?= $fixDescription ?>
+				</div>
+			</div>
+		<?php
+	} 
 	
 
 	
