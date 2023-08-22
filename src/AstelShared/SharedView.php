@@ -3,6 +3,7 @@
 namespace AstelShared;
 
 use AstelSDK\Utils\Singleton;
+use AstelSDK\Model\Product;
 use CakeUtility\Hash;
 
 class SharedView extends Singleton {
@@ -72,20 +73,23 @@ class SharedView extends Singleton {
 			case 'play_description.fix.included_minutes_calls' :
 				if ($description == 'UNLIMITED') {
 //					return d__('product', 'tab_mobile_unlimited_call');
-					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $version, $description);
+					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $version);
 				} else if ($description == 'EWE') {
-					return d__('product', 'tab_fixe_EWE');
+//					return d__('product', 'tab_fixe_EWE');
+					return sel::getTranslation($translation_domain, 'tab_fixe_EWE', $version);
 				} else {
 					if ($description == 0) {
 						return '/';
 					}
-					return d__('product', 'tab_mobile_minutes' . $responsive, $description);
+//					return d__('product', 'tab_mobile_minutes' . $responsive, $description);
+					return sel::getTranslation($translation_domain, 'tab_mobile_minutes' . $responsive, $version, $description);
 				}
 			// TV : info has no translation keys with data injected
-			default:
-//				return $description;
 			case 'play_description.tv.tab_tv_number_of_channel' :
 				return self::getTranslation($translation_domain, 'tab_tv_number_of_channel', $version, $description);
+			break;
+			case 'play_description.tv.max_tv_channel' :
+				return self::getTranslation($translation_domain, 'tab_max_tv_channel', $version, $description);
 			break;
 			case 'play_description.tv.decoder_application' :
 				return self::getTranslation($translation_domain, 'tab_tv_decoder_application', $version, $description);
@@ -95,40 +99,66 @@ class SharedView extends Singleton {
 			break;
 			case 'play_description.tv.application_only' :
 				return self::getTranslation($translation_domain, 'tab_tv_application_without_decoder', $version, $description);
+			default:
+				return $description;
 		}
 	}
 	
 	static function getMobileData($product, $version = 'front', $language = 'fr') {
-		$data = [];
-		//debug($product['play_description']['mobile']);
-		$data['included_data_volume'] = self::getTranslatedPlayDescription( 'play_description.mobile.included_data_volume', $product, $version);
-		$data['included_sms'] = self::getTranslatedPlayDescription( 'play_description.mobile.included_sms', $product, $version);
-		$data['included_minutes_calls'] = self::getTranslatedPlayDescription( 'play_description.mobile.included_minutes_calls', $product, $version);
-		$data['price_description'] = Hash::get($product, 'play_description.mobile.price_description.'.$language);
-		return $data;
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'M')) {
+			$data = [];
+			$data['included_data_volume'] = self::getTranslatedPlayDescription('play_description.mobile.included_data_volume',
+				$product, $version);
+			$data['included_sms'] = self::getTranslatedPlayDescription('play_description.mobile.included_sms', $product,
+				$version);
+			$data['included_minutes_calls'] = self::getTranslatedPlayDescription('play_description.mobile.included_minutes_calls',
+				$product, $version);
+			$data['price_description'] = Hash::get($product, 'play_description.mobile.price_description.'.$language);
+			return $data;
+		} else {
+			return false;
+		}
 	}
 	
 	static function getInternetData($product, $version = 'front', $language = 'fr') {
-		$data = [];
-		$data['bandwidth_download'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_download', $product, $version);
-		$data['bandwidth_volume'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_volume', $product, $version);
-		$data['price_description'] = Hash::get($product, 'play_description.internet.price_description.'.$language);
-		return $data;
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'I')) {
+			$data = [];
+			$data['bandwidth_download'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_download', $product, $version);
+			$data['bandwidth_volume'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_volume', $product, $version);
+			$data['price_description'] = Hash::get($product, 'play_description.internet.price_description.'.$language);
+			return $data;
+		} else {
+			return false;
+		}
 	}
 	
 	static function getTVData($product, $version = 'front', $language = 'fr') {
-		$data = [];
-		$data['included_data_volume'] = self::getTranslatedPlayDescription( 'play_description.tv.number_tv_channel', $product, $version);
-		$data['decoder_application'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_application', $product, $version);
-		$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version);
-		$data['application_only'] = self::getTranslatedPlayDescription( 'play_description.tv.application_only', $product, $version);
-		return $data;
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'T')){
+			$data = [];
+			$max_tv_channel = Hash::get($product, 'play_description.tv.max_tv_channel');
+			$data['number_tv_channel'] = self::getTranslatedPlayDescription( 'play_description.tv.number_tv_channel', $product, $version);
+			$data['decoder_application'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_application', $product, $version, $max_tv_channel);
+			$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $max_tv_channel);
+			$data['application_only'] = self::getTranslatedPlayDescription( 'play_description.tv.application_only', $product, $version, $max_tv_channel);
+			return $data;
+		} else {
+			return false;
+		}
 	}
 	
-	static function getFIXData($product, $version = 'front', $language = 'fr') {
-		$data = [];
-		$data['included_minutes_calls'] = self::getTranslatedPlayDescription( 'play_description.fix.included_minutes_calls', $product, $version);
-		return $data;
+	static function getFixData($product, $version = 'front', $language = 'fr') {
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'F')) {
+			$data = [];
+			$data['included_minutes_calls'] = self::getTranslatedPlayDescription( 'play_description.mobile.included_minutes_calls', $product, $version);
+			$data['price_description'] = Hash::get($product, 'play_description.fix.price_description.'.$language);
+			return $data;
+		} else {
+			return false;
+		}
 	}
 
 
