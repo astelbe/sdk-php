@@ -85,7 +85,7 @@ class SharedView extends Singleton {
 					return sel::getTranslation($translation_domain, 'tab_mobile_minutes' . $responsive, $version, $description);
 				}
 			// TV : info has no translation keys with data injected
-			case 'play_description.tv.tab_tv_number_of_channel' :
+			case 'play_description.tv.number_tv_channel' :
 				return self::getTranslation($translation_domain, 'tab_tv_number_of_channel', $version, $description);
 			break;
 			case 'play_description.tv.max_tv_channel' :
