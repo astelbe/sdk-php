@@ -76,13 +76,13 @@ class SharedView extends Singleton {
 					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $version);
 				} else if ($description == 'EWE') {
 //					return d__('product', 'tab_fixe_EWE');
-					return sel::getTranslation($translation_domain, 'tab_fixe_EWE', $version);
+					return self::getTranslation($translation_domain, 'tab_fixe_EWE', $version);
 				} else {
 					if ($description == 0) {
 						return '/';
 					}
 //					return d__('product', 'tab_mobile_minutes' . $responsive, $description);
-					return sel::getTranslation($translation_domain, 'tab_mobile_minutes' . $responsive, $version, $description);
+					return self::getTranslation($translation_domain, 'tab_mobile_minutes' . $responsive, $version, $description);
 				}
 			// TV : info has no translation keys with data injected
 			case 'play_description.tv.number_tv_channel' :
@@ -92,13 +92,14 @@ class SharedView extends Singleton {
 				return self::getTranslation($translation_domain, 'tab_max_tv_channel', $version, $description);
 			break;
 			case 'play_description.tv.decoder_application' :
-				return self::getTranslation($translation_domain, 'tab_tv_decoder_application', $version, $description);
+					return self::getTranslation($translation_domain, 'tab_tv_decoder_application', $version, $description);
 			break;
-			case 'play_description.tv.decoder_only' :
-				return self::getTranslation($translation_domain, 'tab_tv_decoder_only', $version, $description);
+			case 'play_description.tv.tab_tv_decoder_only':
+					return self::getTranslation($translation_domain, 'tab_tv_decoder_only', $version, $description);
 			break;
 			case 'play_description.tv.application_only' :
-				return self::getTranslation($translation_domain, 'tab_tv_application_without_decoder', $version, $description);
+					return self::getTranslation($translation_domain, 'tab_tv_application_without_decoder', $version, $description);
+			break;
 			default:
 				return $description;
 		}
@@ -114,7 +115,7 @@ class SharedView extends Singleton {
 				$version);
 			$data['included_minutes_calls'] = self::getTranslatedPlayDescription('play_description.mobile.included_minutes_calls',
 				$product, $version);
-			$data['price_description'] = Hash::get($product, 'play_description.mobile.price_description.'.$language);
+			$data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-'. $key .'">' . Hash::get($product, 'play_description.mobile.price_description.'.$language) . '</p>';
 			return $data;
 		} else {
 			return false;
@@ -127,7 +128,7 @@ class SharedView extends Singleton {
 			$data = [];
 			$data['bandwidth_download'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_download', $product, $version);
 			$data['bandwidth_volume'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_volume', $product, $version);
-			$data['price_description'] = Hash::get($product, 'play_description.internet.price_description.'.$language);
+			$data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-'. $key .'">' . Hash::get($product, 'play_description.internet.price_description.'.$language) . '</p>';
 			return $data;
 		} else {
 			return false;
@@ -138,11 +139,17 @@ class SharedView extends Singleton {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'T')){
 			$data = [];
-			$max_tv_channel = Hash::get($product, 'play_description.tv.max_tv_channel');
+//			$max_tv_channel = Hash::get($product, 'play_description.tv.size_number_tv_max');
+			$decoderApplication = Hash::get($product, 'play_description.tv.decoder_application');
 			$data['number_tv_channel'] = self::getTranslatedPlayDescription( 'play_description.tv.number_tv_channel', $product, $version);
-			$data['decoder_application'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_application', $product, $version, $max_tv_channel);
-			$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $max_tv_channel);
-			$data['application_only'] = self::getTranslatedPlayDescription( 'play_description.tv.application_only', $product, $version, $max_tv_channel);
+			if(Hash::get($product, 'play_description.tv.decoder_application')) {
+				$data['decoder_application'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_application', $product, $version, $decoderApplication);
+			} elseif(Hash::get($product, 'play_description.tv.decoder_only')) {
+				$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $decoderApplication);
+			} else {
+				$data['application_only'] = self::getTranslatedPlayDescription( 'play_description.tv.application_only', $product, $version, $decoderApplication);
+			}
+			$data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-'. $key .'">' . Hash::get($product, 'play_description.tv.price_description.'.$language) . '</p>';
 			return $data;
 		} else {
 			return false;
@@ -153,8 +160,8 @@ class SharedView extends Singleton {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'F')) {
 			$data = [];
-			$data['included_minutes_calls'] = self::getTranslatedPlayDescription( 'play_description.mobile.included_minutes_calls', $product, $version);
-			$data['price_description'] = Hash::get($product, 'play_description.fix.price_description.'.$language);
+			$data['included_minutes_calls'] = self::getTranslatedPlayDescription( 'play_description.fix.included_minutes_calls', $product, $version);
+			$data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-'. $key .'">' . Hash::get($product, 'play_description.fix.price_description.'.$language) . '</p>';
 			return $data;
 		} else {
 			return false;
