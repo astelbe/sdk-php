@@ -30,19 +30,21 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 	<?php
 	foreach ($params as $key => $result) {
 	?>
-		<div class="col-md-3 mb-5">
-			<div class="px-3 py-4 shadow rounded-lg h-100 d-flex flex-column justify-content-lg-between">
-				<div class="mt-n5 ml-3 py-2 px-2 position-relative rounded-sm" style="color:#fff; background-color: #f23078; left:100px; width: 130px; font-size: 1.125rem;">
+		<div class="col-md-4 mb-5">
+			<div class="px-3 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-lg-between">
+				<div class="mt-n5 ml-3 py-2 px-2 position-relative rounded-sm" style="color:#fff; background-color: #f23078; left: 160px; width: 160px; font-size: 1.125rem;">
 				<?= $result['total_pricings']['total_cashback']?>
 				</div>
 					<div class="">
 						<?php
 						foreach ($result['products'] as $key => $item) {
 //							debug($item);
-							?>
+//							?>
 								<div class="pb-4">
-									<h1 class=""><?= $item['brand_name']; ?></h1>
+									<div style="min-height: 100px;">
+										<h1 class=""><?= $item['brand_name']; ?></h1>
 										<p class=""><?= $item['short_name']; ?></p>
+									</div>
 											<?php
 											//mobile
 											if ($item['mobile'] !== false){
