@@ -25,52 +25,33 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 ?>
 
 <style>
-	.grid-container {
-		display: grid;
-		grid-template-columns: repeat(4, auto);
-		/*gap: 6px;*/
-	}
-	
-	.grid-container-internet {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		/*gap: 6px;*/
-	}
-	
-	.grid-container-tv {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		gap: 63px;
-	}
-	
-	.grid-container-fix {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		/*gap: 0px;*/
+	.label {
+		font-size: 0.875rem;
 	}
 </style>
 
 <div class="container mt-5">
 	<?=$toggle;?>
-	<div class="row">
+	<div class="row mt-4">
 	<?php
 	foreach ($params as $key => $result) {
 	?>
-		<div class="col-md-4 mb-5 align-self-start">
-<!--		<div class="col-md-4 mb-5">-->
-			<div class="px-3 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-lg-between">
-				<div class="mt-n5 ml-3 py-2 px-2 position-relative rounded-sm" style="color:#fff; background-color: #f23078; left: 160px; width: 160px; font-size: 1.125rem;">
+<!--		<div class="col-md-4 mb-5 align-self-lg-start">-->
+		<div class="col-md-4 mb-5">
+				<div class="mt-n3 ml-3 py-2 pl-4 position-absolute rounded-sm" style="color:#fff; background-color: #f23078; left: 190px; width: 160px; font-size: 1.125rem;">
 				<?= $result['total_pricings']['total_cashback']?>
 				</div>
-					<div class="">
+			<div class="px-3 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-between">
+<!--			<div class="px-3 py-4 shadow rounded-lg h-100">-->
+					<div class="mt-2">
 						<?php
 						foreach ($result['products'] as $key => $item) {
 //							debug($item);
 //							?>
-								<div class="pb-4">
+								<div class="pt-1 pb-3 pl-2 pr-1 mb-2 rounded" style="background-color: #f5f5f5">
 									<div>
-										<h2 class="" style="font-size:2rem"><?= $item['brand_name']; ?></h2>
-										<p class="text-uppercase"><?= $item['short_name']; ?></p>
+										<h2 class="" style="font-size:1.1rem"><?= $item['brand_name']; ?></h2>
+										<p class="text-uppercase" style="font-size: 1.1rem; color: #f23078"><?= $item['short_name']; ?></p>
 									</div>
 											<?php
 											//mobile
@@ -78,40 +59,26 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 											?>
 												<table>
 													<colgroup>
-														<col style="width: 20%;">
-														<col style="width: 80%;">
+														<col style="width: 30%;">
+														<col style="width: 70%;">
 													</colgroup>
 													<tr>
-														<td class="label">GSM:</td>
-														<td>
-													<span class="mr-1 font-weight-bolder" style="font-size: 1.25rem;">
-															<strong>
-																	<?= $item['mobile']['included_data_volume']; ?>
-															</strong>
-													</span>
-																						<span class="mr-1">
-															<?= $item['mobile']['included_minutes_calls'] ?>
-													</span>
-																						<span class="mr-1">
-															<?= $item['mobile']['included_sms'] ?>
-													</span>
-																					</td>
-																				</tr>
-																			</table>
-												<div class="">
-													<span class="label">GSM:</span>
-													<span class="mr-1 font-weight-bolder" style="font-size: 1.25rem;">
-														<strong>
-															<?= $item['mobile']['included_data_volume']; ?>
-														</strong>
-													</span>
-													<span class="mr-1">
-														<?= $item['mobile']['included_minutes_calls'] ?>
-													</span>
-													<span class="mr-1">
-														<?= $item['mobile']['included_sms'] ?>
-													</span>
-												</div>
+														<td class="label d-inline-flex">GSM:</td>
+															<td>
+															<span class="mr-1 font-weight-bolder" style="font-size: 1.25rem; color:#1f438c!important;">
+																	<strong>
+																			<?= $item['mobile']['included_data_volume']; ?>
+																	</strong>
+															</span>
+															<span class="mr-1">
+																	<?= $item['mobile']['included_minutes_calls'] ?>
+															</span>
+															<span class="mr-1">
+																	<?= $item['mobile']['included_sms'] ?>
+															</span>
+														</td>
+													</tr>
+												</table>
 													<?= $item['mobile']['price_description']; ?>
 											<?php
 											} else {
@@ -120,11 +87,19 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 											// internet
 											if ($item['internet'] !== false){
 											?>
-												<div class="mt-1">
-													<span class="label">Internet: </span>
-													<span class="mr-1">Vitesse  <strong style="font-size: 1.25rem;"><?=$item['internet']['bandwidth_download']; ?></strong></span>
-													<span class="mr-1"><?= $item['internet']['bandwidth_volume']; ?></span>
-												</div>
+												<table>
+													<colgroup>
+														<col style="width: 30%;">
+														<col style="width: 70%;">
+													</colgroup>
+													<tr>
+														<td class="label d-inline-flex">Internet:</td>
+														<td>
+															Vitesse <strong style="font-size: 1.25rem; color:#1f438c!important;"><?= $item['internet']['bandwidth_download']; ?></strong>
+															<span class="mr-1"><?= $item['internet']['bandwidth_volume']; ?></span>
+														</td>
+													</tr>
+												</table>
 													<?= $item['internet']['price_description']; ?>
 											<?php
 											} else {
@@ -133,49 +108,62 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 											// tv
 											if ($item['tv'] !== false){
 											?>
-												<div class="mt-2">
-													<span class="label">TV: </span>
-													<span class="mr-1">
-														<strong><?= $item['tv']['number_tv_channel']; ?></strong>
-													</span>
-													<?php if ($item['tv']['decoder_application']) {?>
-													<span class="mr-1">
-														<?= $item['tv']['decoder_application']; ?>
-													</span>
-													<?php  } elseif ($item['tv']['decoder_only']) { ?>
-													<span class="mr-1">
-														<?= $item['tv']['decoder_only']; ?>
-													</span>
-													<?php  } else  { ?>
-													<div>
-														<span class="mr-1">
-														<?= $item['tv']['application_only']; ?>
-														</span>
-													</div>
-													}
-												<?php } ?>
-												</div>
-												<?= $item['tv']['price_description'];?>
-											<?php
+												<table>
+													<colgroup>
+														<col style="width: 30%;">
+														<col style="width: 70%;">
+													</colgroup>
+													<tr>
+														<td class="label d-inline-flex">TV:</td>
+														<td>
+															<span class="mr-1" style="font-size: 1.25rem; color:#1f438c!important;">
+																<strong><?= $item['tv']['number_tv_channel']; ?></strong>
+															</span>
+															<?php if ($item['tv']['decoder_application']) {?>
+															<span class="mr-1">
+																<?= $item['tv']['decoder_application']; ?>
+															</span>
+															<?php  } elseif ($item['tv']['decoder_only']) { ?>
+															<span class="mr-1">
+																<?= $item['tv']['decoder_only']; ?>
+															</span>
+															<?php  } else  { ?>
+															<div>
+																<span class="mr-1">
+																<?= $item['tv']['application_only']; ?>
+																</span>
+															</div>
+															}
+														<?php } ?>
+														</td>
+													</tr>
+												</table>
+									<?php
 											} else {
 												false;
 											}
 											// fix
 											if ($item['fix'] !== false){
 													?>
-												<div class="mt-2">
-													<span class="label">FIX:</span>
-														<?php if ($item['fix']['included_minutes_calls'] !== null) {?>
-													<span class="mr-1">
-														<?= $item['fix']['included_minutes_calls']; ?>
-													</span class="mr-1">
-												</div>
+													<table>
+														<colgroup>
+															<col style="width: 45%;">
+															<col style="width: 55%;">
+														</colgroup>
+														<tr>
+															<td class="label d-inline-flex">FIX:</td>
+															<td>
+																<?php if ($item['fix']['included_minutes_calls'] !== null) { ?>
+																	<span class="mr-1"><?= $item['fix']['included_minutes_calls']; ?></span>
+																<?php } ?>
+															</td>
+														</tr>
+													</table>
 													<?= $item['fix']['price_description'] ?>
-													<?php } ?>
-													<?php
-												} else {
-													false;
-												}
+													<?php } else {
+														false;
+													}
+												
 											?>
 								</div>
 						<?php
@@ -199,7 +187,7 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 									</p>
 								</div>
 								<?=$result['total_pricings']['products_total_savings']?>
-								<div class="pt-4 mt-1">
+								<div class="pt-4 mt-5" style="margin-top: 120px;">
 									<?=$result['total_pricings']['order_url'];?>
 								</div>
 						</div>
