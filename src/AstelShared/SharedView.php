@@ -145,7 +145,8 @@ class SharedView extends Singleton {
 			if(Hash::get($product, 'play_description.tv.decoder_application')) {
 				$data['decoder_application'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_application', $product, $version, $decoderApplication);
 			} elseif (Hash::get($product, 'play_description.tv.decoder_only')) {
-				$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $decoderApplication);
+//				$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $decoderApplication);
+				$data['decoder_only'] = "<span> Décodeur (max 1) (pas d'application TV) </span>";
 			} else {
 				$data['application_only'] = self::getTranslatedPlayDescription( 'play_description.tv.application_only', $product, $version, $decoderApplication);
 			}
