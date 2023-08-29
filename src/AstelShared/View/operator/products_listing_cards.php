@@ -41,7 +41,7 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 	foreach ($params as $key => $result) {
 	?>
 <!--		<div class="col-md-4 mb-5 align-self-lg-start">-->
-		<div class="col-md-4 mb-5">
+		<div class="col-md-3 mb-5">
 				<div class="mt-n3 ml-3 py-2 pl-4 position-absolute rounded-sm" style="color:#fff; background-color: #f23078; left: 190px; width: 160px; font-size: 1.125rem;">
 				<?= $result['total_pricings']['total_cashback']?>
 				</div>
@@ -111,7 +111,7 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 								'internet' => [
 									'key' => 'internet',
 									'title' => 'NET',
-									'description' => $item['internet']['price_description'],
+									'description' => $item['internet']['price_description']. '<br>' ,
 									'content' => '<span>Vitesse <strong class="mt-n1" style="font-size: 1.25rem; color:#1f438c!important;">'. $item['internet']['bandwidth_download'].'</strong>
 																	<span class="mr-1">'. $item['internet']['bandwidth_volume'].'</span>
 																</span>',
@@ -188,15 +188,12 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 														<div>
 															<?= $play['content']?>
 														</div>
-														<?= $play['description']?>
 													</div>
+														<?= $play['description']?>
 												<?php
 												}
 											}
-											
-											
-										
-											
+
 											?>
 										</div>
 								</div>
