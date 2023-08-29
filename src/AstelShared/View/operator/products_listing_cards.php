@@ -50,116 +50,155 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 					<div class="mt-2">
 						<?php
 						foreach ($result['products'] as $key => $item) {
+							
+							$tv_content = '<span style="font-size: 1.25rem; color:#1f438c!important;">
+														<strong>'.$item['tv']['number_tv_channel'].'</strong>
+						</span>';
+						
+						if ($item['tv']['decoder_application']) {
+							$tv_content .= '<span class="mr-1">
+															'.$item['tv']['decoder_application'].'
+														</span>';
+						} elseif ($item['tv']['decoder_only']) {
+							
+							$tv_content .= '<span class="mr-1">
+															'.$item['tv']['decoder_only'].'
+														</span>';
+						} elseif ($item['tv']['application_only']) {
+							
+							$tv_content .= '<span class="mr-1">
+															'.$item['tv']['application_only'].'
+														</span>';
+						}
+							
+							
+							$tv_content2 = '<span style="font-size: 1.25rem; color:#1f438c!important;">
+														<strong>'.$item['tv']['number_tv_channel'].'</strong>
+						</span><br>';
+							
+							if ($item['tv']['decoder_application']) {
+								$tv_content2 .= '<span class="mr-1">
+															'.$item['tv']['decoder_application'].'
+														</span><br>';
+							} elseif ($item['tv']['decoder_only']) {
+								
+								$tv_content2 .= '<span class="mr-1">
+															'.$item['tv']['decoder_only'].'
+														</span><br>';
+							} else {
+								
+								$tv_content2 .= '<span class="mr-1">
+															'.$item['tv']['application_only'].'
+														</span>';
+							}
+							
+							
+							$details = [
+								'mobile' => [
+									'key' => 'mobile',
+									'title' => 'GSM',
+									'description' => $item['mobile']['price_description'],
+									'content' => '<span>
+													<strong style="font-size: 1.25rem; color:#1f438c!important;">'. $item['mobile']['included_data_volume'].'</strong>
+														</span>
+														<span class="mr-1">
+																'.$item['mobile']['included_minutes_calls'].'
+														</span>
+														<span class="mr-1">
+																' . $item['mobile']['included_sms']. '
+														</span>',
+								],
+								'internet' => [
+									'key' => 'internet',
+									'title' => 'NET',
+									'description' => $item['internet']['price_description'],
+									'content' => '<span>Vitesse <strong class="mt-n1" style="font-size: 1.25rem; color:#1f438c!important;">'. $item['internet']['bandwidth_download'].'</strong>
+																	<span class="mr-1">'. $item['internet']['bandwidth_volume'].'</span>
+																</span>',
+								],
+								'tv' => [
+									'key' => 'tv',
+									'title' => 'TV',
+									'description' => $item['tv']['price_description'],
+									'content' => $tv_content,
+								],
+								'fix' => [
+									'key' => 'fix',
+									'title' => 'TEL',
+									'description' => $item['fixed']['price_description'],
+									'content' => '<span>'.$item['fix']['included_minutes_calls'].'</span>',
+								],
+							];
+							
+							$details2 = [
+								'mobile' => [
+									'key' => 'mobile',
+									'title' => 'GSM',
+									'description' => $item['mobile']['price_description'],
+									'content' => '<span>
+													<strong style="font-size: 1.25rem; color:#1f438c!important;">'. $item['mobile']['included_data_volume'].'</strong>
+														</span><br>
+														<span class="mr-1">
+																'.$item['mobile']['included_minutes_calls'].'
+														</span><br>
+														<span class="mr-1">
+																' . $item['mobile']['included_sms']. '
+														</span>',
+								],
+								'internet' => [
+									'key' => 'internet',
+									'title' => 'NET',
+									'description' => $item['internet']['price_description'],
+									'content' => '<span>Vitesse <strong class="mt-n1" style="font-size: 1.25rem; color:#1f438c!important;">'. $item['internet']['bandwidth_download'].'</strong><br>
+																	<span class="mr-1">'. $item['internet']['bandwidth_volume'].'</span>
+																</span>',
+								],
+								'tv' => [
+									'key' => 'tv',
+									'title' => 'TV',
+									'description' => $item['tv']['price_description'],
+									'content' => $tv_content2,
+								],
+								'fix' => [
+									'key' => 'fix',
+									'title' => 'TEL',
+									'description' => $item['fixed']['price_description'],
+									'content' => '<span>'.$item['fix']['included_minutes_calls'].'</span>',
+								],
+							];
 //							debug($item['mobile']);
+
+
+
 //							?>
 								<div class="pt-1 pb-3 pl-2 pr-1 mb-2 rounded" style="background-color: #f5f5f5">
 									<div>
 										<h2 class="" style="font-size:1.1rem"><?= $item['brand_name']; ?></h2>
 										<p class="text-uppercase" style="font-size: 1.1rem; color: #f23078"><?= $item['short_name']; ?></p>
 									</div>
-									<table>
+									<div>
 											<?php
-											//mobile
-											if ($item['mobile'] !== false){
-											?>
-												<div class="d-flex align-items-baseline" style="line-height:30px">
-													<div class="mr-2">
-														<span style="width:30px">GSM</span>
-													</div>
-													<div>
-														<span>
-													<strong style="font-size: 1.25rem; color:#1f438c!important;"><?= $item['mobile']['included_data_volume']; ?></strong>
-														</span>
-														<span class="mr-1">
-																<?= $item['mobile']['included_minutes_calls'] ?>
-														</span>
-														<span class="mr-1">
-																<?= $item['mobile']['included_sms'] ?>
-														</span>
-													</div>
-												</div>
-													<?= $item['mobile']['price_description']; ?>
-											<?php
-											} else {
-												false;
-											}
-											// internet
-											if ($item['internet'] !== false){
-											?>
-													<div class="d-flex align-items-baseline" style="line-height:30px">
-															<div class="mr-2">
-																<span style="width:30px">NET</span>
-															</div>
-														<div>
-																<span>Vitesse <strong class="mt-n1" style="font-size: 1.25rem; color:#1f438c!important;"><?= $item['internet']['bandwidth_download']; ?></strong>
-																	<span class="mr-1"><?= $item['internet']['bandwidth_volume']; ?></span>
-																</span>
+											
+											foreach ($details as $k => $play) {
+												if ($item[$k] !== false){ ?>
+													<div class="d-flex align-items-baseline mb-2" style="line-height:25px">
+														<div class="mr-2">
+															<span style="display:inline-block; width:35px"><?= $play['title']?></span>
 														</div>
-													</div>
-													
-													<?= $item['internet']['price_description']; ?>
-											<?php
-											} else {
-												false;
-											}
-											// tv
-											if ($item['tv'] !== false){
-											?>
-											<div class="d-flex align-items-baseline" style="line-height:30px">
-												<div class="mr-3">
-													<span class="label d-inline-flex">TV:</span>
-												</div>
-												<div>
-															<span class="mr-1" style="font-size: 1.25rem; color:#1f438c!important;">
-																<strong><?= $item['tv']['number_tv_channel']; ?></strong>
-															</span>
-													<?php if ($item['tv']['decoder_application']) {?>
-														<span class="mr-1">
-																<?= $item['tv']['decoder_application']; ?>
-															</span>
-													<?php  } elseif ($item['tv']['decoder_only']) { ?>
-														<span class="mr-1">
-																<?= $item['tv']['decoder_only']; ?>
-															</span>
-													<?php  } else  { ?>
 														<div>
-																<span class="mr-1">
-																<?= $item['tv']['application_only']; ?>
-																</span>
+															<?= $play['content']?>
 														</div>
-														}
-													<?php } ?>
-												</div>
+														<?= $play['description']?>
+													</div>
+												<?php
+												}
+											}
+											
+											
+										
+											
+											?>
 										</div>
-										<?= $item['tv']['price_description']; ?>
-									
-										
-										<?php
-											} else {
-												false;
-											}
-										
-										
-							
-											// fix
-											if ($item['fix'] !== false){
-													?>
-														<div class="d-flex align-items-baseline" style="line-height:30px">
-															<div class="mr-3">
-																<span class="label">FIX</span>
-															</div>
-															<div>
-																<?php if ($item['fix']['included_minutes_calls'] !== null) { ?>
-																	<span class="mr-1"><?= $item['fix']['included_minutes_calls']; ?></span>
-																<?php } ?>
-															</div>
-														</div>
-													<?= $item['fix']['price_description'] ?>
-													<?php } else {
-														false;
-													}
-											?>
-										</table>
 								</div>
 						<?php
 						}
