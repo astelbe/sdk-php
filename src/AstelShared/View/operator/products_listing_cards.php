@@ -22,6 +22,8 @@ use CakeUtility\Hash;
 
 $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercase"
 											style="right:0; z-index:999">' . __d('CompareAstelBe', 'switch_resume') . '<input class="mx-2 switch-toggle-details" id="toggle-details-' . $key  . '" type="checkbox">' . __d('CompareAstelBe', 'switch_details') . '</div>';
+
+
 ?>
 
 <style>
@@ -42,7 +44,7 @@ $toggle = '<div class="d-flex align-items-center mr-3 text-lighter text-uppercas
 	?>
 <!--		<div class="col-md-4 mb-5 align-self-lg-start">-->
 		<div class="col-md-3 mb-5">
-				<div class="mt-n3 ml-3 py-2 pl-4 position-absolute rounded-sm" style="color:#fff; background-color: #f23078; left: 190px; width: 160px; font-size: 1.125rem;">
+				<div class="mt-n3 ml-3 py-2 pl-4 position-absolute rounded-sm" style="color:#fff; background-color: #f23078; left: 95px; width: 160px; font-size: 1.125rem;">
 				<?= $result['total_pricings']['total_cashback']?>
 				</div>
 			<div class="px-3 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-between">
