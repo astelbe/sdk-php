@@ -41,68 +41,61 @@ use CakeUtility\Hash;
                     <?= $result['result_summary']['total_cashback']?>
                 </div>
                 <div class="px-3 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-between">
-                        <div class="mt-2">
-                            <?php
-                            foreach ($result['products'] as $key => $item) {
-                                $details = self::getPlayDetails($item)
-    //							?>
-                                    <div class="pb-3 mb-2 rounded" style="background-color: #f5f5f5">
-                                        <div>
-                                            <h2 class="pt-1 px-1 text-<?= $item['brand_slug']; ?>" style="font-size:1.5rem"><?= $item['brand_name']; ?></h2>
-                                            <h3 class="px-1 text-<?= $item['brand_slug']; ?>" style="min-height: 46px; font-size: 1.1rem; color: #f23078"><?= $item['short_name']; ?></h3>
-                                        </div>
-                                        <div class="pt-1 px-1">
-                                                <?php
-
-                                                foreach ($item['plays'] as $k => $play) {
-                                                    if ($item[$k] !== false){ ?>
-                                                        <div class="d-flex align-items-baseline mb-2" style="line-height:25px;font-size:0.875rem;">
-                                                            <div class="mr-2">
-                                                                <span style="display:inline-block; width:35px"><?= $play['label']?></span>
-                                                            </div>
-                                                            <div>
-                                                                <?= $play['details']?>
-                                                            </div>
-                                                        </div>
-                                                        <p class="sub-details-infos toggle-details toggle-details-'. $key .'">
-                                                            <?= $play['description']?>
-                                                        </p>
-                                                    <?php
-                                                    }
-                                                }
-
-                                                ?>
-                                            </div>
-                                    </div>
-                            <?php
-                            }
-                        ?>
-                        </div>
-                        <div class="results-wrapper text-center">
-                            <div class="results-price d-flex flex-column justify-content-center">
-                                <div class="cursor-pointer modalClick" data-toggle="modal" data-target="#modalQuality" style="display:inline-block">
-                                    <?=$result['result_summary']['quality_score'];?>
-                                    <span class="cursor-pointer position-absolute">
-                                        <i class="fa fa-info pl-2"></i>
-                                     </span>
+                    <div class="mt-2">
+                        <?php foreach ($result['products'] as $key => $item) { ?>
+                            <div class="pb-3 mb-2 rounded" style="background-color: #f5f5f5">
+                                <div>
+                                    <h2 class="pt-1 px-1 text-<?= $item['brand_slug']; ?>" style="font-size:1.5rem"><?= $item['brand_name']; ?></h2>
+                                    <h3 class="px-1 text-<?= $item['brand_slug']; ?>" style="min-height: 46px; font-size: 1.1rem; color: #f23078"><?= $item['short_name']; ?></h3>
                                 </div>
-                                    <div class="">
-                                        <?=$result['result_summary']['total_price'];?>
-                                        <?=$result['result_summary']['total_price_without_discount'];?>
-                                    </div>
-                                    <div class="setup-wrapper">
-                                        <p>
-                                        <p class="mb-n1 font-weight-bold" style="font-size: 1.2rem">Activation et Installation</p>
-                                        <?=$result['result_summary']['reduced_total_setup_price'];?>
-                                        <?=$result['result_summary']['full_total_setup_price'];?>
-                                        </p>
-                                    </div>
-                                    <?=$result['result_summary']['products_total_savings']?>
-                                    <div class="pt-4 mt-5" style="margin-top: 120px;">
-                                        <?=$result['result_summary']['order_url'];?>
-                                    </div>
+                                <div class="pt-1 px-1">
+                                    <?php foreach ($item['plays'] as $k => $play) {
+                                        if ($play !== false){ ?>
+                                            <div class="d-flex align-items-baseline mb-2" style="line-height:25px;font-size:0.875rem;">
+                                                <div class="mr-2">
+                                                    <span style="display:inline-block; width:35px"><?= $play['label']?></span>
+                                                </div>
+                                                <div>
+                                                    <?= $play['details']?>
+                                                </div>
+                                            </div>
+                                            <p class="sub-details-infos toggle-details toggle-details-'. $key .'">
+                                                <?= $play['description']?>
+                                            </p>
+                                        <?php
+                                        }
+                                    } ?>
+                                </div>
                             </div>
+                        <?php
+                        }
+                    ?>
+                    </div>
+                    <div class="results-wrapper text-center">
+                        <div class="results-price d-flex flex-column justify-content-center">
+                            <div class="cursor-pointer modalClick" data-toggle="modal" data-target="#modalQuality" style="display:inline-block">
+                                <?=$result['result_summary']['quality_score'];?>
+                                <span class="cursor-pointer position-absolute">
+                                    <i class="fa fa-info pl-2"></i>
+                                 </span>
+                            </div>
+                                <div class="">
+                                    <?=$result['result_summary']['total_price'];?>
+                                    <?=$result['result_summary']['total_price_without_discount'];?>
+                                </div>
+                                <div class="setup-wrapper">
+                                    <p>
+                                    <p class="mb-n1 font-weight-bold" style="font-size: 1.2rem">Activation et Installation</p>
+                                    <?=$result['result_summary']['reduced_total_setup_price'];?>
+                                    <?=$result['result_summary']['full_total_setup_price'];?>
+                                    </p>
+                                </div>
+                                <?=$result['result_summary']['products_total_savings']?>
+                                <div class="pt-4 mt-5" style="margin-top: 120px;">
+                                    <?=$result['result_summary']['order_url'];?>
+                                </div>
                         </div>
+                    </div>
                 </div>
             </div>
     <?php
