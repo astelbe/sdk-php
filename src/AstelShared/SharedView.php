@@ -246,7 +246,8 @@ class SharedView extends Singleton {
 			return [
 				'details' => implode(', ', $details),
 				'descriptions' => Hash::get($product, 'play_description.mobile.price_description.'.$this->language),
-				'label' => 'GSM'
+				'label' => 'GSM',
+				'count' => $product['count']
 			];
 		} else {
 			return false;
@@ -395,6 +396,15 @@ class SharedView extends Singleton {
 				break;
 			default:
 				return $description;
+		}
+	}
+
+	static function getDisplayedProductCount($item) {
+//		debug($item);
+		if ($item['plays']['mobile'] != false) {
+			return 'x&nbsp' . $item['count'];
+		} else {
+			return '';
 		}
 	}
 
