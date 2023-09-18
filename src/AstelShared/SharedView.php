@@ -10,7 +10,7 @@ class SharedView extends Singleton {
 
 
 	public $language = 'fr';
-	public $version = 'front'; // 'cake' or 'front'
+	public $version = 'front'; // 'front' or 'cake', to get the domain name used in translation keys
 
 	public function render($path, $params = []) {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
@@ -25,6 +25,7 @@ class SharedView extends Singleton {
 	}
 
 	/**
+	 * TODO Deprecated replaced by translatePlayDescription
 	 * @param $playDescriptionPath in $product array
 	 * @param $product
 	 * @param string $version. 'front' or 'cake', to get the domain name used in translation keys
@@ -33,6 +34,8 @@ class SharedView extends Singleton {
 	 * @return null|string $description
 	 */
 	static function getTranslatedPlayDescription($playDescriptionPath, $product, $version = 'front', $responsive = null) {
+
+		debug('OK');
 		$description = Hash::get($product, $playDescriptionPath, null);
 		if (!$description) {
 			return null;
@@ -115,7 +118,8 @@ class SharedView extends Singleton {
 				return $description;
 		}
 	}
-	
+
+	// TODO deprecated with getMobileDetails
 	static function getMobileData($product, $version = 'front', $language = 'fr') {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'M')) {
@@ -132,7 +136,8 @@ class SharedView extends Singleton {
 			return false;
 		}
 	}
-	
+
+	// TODO deprecated with getInternetDetails
 	static function getInternetData($product, $version = 'front', $language = 'fr') {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'I')) {
@@ -145,7 +150,7 @@ class SharedView extends Singleton {
 			return false;
 		}
 	}
-	
+	// TODO deprecated with getTVDetails
 	static function getTVData($product, $version = 'front', $language = 'fr') {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'T')){
@@ -167,7 +172,8 @@ class SharedView extends Singleton {
 			return false;
 		}
 	}
-	
+
+	// TODO deprecated with getFixDetails
 	static function getFixData($product, $version = 'front', $language = 'fr') {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'F')) {
@@ -184,6 +190,9 @@ class SharedView extends Singleton {
 	static function getTranslation($domain, $key, $version, $params = []) {
 		switch ($version) {
 			case 'front' :
+				debug($domain);
+				debug($key);
+				debug($version);
 				return d__($domain, $key, $params);
 				break;
 			case 'cake' :
@@ -225,76 +234,72 @@ class SharedView extends Singleton {
 
 	}
 
-	/**
-	 * @param $product
-	 * Process plays details for listings_cards
-	 */
-	public function getPlayDetails($item, $version = 'front', $language = 'fr') {
-		$tv_content = '<span style="font-size: 1.25rem; color:#1f438c!important;">
-												<strong>' . $item['tv']['number_tv_channel'] . '</strong>
-										</span>';
-		$tv_content .= '<span class="mr-1">';
-		foreach (['decoder_application', 'decoder_only', 'application_only'] as $decoder_type) {
-			if ($item['tv'][$decoder_type]) {
-				$tv_content .= $item['tv'][$decoder_type];
-			}
-		}
-		$tv_content .= '</span>';
 
-
-		$details = [
-			'mobile' => [
-				'key' => 'mobile',
-				'title' => 'GSM',
-				'description' => $item['mobile']['price_description'],
-				'content' => $this->getGsmDetails($item, $version, $language),
-//				'content' => '<span>
-//					<strong style="font-size: 1.25rem; color:#1f438c!important;">' . $item['mobile']['included_data_volume'] . '</strong>
-//						</span>
-//						<span class="mr-1">
-//										' . $item['mobile']['included_minutes_calls'] . '
-//						</span>
-//						<span class="mr-1">
-//										' . $item['mobile']['included_sms'] . '
-//						</span>',
-			],
-			'internet' => [
-				'key' => 'internet',
-				'title' => 'NET',
-				'description' => $item['internet']['price_description'] . '<br>',
-				'content' => '<span>Vitesse <strong class="mt-n1" style="font-size: 1.25rem; color:#1f438c!important;">' . $item['internet']['bandwidth_download'] . '</strong>
-                                                                            <span class="mr-1">' . $item['internet']['bandwidth_volume'] . '</span>
-                                                                        </span>',
-			],
-			'tv' => [
-				'key' => 'tv',
-				'title' => 'TV',
-				'description' => $item['tv']['price_description'],
-				'content' => $tv_content,
-			],
-			'fix' => [
-				'key' => 'fix',
-				'title' => 'TEL',
-				'description' => $item['fixed']['price_description'],
-				'content' => '<span>' . $item['fix']['included_minutes_calls'] . '</span>',
-			],
-		];
-
-		return $details;
-	}
 
 	public function getGsmDetails ($product) {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'M')) {
 			$details = [];
-			$details[] = $this->translatePlayDescription('play_description.mobile.included_data_volume', $product);
-			$details[] = $this->translatePlayDescription('play_description.mobile.included_sms', $product);
-			$details[] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
-			$return_details = implode(', ', $details);
+			$details['included_data_volume'] = $this->translatePlayDescription('play_description.mobile.included_data_volume', $product);
+			$details['included_sms'] = $this->translatePlayDescription('play_description.mobile.included_sms', $product);
+			$details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
 			return [
-				'details' => $return_details,
+				'details' => implode(', ', $details),
 				'descriptions' => Hash::get($product, 'play_description.mobile.price_description.'.$this->language),
 				'label' => 'GSM'
+			];
+		} else {
+			return false;
+		}
+	}
+
+	public function getInternetDetails($product) {
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'I')) {
+			$data = [];
+			$data['bandwidth_download'] = self::translatePlayDescription( 'play_description.internet.bandwidth_download', $product);
+			$data['bandwidth_volume'] = self::translatePlayDescription( 'play_description.internet.bandwidth_volume', $product);
+			return [
+				'details' => implode(', ', $data),
+				'descriptions' => Hash::get($product, 'play_description.internet.price_description.'.$this->language),
+				'label' => 'NET'
+			];
+		} else {
+			return false;
+		}
+	}
+
+	public function getFixDetails($product) {
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'F')) {
+			return [
+				'details' => self::translatePlayDescription( 'play_description.fix.included_minutes_calls', $product),
+				'descriptions' => Hash::get($product, 'play_description.fix.price_description.'.$this->language),
+				'label' => 'FIXE'
+			];
+		} else {
+			return false;
+		}
+	}
+
+	public function getTVDetails($product) {
+		$Product = Product::getInstance();
+		if ($Product->isType($product, 'T')){
+			$data = [];
+//			$max_tv_channel = Hash::get($product, 'play_description.tv.size_number_tv_max');
+			$decoderApplication = Hash::get($product, 'play_description.tv.decoder_application');
+			$data['number_tv_channel'] = self::translatePlayDescription( 'play_description.tv.number_tv_channel', $product);
+			if(Hash::get($product, 'play_description.tv.decoder_application')) {
+				$data['decoder_application'] = self::translatePlayDescription( 'play_description.tv.decoder_application', $product);
+			} elseif (Hash::get($product, 'play_description.tv.decoder_only')) {
+				$data['decoder_only'] = "<span> Décodeur (max 1) (pas d'application TV) </span>";
+			} else {
+				$data['application_only'] = self::translatePlayDescription( 'play_description.tv.application_only', $product);
+			}
+			return [
+				'details' => implode(', ', $data),
+				'descriptions' => Hash::get($product, 'play_description.tv.price_description.'.$this->language),
+				'label' => 'TV'
 			];
 		} else {
 			return false;
