@@ -45,8 +45,16 @@ use CakeUtility\Hash;
                         <?php foreach ($result['products'] as $key => $item) { ?>
                             <div class="pb-3 mb-2 rounded" style="background-color: #f5f5f5">
                                 <div>
-                                    <h2 class="pt-1 px-1 text-<?= $item['brand_slug']; ?>" style="font-size:1.5rem"><?= $item['brand_name']; ?></h2>
-                                    <h3 class="px-1 text-<?= $item['brand_slug']; ?>" style="min-height: 46px; font-size: 1.1rem; color: #f23078"><?= $item['short_name']; ?></h3>
+                                    <h2 class="pt-1 px-1 d-flex justify-content-between text-<?= $item['brand_slug']; ?>" style="font-size:1.5rem">
+                                      <?= $item['brand_name']; ?>
+                                        <span class=""><?= self::getDisplayedProductCount($item) ?></span>
+
+                                    </h2>
+                                    <h3 class="px-1" style="min-height: 46px; font-size: 1.1rem;">
+                                      <span class="text-<?= $item['brand_slug']; ?>">
+                                        <?= $item['short_name']; ?>
+                                      </span>
+                                    </h3>
                                 </div>
                                 <div class="pt-1 px-1">
                                     <?php foreach ($item['plays'] as $k => $play) {
