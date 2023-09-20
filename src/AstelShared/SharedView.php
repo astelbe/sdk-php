@@ -35,7 +35,6 @@ class SharedView extends Singleton {
 	 */
 	static function getTranslatedPlayDescription($playDescriptionPath, $product, $version = 'front', $responsive = null) {
 
-		debug('OK');
 		$description = Hash::get($product, $playDescriptionPath, null);
 		if (!$description) {
 			return null;
@@ -190,9 +189,6 @@ class SharedView extends Singleton {
 	static function getTranslation($domain, $key, $version, $params = []) {
 		switch ($version) {
 			case 'front' :
-				debug($domain);
-				debug($key);
-				debug($version);
 				return d__($domain, $key, $params);
 				break;
 			case 'cake' :
@@ -287,13 +283,15 @@ class SharedView extends Singleton {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'T')){
 			$data = [];
-//			$max_tv_channel = Hash::get($product, 'play_description.tv.size_number_tv_max');
-			$decoderApplication = Hash::get($product, 'play_description.tv.decoder_application');
 			$data['number_tv_channel'] = self::translatePlayDescription( 'play_description.tv.number_tv_channel', $product);
 			if(Hash::get($product, 'play_description.tv.decoder_application')) {
+				// Replace boolean decoder_only by the number of tv max for translation
+				$product['play_description']['tv']['decoder_application'] = Hash::get($product, 'play_description.tv.size_number_tv_max');
 				$data['decoder_application'] = self::translatePlayDescription( 'play_description.tv.decoder_application', $product);
 			} elseif (Hash::get($product, 'play_description.tv.decoder_only')) {
-				$data['decoder_only'] = "<span> Décodeur (max 1) (pas d'application TV) </span>";
+				// Replace boolean decoder_only by the number of tv max for translation
+				$product['play_description']['tv']['decoder_only'] = Hash::get($product, 'play_description.tv.size_number_tv_max');
+				$data['decoder_only'] = self::translatePlayDescription( 'play_description.tv.decoder_only', $product);
 			} else {
 				$data['application_only'] = self::translatePlayDescription( 'play_description.tv.application_only', $product);
 			}
@@ -323,7 +321,7 @@ class SharedView extends Singleton {
 		if($this->version == 'front') {
 			$translation_domain = 'product';
 		} else {
-			$translation_domain = 'OrderAstelBe';
+			$translation_domain = 'ProductAstelBe';
 		}
 
 		switch ($playDescriptionPath) {
@@ -331,82 +329,72 @@ class SharedView extends Singleton {
 			// MOBILE
 			case 'play_description.mobile.included_minutes_calls' :
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $this->version);
+					return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
 				} else {
-					return self::getTranslation($translation_domain, 'tab_mobile_minutes', $this->version, $description);
+					return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
 				};
 				break;
 			case 'play_description.mobile.included_data_volume' :
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain,'tab_mobile_unlimited_internet', $this->version);
+					return self::getTranslation($translation_domain,'included_data_volume_unlimited', $this->version);
 				} else {
-					return self::getTranslation($translation_domain,'tab_mobile_gb_data', $this->version,$description / 1000);
+					return self::getTranslation($translation_domain,'included_data_volume', $this->version,$description / 1000);
 				}
-				break;
 			case 'play_description.mobile.included_sms' :
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_sms', $this->version);
+					return self::getTranslation($translation_domain, 'included_sms_unlimited', $this->version);
 				} else {
-					return self::getTranslation($translation_domain, 'tab_mobile_sms', $this->version, $description);
+					return self::getTranslation($translation_domain, 'included_sms', $this->version, $description);
 				}
-				break;
 			// INTERNET
 			case 'play_description.internet.bandwidth_download' :
-				return self::getTranslation($translation_domain, 'tab_internet_mbps', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'bandwidth_download', $this->version, $description);
 			case 'play_description.internet.bandwidth_upload' :
-				return self::getTranslation($translation_domain, 'tab_internet_mbps', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'bandwidth_upload', $this->version, $description);
 			case 'play_description.internet.bandwidth_volume' :
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'tab_unlimited', $this->version);
+					return self::getTranslation($translation_domain, 'bandwidth_volume_unlimited', $this->version);
 				} else {
-					return self::getTranslation($translation_domain, 'tab_mobile_gb_data', $this->version, $description);
+					return self::getTranslation($translation_domain, 'bandwidth_volume', $this->version, $description);
 				}
 			// FIX
 			case 'play_description.fix.included_minutes_calls' :
 				if ($description == 'UNLIMITED') {
-//					return d__('product', 'tab_mobile_unlimited_call');
-					return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $this->version);
+					return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
 				} else if ($description == 'EWE') {
-//					return d__('product', 'tab_fixe_EWE');
-					return self::getTranslation($translation_domain, 'tab_fixe_EWE', $this->version);
+					return self::getTranslation($translation_domain, 'included_minutes_calls_EWE', $this->version);
 				} else {
 					if ($description == 0) {
 						return '/';
 					}
-//					return d__('product', 'tab_mobile_minutes' . $responsive, $description);
-					return self::getTranslation($translation_domain, 'tab_mobile_minutes', $this->version, $description);
+					return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
 				}
-			// TV : info has no translation keys with data injected
+			// TV
 			case 'play_description.tv.number_tv_channel' :
-				return self::getTranslation($translation_domain, 'tab_tv_number_of_channel', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'number_tv_channel', $this->version, $description);
 			case 'play_description.tv.max_tv_channel' :
-				return self::getTranslation($translation_domain, 'tab_max_tv_channel', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'max_tv_channel', $this->version, $description);
 			case 'play_description.tv.decoder_application' :
-				return self::getTranslation($translation_domain, 'tab_tv_decoder_application', $this->version, $description);
-				break;
-			case 'play_description.tv.tab_tv_decoder_only':
-				return self::getTranslation($translation_domain, 'tab_tv_decoder_only', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'decoder_application', $this->version, $description);
+			case 'play_description.tv.decoder_only':
+				return self::getTranslation($translation_domain, 'decoder_only', $this->version, $description);
 			case 'play_description.tv.application_only' :
-				return self::getTranslation($translation_domain, 'tab_tv_application_without_decoder', $this->version, $description);
-				break;
+				return self::getTranslation($translation_domain, 'application_only', $this->version, $description);
 			default:
 				return $description;
 		}
 	}
 
 	static function getDisplayedProductCount($item) {
-//		debug($item);
 		if ($item['plays']['mobile'] != false) {
 			return 'x&nbsp' . $item['count'];
 		} else {
 			return '';
 		}
 	}
+
+
+
 
 }
 
