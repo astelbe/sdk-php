@@ -241,7 +241,7 @@ class SharedView extends Singleton {
 			$details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
 			return [
 				'details' => implode(', ', $details),
-				'descriptions' => Hash::get($product, 'play_description.mobile.price_description.'.$this->language),
+				'description' => Hash::get($product, 'play_description.mobile.price_description.'.$this->language),
 				'label' => 'GSM',
 				'count' => $product['count']
 			];
@@ -258,7 +258,7 @@ class SharedView extends Singleton {
 			$data['bandwidth_volume'] = self::translatePlayDescription( 'play_description.internet.bandwidth_volume', $product);
 			return [
 				'details' => implode(', ', $data),
-				'descriptions' => Hash::get($product, 'play_description.internet.price_description.'.$this->language),
+				'description' => Hash::get($product, 'play_description.internet.price_description.'.$this->language),
 				'label' => 'NET'
 			];
 		} else {
@@ -271,7 +271,7 @@ class SharedView extends Singleton {
 		if ($Product->isType($product, 'F')) {
 			return [
 				'details' => self::translatePlayDescription( 'play_description.fix.included_minutes_calls', $product),
-				'descriptions' => Hash::get($product, 'play_description.fix.price_description.'.$this->language),
+				'description' => Hash::get($product, 'play_description.fix.price_description.'.$this->language),
 				'label' => 'FIXE'
 			];
 		} else {
@@ -297,7 +297,7 @@ class SharedView extends Singleton {
 			}
 			return [
 				'details' => implode(', ', $data),
-				'descriptions' => Hash::get($product, 'play_description.tv.price_description.'.$this->language),
+				'description' => Hash::get($product, 'play_description.tv.price_description.'.$this->language),
 				'label' => 'TV'
 			];
 		} else {
