@@ -45,7 +45,7 @@ use CakeUtility\Hash;
                     <div class="mt-n3 ml-3 py-1 px-4 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick "
                         data-toggle="modal"
                         data-target="#pluginModalCashback"
-                        style="color:#fff; background-color: #f23078; top:-8px; right: 0.75rem; font-size: 1.125rem;"
+                        style="color:#fff; background-color: #f23078; top:-8px; right: 0.75rem; font-size: 0.9rem;"
                     >
                         <?= $result['result_summary']['total_cashback']?>
                     </div>
@@ -63,8 +63,8 @@ use CakeUtility\Hash;
                             $cpt++;
 
                             ?>
-                            <div class="py-2 mb-2 rounded" style="background-color: #f5f5f5">
-                                <h2 class="pt-1 px-1 d-flex justify-content-between text-<?= $item['brand_slug']; ?>" style="font-size:1.5rem">
+                            <div class="mb-2 rounded" style="background-color: #f5f5f5">
+                                <h2 class="pb-1 pt-2 px-1 d-flex justify-content-between text-white rounded-top  bg-<?= $item['brand_slug']; ?>" style="font-size:1.5rem">
                                   <?= $item['brand_name']; ?>
                                     <span class=""><?= self::getDisplayedProductCount($item) ?></span>
 
