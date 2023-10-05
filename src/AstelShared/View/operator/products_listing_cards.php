@@ -119,7 +119,9 @@ use CakeUtility\Hash;
                                     </span>
                                 </p>
                             <?php } ?>
-													<p><?=$result['result_summary']['phone_plug']?></p>
+													<p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>" style="padding-left:40px;">
+														<?= $result['result_summary']['phone_plug']?>
+													</p>
 													
                         </div>
 
