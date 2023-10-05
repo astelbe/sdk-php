@@ -121,6 +121,7 @@ use CakeUtility\Hash;
                             <?php } ?>
 													<p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>" style="padding-left:40px;">
 														<?= $result['result_summary']['phone_plug']?>
+														<?=$result['result_summary']['max_activation_time'];?>
 													</p>
 													
                         </div>
