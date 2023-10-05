@@ -36,6 +36,7 @@ use CakeUtility\Hash;
 
     <div class="row mt-4 no-gutters">
         <?php foreach ($params['results'] as $key => $result) {
+//					debug($result);
             ?>
             <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-2 product-card">
 							<div class="result-index">
@@ -53,8 +54,7 @@ use CakeUtility\Hash;
                         <?php
                         $cpt = 1; // To display "+"
                         foreach ($result['products'] as $key => $item) {
-
-                            // Display "+" between products
+ 													// Display "+" between products
                             if($cpt > 1) { ?>
                                 <div class="w-100 text-center mb-2">
                                     <i class="fa fa-plus" style="color:#c1c1c1" aria-hidden="true"></i>
@@ -119,6 +119,8 @@ use CakeUtility\Hash;
                                     </span>
                                 </p>
                             <?php } ?>
+													<p><?=$result['result_summary']['phone_plug']?></p>
+													
                         </div>
 
                         <div class="mt-2">
