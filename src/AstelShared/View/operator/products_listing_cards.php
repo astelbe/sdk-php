@@ -38,6 +38,9 @@ use CakeUtility\Hash;
         <?php foreach ($params['results'] as $key => $result) {
             ?>
             <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-2 product-card">
+							<div class="result-index">
+								<?= $key += 1; ?>
+							</div>
                 <div class="px-2 py-4 shadow rounded-lg d-flex h-100 flex-column justify-content-between">
                     <div class="mt-n3 ml-3 py-1 px-4 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick "
                         data-toggle="modal"
