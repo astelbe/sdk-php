@@ -76,6 +76,9 @@ use CakeUtility\Hash;
                                 </h3>
                                 <div class="pt-1 px-1 mb-2">
                                     <?php foreach ($item['plays'] as $k => $play) {
+//																			if ($k == 'mobile') {
+//																				debug($play);
+//																			}
                                         if ($play !== false){ ?>
                                             <div class="d-flex align-items-baseline " style="line-height:25px;font-size:0.875rem;">
                                                 <div class="mr-1">
