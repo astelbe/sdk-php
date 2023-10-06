@@ -61,12 +61,12 @@ use CakeUtility\Hash;
                                 </div>
                             <?php }
                             $cpt++;
-
                             ?>
                             <div class="mb-2 rounded" style="background-color: #f5f5f5">
                                 <h2 class="pb-1 pt-2 px-1 d-flex justify-content-between text-white rounded-top  bg-<?= $item['brand_slug']; ?>" style="font-size:1.5rem">
                                   <?= $item['brand_name']; ?>
                                     <span class=""><?= self::getDisplayedProductCount($item) ?></span>
+																	
 
                                 </h2>
                                 <h3 class="px-1" style="min-height: 46px; font-size: 1.1rem;">
@@ -94,6 +94,7 @@ use CakeUtility\Hash;
                                 </div>
                             </div>
                         <?php
+													
                         }
                     ?>
                     </div>
@@ -104,7 +105,7 @@ use CakeUtility\Hash;
                                 <i class="fa fa-info pl-2"></i>
                              </span>
                         </div>
-                        <p class="mb-4">
+                        <p class="mb-4" style="min-height: 110px;">
                             <?php echo $result['result_summary']['displayed_price'];?>
                         </p>
                         <div class="setup-wrapper">
@@ -119,8 +120,10 @@ use CakeUtility\Hash;
                                     </span>
                                 </p>
                             <?php } ?>
-													<p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>" style="padding-left:40px;">
+													<p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
 														<?= $result['result_summary']['phone_plug']?>
+													</p>
+													<p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
 														<?=$result['result_summary']['max_activation_time'];?>
 													</p>
 													
