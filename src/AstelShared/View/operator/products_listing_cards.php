@@ -22,18 +22,6 @@ use CakeUtility\Hash;
 ?>
 
 <div class="container px-0">
-
-    <div class="d-flex justify-content-end mb-5">
-        <div class="btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>">
-            <div class="details-hidden">
-                <?= __d('CompareAstelBe', 'switch_resume')?> <i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
-            </div>
-            <div class="details-shown d-none">
-                <?= __d('CompareAstelBe', 'switch_details') ?> <i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
-            </div>
-        </div>
-    </div>
-
     <div class="row mt-4 no-gutters">
         <?php foreach ($params['results'] as $key => $result) {
             ?>
