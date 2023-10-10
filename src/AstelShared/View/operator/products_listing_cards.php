@@ -36,7 +36,6 @@ use CakeUtility\Hash;
 
     <div class="row mt-4 no-gutters">
         <?php foreach ($params['results'] as $key => $result) {
-//					debug($result);
             ?>
             <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-2 product-card">
 							<div class="result-index">
@@ -76,9 +75,6 @@ use CakeUtility\Hash;
                                 </h3>
                                 <div class="pt-1 px-1 mb-2">
                                     <?php foreach ($item['plays'] as $k => $play) {
-//																			if ($k == 'mobile') {
-//																				debug($play);
-//																			}
                                         if ($play !== false){ ?>
                                             <div class="d-flex align-items-baseline " style="line-height:25px;font-size:0.875rem;">
                                                 <div class="mr-1">
