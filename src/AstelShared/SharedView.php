@@ -272,7 +272,7 @@ class SharedView extends Singleton {
 			return [
 				'details' => self::translatePlayDescription( 'play_description.fix.included_minutes_calls', $product),
 				'description' => Hash::get($product, 'play_description.fix.price_description.'.$this->language),
-				'label' => 'FIXE'
+				'label' => ($this->language == 'FR' ? 'FIXE' : 'VAST')
 			];
 		} else {
 			return false;
