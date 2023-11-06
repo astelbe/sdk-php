@@ -23,8 +23,13 @@ use CakeUtility\Hash;
 
 <div class="container px-0">
 
-    <div class="d-flex justify-content-end mb-5">
-        <div class="btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>">
+    <div class="d-flex justify-content-between align-items-center mb-5 results-header p-1">
+			<h2 class="mt-2 pl-2">
+				<?php
+				echo $params['title'];
+				?>
+			</h2>
+        <div class="bg-white btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>">
             <div class="details-hidden">
                 <?= __d('CompareAstelBe', 'switch_resume')?> <i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
             </div>
