@@ -27,6 +27,7 @@ use CakeUtility\Hash;
 			<h2 class="mt-2 pl-2">
 				<?php
 				echo $params['title'];
+				debug($params['title']);
 				?>
 			</h2>
         <div class="bg-white btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>">
