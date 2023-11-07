@@ -23,11 +23,10 @@ use CakeUtility\Hash;
 
 <div class="container px-0">
 
-    <div class="d-flex justify-content-between align-items-center mb-5 results-header p-1">
+    <div class="d-flex justify-content-between align-items-center results-header p-1">
 			<h2 class="mt-2 pl-2">
 				<?php
 				echo $params['title'];
-				debug($params['title']);
 				?>
 			</h2>
         <div class="bg-white btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>">
@@ -56,7 +55,7 @@ use CakeUtility\Hash;
                         data-target="#pluginModalCashback"
                         style="color:#fff; background-color: #f23078; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;"
                     >
-                        <?= $result['result_summary']['total_cashback']?> <i class="fa pl-3 fa-info-circle" style="font-size:1rem"></i>
+                        <?= $result['result_summary']['total_cashback']?> <i class="fa fa-info pl-2" style="font-size:1rem"></i>
                     </div>
                     <div class="mt-3">
                         <?php
