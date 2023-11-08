@@ -61,7 +61,6 @@ use CakeUtility\Hash;
                         <?php
                         $cpt = 1; // To display "+"
                         foreach ($result['products'] as $key => $item) {
-													
                             if($cpt > 1) { ?>
                                 <div class="w-100 text-center mb-1">
                                     <i class="fa fa-plus" style="color:#878787" aria-hidden="true"></i>
@@ -72,21 +71,28 @@ use CakeUtility\Hash;
                                 <?php
                                 // Display brand name only if 1st product , and also 2dn result if multi brand result
                                 if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { ?>
-                                <h2 class="p-2 mb-0 text-center text-white rounded-top  bg-<?= $item['brand_slug']; ?>" style="font-size:1.2rem">
-                                  <?= $item['brand_name']; ?>
-<!--                                    <span class="">--><?//= self::getDisplayedProductCount($item) ?><!--</span>-->
-                                </h2>
-																<div class="titleproduct-logo-brand m-0 mb-2">
+																<div class="titleproduct-logo-brand p-2 mb-0">
 																	<img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
 																</div>
 																	
                                 <?php } ?>
+															<?php if ($item['product_sheet_url'] != ''){ ?>
+															<a
+																class="gtm-product-detail-link"
+																href="<?= $item['product_sheet_url'] ?>"
+																title="<?= $item['short_name'] ?>"
+																target="_blank"
+																data-name="<?= $item['short_name']  ?>"
+																data-brand="<?= $item['brand_name'] ?>"
+															>
                                 <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                                     <span class="text-<?= $item['brand_slug']; ?>">
                                         <?= $item['short_name']; ?>
                                     </span>
                                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                                 </h3>
+															</a>
+															<?php } ?>
                                 <div class="pt-2 px-1 mb-1">
                                     <?php foreach ($item['plays'] as $k => $play) {
                                         if ($play !== false){ ?>
