@@ -55,12 +55,13 @@ use CakeUtility\Hash;
                         data-target="#pluginModalCashback"
                         style="color:#fff; background-color: #f23078; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;"
                     >
-                        <?= $result['result_summary']['total_cashback']?> <i class="fa fa-info pl-2" style="font-size:1rem"></i>
+                        <?= $result['result_summary']['total_cashback']?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
                     </div>
                     <div class="mt-3">
                         <?php
                         $cpt = 1; // To display "+"
                         foreach ($result['products'] as $key => $item) {
+													
                             if($cpt > 1) { ?>
                                 <div class="w-100 text-center mb-1">
                                     <i class="fa fa-plus" style="color:#878787" aria-hidden="true"></i>
@@ -75,6 +76,10 @@ use CakeUtility\Hash;
                                   <?= $item['brand_name']; ?>
 <!--                                    <span class="">--><?//= self::getDisplayedProductCount($item) ?><!--</span>-->
                                 </h2>
+																<div class="titleproduct-logo-brand m-0 mb-2">
+																	<img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
+																</div>
+																	
                                 <?php } ?>
                                 <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                                     <span class="text-<?= $item['brand_slug']; ?>">
