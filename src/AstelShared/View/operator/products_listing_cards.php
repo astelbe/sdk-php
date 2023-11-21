@@ -139,13 +139,19 @@ use CakeUtility\Hash;
                                     </span>
                                 </p>
                             <?php } ?>
-                            <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
-                                <?= $result['result_summary']['phone_plug']?>
-                            </p>
-                            <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
-                                <?=$result['result_summary']['max_activation_time'];?>
-                            </p>
-													
+                            <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
+                                <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
+                                    <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
+                                        <?=$result['result_summary']['max_activation_time'];?>
+                                        <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
+                                            <br>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
+                                        <?= $result['result_summary']['phone_plug']?>
+                                    <?php } ?>
+                                </p>
+                            <?php } ?>
                         </div>
 
                         <div class="mt-2">
