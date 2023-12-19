@@ -1,24 +1,39 @@
 <?php
 use CakeUtility\Hash;
+// debug($params);
+
 /*
 	This template received $params :	array of results with products and pricings
 	$params = [
-        0 =>[
-            'products' => [
-                [
-                    'brand_name' => 'Proximus',
-                    'short_name' => 'Tuttimus',
+        'title' => 'Title of the result',
+	    'id' => 'list_id', // for toggle details
+        'options' => [
+            'display_operator_in_product_name' => true/false, // default true, to noyt display logo in operator page
+        'results' => [
+            0 =>[
+                'products' => [
+                    [
+                        'brand_name' => 'Proximus',
+                        'short_name' => 'Tuttimus',
+                        '...' => ...,
+                    ],
+                ],
+                'result_summary' => [
+                    'order_url' => 'https://www.proximus.be',
+                    'displayed_price' => 99,
+                    'products_total_savings' => 99,
+                    'setup' => '...',
+                    'max_activation_time' => '...',
+                    'phone_plug' => '...',
+                    'total_cashback' => '...',
                     '...' => ...,
                 ],
             ],
-            'result_summary' => [
-                    'price' => 99,
-                    '...' => ...,
-            ],
+            ...
         ],
-        ...
     ];
 */
+
 ?>
 
 <div class="container px-0">
@@ -42,6 +57,7 @@ use CakeUtility\Hash;
 
     <div class="row mt-4 no-gutters">
         <?php foreach ($params['results'] as $key => $result) {
+            $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;  
             ?>
             <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-4 product-card">
                 <?php if($result['result_index']) { ?>
@@ -49,15 +65,17 @@ use CakeUtility\Hash;
                         <?= $result['result_index'] ?>
                     </div>
                 <?php } ?>
-                <div class="px-2 pt-4 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
-                    <div class="mt-n3 ml-3 py-0 px-3 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick "
-                        data-toggle="modal"
-                        data-target="#pluginModalCashback"
-                        style="color:#fff; background-color: #f23078; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;"
-                    >
-                        <?= $result['result_summary']['total_cashback']?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
-                    </div>
-                    <div class="mt-3">
+                <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
+                    <?php if ($cashback) { ?>
+                        <div class="mt-n3 ml-3 py-0 px-3 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick "
+                             data-toggle="modal"
+                             data-target="#pluginModalCashback"
+                             style="color:#fff; background-color: #f23078; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;"
+                        >
+                            <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+                        </div>
+                    <?php } ?>
+                    <div class="<?= $cashback ? 'mt-4' : 'mt-1' ?>">
                         <?php
                         $cpt = 1; // To display "+"
                         foreach ($result['products'] as $key => $item) {
@@ -70,29 +88,30 @@ use CakeUtility\Hash;
 
                                 <?php
                                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                                if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { ?>
-																<div class="titleproduct-logo-brand p-2 mb-0">
-																	<img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
-																</div>
-																	
+                                if(($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
+                                    <div class="titleproduct-logo-brand p-2 mb-0">
+                                        <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
+                                    </div>
                                 <?php } ?>
-															<?php if ($item['product_sheet_url'] != ''){ ?>
-															<a
-																class="gtm-product-detail-link"
-																href="<?= $item['product_sheet_url'] ?>"
-																title="<?= $item['short_name'] ?>"
-																target="_blank"
-																data-name="<?= $item['short_name']  ?>"
-																data-brand="<?= $item['brand_name'] ?>"
-															>
-                                <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
-                                    <span class="text-<?= $item['brand_slug']; ?>">
-                                        <?= $item['short_name']; ?>
-                                    </span>
-                                    <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
-                                </h3>
-															</a>
-															<?php } ?>
+                                <?php if ($item['product_sheet_url'] != ''){ ?>
+                                    <a
+                                        class="gtm-product-detail-link"
+                                        href="<?= $item['product_sheet_url'] ?>"
+                                        title="<?= $item['short_name'] ?>"
+                                        target="_blank"
+                                        data-name="<?= $item['short_name']  ?>"
+                                        data-brand="<?= $item['brand_name'] ?>"
+                                    >
+                                <?php } ?>
+                                    <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
+                                        <span class="text-<?= $item['brand_slug']; ?>">
+                                            <?= $item['short_name']; ?>
+                                        </span>
+                                        <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
+                                    </h3>
+                                <?php if ($item['product_sheet_url'] != ''){ ?>
+                                    </a>
+                                <?php } ?>
                                 <div class="pt-2 px-1 mb-1">
                                     <?php foreach ($item['plays'] as $k => $play) {
                                         if ($play !== false){ ?>
@@ -118,12 +137,14 @@ use CakeUtility\Hash;
                     ?>
                     </div>
                     <div class="results-price d-flex text-center flex-column justify-content-center mt-2">
-                        <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
-                            <?=$result['result_summary']['quality_score'];?>
-                            <span class="cursor-pointer position-absolute">
-                                <i class="fa fa-info pl-2"></i>
-                             </span>
-                        </div>
+                        <?php if ($result['result_summary']['quality_score'] != '') { ?> 
+                            <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
+                                <?=$result['result_summary']['quality_score'];?>
+                                <span class="cursor-pointer position-absolute">
+                                    <i class="fa fa-info pl-2"></i>
+                                </span>
+                            </div>
+                        <?php } ?>    
                         <p class="mb-2" style="min-height: 80px; line-height: 28px">
                             <?php echo $result['result_summary']['displayed_price'];?>
                         </p>
