@@ -165,24 +165,4 @@ use CakeUtility\Hash;
         ?>
 	</div>
 </div>
-<button onclick="myFunction()">Click Me</button>
-<script>
-        console.log('ok');
-   functionmyFunction() {
-    console.log('jquery');
-    $(this).toggleClass('active');
-}
-    
-</script>
-zertgzertzert
-<script>
-        console.log('ok');
-    $(document).ready(function() {
 
-        $('.toggle-details-<?= $params['id'] ?>').click(function() {
-            console.log('jquery');
-            $(this).toggleClass('active');
-        });
-    });
-    
-</script>
