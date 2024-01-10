@@ -21,7 +21,7 @@ use CakeUtility\Hash;
 */
 ?>
 
-<div class="container px-0">
+<div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
 
     <div class="d-flex justify-content-between align-items-center results-header p-1" style="background-image: linear-gradient(to right, rgb(237, 241, 245) , rgb(237, 241, 245), rgb(255, 255, 255, 1));">
 			<h2 class="mt-2 pl-2">
@@ -29,11 +29,11 @@ use CakeUtility\Hash;
 				echo $params['title'];
 				?>
 			</h2>
-        <div class="btn btn-outline-secondary text-uppercase switch-toggle-details cursor-pointer" id="toggle-details-<?= $params['id'] ?>" >
+        <div class="btn btn-outline-secondary text-uppercase cursor-pointer toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
             <div class="details-hidden">
                 <?= __d('CompareAstelBe', 'switch_resume')?> <i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
             </div>
-            <div class="details-shown d-none">
+            <div class="details-visible">
                 <?= __d('CompareAstelBe', 'switch_details') ?> <i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
             </div>
         </div>
@@ -104,7 +104,7 @@ use CakeUtility\Hash;
                                                     <?= $play['details']?>
                                                 </div>
                                             </div>
-                                            <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>" style="padding-left:40px;">
+                                            <p class="position-relative toggleProductListingDetails__content sub-details-infos" style="padding-left:40px;">
                                                 <?= $play['description'] ?>
                                             </p>
                                         <?php
@@ -140,7 +140,7 @@ use CakeUtility\Hash;
                                 </p>
                             <?php } ?>
                             <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
-                                <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
+                                <p class="position-relative sub-details-infos toggleProductListingDetails__content">
                                     <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                                         <?=$result['result_summary']['max_activation_time'];?>
                                         <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
@@ -165,4 +165,24 @@ use CakeUtility\Hash;
         ?>
 	</div>
 </div>
+<button onclick="myFunction()">Click Me</button>
+<script>
+        console.log('ok');
+   functionmyFunction() {
+    console.log('jquery');
+    $(this).toggleClass('active');
+}
+    
+</script>
+zertgzertzert
+<script>
+        console.log('ok');
+    $(document).ready(function() {
 
+        $('.toggle-details-<?= $params['id'] ?>').click(function() {
+            console.log('jquery');
+            $(this).toggleClass('active');
+        });
+    });
+    
+</script>
