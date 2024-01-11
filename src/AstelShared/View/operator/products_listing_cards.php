@@ -19,6 +19,7 @@ use CakeUtility\Hash;
         ...
     ];
 */
+
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
@@ -76,23 +77,25 @@ use CakeUtility\Hash;
 																</div>
 																	
                                 <?php } ?>
-															<?php if ($item['product_sheet_url'] != ''){ ?>
-															<a
-																class="gtm-product-detail-link"
-																href="<?= $item['product_sheet_url'] ?>"
-																title="<?= $item['short_name'] ?>"
-																target="_blank"
-																data-name="<?= $item['short_name']  ?>"
-																data-brand="<?= $item['brand_name'] ?>"
-															>
+                                <?php if ($item['product_sheet_url'] != ''){ ?>
+                                <a
+                                    class="gtm-product-detail-link"
+                                    href="<?= $item['product_sheet_url'] ?>"
+                                    title="<?= $item['short_name'] ?>"
+                                    target="_blank"
+                                    data-name="<?= $item['short_name']  ?>"
+                                    data-brand="<?= $item['brand_name'] ?>"
+                                >
+                                <?php } ?>
                                 <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                                     <span class="text-<?= $item['brand_slug']; ?>">
                                         <?= $item['short_name']; ?>
                                     </span>
                                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                                 </h3>
-															</a>
-															<?php } ?>
+                                <?php if ($item['product_sheet_url'] != ''){ ?>
+                                </a>
+                                <?php } ?>
                                 <div class="pt-2 px-1 mb-1">
                                     <?php foreach ($item['plays'] as $k => $play) {
                                         if ($play !== false){ ?>
@@ -132,7 +135,7 @@ use CakeUtility\Hash;
                                 <?=$result['result_summary']['setup'];?>
                             </div>
                             <?php if (!empty($result['result_summary']['products_total_savings'])) { ?>
-                                <p class="total-savings modalClick cursor-pointer mb-0" data-toggle="modal" data-target="#modalTotalSavings">
+                                <p class="total-savings modalClick cursor-pointer" data-toggle="modal" data-target="#modalTotalSavings">
                                     <?= $result['result_summary']['products_total_savings'] ?>
                                     <span class="position-absolute">
                                         <i class="fa fa-info pl-2"></i>
@@ -140,7 +143,7 @@ use CakeUtility\Hash;
                                 </p>
                             <?php } ?>
                             <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
-                                <p class="position-relative sub-details-infos toggleProductListingDetails__content">
+                                <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                                     <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                                         <?=$result['result_summary']['max_activation_time'];?>
                                         <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
@@ -150,7 +153,7 @@ use CakeUtility\Hash;
                                     <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
                                         <?= $result['result_summary']['phone_plug']?>
                                     <?php } ?>
-                                </p>
+                                </div>
                             <?php } ?>
                         </div>
 
