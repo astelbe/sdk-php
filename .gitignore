@@ -7,3 +7,4 @@ vendor/*
 composer.lock
 
 .vscode/
+.vscode/ftp-sync.json

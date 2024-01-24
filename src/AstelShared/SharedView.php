@@ -186,15 +186,27 @@ class SharedView extends Singleton {
 	}
 
 
-	static function getTranslation($domain, $key, $version, $params = []) {
-		switch ($version) {
-			case 'front' :
-				return d__($domain, $key, $params);
-				break;
-			case 'cake' :
-				return __d($domain, $key, $params);
-		}
-	}
+	/**
+   * @param $domain
+   * domain may be array with 'front' and 'cake' keys
+   * I.E
+   */
+  static function getTranslation($domain, $key, $version, $params = []) {
+    switch ($version) {
+      case 'front' :
+        if (is_array($domain)) {
+          $domain = $domain['front'];
+        }
+        return d__($domain, $key, $params);
+        break;
+      case 'cake' :
+        if (is_array($domain)) {
+          $domain = $domain['cake'];
+        }
+        return __d($domain, $key, $params);
+    }
+  }
+
 	
 	public function renderStar($quality_score) {
 
