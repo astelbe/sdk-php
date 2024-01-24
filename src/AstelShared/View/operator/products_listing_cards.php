@@ -147,21 +147,20 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if (!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
-                <p class="position-relative sub-details-infos toggle-details toggle-details-<?= $params['id'] ?>">
-                  <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
-                    <?= $result['result_summary']['max_activation_time']; ?>
-                    <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
-                      <br>
-                    <?php } ?>
+              <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
+                <div class="position-relative sub-details-infos toggleProductListingDetails__content">
+                  <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
+                      <?=$result['result_summary']['max_activation_time'];?>
+                      <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
+                          <br>
+                      <?php } ?>
                   <?php } ?>
-                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
-                    <?= $result['result_summary']['phone_plug'] ?>
+                  <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
+                      <?= $result['result_summary']['phone_plug']?>
                   <?php } ?>
-                </p>
+                </div>
               <?php } ?>
             </div>
-
             <div class="mt-2">
               <?= $result['result_summary']['order_url']; ?>
             </div>
