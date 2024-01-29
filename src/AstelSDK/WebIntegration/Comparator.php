@@ -188,7 +188,11 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['username'])) {
 			$getParams['username'] = $_GET['username'];
 		}
-		
+ 
+		if (isset($_GET['partnerID'])) {
+			$getParams['partnerID'] = $_GET['partnerID'];
+		}
+
 		$getParams['page_title'] = $title;
 		$paramsURL = $this->getParamsUrl($getParams);
 		
