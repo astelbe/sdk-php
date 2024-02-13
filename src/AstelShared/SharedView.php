@@ -143,6 +143,9 @@ class SharedView extends Singleton {
 			$data = [];
 			$data['bandwidth_download'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_download', $product, $version);
 			$data['bandwidth_volume'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_volume', $product, $version);
+			$data['bandwidth_upload'] = self::getTranslatedPlayDescription( 'play_description.internet.bandwidth_upload', $product, $version);
+			// $data['is_wifi_modem_provided'] = self::getTranslatedPlayDescription( 'play_description.internet.is_wifi_modem_provided', $product, $version);
+			$is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
 			$data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-'. $key .'">' . Hash::get($product, 'play_description.internet.price_description.'.$language) . '</p>';
 			return $data;
 		} else {
@@ -268,9 +271,18 @@ class SharedView extends Singleton {
 			$data = [];
 			$data['bandwidth_download'] = self::translatePlayDescription( 'play_description.internet.bandwidth_download', $product);
 			$data['bandwidth_volume'] = self::translatePlayDescription( 'play_description.internet.bandwidth_volume', $product);
+			$extra_data = [];
+			$extra_data['bandwidth_upload'] = self::translatePlayDescription( 'play_description.internet.bandwidth_upload', $product);
+			$is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
+			if ($is_wifi_modem_provided != 0) {
+				$extra_data['is_wifi_modem_provided'] = "Modem Wi-Fi";
+			}
+			$extra_data_string = implode(', ', $extra_data);
+			$original_description = Hash::get($product, 'play_description.internet.price_description.' . $this->language);
+			$description_with_extra = $extra_data_string . '<br> ' . $original_description;
 			return [
 				'details' => implode(', ', $data),
-				'description' => Hash::get($product, 'play_description.internet.price_description.'.$this->language),
+				'description' => $description_with_extra,
 				'label' => 'NET'
 			];
 		} else {
