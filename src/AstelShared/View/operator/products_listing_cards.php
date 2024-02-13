@@ -19,13 +19,13 @@ use CakeUtility\Hash;
         ...
     ];
 */
-
+// debug($params['results']);
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
 
-  <div class="d-md-flex justify-content-between align-items-center results-header p-1"
+  <div class="d-md-flex justify-content-between align-items-center results-header py-1"
     style="background-image: linear-gradient(to right, rgb(237, 241, 245) , rgb(237, 241, 245), rgb(255, 255, 255, 1));">
     <h2 class="mt-2 pl-2">
       <?php
@@ -87,9 +87,9 @@ use CakeUtility\Hash;
               title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>"
               data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 pt-3 d-flex justify-content-between"
+              <h3 class="px-1 pt-3 d-flex justify-content-between" style="min-height: 46px; font-size: 1.1rem;"
                 <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
-                <span class="text-<?= $item['brand_slug']; ?>">
+                <span class="text-<?= $item['brand_slug']; ?> font-weight-bold">
                   <?= $item['short_name']; ?>
                 </span>
                 <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
@@ -123,16 +123,19 @@ use CakeUtility\Hash;
                     ?>
         </div>
         <div class="results-price d-flex text-center flex-column justify-content-center mt-2">
-          <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
-            <?=$result['result_summary']['quality_score'];?>
-            <span class="cursor-pointer position-absolute">
-              <i class="fa fa-info pl-2"></i>
-            </span>
+          <div class="">
+              <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
+                <?=$result['result_summary']['quality_score'];?>
+                <span class="cursor-pointer position-absolute">
+                  <i class="fa fa-info pl-2"></i>
+                </span>
+              </div>
+              <p class="mb-2" style="min-height: 80px; line-height: 28px">
+                <?php echo $result['result_summary']['displayed_price'];?>
+              </p>
           </div>
-          <p class="mb-2" style="min-height: 80px; line-height: 28px">
-            <?php echo $result['result_summary']['displayed_price'];?>
-          </p>
-          <div class="setup-wrapper mb-1">
+          <!-- <div class="setup-wrapper mb-1" style="min-height: 240px;"> -->
+          <div class="setup-wrapper mb-1" style="position:relative">
             <div class="mb-0">
               <?=$result['result_summary']['setup'];?>
             </div>
@@ -145,8 +148,8 @@ use CakeUtility\Hash;
             </p>
             <?php } ?>
             <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
-            <div class="position-relative sub-details-infos toggleProductListingDetails__content">
-              TEST
+            <!-- <div class="position-relative sub-details-infos toggleProductListingDetails__content"> -->
+            <div class="position-relative sub-details-infos toggleProductListingDetails__content" style="font: size 10px;">
               <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
               <?=$result['result_summary']['max_activation_time'];?>
               <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
