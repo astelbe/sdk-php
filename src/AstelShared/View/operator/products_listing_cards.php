@@ -113,12 +113,12 @@ use CakeUtility\Hash;
                 </div>
               </div>
               <p class="position-relative toggleProductListingDetails__content sub-details-infos"
-                style="padding-left:40px;">
-                <?= $play['description'] ?>
-              </p>
-              <?php
+              style="padding-left:40px;">
+              <?= $play['description'] ?>
+            </p>
+            <?php
                                         }
-                                    } ?>
+                                      } ?>
             </div>
           </div>
           <?php
@@ -150,6 +150,7 @@ use CakeUtility\Hash;
             <?php } ?>
             <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
             <div class="position-relative sub-details-infos toggleProductListingDetails__content">
+              TEST
               <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
               <?=$result['result_summary']['max_activation_time'];?>
               <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
