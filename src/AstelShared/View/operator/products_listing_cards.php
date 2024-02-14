@@ -77,8 +77,9 @@ use CakeUtility\Hash;
             <?php
                                 // Display brand name only if 1st product , and also 2dn result if multi brand result
                                 if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { ?>
-            <div class="titleproduct-logo-brand p-2 mb-0">
-              <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
+            <div class="titleproduct-logo-brand mb-n3 p-2 mb-0">
+              <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $item['meta_title'] ?>">
+              <!-- <h3 class="text-center mt-2 mb-0"><?= $item['meta_title'] ?></h3> -->
             </div>
 
             <?php } ?>
@@ -87,7 +88,7 @@ use CakeUtility\Hash;
               title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>"
               data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 pt-3 d-flex justify-content-between" style="min-height: 46px; font-size: 1.1rem;"
+              <h3 class="px-1 pt-3 mb-n2 d-flex justify-content-between" style="min-height: 46px; font-size: 1.1rem;"
                 <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                 <span class="text-<?= $item['brand_slug']; ?> font-weight-bold">
                   <?= $item['short_name']; ?>
@@ -97,11 +98,11 @@ use CakeUtility\Hash;
               <?php if ($item['product_sheet_url'] != ''){ ?>
             </a>
             <?php } ?>
-            <div class="pt-2 px-1 mb-1">
+            <div class="px-1 mb-1 mt-2">
               <?php foreach ($item['plays'] as $k => $play) {
                                         if ($play !== false){ ?>
               <div class="d-flex align-items-baseline pb-1" style="line-height:25px;font-size:0.875rem;">
-                <div class="mr-1">
+                <div class="mr-1 pt-2">
                   <span style="display:inline-block; width:35px"><?= $play['label']?></span>
                 </div>
                 <div>
