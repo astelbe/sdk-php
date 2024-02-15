@@ -79,7 +79,6 @@ use CakeUtility\Hash;
                                 if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { ?>
             <div class="titleproduct-logo-brand mb-n3 p-2 mb-0">
               <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $item['meta_title'] ?>">
-              <!-- <h3 class="text-center mt-2 mb-0"><?= $item['meta_title'] ?></h3> -->
             </div>
 
             <?php } ?>
@@ -135,7 +134,6 @@ use CakeUtility\Hash;
                 <?php echo $result['result_summary']['displayed_price'];?>
               </p>
           </div>
-          <!-- <div class="setup-wrapper mb-1" style="min-height: 240px;"> -->
           <div class="setup-wrapper mb-1" style="position:relative">
             <div class="mb-0">
               <?=$result['result_summary']['setup'];?>
@@ -149,8 +147,7 @@ use CakeUtility\Hash;
             </p>
             <?php } ?>
             <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
-            <!-- <div class="position-relative sub-details-infos toggleProductListingDetails__content"> -->
-            <div class="position-relative sub-details-infos toggleProductListingDetails__content" style="font: size 10px;">
+            <div class="position-relative sub-details-infos toggleProductListingDetails__content" style="font: size 10px; min-height:170px;">
               <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
               <?=$result['result_summary']['max_activation_time'];?>
               <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
