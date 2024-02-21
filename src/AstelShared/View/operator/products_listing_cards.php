@@ -76,15 +76,17 @@ use CakeUtility\Hash;
 
             <?php
                                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                                if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { ?>
+                                if($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) { 
+                                    $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
+                                  ?>
             <div class="titleproduct-logo-brand mb-n3 p-2 mb-0">
-              <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $item['meta_title'] ?>">
+              <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
             </div>
 
             <?php } ?>
             <?php if ($item['product_sheet_url'] != ''){ ?>
             <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>"
-              title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>"
+              title="<?= $item['name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>"
               data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
               <h3 class="px-1 pt-3 mb-n2 d-flex justify-content-between" style="min-height: 46px; font-size: 1.1rem;"
