@@ -21,6 +21,7 @@ class AstelContext extends Singleton {
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
+	protected $encryptionKey = null;
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
@@ -230,6 +231,15 @@ class AstelContext extends Singleton {
 		}
 		
 		return $serverName;
+	}
+
+
+  /**
+	 * @return string
+	 */
+	public static function setEncryptionKey($encryptionKey) {
+    self::$encryptionKey = $encryptionKey;
+    return $encryptionKey;
 	}
 	
 	/**
