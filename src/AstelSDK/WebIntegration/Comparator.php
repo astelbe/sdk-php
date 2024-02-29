@@ -194,7 +194,8 @@ class Comparator extends AbstractWebIntegration {
 
 		$getParams['page_title'] = $title;
 		$paramsURL = $this->getParamsUrl($getParams);
-		
+
+    $encryptionKey = $this->context->getEcryptionKey();
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
