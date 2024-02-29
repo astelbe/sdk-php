@@ -216,9 +216,10 @@ class Comparator extends AbstractWebIntegration {
 		$getParams['is_professional'] = $is_professional;
     $sessionID = $this->context->getSessionID();
 		$getParams['session_id'] = $sessionID;
-    $serialize = serialize($getParams);
+		$serialize = serialize($getParams);
+		$paramsURL = URL::base64url_encode($serialize);
 		
-		return $serialize;
+		return $paramsURL;
 	}
 	
 	public function getBodyLoadHtml() {
