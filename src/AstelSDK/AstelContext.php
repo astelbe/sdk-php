@@ -247,6 +247,10 @@ class AstelContext extends Singleton {
 		return $serverName;
 	}
 	
+  public static function configureEncryptionKey($encryptionKey = '') {
+    self::setEncryptionKey($encryptionKey);
+  }
+
 	/**
 	 * @return string
 	 */
