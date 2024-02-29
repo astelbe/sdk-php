@@ -139,15 +139,15 @@ class AstelContext extends Singleton {
   /**
    * @param string $encryptionKey
    */
-	public function setEncryptionKey($encryptionKey) {
-		$this->encryptionKey = $encryptionKey;
+	public static function setEncryptionKey($encryptionKey) {
+		self::$encryptionKey = $encryptionKey;
 	}
 
   /**
    * @param string
    */
-	public function getEncryptionKey() {
-		return $this->encryptionKey;
+	public static function getEncryptionKey() {
+		return self::$encryptionKey;
 	}
 
 	/**
@@ -247,10 +247,6 @@ class AstelContext extends Singleton {
 		return $serverName;
 	}
 	
-  public static function configureEncryptionKey($encryptionKey = '') {
-    self::setEncryptionKey($encryptionKey);
-  }
-
 	/**
 	 * @return string
 	 */
