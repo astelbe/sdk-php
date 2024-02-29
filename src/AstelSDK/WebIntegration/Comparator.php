@@ -191,11 +191,10 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['partnerID'])) {
 			$getParams['partnerID'] = $_GET['partnerID'];
 		}
-
+    
 		$getParams['page_title'] = $title;
 		$paramsURL = $this->getParamsUrl($getParams);
-
-    $encryptionKey = $this->context->getEcryptionKey();
+		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
