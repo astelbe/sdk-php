@@ -3,7 +3,6 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
-use AstelSDK\Utils\EncryptData;
 use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
