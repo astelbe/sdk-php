@@ -21,6 +21,7 @@ class AstelContext extends Singleton {
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
+  protected $encryptionKey;
 	
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
 		if ($env === 'prod') {
@@ -256,10 +257,25 @@ class AstelContext extends Singleton {
 	/**
 	 * @param string $token
 	 */
-	public function setPartnerReferralId($partnerId) {
+	public static function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
  
+
+  /**
+   * @param string $encryptionKey
+   */
+  public static function setEncryptionKey($encryptionKey) {
+    self::$encryptionKey = $encryptionKey;
+  }
+
+  /**
+   * @param string
+   */
+  public function getEncryptionKey() {
+    return $this->encryptionKey;
+  }
+
 	/**
 	 * Register functions:
 	 * - debug() for pretty display of debug information
