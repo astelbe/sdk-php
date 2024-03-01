@@ -71,14 +71,20 @@ class OrderForm extends AbstractWebIntegration {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
 
-        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
-        $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+    // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+    $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
 
 		$username = Hash::get($_GET, 'username');
 		if ($username !== null) {
 			$params['data']['username'] = $username;
 
 		}
+
+    $overridePartnerId = Hash::get($_GET, 'partnerID');
+		if ($overridePartnerId !== null) {
+			$params['data']['override_partner_id'] = $overridePartnerId;
+		}
+
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 
