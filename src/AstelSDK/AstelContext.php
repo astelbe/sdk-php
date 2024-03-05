@@ -4,6 +4,7 @@ namespace AstelSDK;
 
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\Logger;
+use AstelSDK\Utils\EncryptData;
 use AstelSDK\Utils\TypeTransform;
 use CakeUtility\Hash;
 
@@ -22,8 +23,8 @@ class AstelContext extends Singleton {
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
   protected $encryptionKey;
-	
-	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
+
+	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null, $encryptionKey = null) {
 		if ($env === 'prod') {
 			$env = '';
 		}
@@ -34,6 +35,8 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
+    debug($encryptionKey);
+    $this->setEncryptionKey($encryptionKey);
 	}
 	
 	public function initSession() {
@@ -260,21 +263,6 @@ class AstelContext extends Singleton {
 	public static function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
- 
-
-  /**
-   * @param string $encryptionKey
-   */
-  public static function setEncryptionKey($encryptionKey) {
-    self::$encryptionKey = $encryptionKey;
-  }
-
-  /**
-   * @param string
-   */
-  public function getEncryptionKey() {
-    return $this->encryptionKey;
-  }
 
 	/**
 	 * Register functions:
@@ -298,4 +286,22 @@ class AstelContext extends Singleton {
 		}
 		return $version_data;
 	}
+
+  /**
+   * Set the encryption key for the SDK statically.
+   *
+   * @param string $encryptionKey The encryption key to be used across the SDK.
+   */
+  public function setEncryptionKey($encryptionKey) {
+    $this->$encryptionKey = $encryptionKey;
+  }
+
+  /**
+   * Get the encryption key used across the SDK statically.
+   *
+   * @return string|null The encryption key if set, or null otherwise.
+   */
+  public function getEncryptionKey() {
+    return $this->encryptionKey;
+  }
 }
