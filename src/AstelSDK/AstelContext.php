@@ -4,7 +4,6 @@ namespace AstelSDK;
 
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Utils\Logger;
-use AstelSDK\Utils\EncryptData;
 use AstelSDK\Utils\TypeTransform;
 use CakeUtility\Hash;
 
@@ -35,7 +34,6 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
-    debug($encryptionKey);
     $this->setEncryptionKey($encryptionKey);
 	}
 	
