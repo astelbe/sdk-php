@@ -34,7 +34,7 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
-    $this->setEncryptionKey($encryptionKey);
+    $this->encryptionKey = $encryptionKey;
 	}
 	
 	public function initSession() {
@@ -284,15 +284,6 @@ class AstelContext extends Singleton {
 		}
 		return $version_data;
 	}
-
-  /**
-   * Set the encryption key for the SDK statically.
-   *
-   * @param string $encryptionKey The encryption key to be used across the SDK.
-   */
-  public function setEncryptionKey($encryptionKey) {
-    $this->$encryptionKey = $encryptionKey;
-  }
 
   /**
    * Get the encryption key used across the SDK statically.

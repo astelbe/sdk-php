@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelSDK\Utils\EncryptData;
 use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
@@ -211,7 +212,8 @@ class Comparator extends AbstractWebIntegration {
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
 		$getParams['session_id'] = $this->context->getSessionID();
-		$serialize = serialize($getParams);
+    $encryptedGetParams = EncryptData::encrypt(serialize($getParams), $this->context->getEncryptionKey());
+		$serialize = $encryptedGetParams;
 		$paramsURL = URL::base64url_encode($serialize);
 		
 		return $paramsURL;
