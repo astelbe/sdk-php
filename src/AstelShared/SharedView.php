@@ -417,6 +417,26 @@ class SharedView extends Singleton {
 		}
 	}
 
+	/**
+	 * Check if a result has only mobile to conditionnaly display summary stuffs
+	 * @param $result card result
+	 * @return bool
+	 * */
+	static function isOnlyMobile($result) {
+		$isOnlyMobile = true;
+		foreach($result['products'] as $product) {
+			// If at least one play has a description, it's not a solo mobile result
+			foreach(['internet', 'tv', 'fix'] as $play) {
+
+				if (!empty($product['plays'][$play])) {
+					$isOnlyMobile = false;
+				}
+			}
+			
+		}
+		return $isOnlyMobile;
+	}
+
 	public function formatProductForCard($product) {
 		$formatted_product = [];
 		// debug(Hash::get($product, 'brand_logo'));

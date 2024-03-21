@@ -147,7 +147,7 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
+              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                       <?=$result['result_summary']['max_activation_time'];?>
