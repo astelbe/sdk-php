@@ -50,10 +50,15 @@ class Comparator extends AbstractWebIntegration {
 		return $out;
 	}
 	
-	public function getScriptLoadComparator($title = null) {
+	public function getScriptLoadComparator($title = null, $encryptionKey = null) {
 		global $_GET;
 
-		$getParams = [];
+    // Get the encryption key from the context if it is not provided
+    if(!$encryptionKey) {
+      $encryptionKey = $this->context->getEncryptionKey();
+    }
+
+    $getParams = [];
 
 		// Process $_GET params
         // Be aware that $_GET param names are not the same in comparator scripts
@@ -191,7 +196,7 @@ class Comparator extends AbstractWebIntegration {
 		}
 		
 		$getParams['page_title'] = $title;
-		$paramsURL = $this->getParamsUrl($getParams);
+		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
 		
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
@@ -201,20 +206,21 @@ class Comparator extends AbstractWebIntegration {
 	public function getScriptLoadComparatorParameterBar() {
 		
 		$paramsURL = $this->getParamsUrl();
-		
 		return '<script>
 			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
 	
-	private function getParamsUrl($getParams = []) {
+	private function getParamsUrl($getParams = [], $encryptionKey = null) {
 		$getParams['page_url'] = $this->getPageURL();
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
 		$getParams['session_id'] = $this->context->getSessionID();
-    $serialize = serialize($getParams);
-		$paramsURL = URL::base64url_encode($serialize);
-		$encryptedGetParams = EncryptData::encrypt($paramsURL, $this->context->getEncryptionKey());
+    $getParamsStr = json_encode($getParams);
+		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
+    $decryptedGetParamsStr = EncryptData::decryptData($encryptedGetParams, $encryptionKey);
+    // // Deserialize the JSON string back into an array
+    $decryptedGetParams = json_decode($decryptedGetParamsStr, true);
 		return $encryptedGetParams;
 	}
 	
