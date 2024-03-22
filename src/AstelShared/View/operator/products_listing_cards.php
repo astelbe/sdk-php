@@ -37,6 +37,184 @@ use CakeUtility\Hash;
 
 ?>
 
+
+<section class="productCards-gridContainer">
+  <?php
+  // debug($params['results']);
+  foreach ($params['results'] as $key => $result) {
+    $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;
+  ?>
+    <div class="productCard">
+
+      <?php
+      $cpt = 1; // To display "+" between products
+      foreach ($result['products'] as $key => $item) {
+        if ($cpt > 1) {
+          echo
+          '<svg width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8"/>
+            <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8"/>
+            <rect x="126" width="8" height="30" fill="#6CC1F0"/>
+            <rect x="115" y="11" width="30" height="8" fill="#6CC1F0"/>
+          </svg>';
+        }
+      ?>
+
+        <img src="<?= $result['brand_logo'] ?>" alt="<?= $result['products'][0]['brand_name'] ?>" class="productCard-brandLogo">
+
+        <div class="productCard-typesIcons productCard-cell"><?= $params['fa-icon'] ?></div>
+
+        <h3 class="productCard-title"><?= $result['products'][0]['short_name'] ?></h3>
+
+        <div class="productCard-activation productCard-cell">
+          <?= $result['result_summary']['setup']; ?>
+        </div>
+
+        <div><?php echo $result['result_summary']['displayed_price']; ?></div>
+
+        <?php if ($cashback) { ?>
+          <div class="productCard-cashback productCard-cell">
+            <?= $cashback ?>
+          </div>
+        <?php } ?>
+
+        <div class="productCard-description productCard-cell" style="background-color: <?= $result['brand_bg_color'] ?> ">
+          <?php foreach ($item['plays'] as $k => $play) {
+            if ($play !== false) { ?>
+              <span>
+                <?= $play['label'] ?>
+
+                <?= $play['details'] ?> <br>
+              </span>
+
+              <!-- <p>
+              <?= $play['description'] ?>
+            </p> -->
+          <?php
+            }
+          } ?>
+        </div>
+
+        <button class="blueBtn darkBlueBtn">Commander</button>
+
+        <a href="#" class="productCard-detailsLink">Détails →</a>
+    </div>
+
+<?php
+        $cpt++;
+      }
+    } ?>
+</section>
+
+<style>
+  .text-delgrey {
+    color: #767676;
+  }
+
+  .productCards-gridContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .productCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .productCard>* {
+    margin-bottom: 1rem;
+  }
+
+  .productCard-cell {
+    padding: 0.5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 0.5rem;
+  }
+
+  .productCard-brandLogo {
+    width: 50%;
+    margin: 2rem;
+  }
+
+  .productCard-typesIcons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E5F4FE;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    gap: 1rem;
+  }
+
+  .productCard-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 150%;
+  }
+
+  .productCard-activation {
+    display: flex;
+    flex-wrap: nowrap;
+    background-color: #FFF2F7;
+    color: #E5176B;
+  }
+
+  .productCard-cashback {
+    background-color: #E5176B;
+    color: #fff;
+  }
+
+  .productCard-description {
+    text-align: left;
+  }
+
+  .productCard-detailsLink {
+    text-decoration: underline;
+    transition: all 100ms ease-in-out;
+    color: #1CAAF9;
+  }
+
+
+
+
+
+
+  .blueBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    height: 4rem;
+    transition: all 200ms ease-in-out;
+  }
+
+  .darkBlueBtn {
+    background-color: #1F438C;
+    color: #fff;
+    border-radius: 2rem;
+  }
+
+  .darkBlueBtn:hover {
+    background-color: #2451AC;
+  }
+
+  .darkBlueBtn:active {
+    background-color: #05276B;
+  }
+</style>
+
+
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div class="d-md-flex justify-content-between align-items-center results-header p-1" style="background-image: linear-gradient(to right, rgb(237, 241, 245) , rgb(237, 241, 245), rgb(255, 255, 255, 1));">
     <h2 class="mt-2 pl-2">
@@ -147,16 +325,16 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
-                  <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
-                      <?=$result['result_summary']['max_activation_time'];?>
-                      <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                          <br>
-                      <?php } ?>
+                  <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
+                    <?= $result['result_summary']['max_activation_time']; ?>
+                    <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                      <br>
+                    <?php } ?>
                   <?php } ?>
-                  <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                      <?= $result['result_summary']['phone_plug']?>
+                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                    <?= $result['result_summary']['phone_plug'] ?>
                   <?php } ?>
                 </div>
               <?php } ?>
