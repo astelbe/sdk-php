@@ -21,8 +21,9 @@ class AstelContext extends Singleton {
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
-	
-	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null) {
+  protected $encryptionKey;
+
+	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null, $encryptionKey = null) {
 		if ($env === 'prod') {
 			$env = '';
 		}
@@ -33,6 +34,7 @@ class AstelContext extends Singleton {
 		self::$instances['AstelSDK\AstelContext'] = $this; // for singleton future use
 		$this->Logger = new Logger($logPath, $this);
 		$this->Cacher = $cacherObject;
+    $this->encryptionKey = $encryptionKey;
 	}
 	
 	public function initSession() {
@@ -256,10 +258,10 @@ class AstelContext extends Singleton {
 	/**
 	 * @param string $token
 	 */
-	public function setPartnerReferralId($partnerId) {
+	public static function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
- 
+
 	/**
 	 * Register functions:
 	 * - debug() for pretty display of debug information
@@ -282,4 +284,13 @@ class AstelContext extends Singleton {
 		}
 		return $version_data;
 	}
+
+  /**
+   * Get the encryption key used across the SDK statically.
+   *
+   * @return string|null The encryption key if set, or null otherwise.
+   */
+  public function getEncryptionKey() {
+    return $this->encryptionKey;
+  }
 }

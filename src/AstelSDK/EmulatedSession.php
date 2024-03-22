@@ -156,7 +156,6 @@ class EmulatedSession {
 		} else {
 			$sessionIdShouldBe = AstelContext::getUniqueVisitorKeyFromData($currentData);
 		}
-		
 		return $sessionId === $sessionIdShouldBe;
 	}
 	
