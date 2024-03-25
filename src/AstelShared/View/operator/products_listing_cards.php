@@ -100,6 +100,7 @@ $params = [
       <?php
       foreach ($result['products'] as $key => $item) :
         // debug($item);
+        // debug($item);
         if ($cpt > 1) {
           echo
           '<svg width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">

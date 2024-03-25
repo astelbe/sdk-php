@@ -479,13 +479,13 @@ class SharedView extends Singleton {
 		$formatted_product['brand_name'] = Hash::get($product, 'brand_name');
 		$formatted_product['brand_slug'] = Hash::get($product, 'brand_slug');
 		$formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');
+		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
 		$formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' .  $this->language, '');
 		// Product play details
 		$formatted_product['plays']['internet'] = $this->getInternetDetails($product);
 		$formatted_product['plays']['tv'] = $this->getTVDetails($product);
 		$formatted_product['plays']['fix'] = $this->getFixDetails($product);
 		$formatted_product['plays']['mobile'] = $this->getGsmDetails($product);
-
 		return $formatted_product;
 	}
 
