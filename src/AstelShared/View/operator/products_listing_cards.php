@@ -169,8 +169,4 @@ use CakeUtility\Hash;
       </div>
     <?php } ?>
   </div>
-
-  <div class="mt-2">
-    <?= $result['result_summary']['order_url']; ?>
-  </div>
 </div>
