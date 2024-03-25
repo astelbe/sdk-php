@@ -35,6 +35,56 @@ use CakeUtility\Hash;
     ];
 */
 
+/*
+$params = [
+
+  'results' = [
+
+    0 => [
+      'products' = [
+
+        'name' => ... ,
+        'name' => ... ,
+        'name' => ... ,
+        'play_types' => [
+          ... ,
+          ... ,
+          ... ,
+        ]
+      ]
+    ]
+
+    1 => [
+      'products' = [
+
+        0 => [
+          'name' => ... ,
+          'name' => ... ,
+          'name' => ... ,
+          'play_types' => [
+            ... ,
+            ... ,
+            ... ,
+          ]
+        ],
+
+        1 => [
+          'name' => ... ,
+          'name' => ... ,
+          'name' => ... ,
+          'play_types' => [
+            ... ,
+            ... ,
+            ... ,
+          ]
+        ],
+      ]
+      
+    ]
+  ]
+]
+*/
+
 ?>
 
 
@@ -43,12 +93,13 @@ use CakeUtility\Hash;
   // debug($params['results']);
   foreach ($params['results'] as $key => $result) {
     $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;
+    $cpt = 1; // To display "+" between products
   ?>
     <div class="productCard">
 
       <?php
-      $cpt = 1; // To display "+" between products
-      foreach ($result['products'] as $key => $item) {
+      foreach ($result['products'] as $key => $item) :
+        // debug($item);
         if ($cpt > 1) {
           echo
           '<svg width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -57,34 +108,30 @@ use CakeUtility\Hash;
             <rect x="126" width="8" height="30" fill="#6CC1F0"/>
             <rect x="115" y="11" width="30" height="8" fill="#6CC1F0"/>
           </svg>';
+        } else {
+          echo $cashback ? "<div class='productCard-cashback productCard-cell'>{$cashback}</div>" : "";
         }
       ?>
 
-        <img src="<?= $result['brand_logo'] ?>" alt="<?= $result['products'][0]['brand_name'] ?>" class="productCard-brandLogo">
 
-        <div class="productCard-typesIcons productCard-cell"><?= $params['fa-icon'] ?></div>
 
-        <h3 class="productCard-title"><?= $result['products'][0]['short_name'] ?></h3>
+        <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" class="productCard-brandLogo">
 
-        <div class="productCard-activation productCard-cell">
-          <?= $result['result_summary']['setup']; ?>
-        </div>
+        <!-- <div class="productCard-typesIcons productCard-cell"><?= $params['fa-icon'] ?></div> -->
 
-        <div><?php echo $result['result_summary']['displayed_price']; ?></div>
+        <h3 class="productCard-title"><?= $item['short_name'] ?></h3>
 
-        <?php if ($cashback) { ?>
-          <div class="productCard-cashback productCard-cell">
-            <?= $cashback ?>
-          </div>
-        <?php } ?>
-
-        <div class="productCard-description productCard-cell" style="background-color: <?= $result['brand_bg_color'] ?> ">
+        <div class="productCard-description productCard-cell" style="background-color: <?= $item['brand_bg_color'] ?> ">
           <?php foreach ($item['plays'] as $k => $play) {
             if ($play !== false) { ?>
               <span>
                 <?= $play['label'] ?>
 
-                <?= $play['details'] ?> <br>
+                <?= $play['details'] ?>
+
+                <!-- <?php debug($play); ?> -->
+
+                <br>
               </span>
 
               <!-- <p>
@@ -92,23 +139,47 @@ use CakeUtility\Hash;
             </p> -->
           <?php
             }
-          } ?>
+          }
+
+          $cpt++;
+          ?>
+
         </div>
+      <?php
+      endforeach;
+      ?>
 
-        <button class="blueBtn darkBlueBtn">Commander</button>
+      <div><?php echo $result['result_summary']['displayed_price']; ?></div>
 
-        <a href="#" class="productCard-detailsLink">Détails →</a>
+      <?=
+      $result['result_summary']['setup'] ? "<div>{$result['result_summary']['setup']}</div>" : ""
+      ?>
+
+      <button class="blueBtn darkBlueBtn">Commander</button>
+
+      <a href="#" class="productCard-detailsLink">Détails →</a>
     </div>
 
-<?php
-        $cpt++;
-      }
-    } ?>
+  <?php
+  }
+  ?>
 </section>
 
 <style>
   .text-delgrey {
     color: #767676;
+  }
+
+  .text-darkblue {
+    color: #1F438C;
+  }
+
+  .fs112 {
+    font-size: 1.125rem;
+  }
+
+  .fw700 {
+    font-weight: 700;
   }
 
   .productCards-gridContainer {
