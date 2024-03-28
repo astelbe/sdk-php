@@ -462,9 +462,15 @@ class SharedView extends Singleton {
 		return $isOnlyMobile;
 	}
 
+	/**
+	 * Format a product to be displayed in a card
+	 * @param $product
+	 * @return array
+	 * Used in operator page and Compare page
+	 */
 	public function formatProductForCard($product) {
 		$formatted_product = [];
-		// debug(Hash::get($product, 'brand_logo'));
+		
 		// Product main info
 		$formatted_product['count'] = Hash::get($product, 'count');
 		$formatted_product['short_name'] = Hash::get($product, 'short_name.' . $this->language, '');
@@ -472,6 +478,8 @@ class SharedView extends Singleton {
 		$formatted_product['brand_slug'] = Hash::get($product, 'brand_slug');
 		$formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');
 		$formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' .  $this->language, '');
+		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
+		
 		// Product play details
 		$formatted_product['plays']['internet'] = $this->getInternetDetails($product);
 		$formatted_product['plays']['tv'] = $this->getTVDetails($product);
@@ -496,4 +504,6 @@ class SharedView extends Singleton {
 
 		return $bgColor;
 	}
+	
+
 }

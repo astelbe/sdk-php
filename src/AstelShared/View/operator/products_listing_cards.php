@@ -93,7 +93,7 @@ $params = [
 
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
-  <div class="d-md-flex justify-content-between align-items-center results-header p-1" style="background-image: linear-gradient(to right, rgb(237, 241, 245) , rgb(237, 241, 245), rgb(255, 255, 255, 1));">
+  <div class="d-md-flex justify-content-between align-items-center" >
     <h2 class="mt-2 pl-2">
       <?= $params['title']; ?>
     </h2>
