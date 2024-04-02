@@ -190,14 +190,18 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
-
 		if (isset($_GET['username'])) {
 			$getParams['username'] = $_GET['username'];
 		}
-		
+
+		if (isset($_GET['partnerID'])) {
+			$getParams['partnerID'] = $_GET['partnerID'];
+		}
+    
 		$getParams['page_title'] = $title;
+
 		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
-		
+
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
@@ -218,9 +222,7 @@ class Comparator extends AbstractWebIntegration {
 		$getParams['session_id'] = $this->context->getSessionID();
     $getParamsStr = json_encode($getParams);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
-    $decryptedGetParamsStr = EncryptData::decryptData($encryptedGetParams, $encryptionKey);
-    // // Deserialize the JSON string back into an array
-    $decryptedGetParams = json_decode($decryptedGetParamsStr, true);
+    
 		return $encryptedGetParams;
 	}
 	
