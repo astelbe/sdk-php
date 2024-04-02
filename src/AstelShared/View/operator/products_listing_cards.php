@@ -89,9 +89,6 @@ $params = [
 
 ?>
 
-
-
-
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div class="d-md-flex justify-content-between align-items-center" >
     <h2 class="mt-2 pl-2">
@@ -220,6 +217,4 @@ $params = [
       </div>
     <?php } ?>
   </div>
-
-  
 </div>
