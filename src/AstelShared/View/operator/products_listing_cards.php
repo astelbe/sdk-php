@@ -156,7 +156,7 @@ $params = [
       $result['result_summary']['setup'] ? "<div>{$result['result_summary']['setup']}</div>" : ""
       ?>
 
-      <button class="blueBtn darkBlueBtn">Commander</button>
+      <button class="blueBtn darkBlueBtn blueBtn_m_fullRounded">Commander</button>
 
       <a href="#" class="productCard-detailsLink">Détails →</a>
     </div>
@@ -187,8 +187,19 @@ $params = [
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin: 2rem 5rem;
+  }
+
+  @media (max-width: 992px) {
+    .productCards-gridContainer {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 576px) {
+    .productCards-gridContainer {
+      grid-template-columns: 1fr;
+    }
   }
 
   .productCard {
@@ -253,36 +264,6 @@ $params = [
     text-decoration: underline;
     transition: all 100ms ease-in-out;
     color: #1CAAF9;
-  }
-
-
-
-
-
-
-  .blueBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    height: 4rem;
-    transition: all 200ms ease-in-out;
-  }
-
-  .darkBlueBtn {
-    background-color: #1F438C;
-    color: #fff;
-    border-radius: 2rem;
-  }
-
-  .darkBlueBtn:hover {
-    background-color: #2451AC;
-  }
-
-  .darkBlueBtn:active {
-    background-color: #05276B;
   }
 </style>
 

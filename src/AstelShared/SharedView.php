@@ -494,6 +494,8 @@ class SharedView extends Singleton {
 	 * @param $brandHexColor - hexadecimal color code of the brand (without "#")
 	 * 
 	 * @return $bgColor - rgba color code of the brand with 0.1 opacity
+	 * 
+	 * (duplicated in AstelBusinessHelper.php)
 	 */
 	public function getBrandColorBg($brandHexColor) {
 		$bgColorR = hexdec(substr($brandHexColor, 0, 2));
