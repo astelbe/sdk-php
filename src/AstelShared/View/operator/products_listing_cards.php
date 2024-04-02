@@ -55,7 +55,7 @@ use CakeUtility\Hash;
       <?php } ?>
       <div class="px-2 pt-4 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between"
         style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
-        <?php if($result['cashback_source'] != 'None' ) { ?>
+        <?php if($result['cashback_source'] != 'None' && $result['cashback_source'] != 0) { ?>
           <div
             class="mt-n3 ml-3 py-0 px-3 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick "
             data-toggle="modal" data-target="#pluginModalCashback"
