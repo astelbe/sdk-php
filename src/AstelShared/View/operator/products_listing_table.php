@@ -1,7 +1,7 @@
 <?php
 
 use CakeUtility\Hash;
-
+// debug($params);
 /**
  * Common V1/V2 template used to display
  * - packs
