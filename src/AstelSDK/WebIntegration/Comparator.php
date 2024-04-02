@@ -184,14 +184,17 @@ class Comparator extends AbstractWebIntegration {
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
-
 		if (isset($_GET['username'])) {
 			$getParams['username'] = $_GET['username'];
 		}
-		
+
+		if (isset($_GET['partnerID'])) {
+			$getParams['partnerID'] = $_GET['partnerID'];
+		}
+    
 		$getParams['page_title'] = $title;
 		$paramsURL = $this->getParamsUrl($getParams);
-		
+    
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
@@ -210,7 +213,8 @@ class Comparator extends AbstractWebIntegration {
 		$getParams['page_url'] = $this->getPageURL();
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
-		$getParams['session_id'] = $this->context->getSessionID();
+    $sessionID = $this->context->getSessionID();
+		$getParams['session_id'] = $sessionID;
 		$serialize = serialize($getParams);
 		$paramsURL = URL::base64url_encode($serialize);
 		
