@@ -150,7 +150,7 @@ class OrderForm extends AbstractWebIntegration {
 		
 		return '<div id="orderForm">
 				<div class="loadOrderFormTxt text-center">
-					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
+					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 					' . $this->txtToDisplayNoCookieTechnicalIssue() . '

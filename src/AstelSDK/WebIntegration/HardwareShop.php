@@ -99,7 +99,7 @@ class HardwareShop extends AbstractWebIntegration {
 	public function getBodyLoadHtml() {
 		return '<article id="hardwareDiv" class="container">
 				<div class="loadingImg text-center">
-					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
+					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 					' . $this->txtToDisplayNoCookieTechnicalIssue() . '
