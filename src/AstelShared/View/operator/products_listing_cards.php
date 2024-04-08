@@ -81,9 +81,11 @@ use CakeUtility\Hash;
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
+                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { 
+                  $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
+                  ?>
                   <div class="titleproduct-logo-brand p-2 mb-0">
-                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
+                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
@@ -91,7 +93,7 @@ use CakeUtility\Hash;
                   <?php } ?>
                   <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['short_name']; ?>
+                      <?= $item['name']; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
