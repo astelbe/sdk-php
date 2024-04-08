@@ -207,9 +207,8 @@ class Comparator extends AbstractWebIntegration {
 		</script>';
 	}
 	
-	public function getScriptLoadComparatorParameterBar() {
-		
-		$paramsURL = $this->getParamsUrl();
+	public function getScriptLoadComparatorParameterBar($encryptionKey = null) {
+		$paramsURL = $this->getParamsUrl(null, $encryptionKey);
 		return '<script>
 			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
@@ -222,7 +221,6 @@ class Comparator extends AbstractWebIntegration {
 		$getParams['session_id'] = $this->context->getSessionID();
     $getParamsStr = json_encode($getParams);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
-    
 		return $encryptedGetParams;
 	}
 	
