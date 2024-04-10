@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelSDK\Utils\EncryptData;
 use CakeUtility\Hash;
 
 class HardwareShop extends AbstractWebIntegration {
@@ -65,13 +66,12 @@ class HardwareShop extends AbstractWebIntegration {
 		if ($username !== null) {
 			$params['username'] = $username;
 		}
-		
-		$serialize = serialize($params);
+    $encryptionKey = $this->context->getEncryptionKey();
+    $getParamsStr = json_encode($params);
+		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
-		$paramsURL = URL::base64url_encode($serialize);
-		
 		return '<script>
-			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
 		</script>';
 	}
 	
