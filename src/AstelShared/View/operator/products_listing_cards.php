@@ -90,7 +90,7 @@ $params = [
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
-  <div class="d-md-flex justify-content-between align-items-center" >
+  <div class="d-md-flex justify-content-between align-items-center">
     <h2 class="mt-2 pl-2">
       <?= $params['title']; ?>
     </h2>
@@ -110,7 +110,7 @@ $params = [
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 mb-5 mt-4 product-card px-2">
-       
+
         <div class="px-3 pt-3 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php if ($cashback) { ?>
 
@@ -118,7 +118,7 @@ $params = [
               <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
             </div>
           <?php } ?>
-         
+
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $key => $item) {
@@ -134,9 +134,9 @@ $params = [
             <?php
             // Display brand name only if 1st product , and also 2dn result if multi brand result
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
-                <div class="mb-3 text-center" style="height: 36px">
-                  <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;">
-                </div>
+              <div class="mb-3 text-center" style="height: 36px">
+                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;">
+              </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
               <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
@@ -146,13 +146,13 @@ $params = [
                 <span><?= self::getDisplayedProductCount($item) ?></span>
               </h3>
               <?php if ($item['product_sheet_url'] != '') { ?>
-                </a>
-              <?php } ?>
+              </a>
+            <?php } ?>
             <div class="rounded-15 py-2 px-2 mb-3" style="background-color: <?= $item['brand_bg_color'] ?> ">
               <?php foreach ($item['plays'] as $k => $play) {
                 if ($play !== false) { ?>
                   <div class="d-flex pb-1" style="line-height:25px;font-size:0.875rem;">
-                  <div class="mr-1" style="min-width:30px;">
+                    <div class="mr-1" style="min-width:30px;">
                       <?= $play['label'] ?>
                     </div>
                     <div class="product-plays fs112">
@@ -170,7 +170,7 @@ $params = [
             $cpt++;
           }
           ?>
-          
+
           <div class="results-price d-flex text-center flex-column justify-content-center mt-auto pt-1">
             <?php if ($result['result_summary']['quality_score'] != '') { ?>
               <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
