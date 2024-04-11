@@ -103,11 +103,9 @@ $params = [
       </div>
     </div>
   </div>
-
-
   <div class="row mt-4">
     <?php foreach ($params['results'] as $key => $result) {
-      $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;
+      $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 mb-5 mt-4 product-card px-2">
 
@@ -218,6 +216,4 @@ $params = [
     <?php } ?>
   </div>
 </div>
-
-
 <!-- test -->
