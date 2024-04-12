@@ -395,13 +395,21 @@ class Product extends SDKModel {
 		return $get1;
 	}
 
+	/**
+	 * @param $products
+	 *
+	 * @return mixed
+	 */
 	public function orderByDisplayedPrice ($products) {
+		// Order by displayed price
 		foreach ($products as $k => $product) {
 			$products[$k]['displayed_price'] = $product['price'];
+			// If discounted price period is superior to 0
 			if($product['discounted_price_period'] > 0) {			
 				$products[$k]['displayed_price'] = $product['discounted_price'];
 			};
-			if($product['discounted_price'] != 0 && $product['discounted_price'] < $product['price'] ) {
+			// If discounted price is superior to 0 and inferior to price
+			if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
 				$products[$k]['displayed_price'] = $product['discounted_price'];
 			};
 		}
