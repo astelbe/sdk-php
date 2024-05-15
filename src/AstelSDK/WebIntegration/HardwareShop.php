@@ -67,10 +67,11 @@ class HardwareShop extends AbstractWebIntegration {
 			$params['username'] = $username;
 		}
 
-		// encrypt params
+	
 		if(empty($encryptionKey)) {
     		$encryptionKey = $this->context->getEncryptionKey();
 		}
+
     	$getParamsStr = json_encode($params);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
@@ -95,9 +96,11 @@ class HardwareShop extends AbstractWebIntegration {
 		];
 
 		// encrypt params
+
 		if(empty($encryptionKey)) {
 			$encryptionKey = $this->context->getEncryptionKey();
 		}
+
 		$getParamsStr = json_encode($params);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
