@@ -48,7 +48,7 @@ class HardwareShop extends AbstractWebIntegration {
 		return $out;
 	}
 	
-	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null) {
+	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null) {
 		global $_GET;
 
 		$params = [];
@@ -67,8 +67,11 @@ class HardwareShop extends AbstractWebIntegration {
 			$params['username'] = $username;
 		}
 
-		// encrypt params
-    	$encryptionKey = $this->context->getEncryptionKey();
+	
+		if(empty($encryptionKey)) {
+    		$encryptionKey = $this->context->getEncryptionKey();
+		}
+
     	$getParamsStr = json_encode($params);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
@@ -77,7 +80,7 @@ class HardwareShop extends AbstractWebIntegration {
 		</script>';
 	}
 	
-	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null) {
+	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null,  $encryptionKey = null) {
 		global $_GET;
 		
 		$username = Hash::get($_GET, 'username');
@@ -93,7 +96,11 @@ class HardwareShop extends AbstractWebIntegration {
 		];
 
 		// encrypt params
-		$encryptionKey = $this->context->getEncryptionKey();
+
+		if(empty($encryptionKey)) {
+			$encryptionKey = $this->context->getEncryptionKey();
+		}
+
 		$getParamsStr = json_encode($params);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
