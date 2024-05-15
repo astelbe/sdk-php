@@ -52,10 +52,9 @@ use CakeUtility\Hash;
     </div>
   </div>
 
-
   <div class="row mt-4 no-gutters">
     <?php foreach ($params['results'] as $key => $result) {
-      $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0) ? $result['result_summary']['total_cashback'] : false;
+      $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-4 product-card">
         <?php if ($result['result_index']) { ?>
@@ -82,9 +81,11 @@ use CakeUtility\Hash;
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
+                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { 
+                  $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
+                  ?>
                   <div class="titleproduct-logo-brand p-2 mb-0">
-                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>">
+                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
@@ -92,7 +93,7 @@ use CakeUtility\Hash;
                   <?php } ?>
                   <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['short_name']; ?>
+                      <?= $item['name']; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
@@ -147,7 +148,7 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if(!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) { ?>
+              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                       <?=$result['result_summary']['max_activation_time'];?>
@@ -168,9 +169,5 @@ use CakeUtility\Hash;
         </div>
       </div>
     <?php } ?>
-  </div>
-
-  <div class="mt-2">
-    <?= $result['result_summary']['order_url']; ?>
   </div>
 </div>

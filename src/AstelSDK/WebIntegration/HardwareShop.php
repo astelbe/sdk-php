@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelSDK\Utils\EncryptData;
 use CakeUtility\Hash;
 
 class HardwareShop extends AbstractWebIntegration {
@@ -47,7 +48,7 @@ class HardwareShop extends AbstractWebIntegration {
 		return $out;
 	}
 	
-	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null) {
+	public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null) {
 		global $_GET;
 
 		$params = [];
@@ -65,21 +66,24 @@ class HardwareShop extends AbstractWebIntegration {
 		if ($username !== null) {
 			$params['username'] = $username;
 		}
-		
-		$serialize = serialize($params);
 
-		$paramsURL = URL::base64url_encode($serialize);
-		
+		// encrypt params
+		if(empty($encryptionKey)) {
+    		$encryptionKey = $this->context->getEncryptionKey();
+		}
+    	$getParamsStr = json_encode($params);
+		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
+
 		return '<script>
-			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
 		</script>';
 	}
 	
-	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null) {
+	public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null,  $encryptionKey = null) {
 		global $_GET;
 		
 		$username = Hash::get($_GET, 'username');
-		$serialize = serialize([
+		$params = [
 			'slug' => $hardware_slug,
 			'id' => $hardware_id,
 			'hardwareIndexUrl' => $hardwareIndexUrl,
@@ -88,18 +92,24 @@ class HardwareShop extends AbstractWebIntegration {
 			'session_id' => $this->context->getSessionID(),
 			'page_url' => $this->getPageURL(),
 			'username' => $username
-		]);
-		$paramsURL = URL::base64url_encode($serialize);
-		
+		];
+
+		// encrypt params
+		if(empty($encryptionKey)) {
+			$encryptionKey = $this->context->getEncryptionKey();
+		}
+		$getParamsStr = json_encode($params);
+		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
+
 		return '<script>
-			getHardwareDisplay("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			getHardwareDisplay("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
 		</script>';
 	}
 	
 	public function getBodyLoadHtml() {
 		return '<article id="hardwareDiv" class="container">
 				<div class="loadingImg text-center">
-					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
+					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 					' . $this->txtToDisplayNoCookieTechnicalIssue() . '
