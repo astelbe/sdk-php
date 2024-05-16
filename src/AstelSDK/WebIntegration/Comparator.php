@@ -3,6 +3,7 @@
 namespace AstelSDK\WebIntegration;
 
 use AstelSDK\Utils\URL;
+use AstelSDK\Utils\EncryptData;
 use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
@@ -49,10 +50,15 @@ class Comparator extends AbstractWebIntegration {
 		return $out;
 	}
 	
-	public function getScriptLoadComparator($title = null) {
+	public function getScriptLoadComparator($title = null, $encryptionKey = null) {
 		global $_GET;
 
-		$getParams = [];
+    // Get the encryption key from the context if it is not provided
+    if(!$encryptionKey) {
+      $encryptionKey = $this->context->getEncryptionKey();
+    }
+
+    $getParams = [];
 
 		// Process $_GET params
         // Be aware that $_GET param names are not the same in comparator scripts
@@ -67,6 +73,7 @@ class Comparator extends AbstractWebIntegration {
 			'code_postal' => '',
 			'order_type' => 2,
 			'usage' => 1,
+			'is_student' => 0,
 		];
 		if (!empty($_GET)) {
 			$_GET = array_merge($defaultGET, $_GET);
@@ -107,7 +114,8 @@ class Comparator extends AbstractWebIntegration {
 		// Fix
 		// Can use 'fixe' or 'fix'. Comp V2 code send url with 'fix'
         $is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
-        if($is_fix !== false) {
+        $is_fix = (int)$is_fix;
+		if($is_fix !== false) {
 			$getParams['is_fix'] = 0;
 			if ($is_fix > 0) {
 				$getParams['is_fix'] = 1;
@@ -173,46 +181,53 @@ class Comparator extends AbstractWebIntegration {
 			$getParams['order_type'] = $order_type;
 		}
 
+		// Is student filter
+		if (isset($_GET['is_student']) && $_GET['is_student'] !== '' && is_numeric($_GET['is_student'])) {
+			$isStudent = (int)$_GET['is_student']; 
+			$getParams['is_student'] = $isStudent;
+		}  
+
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
 		}
-
 		if (isset($_GET['username'])) {
 			$getParams['username'] = $_GET['username'];
 		}
-		
+
+		if (isset($_GET['partnerID'])) {
+			$getParams['partnerID'] = $_GET['partnerID'];
+		}
+    
 		$getParams['page_title'] = $title;
-		$paramsURL = $this->getParamsUrl($getParams);
-		
+
+		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
+
 		return '<script>
 			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
 	
-	public function getScriptLoadComparatorParameterBar() {
-		
-		$paramsURL = $this->getParamsUrl();
-		
+	public function getScriptLoadComparatorParameterBar($encryptionKey = null) {
+		$paramsURL = $this->getParamsUrl(null, $encryptionKey);
 		return '<script>
 			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 		</script>';
 	}
 	
-	private function getParamsUrl($getParams = []) {
+	private function getParamsUrl($getParams = [], $encryptionKey = null) {
 		$getParams['page_url'] = $this->getPageURL();
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
 		$getParams['session_id'] = $this->context->getSessionID();
-		$serialize = serialize($getParams);
-		$paramsURL = URL::base64url_encode($serialize);
-		
-		return $paramsURL;
+    $getParamsStr = json_encode($getParams);
+		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
+		return $encryptedGetParams;
 	}
 	
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
 				<div class="loadingImg text-center">
-					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;" role="status">
+					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
 					' . $this->txtToDisplayNoCookieTechnicalIssue() . '
