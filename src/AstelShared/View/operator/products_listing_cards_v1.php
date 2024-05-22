@@ -93,7 +93,7 @@ use CakeUtility\Hash;
                   <?php } ?>
                   <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['name']; ?>
+                      <?= $item['name'][strtoupper($this->language)]; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
