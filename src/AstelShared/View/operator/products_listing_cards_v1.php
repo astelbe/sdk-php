@@ -33,7 +33,8 @@ use CakeUtility\Hash;
             ...
         ],
     ];
-*/
+    */
+    // debug($params);
 
 ?>
 
@@ -53,7 +54,7 @@ use CakeUtility\Hash;
   </div>
 
   <div class="row mt-4 no-gutters">
-    <?php foreach ($params['results'] as $key => $result) {
+    <?php foreach ($params['products'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-4 product-card">
@@ -77,7 +78,7 @@ use CakeUtility\Hash;
                   <i class="fa fa-plus" style="color:#878787" aria-hidden="true"></i>
                 </div>
               <?php } ?>
-              <div class="mb-0 pb-0 rounded" style="background-color: #f5f5f5">
+              <div class="mb-3 pb-0 rounded" style="background-color: #f5f5f5">
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
@@ -89,11 +90,11 @@ use CakeUtility\Hash;
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
-                  <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
+                  <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'][strtoupper($this->language)]; ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
                   <?php } ?>
                   <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['name'][strtoupper($this->language)]; ?>
+                      <?= $item['brand_name']?> <?= $item['short_name']; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
@@ -162,7 +163,7 @@ use CakeUtility\Hash;
                 </div>
               <?php } ?>
             </div>
-            <div class="mt-2">
+            <div class="mt-2 order_button_wrapper">
               <?= $result['result_summary']['order_url']; ?>
             </div>
           </div>
