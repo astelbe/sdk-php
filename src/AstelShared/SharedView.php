@@ -437,7 +437,7 @@ class SharedView extends Singleton {
 
 	static function getDisplayedProductCount($item) {
 		if ($item['plays']['mobile'] != false && $item['count'] > 1) {
-			return 'x&nbsp' . $item['count'];
+			return $item['count'] . '&nbspx';
 		} else {
 			return '';
 		}
@@ -474,6 +474,7 @@ class SharedView extends Singleton {
 		// Product main info
 		$formatted_product['count'] = Hash::get($product, 'count');
 		$formatted_product['short_name'] = Hash::get($product, 'short_name.' . $this->language, '');
+		$formatted_product['name'] = Hash::get($product, 'name.' . $this->language, '');
 		$formatted_product['brand_name'] = Hash::get($product, 'brand_name');
 		$formatted_product['brand_slug'] = Hash::get($product, 'brand_slug');
 		$formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');

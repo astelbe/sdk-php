@@ -96,15 +96,15 @@ $params = [
     </h2>
     <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-flex justify-content-center text-nowrap toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
       <div class="details-hidden">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
+        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
       </div>
       <div class="details-visible">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
+        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
       </div>
     </div>
   </div>
   <div class="row mt-4">
-    <?php foreach ($params['results'] as $key => $result) {
+    <?php foreach ($params['products'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 mb-5 mt-4 product-card px-2">
@@ -112,7 +112,7 @@ $params = [
         <div class="px-3 pt-3 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php if ($cashback) { ?>
 
-            <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick " data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; background-color: #E5176B; margin:0 auto;">
+            <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick bg-pink" data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; margin:0 auto;">
               <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
             </div>
           <?php } ?>
@@ -137,11 +137,13 @@ $params = [
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
-              <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
+              <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name']  ?>" data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 d-flex justify-content-center text-center font-weight-bold" <?= ($cpt == 1 ? 'style="min-height: 74px; font-size: 1.2rem;"' : '') ?>>
-                <span class="w-100"><?= $item['short_name']; ?></span>
-                <span><?= self::getDisplayedProductCount($item) ?></span>
+              <h3 class="px-1 pt-3 d-flex justify-content-between" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+                <span class="text-<?= $item['brand_slug']; ?>">
+                  <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
+                </span>
+                <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
               </h3>
               <?php if ($item['product_sheet_url'] != '') { ?>
               </a>
