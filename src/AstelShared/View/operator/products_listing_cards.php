@@ -85,22 +85,31 @@ $params = [
     ]
   ]
 ]
+debu
 */
 
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
-  <div class="d-md-flex justify-content-between align-items-center">
+  <div class="d-md-flex justify-content-between align-items-center" style="background-image: linear-gradient(to right, rgb(237, 241, 245) , rgb(237, 241, 245), rgb(255, 255, 255, 1));">
     <h2 class="mt-2 pl-2">
       <?= $params['title']; ?>
     </h2>
-    <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-flex justify-content-center text-nowrap toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
+    <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-none d-md-flex justify-content-center text-nowrap toggleProductListingDetails__button " id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
       <div class="details-hidden">
         <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
       </div>
       <div class="details-visible">
         <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
       </div>
+    </div>
+  </div>
+  <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-block d-md-none justify-content-center text-nowrap toggleProductListingDetails__button mt-3 " id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
+    <div class="details-hidden">
+      <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
+    </div>
+    <div class="details-visible">
+      <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
     </div>
   </div>
   <div class="row mt-4">
