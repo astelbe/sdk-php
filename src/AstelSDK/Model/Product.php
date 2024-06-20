@@ -93,7 +93,7 @@ class Product extends SDKModel {
 	private function productArrayToSelectableList($prodDB) {
 		$outList = [];
 		if (!empty($prodDB)) {
-			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.short_name.FR', '{n}.brand_name');
 			foreach ($extractedList as $brand => $products) {
 				foreach ($products as $productID => $product_name) {
 					$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
