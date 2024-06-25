@@ -44,10 +44,10 @@ use CakeUtility\Hash;
     </h2>
     <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-flex justify-content-center text-nowrap toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
       <div class="details-hidden">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
+        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
       </div>
       <div class="details-visible">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
+        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
       </div>
     </div>
   </div>
@@ -89,11 +89,11 @@ use CakeUtility\Hash;
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
-                  <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'] ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
+                  <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name']  ?>" data-brand="<?= $item['brand_name'] ?>">
                   <?php } ?>
-                  <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
+                  <h3 class="px-1 pt-3 d-flex justify-content-between" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['name']; ?>
+                      <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
@@ -148,7 +148,7 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time']))) { // && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                       <?=$result['result_summary']['max_activation_time'];?>
