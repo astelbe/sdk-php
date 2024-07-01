@@ -126,7 +126,6 @@ debu
               <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
             </div>
           <?php } ?>
-
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $key => $item) {
@@ -138,12 +137,12 @@ debu
                 <rect x="115" y="11" width="30" height="8" fill="#6CC1F0" />
               </svg>
             <?php } ?>
-
             <?php
             // Display brand name only if 1st product , and also 2dn result if multi brand result
+            $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
               <div class="mb-3 text-center" style="height: 36px">
-                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;">
+                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;" title="<?= $productTitles ?>">
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
@@ -169,9 +168,9 @@ debu
                       <?= $play['details'] ?>
                     </div>
                   </div>
-                  <p class="position-relative toggleProductListingDetails__content sub-details-infos" style="padding-left:40px;">
-                    <?= $play['description'] ?>
-                  </p>
+                   <p class="position-relative toggleProductListingDetails__content sub-details-infos" style="padding-left:40px;">
+                        <?= $play['description'] ?>
+                      </p>
               <?php
                 }
               } ?>
@@ -205,7 +204,7 @@ debu
                   </span>
                 </p>
               <?php } ?>
-              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time']))) { // && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <?= $result['result_summary']['max_activation_time']; ?>
