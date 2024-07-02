@@ -404,6 +404,7 @@ class Product extends SDKModel {
 		// Order by displayed price
 		foreach ($products as $k => $product) {
 
+			// Greg asked to order by price only in ticket #3156 front trier produit par prix plein 
 			// Regular price by default
 			$products[$k]['displayed_price'] = $product['price'];
 
