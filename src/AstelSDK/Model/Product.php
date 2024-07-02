@@ -404,20 +404,21 @@ class Product extends SDKModel {
 		// Order by displayed price
 		foreach ($products as $k => $product) {
 
+			// Greg asked to order by price only in ticket #3156 front trier produit par prix plein 
 			// Regular price by default
 			$products[$k]['displayed_price'] = $product['price'];
 
 			// Ex 20€/month during 6 months instead of 25€
 			// If discounted price period is superior to 0
-			if($product['discounted_price_period'] > 0) {			
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if($product['discounted_price_period'] > 0) {			
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 
 			// Ex 20€/month instead of 25€ forever
 			// If discounted price is superior to 0 and inferior to price
-			if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 		}
 		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
 		return $ordered_products;
