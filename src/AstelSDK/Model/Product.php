@@ -409,15 +409,15 @@ class Product extends SDKModel {
 
 			// Ex 20€/month during 6 months instead of 25€
 			// If discounted price period is superior to 0
-			if($product['discounted_price_period'] > 0) {			
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if($product['discounted_price_period'] > 0) {			
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 
 			// Ex 20€/month instead of 25€ forever
 			// If discounted price is superior to 0 and inferior to price
-			if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 		}
 		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
 		return $ordered_products;
