@@ -93,7 +93,7 @@ class Product extends SDKModel {
 	private function productArrayToSelectableList($prodDB) {
 		$outList = [];
 		if (!empty($prodDB)) {
-			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.name.FR', '{n}.brand_name');
+			$extractedList = Set::combine($prodDB, '{n}.id', '{n}.short_name.FR', '{n}.brand_name');
 			foreach ($extractedList as $brand => $products) {
 				foreach ($products as $productID => $product_name) {
 					$outList[$productID] = $brand . ' ' . $product_name . ' - ' . $productID;
@@ -395,9 +395,30 @@ class Product extends SDKModel {
 		return $get1;
 	}
 
+	/**
+	 * @param $products
+	 *
+	 * @return mixed
+	 */
 	public function orderByDisplayedPrice ($products) {
+		// Order by displayed price
 		foreach ($products as $k => $product) {
-			$products[$k]['displayed_price'] = $product['discounted_price_period'] > 0 ? $product['discounted_price'] : $product['price'];
+
+			// Greg asked to order by price only in ticket #3156 front trier produit par prix plein 
+			// Regular price by default
+			$products[$k]['displayed_price'] = $product['price'];
+
+			// Ex 20€/month during 6 months instead of 25€
+			// If discounted price period is superior to 0
+			// if($product['discounted_price_period'] > 0) {			
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
+
+			// Ex 20€/month instead of 25€ forever
+			// If discounted price is superior to 0 and inferior to price
+			// if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 		}
 		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
 		return $ordered_products;

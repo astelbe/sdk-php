@@ -28,12 +28,13 @@ class Typeahead extends Singleton {
 	public $show_clear_button = false;
 	public $hidden_input_name = 'hidden_input_name'; //hidden_input_name (input used when submitting the form)
 	public $hidden_input_value = ''; //hidden_input_value (input used when submitting the form)
-    public $show_button_validate = false;
-    public $translation_domain = 'CoreAstelBe';
+  public $show_button_validate = false;
+  public $translation_domain = 'CoreAstelBe';
+	public $error_message = '';
 
 	public function assignAttributes ($options = []) {
 		$attributes_as_options = [
-			'typeahead_id', 'label','placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value', 'show_button_validate', 'translation_domain'
+			'typeahead_id', 'label','placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value', 'show_button_validate', 'translation_domain', 'error_message'
 		];
 		foreach ($attributes_as_options as $option) {
 			if (isset($options[$option])) {
@@ -122,7 +123,7 @@ class Typeahead extends Singleton {
 			</div>' : '';
 		$html .= '</div>';
 		// Error message : no matching CP
-		$html .= '<div class="alert alert-danger d-none" id="typeahead_no_matching_result_message' . $this->typeahead_id . '" role="alert">'.__d($this->translation_domain, 'sorry no matching postal code').'</div>';
+		$html .= '<div class="alert alert-danger d-none" id="typeahead_no_matching_result_message' . $this->typeahead_id . '" role="alert">'. $this->error_message .'</div>';
 
 
 
