@@ -437,7 +437,7 @@ class SharedView extends Singleton {
 
 	static function getDisplayedProductCount($item) {
 		if ($item['plays']['mobile'] != false && $item['count'] > 1) {
-			return $item['count'] . '&nbspx';
+			return $item['count'] . '&nbspx&nbsp';
 		} else {
 			return '';
 		}
@@ -470,7 +470,7 @@ class SharedView extends Singleton {
 	 */
 	public function formatProductForCard($product) {
 		$formatted_product = [];
-		
+
 		// Product main info
 		$formatted_product['count'] = Hash::get($product, 'count');
 		$formatted_product['short_name'] = Hash::get($product, 'short_name.' . $this->language, '');
@@ -481,7 +481,7 @@ class SharedView extends Singleton {
 		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
 		$formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' .  $this->language, '');
 		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
-		
+
 		// Product play details
 		$formatted_product['plays']['internet'] = $this->getInternetDetails($product);
 		$formatted_product['plays']['tv'] = $this->getTVDetails($product);
@@ -507,6 +507,4 @@ class SharedView extends Singleton {
 
 		return $bgColor;
 	}
-	
-
 }

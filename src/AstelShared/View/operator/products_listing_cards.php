@@ -89,6 +89,7 @@ $params = [
 debu
 */
 
+// debug($params['products'][0]['products'][1905]['plays']);
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
@@ -114,7 +115,8 @@ debu
     </div>
   </div>
   <div class="row mt-4">
-    <?php foreach ($params['products'] as $key => $result) {
+    <?php
+    foreach ($params['products'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 mb-5 mt-4 product-card px-2">
@@ -134,26 +136,26 @@ debu
               <svg class="w-100 mb-3" width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
                 <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8" />
-                <rect x="126" width="8" height="30" fill="#6CC1F0" />
-                <rect x="115" y="11" width="30" height="8" fill="#6CC1F0" />
+                <rect x="128" width="4" height="30" fill="#1F438C" />
+                <rect x="115" y="13" width="30" height="4" fill="#1F438C" />
               </svg>
             <?php } ?>
 
             <?php
             // Display brand name only if 1st product , and also 2dn result if multi brand result
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
-              <div class="mb-3 text-center" style="height: 36px">
+              <div class="mt-2 mb-3 text-center" style="height: 36px">
                 <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;">
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
               <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name']  ?>" data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 pt-3 d-flex justify-content-between" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+              <h3 class="px-1 d-flex" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+                <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                 <span class="text-<?= $item['brand_slug']; ?>">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
                 </span>
-                <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
               </h3>
               <?php if ($item['product_sheet_url'] != '') { ?>
               </a>
@@ -205,7 +207,7 @@ debu
                   </span>
                 </p>
               <?php } ?>
-              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time']))) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <?= $result['result_summary']['max_activation_time']; ?>
@@ -215,7 +217,9 @@ debu
                   <?php } ?>
                   <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
                     <?= $result['result_summary']['phone_plug'] ?>
-                  <?php } ?>
+                  <?php
+                    }
+                  ?>
                 </div>
               <?php } ?>
             </div>
