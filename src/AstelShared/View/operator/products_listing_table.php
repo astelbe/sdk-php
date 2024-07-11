@@ -193,7 +193,7 @@ $params['bonus_header'] = [
 						</div>
 					</div>
 				</article>
-				
+				 
 				<!-- MOBILE -->
 				<article class="d-lg-none my-3 border text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
 					<h3 class="font-weight-bold color-operator bg-lighter p-2 mb-2">
