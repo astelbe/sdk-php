@@ -263,14 +263,14 @@ class SharedView extends Singleton {
 			$details['included_sms'] = $this->translatePlayDescription('play_description.mobile.included_sms', $product);
 			$details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
 			return [
-				'details' => '<span class="fs112 fw700 text-darkblue pr-1">GSM </span>' . implode(', ', $details),
+				'details' => '<span class="fs100 fw700 text-darkblue pr-1">GSM </span>' . implode(', ', $details),
 				'description' => Hash::get($product, 'play_description.mobile.price_description.' . $this->language),
 				'label' =>
-				'<svg class="product-card-icon-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="none">
-						<rect x="7.70471" y="2.37036" width="16.5926" height="27.2593" rx="1.77778" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						<path d="M13.0381 5.33325H18.964" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						<circle cx="16.0007" cy="24.2962" r="1.77778" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>',
+				'<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 20 30" fill="none">
+							<rect x="1.70435" y="1.37024" width="16.5926" height="27.2593" rx="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
+							<path d="M7.03784 4.33313H12.9638" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
+							<circle cx="10.0007" cy="23.2962" r="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
+						</svg>',
 				'count' => $product['count']
 			];
 		} else {
@@ -294,14 +294,12 @@ class SharedView extends Singleton {
 			$original_description = Hash::get($product, 'play_description.internet.price_description.' . $this->language);
 			$description_with_extra = $extra_data_string . '<br> ' . $original_description;
 			return [
-				'details' => '<span class="fs112 fw700 text-darkblue pr-1">Internet </span>' . implode(', ', $data),
+				'details' => '<span class="fs100 fw700 text-darkblue pr-1">Internet </span>' . implode(', ', $data),
 				'description' => $description_with_extra,
 				'label' =>
-				'<svg class="product-card-icon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 26 26" fill="none">
-					<path d="M13 25C19.6274 25 25 19.6274 25 13C25 6.37258 19.6274 1 13 1C6.37258 1 1 6.37258 1 13C1 19.6274 6.37258 25 13 25Z" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path d="M1 13H25" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					<path d="M17.6157 13C17.389 17.3883 15.7726 21.5908 13.0003 25C10.2279 21.5908 8.61159 17.3883 8.38489 13C8.61159 8.61171 10.2279 4.4092 13.0003 1C15.7726 4.4092 17.389 8.61171 17.6157 13V13Z" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-				</svg>'
+				'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
+						<path d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z"/>
+					</svg>'
 			];
 		} else {
 			return false;
@@ -312,11 +310,11 @@ class SharedView extends Singleton {
 		$Product = Product::getInstance();
 		if ($Product->isType($product, 'F')) {
 			return [
-				'details' => '<span class="fs112 fw700 text-darkblue pr-1">' . ($this->language == 'FR' ? 'Fixe' : 'Vast') . ' </span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
+				'details' => '<span class="fs100 fw700 text-darkblue pr-1">' . ($this->language == 'FR' ? 'Fixe' : 'Vast') . ' </span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
 				'description' => Hash::get($product, 'play_description.fix.price_description.' . $this->language),
 				'label' =>
-				'<svg class="product-card-icon-svg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32" fill="none">
-						<path d="M29.2933 24.44C29.2933 24.92 29.1866 25.4133 28.96 25.8933C28.7333 26.3733 28.44 26.8266 28.0533 27.2533C27.4 27.9733 26.68 28.4933 25.8666 28.8266C25.0666 29.16 24.2 29.3333 23.2666 29.3333C21.9066 29.3333 20.4533 29.0133 18.92 28.36C17.3866 27.7066 15.8533 26.8266 14.3333 25.72C12.8 24.6 11.3466 23.36 9.95996 21.9866C8.58663 20.6 7.34663 19.1466 6.23996 17.6266C5.14663 16.1066 4.26663 14.5866 3.62663 13.08C2.98663 11.56 2.66663 10.1066 2.66663 8.71996C2.66663 7.81329 2.82663 6.94663 3.14663 6.14663C3.46663 5.33329 3.97329 4.58663 4.67996 3.91996C5.53329 3.07996 6.46663 2.66663 7.45329 2.66663C7.82663 2.66663 8.19996 2.74663 8.53329 2.90663C8.87996 3.06663 9.18663 3.30663 9.42663 3.65329L12.52 8.01329C12.76 8.34663 12.9333 8.65329 13.0533 8.94663C13.1733 9.22663 13.24 9.50663 13.24 9.75996C13.24 10.08 13.1466 10.4 12.96 10.7066C12.7866 11.0133 12.5333 11.3333 12.2133 11.6533L11.2 12.7066C11.0533 12.8533 10.9866 13.0266 10.9866 13.24C10.9866 13.3466 11 13.44 11.0266 13.5466C11.0666 13.6533 11.1066 13.7333 11.1333 13.8133C11.3733 14.2533 11.7866 14.8266 12.3733 15.52C12.9733 16.2133 13.6133 16.92 14.3066 17.6266C15.0266 18.3333 15.72 18.9866 16.4266 19.5866C17.12 20.1733 17.6933 20.5733 18.1466 20.8133C18.2133 20.84 18.2933 20.88 18.3866 20.92C18.4933 20.96 18.6 20.9733 18.72 20.9733C18.9466 20.9733 19.12 20.8933 19.2666 20.7466L20.28 19.7466C20.6133 19.4133 20.9333 19.16 21.24 19C21.5466 18.8133 21.8533 18.72 22.1866 18.72C22.44 18.72 22.7066 18.7733 23 18.8933C23.2933 19.0133 23.6 19.1866 23.9333 19.4133L28.3466 22.5466C28.6933 22.7866 28.9333 23.0666 29.08 23.4C29.2133 23.7333 29.2933 24.0666 29.2933 24.44Z" stroke="#1F438C" stroke-width="2" stroke-miterlimit="10"/>
+				'<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+						<path class="fixSvg" d="M29.2937 24.44C29.2937 24.92 29.187 25.4133 28.9603 25.8933C28.7337 26.3733 28.4403 26.8266 28.0537 27.2533C27.4003 27.9733 26.6803 28.4933 25.867 28.8266C25.067 29.16 24.2003 29.3333 23.267 29.3333C21.907 29.3333 20.4537 29.0133 18.9203 28.36C17.387 27.7066 15.8537 26.8266 14.3337 25.72C12.8003 24.6 11.347 23.36 9.96033 21.9866C8.58699 20.6 7.34699 19.1466 6.24033 17.6266C5.14699 16.1066 4.26699 14.5866 3.62699 13.08C2.98699 11.56 2.66699 10.1066 2.66699 8.71996C2.66699 7.81329 2.82699 6.94663 3.14699 6.14663C3.46699 5.33329 3.97366 4.58663 4.68033 3.91996C5.53366 3.07996 6.46699 2.66663 7.45366 2.66663C7.82699 2.66663 8.20033 2.74663 8.53366 2.90663C8.88033 3.06663 9.18699 3.30663 9.42699 3.65329L12.5203 8.01329C12.7603 8.34663 12.9337 8.65329 13.0537 8.94663C13.1737 9.22663 13.2403 9.50663 13.2403 9.75996C13.2403 10.08 13.147 10.4 12.9603 10.7066C12.787 11.0133 12.5337 11.3333 12.2137 11.6533L11.2003 12.7066C11.0537 12.8533 10.987 13.0266 10.987 13.24C10.987 13.3466 11.0003 13.44 11.027 13.5466C11.067 13.6533 11.107 13.7333 11.1337 13.8133C11.3737 14.2533 11.787 14.8266 12.3737 15.52C12.9737 16.2133 13.6137 16.92 14.307 17.6266C15.027 18.3333 15.7203 18.9866 16.427 19.5866C17.1203 20.1733 17.6937 20.5733 18.147 20.8133C18.2137 20.84 18.2937 20.88 18.387 20.92C18.4937 20.96 18.6003 20.9733 18.7203 20.9733C18.947 20.9733 19.1203 20.8933 19.267 20.7466L20.2803 19.7466C20.6137 19.4133 20.9337 19.16 21.2403 19C21.547 18.8133 21.8537 18.72 22.187 18.72C22.4403 18.72 22.707 18.7733 23.0003 18.8933C23.2937 19.0133 23.6003 19.1866 23.9337 19.4133L28.347 22.5466C28.6937 22.7866 28.9337 23.0666 29.0803 23.4C29.2137 23.7333 29.2937 24.0666 29.2937 24.44Z" stroke-width="2" stroke-miterlimit="10" stroke="#1F438C"/>
 					</svg>'
 			];
 		} else {
@@ -341,13 +339,11 @@ class SharedView extends Singleton {
 				$data['application_only'] = self::translatePlayDescription('play_description.tv.application_only', $product);
 			}
 			return [
-				'details' => '<span class="fs112 fw700 text-darkblue pr-1">TV</span> ' . implode(', ', $data),
+				'details' => '<span class="fs100 fw700 text-darkblue pr-1">TV</span> ' . implode(', ', $data),
 				'description' => Hash::get($product, 'play_description.tv.price_description.' . $this->language),
 				'label' =>
-				'<svg class="product-card-icon-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
-						<path d="M26.1544 8.61523H5.8462C4.82657 8.61523 4 9.4418 4 10.4614V26.1541C4 27.1737 4.82657 28.0003 5.8462 28.0003H26.1544C27.174 28.0003 28.0006 27.1737 28.0006 26.1541V10.4614C28.0006 9.4418 27.174 8.61523 26.1544 8.61523Z" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						<path d="M21.5392 13.2306H10.462C9.44242 13.2306 8.61584 14.0572 8.61584 15.0768V21.5385C8.61584 22.5581 9.44242 23.3847 10.462 23.3847H21.5392C22.5588 23.3847 23.3854 22.5581 23.3854 21.5385V15.0768C23.3854 14.0572 22.5588 13.2306 21.5392 13.2306Z" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-						<path d="M12.3073 3.99963L15.9996 8.61625L19.692 3.99963" stroke="#1F438C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+					'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
+						<path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
 					</svg>'
 			];
 		} else {
@@ -498,7 +494,7 @@ class SharedView extends Singleton {
 	 * 
 	 * (duplicated in AstelBusinessHelper.php)
 	 */
-	public function getBrandColorBg($brandHexColor) {
+	static function getBrandColorBg($brandHexColor) {
 		$bgColorR = hexdec(substr($brandHexColor, 0, 2));
 		$bgColorG = hexdec(substr($brandHexColor, 2, 2));
 		$bgColorB = hexdec(substr($brandHexColor, 4, 2));

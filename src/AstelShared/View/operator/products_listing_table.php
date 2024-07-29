@@ -38,14 +38,14 @@ $params['bonus_header'] = [
 ];
 ?>
 
-<section class="operator-products-table mb-5">
+<section class="operator-products-table mb-2">
 	<?php if (Hash::get($params, 'title', false)) { ?>
 		<h2 class="mt-2 mb-4 mb-lg-3 text-center text-lg-left">
 			<?= $params['title']; ?>
 		</h2>
 	<?php } ?>
 
-	<header class="row d-none my-2 no-gutters p-2 d-lg-flex align-items-end text-center border-bottom border-darkblue text-darkblue font-weight-bold" style="font-size:0.7rem;">
+	<header class="row d-none my-2 no-gutters p-2 d-lg-flex align-items-end text-center border-bottom border-darkblue text-darkblue font-weight-bold bg-lightblue" style="font-size:0.7rem; border-radius: 0.5rem;">
 		<?php if (Hash::get($params, 'options.display_col_logo', false) === true) { ?>
 			<div class="col-1">
 			</div>
@@ -89,7 +89,7 @@ $params['bonus_header'] = [
 		<!-- DESKTOP -->
 		<div id="product<?= Hash::get($product, 'id') ?>" class="pt-1">
 			<article class="d-none d-lg-block my-2 no-gutters align-items-start text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
-				<h3 class="mb-1 bg-lighter p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
+				<h3 class="mb-1 p-1 font-weight-bold font-s-1 color-operator text-<?= Hash::get($product, 'brand_slug') ?>">
 					<?php if (Hash::get($params, 'show_index', false) === true) { ?>
 						<span class="pr-3">N°<?= $k + 1 ?></span>
 					<?php } ?>
@@ -191,6 +191,7 @@ $params['bonus_header'] = [
 					</div>
 				</div>
 			</article>
+			<hr>
 
 			<!-- MOBILE -->
 			<article class="d-lg-none my-3 border text-<?= Hash::get($product, 'brand_slug') ?>-wrapper">
