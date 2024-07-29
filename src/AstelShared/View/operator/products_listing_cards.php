@@ -86,9 +86,7 @@ $params = [
     ]
   ]
 ]
-debu
 */
-
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
@@ -141,18 +139,18 @@ debu
             // Display brand name only if 1st product , and also 2dn result if multi brand result
             $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
-              <div class="mb-3 text-center" style="height: 36px">
+              <div class="mb-0 text-center" style="height: 28px">
                 <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;" title="<?= $productTitles ?>">
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
               <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name']  ?>" data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 pt-3 d-flex justify-content-between" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+              <h3 class="px-1 pt-3 d-flex" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+                <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                 <span class="text-<?= $item['brand_slug']; ?>">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
                 </span>
-                <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
               </h3>
               <?php if ($item['product_sheet_url'] != '') { ?>
               </a>

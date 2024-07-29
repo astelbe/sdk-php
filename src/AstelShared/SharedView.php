@@ -437,7 +437,7 @@ class SharedView extends Singleton {
 
 	static function getDisplayedProductCount($item) {
 		if ($item['plays']['mobile'] != false && $item['count'] > 1) {
-			return $item['count'] . '&nbspx';
+			return '<span class="mr-2">'.$item['count'] . '&nbspx</span>';
 		} else {
 			return '';
 		}
