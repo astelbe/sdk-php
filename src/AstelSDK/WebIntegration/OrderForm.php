@@ -9,21 +9,24 @@ use CakeUtility\Hash;
 use AstelShared\Typeahead;
 
 
-class OrderForm extends AbstractWebIntegration {
-	
-	public function getCSSList($allRequired = true) {
+class OrderForm extends AbstractWebIntegration
+{
+
+	public function getCSSList($allRequired = true)
+	{
 		$cssList = [];
-		
+
 		if ($allRequired) {
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.3.1/css/bootstrap.min.css';
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
 		$cssList[] = 'https://order' . $this->context->getEnv() . '.astel.be/css/order/orderform.css?v=' . $this->context->getVersion();
-		
+
 		return $cssList;
 	}
-	
-	public function getJSList() {
+
+	public function getJSList()
+	{
 		$Typeahead = Typeahead::getInstance();
 		$typeahead_js = $Typeahead->getJsList();
 		$order_form_js =  [
@@ -32,30 +35,33 @@ class OrderForm extends AbstractWebIntegration {
 		];
 		return array_merge($typeahead_js, $order_form_js);
 	}
-	
-	public function getCSS($allRequired = true) {
+
+	public function getCSS($allRequired = true)
+	{
 		$out = '';
 		$cssList = $this->getCSSList($allRequired);
 		foreach ($cssList as $css) {
 			$out .= '<link rel="stylesheet" href="' . $css . '" />';
 		}
-		
+
 		return $out;
 	}
-	
-	public function getJS() {
+
+	public function getJS()
+	{
 		$out = '';
 		$jsList = $this->getJSList();
 		foreach ($jsList as $js) {
 			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
 		}
-		
+
 		return $out;
 	}
-	
-	public function getScriptOrderProduct($productID) {
+
+	public function getScriptOrderProduct($productID)
+	{
 		global $_GET;
-		
+
 		$params = ['data' => []];
 		$params['data']['product_id'] = $productID;
 		$postal_code = Hash::get($_GET, 'postal_code');
@@ -71,16 +77,19 @@ class OrderForm extends AbstractWebIntegration {
 			$params['data']['hardware_product_id'] = $hardware_product_id;
 		}
 
-    // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
-    $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
+		// TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+		$has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
 
 		$username = Hash::get($_GET, 'username');
 		if ($username !== null) {
 			$params['data']['username'] = $username;
-
 		}
 
-    $overridePartnerId = Hash::get($_GET, 'partnerID');
+		$partner_user_id = Hash::get($_GET, 'partner_user_id');
+		if ($partner_user_id !== null) {
+			$params['data']['partner_user_id'] = $partner_user_id;
+		}
+		$overridePartnerId = Hash::get($_GET, 'partnerID');
 		if ($overridePartnerId !== null) {
 			$params['data']['override_partner_id'] = $overridePartnerId;
 		}
@@ -99,8 +108,9 @@ class OrderForm extends AbstractWebIntegration {
 			$this->context->getSessionID() . '\', \'' . $has_user_cookie_consent . '\' );
 		</script>';
 	}
-	
-	public function getScriptOrderToken($extraParams = []) {
+
+	public function getScriptOrderToken($extraParams = [])
+	{
 		global $_GET;
 		$params = ['data' => []];
 		$params['data']['product_arrangement_token'] = Hash::get($_GET, 'token', '');
@@ -120,19 +130,23 @@ class OrderForm extends AbstractWebIntegration {
 		if ($username !== null) {
 			$params['data']['username'] = $username;
 		}
+		$partner_user_id = Hash::get($_GET, 'partner_user_id');
+		if ($partner_user_id !== null) {
+			$params['data']['partner_user_id'] = $partner_user_id;
+		}
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
-		
+
 		$params['data']['page_url'] = $this->getPageURL();
 		$urlParams = http_build_query($params);
 
-        // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
-		if(Hash::get($_GET, 'has_user_cookie_consent', false)) {
+		// TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+		if (Hash::get($_GET, 'has_user_cookie_consent', false)) {
 			$has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
-        } elseif (isset($extraParams['has_user_cookie_consent'])) {
+		} elseif (isset($extraParams['has_user_cookie_consent'])) {
 			$has_user_cookie_consent = $extraParams['has_user_cookie_consent'];
-        }
+		}
 
 		return '<script>
 			/* setup the call below with paramaters:
@@ -145,9 +159,10 @@ class OrderForm extends AbstractWebIntegration {
 			</script>
 		';
 	}
-	
-	public function getBodyLoadHtml() {
-		
+
+	public function getBodyLoadHtml()
+	{
+
 		return '<div id="orderForm">
 				<div class="loadOrderFormTxt text-center">
 					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
@@ -157,10 +172,11 @@ class OrderForm extends AbstractWebIntegration {
 				</div>
 			</div> ';
 	}
-	
-	public function getOrderConfirmation() {
+
+	public function getOrderConfirmation()
+	{
 		global $_GET;
-		
+
 		$token = Hash::get($_GET, 'token');
 		if (null === $token || !preg_match('/^[a-f0-9]{32}$/', $token)) {
 			return 'no_valid_token_given';
@@ -172,10 +188,10 @@ class OrderForm extends AbstractWebIntegration {
 		$errorMessage = 'Confirmation page retrieval failure, please contact us.';
 		if ($result->isResultSucess()) {
 			$resultData = $result->getResultData();
-			
+
 			return Hash::get($resultData, '0', $errorMessage);
 		}
-		
+
 		return $errorMessage;
 	}
 }

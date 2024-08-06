@@ -67,6 +67,11 @@ class HardwareShop extends AbstractWebIntegration {
 			$params['username'] = $username;
 		}
 
+		$partner_user_id = Hash::get($_GET, 'partner_user_idname');
+		if ($partner_user_id !== null) {
+			$params['partner_user_id'] = $partner_user_id;
+		}
+
 		// encrypt params
 		if(empty($encryptionKey)) {
     		$encryptionKey = $this->context->getEncryptionKey();
@@ -83,6 +88,7 @@ class HardwareShop extends AbstractWebIntegration {
 		global $_GET;
 		
 		$username = Hash::get($_GET, 'username');
+		$partner_user_id = Hash::get($_GET, 'partner_user_id');
 		$params = [
 			'slug' => $hardware_slug,
 			'id' => $hardware_id,
@@ -91,7 +97,8 @@ class HardwareShop extends AbstractWebIntegration {
 			'is_professional' => $this->context->getIsProfessional(),
 			'session_id' => $this->context->getSessionID(),
 			'page_url' => $this->getPageURL(),
-			'username' => $username
+			'username' => $username,
+			'partner_user_id' => $partner_user_id
 		];
 
 		// encrypt params
