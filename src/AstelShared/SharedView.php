@@ -5,12 +5,21 @@ namespace AstelShared;
 use AstelSDK\Utils\Singleton;
 use AstelSDK\Model\Product;
 use CakeUtility\Hash;
+use AstelSDK\AstelContext;
+use AstelShared\Translate\Translate;
+use AstelSDK\Utils\VatCalculation;
+
+
 
 class SharedView extends Singleton {
 
-
+	private $translator;
 	public $language = 'fr';
 	public $version = 'front'; // 'front' or 'cake', to get the domain name used in translation keys
+
+	public function __construct() {
+		$this->language = AstelContext::getInstance()->getLanguage();
+	}
 
 	public function render($path, $params = []) {
 		include __DIR__ . '/../AstelShared/View/' . $path . '.php';
@@ -18,6 +27,10 @@ class SharedView extends Singleton {
 
 	public function setLanguage($language) {
 		$this->language = $language;
+	}
+
+	public function getLanguage() {
+		return self::language;
 	}
 
 	public function setVersion($version) {
@@ -342,7 +355,7 @@ class SharedView extends Singleton {
 				'details' => '<span class="fs100 fw700 text-darkblue pr-1">TV</span> ' . implode(', ', $data),
 				'description' => Hash::get($product, 'play_description.tv.price_description.' . $this->language),
 				'label' =>
-					'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
+				'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
 						<path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
 					</svg>'
 			];
@@ -375,57 +388,75 @@ class SharedView extends Singleton {
 				// MOBILE
 			case 'play_description.mobile.included_minutes_calls':
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
+					// return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
+					return Translate::get('included_minutes_calls_unlimited');
 				} else {
-					return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
+					// return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
+					return Translate::get('included_minutes_calls', $description);
 				};
 				break;
 			case 'play_description.mobile.included_data_volume':
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'included_data_volume_unlimited', $this->version);
+					// return self::getTranslation($translation_domain, 'included_data_volume_unlimited', $this->version);
+					return Translate::get('included_data_volume_unlimited');
 				} else {
-					return self::getTranslation($translation_domain, 'included_data_volume', $this->version, $description / 1000);
+					// return self::getTranslation($translation_domain, 'included_data_volume', $this->version, $description / 1000);
+					return Translate::get('included_data_volume', $description / 1000);
 				}
 			case 'play_description.mobile.included_sms':
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'included_sms_unlimited', $this->version);
+					// return self::getTranslation($translation_domain, 'included_sms_unlimited', $this->version);
+					return Translate::get('included_sms_unlimited');
 				} else {
-					return self::getTranslation($translation_domain, 'included_sms', $this->version, $description);
+					// return self::getTranslation($translation_domain, 'included_sms', $this->version, $description);
+					return Translate::get('included_sms', $description);
 				}
 				// INTERNET
 			case 'play_description.internet.bandwidth_download':
-				return self::getTranslation($translation_domain, 'bandwidth_download', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'bandwidth_download', $this->version, $description);
+				return Translate::get('bandwidth_download', $description);
 			case 'play_description.internet.bandwidth_upload':
-				return self::getTranslation($translation_domain, 'bandwidth_upload', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'bandwidth_upload', $this->version, $description);
+				return Translate::get('bandwidth_upload', $description);
 			case 'play_description.internet.bandwidth_volume':
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'bandwidth_volume_unlimited', $this->version);
+					// return self::getTranslation($translation_domain, 'bandwidth_volume_unlimited', $this->version);
+					return Translate::get('bandwidth_volume_unlimited');
 				} else {
-					return self::getTranslation($translation_domain, 'bandwidth_volume', $this->version, $description);
+					// return self::getTranslation($translation_domain, 'bandwidth_volume', $this->version, $description);
+					return Translate::get('bandwidth_volume', $description);
 				}
 				// FIX
 			case 'play_description.fix.included_minutes_calls':
 				if ($description == 'UNLIMITED') {
-					return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
+					// return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
+					return Translate::get('included_minutes_calls_unlimited');
 				} else if ($description == 'EWE') {
-					return self::getTranslation($translation_domain, 'included_minutes_calls_EWE', $this->version);
+					// return self::getTranslation($translation_domain, 'included_minutes_calls_EWE', $this->version);
+					return Translate::get('included_minutes_calls_EWE');
 				} else {
 					if ($description == 0) {
 						return '/';
 					}
-					return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
+					// return self::getTranslation($translation_domain, 'included_minutes_calls', $this->version, $description);
+					return Translate::get('included_minutes_calls', $description);
 				}
 				// TV
 			case 'play_description.tv.number_tv_channel':
-				return self::getTranslation($translation_domain, 'number_tv_channel', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'number_tv_channel', $this->version, $description);
+				return Translate::get('number_tv_channel', $description);
 			case 'play_description.tv.max_tv_channel':
-				return self::getTranslation($translation_domain, 'max_tv_channel', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'max_tv_channel', $this->version, $description);
+				return Translate::get('max_tv_channel', $description);
 			case 'play_description.tv.decoder_application':
-				return self::getTranslation($translation_domain, 'decoder_application', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'decoder_application', $this->version, $description);
+				return Translate::get('decoder_application', $description);
 			case 'play_description.tv.decoder_only':
-				return self::getTranslation($translation_domain, 'decoder_only', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'decoder_only', $this->version, $description);
+				return Translate::get('decoder_only', $description);
 			case 'play_description.tv.application_only':
-				return self::getTranslation($translation_domain, 'application_only', $this->version, $description);
+				// return self::getTranslation($translation_domain, 'application_only', $this->version, $description);
+				return Translate::get('application_only', $description);
 			default:
 				return $description;
 		}
@@ -477,6 +508,7 @@ class SharedView extends Singleton {
 		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
 		$formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' .  $this->language, '');
 		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
+		// $formatted_product['total_savings'] = $this->calculateSavings($product) ? Translate::get('total_savings', self::formatPrice($this->calculateSavings($product))) : null;
 
 		// Product play details
 		$formatted_product['plays']['internet'] = $this->getInternetDetails($product);
@@ -502,5 +534,228 @@ class SharedView extends Singleton {
 		$bgColor = "rgba(" . $bgColorR . ", " . $bgColorG . ", " . $bgColorB . ", 0.1)";
 
 		return $bgColor;
+	}
+
+	/**
+	 * @param $product
+	 * @param $getOnlyActivationOrInstallation must be 'activation' or 'installation'. Used to get only one of those prices
+	 * @return string html of prices to be displayed
+	 */
+	static function getProductActivationAndOrInstallationPrice($product, $getOnlyActivationOrInstallation = '', $options = []) {
+		// Get and calculate prices
+		$activation_fee = Hash::get($product, 'activation_fee', false);
+		$installation_fee = Hash::get($product, 'installation_fee', false);
+		$activation_fee_reduced = Hash::get($product, 'activation_fee_reduced', 0);
+		$installation_fee_reduced = Hash::get($product, 'installation_fee_reduced', 0);
+		$setup_fee_reduced = $activation_fee_reduced + $installation_fee_reduced;
+		if ($activation_fee || $installation_fee) {
+			$setup_fee = $activation_fee + $installation_fee;
+		} else {
+			$setup_fee = 0;
+		}
+
+		$css_classes = $options['css_classes'] ?: 'font-weight-bold';
+
+		$html = '';
+		switch ($getOnlyActivationOrInstallation) {
+			case 'activation':
+				$html .= Translate::get('activation_price');
+				$html .= self::getHtmlForPriceWithPossibleReduction($activation_fee, $activation_fee_reduced, $css_classes);
+				break;
+			case 'installation':
+				$html .= Translate::get('installation_price');
+				$html .= self::getHtmlForPriceWithPossibleReduction($installation_fee, $installation_fee_reduced, $css_classes);
+				break;
+			default:
+				// Get both
+				$is_solo_mobile = !empty($product['is_mobile']) && empty($product['is_fix']) && empty($product['is_internet']) && empty($product['is_tv']);
+				if ($is_solo_mobile) {
+					$html .= Translate::get('starting_costs_mobile');
+				} else {
+					$html .= Translate::get('starting_costs');
+				}
+				$html .= self::getHtmlForPriceWithPossibleReduction($setup_fee, $setup_fee_reduced, $css_classes);
+		}
+
+		return $html;
+	}
+
+	/**
+	 * @param $full_price
+	 * @param $reduced_price
+	 * @return string
+	 * Return html of price to be displayed. Add del full price. Display 'free' if price is 0
+	 */
+	static function getHtmlForPriceWithPossibleReduction($full_price, $reduced_price, $css_classes = '') {
+		$html = '';
+		if ($full_price > $reduced_price) {
+			$html .= '<del class="pr-2 text-crossedgrey">' . self::formatPrice($full_price) . '</del>';
+			if ($reduced_price > 0) {
+				$html .= '<span class="' . $css_classes . '">' . self::formatPrice($reduced_price) . '</span>';
+			} else {
+				$html .= '<span class="text-astelpink ' . $css_classes . '">' . Translate::get('free') . '</span>';
+			}
+		} else {
+			if ($full_price > 0) {
+				$html .= '<span class="' . $css_classes . '">' . self::formatPrice($full_price) . '</span>';
+			} else {
+				$html .= '<span class="text-astelpink ' . $css_classes . '">' . Translate::get('free') . '</span>';
+			}
+		}
+		return $html;
+	}
+
+	static function formatPrice($price, $show_free_text = '') {
+		$language = AstelContext::getInstance()->getLanguage();
+		$price = floatval($price);
+		$intPart = intval($price);
+		$floatingpart = $price - $intPart;
+		if ($floatingpart == 0) {
+			$price = $intPart;
+		} else {
+			// purpose of this condition ?
+			if ($language == 'FR') {
+				$price = number_format(round($price, 2), 2, ',', '.');
+			} elseif ($language == 'NL') {
+				$price = number_format(round($price, 2), 2, ',', '.');
+			}
+		}
+
+		if ($price == 0 && $show_free_text != '') {
+			return $show_free_text;
+		}
+		// add class around decimal
+		$price = $language == 'NL' ? '<span class="currency-symbol">€</span>' . $price : $price . '&nbsp<span class="currency-symbol">€</span>';
+		$exploded_price = explode(',', $price);
+		if (isset($exploded_price[1])) {
+			$price = $exploded_price[0] . '<span class="decimal">' . ',' . $exploded_price[1] . '</span>';
+		}
+		// debug($price);
+
+		return $price;
+	}
+
+	static function getDisplayedPrice($entity, $options = []) {
+		// options handling
+		// 2 linebreak options, 
+		// - after main price (if discount), 
+		// - between duration and price after
+		$linebreak_after_main_price = Hash::get($options, 'linebreak_after_main_price', true);
+		$linebreak_after_duration = Hash::get($options, 'linebreak_after_duration', false);
+
+		$pricePath = 'price';
+		if (isset($options['price_path'])) {
+			$pricePath = $options['price_path'];
+		}
+
+		$removeTextColor = false;
+		if ($options['removeTextColor'] === true) {
+			$removeTextColor = true;
+		}
+
+		$freeText = Translate::get('free');
+		if (isset($options['free_text'])) {
+			$freeText = $options['free_text'];
+		}
+		$priceType = 'MONTH';
+		if (isset($options['price_type'])) {
+			$priceType = $options['price_type'];
+		}
+		$priceTypeText = ' ' . Translate::get('per_month');
+		if ($priceType === 'UNIT') {
+			$priceTypeText = '';
+		}
+
+		// price calculation
+		$VatCalculation = VatCalculation::getInstance();
+		$websiteScopeProfessional = AstelContext::getInstance()->getIsProfessional();
+		$productIsEncodedHTVA = Hash::get($entity, 'is_htva', 0);
+		if ($websiteScopeProfessional) {
+			$VATD = ' ' . Translate::get('EVAT'); // Show HTVA on the website
+		} else {
+			$VATD = ''; // No TTC displayed when private
+		}
+
+		$discountedPrice = 0;
+		if ($pricePath === 'price') {
+			$discountedPrice = $VatCalculation->calculatePriceForceHTVA(Hash::get($entity, 'discounted_price', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+		}
+		$price = $VatCalculation->calculatePriceForceHTVA(Hash::get($entity, $pricePath, 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+		$priceFormatted = self::formatPrice($price);
+
+		$isDiscount = false;
+		$isDuration = false;
+		if ($discountedPrice > 0 && $discountedPrice !== $price) {
+			$isDiscount = true;
+		}
+		$discountedPricePeriod = Hash::get($entity, 'discounted_price_period', 0);
+		if ($discountedPricePeriod > 0) {
+			$isDiscount = true;
+			$isDuration = true;
+		}
+
+		$displayedPriceText = '';
+		if ($isDiscount) {
+			// There is a discount : "20 € while 6 month, then 30€ /month"
+			// Main price 
+			// "20 € / month"
+			$displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($discountedPrice) . ' </b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' fs125 font-weight-bold ' . (!$linebreak_after_main_price ? 'pr-2' : '') . '">' . $priceTypeText . '</span> ';
+			// linebreak
+			if ($linebreak_after_main_price) {
+				$displayedPriceText .= '<br>';
+			}
+			if ($isDuration) {
+				// "while 6 month"
+				$displayedPriceText .= '<span class=""> ' . Translate::get('during_months', $discountedPricePeriod) . ',</span> ';
+				// linebreak
+				if ($linebreak_after_duration) {
+					$displayedPriceText .= '<br>';
+				}
+				// "then"
+				$displayedPriceText .= ' <span>' . Translate::get('price_after') . '</span> ';
+			}
+			// "30€ /month"
+			$crossPriceIfDuration = !$isDuration; // del price if discount is forever
+			$displayedPriceText .=  '<span class="regular-product-price font-weight-bold' . ($crossPriceIfDuration ? ' crossed' : '') . '">' . self::formatPrice($price) . '</span>' . ' ' . Translate::get('per_month');
+		} else {
+			// No discount : "20 €/month"
+			$displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($price) . '</b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' fs094 ml-1">' . $priceTypeText . '</span>';
+		}
+		return $displayedPriceText;
+	}
+
+	/**
+	 * @param $product
+	 *
+	 * @return float
+	 *
+	 * Product savings is monthly discount + installation and activation fee discounts + cashback.
+	 *
+	 * For cashback, product must be passed with 'commission' embedded, as value comes from partner info
+	 */
+	public function calculateSavings($product) {
+		// Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
+		$discounted_price_period_in_month = 12;
+
+		$savings = 0;
+		// Calculate savings on setup
+		$total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
+		$reduced_total_setup_price = Hash::get($product, 'activation_fee_reduced', 0) + Hash::get($product, 'installation_fee_reduced', 0);
+		$savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
+
+		// Add price promo savings
+		// For a lifetime promo, we calculate only on 24 months
+		if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
+			$product['discounted_price_period'] = $discounted_price_period_in_month;
+		}
+		$savings += ($product['price'] - $product['discounted_price']) * $product['discounted_price_period'];
+		// Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
+
+		// Cashback (product need 'commission' embedded)
+		debug('SharedView');
+		debug(Hash::get($product, 'commission.cashback_amount', 0));
+		$savings += Hash::get($product, 'commission.cashback_amount', 0);
+
+		return $savings;
 	}
 }

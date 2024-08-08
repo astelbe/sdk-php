@@ -1,7 +1,13 @@
 <?php
 
+use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
-// debug($params);
+use AstelShared\SharedView;
+
+$SharedView = SharedView::getInstance();
+// debug($SharedView);
+
+// $translator = Translate::getInstance();
 
 
 /*
@@ -99,17 +105,31 @@ debu
     </h2>
 
     <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
-      <div class="d-flex g100">
-        <!-- <p class="m-0 mr-3 fs150"><?= __d('pages', 'display') ?> :</p> -->
-        <a href="" class="underlineWhenHovered fw700 text-darkblue text-nowrap" rel="nofollow">
-          Bestsellers uniquement
-        </a>
-        <a href="" class="underlineWhenHovered fw400 text-darkblue text-nowrap" rel="nofollow">
-          Afficher tout
-        </a>
-      </div>
+      <?php
+      if (isset($params['display_best_seller_filter'])) {
+      ?>
+        <div class="d-flex g100 mr-0 mr-sm-4">
+          <?php
+          $currentUrl = $params['url'];
+          // Remove any existing query parameters
+          $baseUrl = strtok($currentUrl, '?');
 
-      <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0 ml-0 ml-sm-4">
+          // URLs for the links
+          $bestsellersUrl = $baseUrl;
+          $allUrl = $baseUrl . "?display=all";
+          ?>
+          <a href="<?= htmlspecialchars($bestsellersUrl); ?>" class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap" rel="nofollow">
+            <?= Translate::get('ficheOperateur_display_bestsellers'); ?>
+          </a>
+          <a href="<?= htmlspecialchars($allUrl); ?>" class="underlineWhenHovered <?= $currentUrl === $allUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap" rel="nofollow">
+            <?= Translate::get('ficheOperateur_display_all'); ?>
+          </a>
+        </div>
+      <?php
+      }
+      ?>
+
+      <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
 
         <label for="toggle-product-listing-button-<?= $params['id'] ?>" class="m-0 toggleProductListingDetails__detailsLabel cursor-pointer">
@@ -119,13 +139,13 @@ debu
     </div>
   </div>
 
-  <div class="row mt-4">
+  <div class="gridcontainer gridcontainer_listing g100 mt-3 mb-4">
     <?php
     foreach ($params['products'] as $key => $result) {
+      // debug($result);
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
-      <div class="col-12 col-xl-3 col-lg-4 col-md-6 product-card mb-3 px-2">
-
+      <div class="product-card">
         <div class="px-3 pt-3 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php if ($cashback) { ?>
             <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick bg-pink" data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; margin:0 auto;">
@@ -179,6 +199,7 @@ debu
                     <?= $play['description'] ?>
                   </p>
               <?php
+                  // echo $item['total_savings'];
                 }
               } ?>
             </div>
@@ -201,11 +222,12 @@ debu
             </p>
             <div class="setup-wrapper mb-1">
               <div class="mb-0">
-                <?= $result['result_summary']['setup']; ?>
+                <?= $SharedView->getProductActivationAndOrInstallationPrice($item); ?>
               </div>
               <?php if (!empty($result['result_summary']['products_total_savings'])) { ?>
                 <p class="total-savings modalClick cursor-pointer mb-0" data-toggle="modal" data-target="#modalTotalSavings">
                   <?= $result['result_summary']['products_total_savings'] ?>
+                  <?= $result['products']['total_savings'] ?>
                   <span class="position-absolute">
                     <i class="fa fa-info pl-2"></i>
                   </span>
@@ -288,18 +310,25 @@ debu
     scale: 0;
   }
 
-  /* .toggleProductListingDetails:has(input[type="checkbox"]:not(:checked)) > .toggleProductListingDetails__detailsLabel {
-    display: none;
-  } */
+  .gridcontainer_listing {
+    grid-template-columns: repeat(4, 1fr);
+  }
 
-  /* .toggleProductListingDetails:has(input[type="checkbox"]:checked) > .toggleProductListingDetails__resumeLabel {
-    display: none;
-  } */
+  @media screen and (max-width: 1200px) {
+    .gridcontainer_listing {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-   @media screen and (min-width: 576px) {
+  @media screen and (max-width: 576px) {
+    .gridcontainer_listing {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (min-width: 576px) {
     .w-sm-auto {
       width: auto !important;
     }
-    
-   }
+  }
 </style>

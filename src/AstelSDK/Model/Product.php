@@ -440,4 +440,40 @@ class Product extends SDKModel {
 		}
 		return $tags;
 	}
+
+
+	/**
+	 * @param $product
+	 *
+	 * @return float
+	 *
+	 * Product savings is monthly discount + installation and activation fee discounts + cashback.
+	 *
+	 * For cashback, product must be passed with 'commission' embedded, as value comes from partner info
+	 */
+	public function calculateSavings($product) {
+
+		// Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
+		$discounted_price_period_in_month = 12;
+
+		$savings = 0;
+		// Calculate savings on setup
+		$total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
+		$reduced_total_setup_price = Hash::get($product, 'activation_fee_reduced', 0) + Hash::get($product, 'installation_fee_reduced', 0);
+		$savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
+
+		// Add price promo savings
+		// For a lifetime promo, we calculate only on 24 months
+		if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
+			$product['discounted_price_period'] = $discounted_price_period_in_month;
+		}
+		$savings += ($product['price'] - $product['discounted_price']) * $product['discounted_price_period'];
+		// Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
+
+		// Cashback (product need 'commission' embedded)
+		$savings += Hash::get($product, 'commission.cashback_amount', 0);
+		// debug(Hash::get($product, 'commission.cashback_amount', 0));
+
+		return $savings;
+	}
 }
