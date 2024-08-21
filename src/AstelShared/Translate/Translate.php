@@ -21,14 +21,14 @@ class Translate extends Singleton {
    */
   public static function get($key, $placeholders = null) {
     $instance = self::getInstance(); // Get the current instance of the class
-  
+
     // Check if the key exists in the translations array
     if (array_key_exists($key, $instance->translations)) {
       // Check if the language exists for the given key
       if (array_key_exists($instance->language, $instance->translations[$key])) {
         // Retrieve the translation
         $translation = $instance->translations[$key][$instance->language];
-  
+
         // If there are variables to replace in the translation string
         if ($placeholders !== null) {
           // If $placeholders is not an array, make it an array
@@ -38,7 +38,7 @@ class Translate extends Singleton {
           // Replace %s with the variables in $placeholders
           $translation = vsprintf($translation, $placeholders);
         }
-  
+
         return $translation;
       } else {
         // Language does not exist for the key
