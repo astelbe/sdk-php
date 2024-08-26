@@ -181,9 +181,8 @@ $params['bonus_header'] = [
 							</div>
 						<?php } ?>
 
-						<button class="blueBtn darkBlueBtn blueBtn_s_fullRounded mx-auto fw700">Commander</button>
 
-						<!-- <?= $product['order_button'] ?> -->
+						<?= $product['order_button'] ?>
 						<div class="font-s-08 mt-1">
 							<?= $product['activation_price'] ?>
 						</div>
