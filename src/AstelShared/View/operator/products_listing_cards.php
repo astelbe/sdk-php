@@ -131,9 +131,8 @@ debu
 
       <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
-
         <label for="toggle-product-listing-button-<?= $params['id'] ?>" class="m-0 toggleProductListingDetails__detailsLabel cursor-pointer">
-          <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>
+          <?= Translate::get('switch_details'); ?>
         </label>
       </div>
     </div>

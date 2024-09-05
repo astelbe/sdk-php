@@ -52,6 +52,10 @@ return [
     'FR' => "",
     'NL' => ""
   ],
+  'switch_details'  => [
+    'FR' => "Voir les détails",
+    'NL' => "Bekijk de details"
+  ],
 
 
   // PLAYS

@@ -543,6 +543,9 @@ class SharedView extends Singleton {
 	 */
 	static function getProductActivationAndOrInstallationPrice($product, $getOnlyActivationOrInstallation = '', $options = []) {
 		// Get and calculate prices
+		if(empty($product)) {
+			return '';
+		}
 		$activation_fee = Hash::get($product, 'activation_fee', false);
 		$installation_fee = Hash::get($product, 'installation_fee', false);
 		$activation_fee_reduced = Hash::get($product, 'activation_fee_reduced', 0);
@@ -634,6 +637,38 @@ class SharedView extends Singleton {
 
 		return $price;
 	}
+
+	
+	static function getProductResultSummary($product, $preProcessedData = []) {
+		$Product = Product::getInstance();
+		$cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
+		// debug($cashbackAmount);
+		if ($cashbackAmount != 0) {
+		  $displayed_cashback = __d('product', 'product_table_content_cashback') . ' -' . GeneralHelper::formatPrice($cashbackAmount);
+		} else {
+		  $displayed_cashback = null;
+		}
+		$result_summary = [
+			'displayed_price' => self::getDisplayedPrice($product, ['color-css-class' => 'color-operator', 'br-before-during-month' => true]),
+
+			'total_cashback' => $displayed_cashback,
+			'order_url' => $preProcessedData['orderButton'],
+			//'phone_plug' => self::getPlugTag($product),
+			// 'setup' = self::getProductActivationAndOrInstallationPrice($product),
+			'max_activation_time' => '<div class="mt-3">' . __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' => $product['max_activation_time']]) . '</div>',
+			
+			// Product savings
+			// $product_total_savings => $Product->calculateSavings($product);
+			// if ($product_total_savings > 0) {
+			// 	$product['result_summary']['products_total_savings'] => __d('product', 'Total savings: %s €', '<span class="font-weight-bold"><b>' . GeneralHelper::formatPrice($product_total_savings) . '</b></span>');
+			// } else {
+			// 	$product['result_summary']['products_total_savings'] => null;
+			// }
+		];
+
+		return $result_summary;
+	}
+		
 
 	static function getDisplayedPrice($entity, $options = []) {
 		// options handling
