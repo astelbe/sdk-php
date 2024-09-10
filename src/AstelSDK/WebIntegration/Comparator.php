@@ -58,7 +58,6 @@ class Comparator extends AbstractWebIntegration
   public function getScriptLoadComparator($title = null, $encryptionKey = null)
   {
     global $_GET;
-
     // Get the encryption key from the context if it is not provided
     if (!$encryptionKey) {
       $encryptionKey = $this->context->getEncryptionKey();
@@ -162,7 +161,7 @@ class Comparator extends AbstractWebIntegration
     }
 
     // Tv
-    $is_tv = $_GET['is_internet'] ?: $_GET['is_internet'] ?: false;
+    $is_tv = $_GET['is_tv'] ?: $_GET['is_tv'] ?: false;
     $is_tv = (int) $is_tv;
     if ($is_tv !== false) {
       $getParams['is_tv'] = 0;
@@ -178,7 +177,6 @@ class Comparator extends AbstractWebIntegration
         }
       }
     }
-
     // Order by
     if (isset($_GET['order_type']) && $_GET['order_type'] !== '' && is_numeric($_GET['order_type'])) {
       // 0 = order by price
@@ -208,7 +206,6 @@ class Comparator extends AbstractWebIntegration
     }
 
     $getParams['page_title'] = $title;
-
     $paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
 
     return '<script>
