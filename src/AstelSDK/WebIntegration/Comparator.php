@@ -58,6 +58,7 @@ class Comparator extends AbstractWebIntegration
   public function getScriptLoadComparator($title = null, $encryptionKey = null)
   {
     global $_GET;
+
     // Get the encryption key from the context if it is not provided
     if (!$encryptionKey) {
       $encryptionKey = $this->context->getEncryptionKey();
@@ -96,11 +97,10 @@ class Comparator extends AbstractWebIntegration
     }
 
     // Mobile
-    $is_mobile = $_GET['is_mobile'] ?: $_GET['is_mobile'] ?: false;
-    $is_mobile = (int) $is_mobile;
-    if ($is_mobile !== false) {
+    if (isset($_GET['mobile']) && $_GET['mobile'] !== '') {
+      $is_mobile = (int) $_GET['mobile'];
       $getParams['is_mobile'] = 0;
-      if ($is_mobile > 0) {
+      if ($is_mobile == 1) {
         $getParams['is_mobile'] = 1;
         if (isset($_GET['mobile_small_qt']) && $_GET['mobile_small_qt'] >= 0) {
           $getParams['mobile_small_qt'] = (int) $_GET['mobile_small_qt'];
@@ -115,8 +115,8 @@ class Comparator extends AbstractWebIntegration
           $getParams['mobile_heavy_int_qt'] = (int) $_GET['mobile_heavy_int_qt'];
         }
       }
-    }
 
+    }
     // Fix
     // Can use 'fixe' or 'fix'. Comp V2 code send url with 'fix'
     $is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
@@ -140,9 +140,8 @@ class Comparator extends AbstractWebIntegration
     }
 
     // Internet
-    $is_internet = $_GET['is_internet'] ?: $_GET['is_internet'] ?: false;
-    $is_internet = (int) $is_internet;
-    if ($is_internet !== false) {
+    if (isset($_GET['internet']) && $_GET['internet'] !== '') {
+      $is_internet = (int) $_GET['internet'];
       $getParams['is_internet'] = 0;
       if ($is_internet > 0) {
         $getParams['is_internet'] = 1;
@@ -161,9 +160,8 @@ class Comparator extends AbstractWebIntegration
     }
 
     // Tv
-    $is_tv = $_GET['is_tv'] ?: $_GET['is_tv'] ?: false;
-    $is_tv = (int) $is_tv;
-    if ($is_tv !== false) {
+    if (isset($_GET['tv']) && $_GET['tv'] !== '') {
+      $is_tv = (int) $_GET['tv'];
       $getParams['is_tv'] = 0;
       if ($is_tv > 0) {
         $getParams['is_tv'] = 1;
@@ -177,6 +175,7 @@ class Comparator extends AbstractWebIntegration
         }
       }
     }
+
     // Order by
     if (isset($_GET['order_type']) && $_GET['order_type'] !== '' && is_numeric($_GET['order_type'])) {
       // 0 = order by price
@@ -206,6 +205,7 @@ class Comparator extends AbstractWebIntegration
     }
 
     $getParams['page_title'] = $title;
+
     $paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
 
     return '<script>
