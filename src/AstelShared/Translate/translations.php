@@ -38,7 +38,7 @@ return [
   ],
   'total_savings' => [
     'FR' => "Economie Totale : <b>%s</b>",
-    'NL' => ""
+    'NL' => "Totale besparing : <b>%s</b>"
   ],
   'ficheOperateur_display_bestsellers' => [
     'FR' => "Bestsellers uniquement",
@@ -48,13 +48,29 @@ return [
     'FR' => "Afficher tout",
     'NL' => "Alles"
   ],
-  '' => [
-    'FR' => "",
-    'NL' => ""
+  'plug_used' => [
+    'FR' => "Prise nécessaire :",
+    'NL' => "Stopcontact vereist :"
+  ],
+  'product_table_content_cashback' => [
+    'FR' => "+ Promo %s",
+    'NL' => "+ %s-promo"
   ],
   'switch_details'  => [
     'FR' => "Voir les détails",
     'NL' => "Bekijk de details"
+  ],
+  'max_activation_time' => [
+    'FR' => "Délais moyen actuel de %operator :<br>%activation_time jours ouvrables",
+    'NL' => "Huidige gemiddelde termijn van %operator:<br>%activation_time werkdagen"
+  ],
+  '' => [
+    'FR' => "",
+    'NL' => ""
+  ],
+  '' => [
+    'FR' => "",
+    'NL' => ""
   ],
 
 
@@ -193,5 +209,73 @@ return [
   'included_minutes_calls_EWE' => [
     'FR' => "<span class=\"\">Illimité</span> soir & week-end",
     'NL' => "<span class=\"\">Gratis</span> oproepen 's avonds en tijdens het weekend"
+  ],
+  'tab_button_pack_internet_tv_mobile' => [
+    'FR' => "Internet + TV + GSM",
+    'NL' => "Internet + TV + GSM"
+  ],
+  'tab_button_pack_internet_tv' => [
+    'FR' => "Internet + TV",
+    'NL' => "Internet + TV"
+  ],
+  'tab_button_pack_internet_mobile' => [
+    'FR' => "Internet + GSM",
+    'NL' => "Internet + GSM"
+  ],
+  'tab_button_pack_internet_tv_fix_mobile' => [
+    'FR' => "Internet + TV + Téléphone + GSM",
+    'NL' => "Internet + TV + Telefonie + GSM"
+  ],
+  'tab_button_pack_internet_tv_fix' => [
+    'FR' => "Internet + TV + Téléphone",
+    'NL' => "Internet + TV + Telefonie"
+  ],
+  'tab_button_pack_internet_fix_mobile' => [
+    'FR' => "Internet + Téléphone + GSM",
+    'NL' => "Internet + Telefonie + GSM"
+  ],
+  'tab_button_pack_internet_fix' => [
+    'FR' => "Internet + Téléphone",
+    'NL' => "Internet + Telefonie"
+  ],
+  'tab_button_pack_tv_fix' => [
+    'FR' => "TV + Téléphone",
+    'NL' => "TV + Telefonie"
+  ],
+  '' => [
+    'FR' => "",
+    'NL' => ""
+  ],
+
+
+  'or' => [
+    'FR' => "ou",
+    'NL' => "of"
+  ],
+  'and' => [
+    'FR' => "et",
+    'NL' => "en"
+  ],
+  'total_savings_modal_title' => [
+    'FR' => "Économie totale",
+    'NL' => "Totale besparing"
+  ],
+  'total_savings_modal_content' => [
+    'FR' => "<p>L'économie totale est la somme de 4 montants:<p>
+      <ul style='list-style-type:disc;padding-left:1.5rem;'>
+        <li>la réduction sur l'abonnement pendant les premiers mois</li>
+        <li>la réduction sur les frais d'activation</li>
+        <li>la réduction sur les frais d'installation</li>
+        <li>le cashback qu'Astel vous rembourse par virement</li>
+      </ul>
+      <p> C'est-à-dire, <span class='text-pink'>tout ce que vous économisez</span> en commandant cet abonnement sur Astel.</p>",
+    'NL' => "<p>De totale besparing is de som van 4 bedragen:<p>
+      <ul style='list-style-type:disc;padding-left:1.5rem;'>
+        <li>korting op het abonnement gedurende de eerste maanden</li>
+        <li>korting op activeringskosten</li>
+        <li>korting op installatiekosten</li>
+        <li>de cashback die Astel u via overschrijving terugbetaalt</li>
+      </ul>
+      <p>Dat wil zeggen, <span class='text-pink'>alles wat u bespaart</span> door dit abonnement op Astel te bestellen.</p>"
   ],
 ];

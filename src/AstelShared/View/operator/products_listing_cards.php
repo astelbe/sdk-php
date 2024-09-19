@@ -11,15 +11,19 @@ $SharedView = SharedView::getInstance();
 
 
 /*
-  From public_html_v1/www/public_html/app/view/helper/ProductsListingCards.php
-  From comp
-	This template received $params :	array of results with products and pricings
+  From operator pages public_html_v1/www/public_html/app/view/helper/ProductsListingCards.php
+  From COMP in comparator-engine
+  From ORDER form in mobile-options
+
+  This listings is composed of cards. (productCard)
+  Every cards is composed of one or more products (one in operator pages and more in comparator results) and a a card summary of the product(s)
+	This template received $params :	array of productCards with products and pricings
 	$params = [
         'title' => 'Title of the result',
-      'id' => 'list_id', // for toggle details
+        'id' => 'list_id', // for toggle details
         'options' => [
             'display_operator_in_product_name' => true/false, // default true, to noyt display logo in operator page
-        'results' => [
+        'productCards' => [
             0 =>[
                 'products' => [
                     [
@@ -43,66 +47,20 @@ $SharedView = SharedView::getInstance();
         ],
     ];
 */
-
-/*
-$params = [
-
-  'results' = [
-
-    0 => [
-      'products' = [
-
-        'name' => ... ,
-        'name' => ... ,
-        'name' => ... ,
-        'play_types' => [
-          ... ,
-          ... ,
-          ... ,
-        ]
-      ]
-    ]
-
-    1 => [
-      'products' = [
-
-        0 => [
-          'name' => ... ,
-          'name' => ... ,
-          'name' => ... ,
-          'play_types' => [
-            ... ,
-            ... ,
-            ... ,
-          ]
-        ],
-
-        1 => [
-          'name' => ... ,
-          'name' => ... ,
-          'name' => ... ,
-          'play_types' => [
-            ... ,
-            ... ,
-            ... ,
-          ]
-        ],
-      ]
-      
-    ]
-  ]
-]
-debu
-*/
-
-// debug($params['products'][0]['products'][1905]['plays']);
+// debug($params);
 ?>
-<!-- <?php debug($params); ?> -->
+
 <div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center bg-lightblue p-2 brad100 g100">
-    <h2 class="m-0 fs125">
-      <?= $params['title']; ?>
-    </h2>
+    <?php
+    if (isset($params['title'])) {
+    ?>
+      <h2 class="m-0 fs125">
+        <?= $params['title']; ?>
+      </h2>
+    <?php
+    }
+    ?>
 
     <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
       <?php
@@ -140,8 +98,7 @@ debu
 
   <div class="gridcontainer gridcontainer_listing g100 mt-3 mb-4">
     <?php
-    foreach ($params['products'] as $key => $result) {
-      // debug($result);
+    foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="product-card">
@@ -153,7 +110,7 @@ debu
           <?php } ?>
           <?php
           $cpt = 1; // To display "+"
-          foreach ($result['products'] as $key => $item) {
+          foreach ($result['products'] as $subkey => $item) {
             if ($cpt > 1) { ?>
               <svg class="w-100 mb-3" width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
@@ -225,7 +182,7 @@ debu
               </div>
               <?php if (!empty($result['result_summary']['products_total_savings'])) { ?>
                 <p class="total-savings modalClick cursor-pointer mb-0" data-toggle="modal"
-                  data-target="#modalTotalSavings">
+                  data-target="#modalTotalSavings<?= $params['id'] ?>">
                   <?= $result['result_summary']['products_total_savings'] ?>
                   <?= $result['products']['total_savings'] ?>
                   <span class="position-absolute">
@@ -233,16 +190,16 @@ debu
                   </span>
                 </p>
               <?php } ?>
-              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <?= $result['result_summary']['max_activation_time']; ?>
-                    <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                    <?php if (!empty($result['result_summary']['plug'])) { ?>
                       <br>
                     <?php } ?>
                   <?php } ?>
-                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
-                    <?= $result['result_summary']['phone_plug'] ?>
+                  <?php if (!empty($result['result_summary']['plug'])) { ?>
+                    <?= $result['result_summary']['plug']; ?>
                   <?php
                   }
                   ?>
@@ -250,7 +207,7 @@ debu
               <?php } ?>
             </div>
             <div class="my-3">
-              <?= $result['result_summary']['order_url']; ?>
+              <?= $result['result_summary']['order_button']; ?>
             </div>
           </div>
         </div>
@@ -258,7 +215,25 @@ debu
     <?php } ?>
   </div>
 </div>
-<!-- test -->
+<!-- Modal Total Savings -->
+<div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="modal total savings" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <?= Translate::get('total_savings_modal_title'); ?>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <?= Translate::get('total_savings_modal_content'); ?>
+      </div>
+    </div>
+  </div>
+</div>
 
 <style>
   .toggleProductListingDetails {

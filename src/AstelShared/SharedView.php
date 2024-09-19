@@ -30,7 +30,7 @@ class SharedView extends Singleton {
 	}
 
 	public function getLanguage() {
-		return self::language;
+		return $this->language;
 	}
 
 	public function setVersion($version) {
@@ -499,13 +499,13 @@ class SharedView extends Singleton {
 		$formatted_product = [];
 
 		// Product main info
+		$formatted_product['id'] = Hash::get($product, 'id');
 		$formatted_product['count'] = Hash::get($product, 'count');
 		$formatted_product['short_name'] = Hash::get($product, 'short_name.' . $this->language, '');
 		$formatted_product['name'] = Hash::get($product, 'name.' . $this->language, '');
 		$formatted_product['brand_name'] = Hash::get($product, 'brand_name');
 		$formatted_product['brand_slug'] = Hash::get($product, 'brand_slug');
 		$formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');
-		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
 		$formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' .  $this->language, '');
 		$formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
 		// $formatted_product['total_savings'] = $this->calculateSavings($product) ? Translate::get('total_savings', self::formatPrice($this->calculateSavings($product))) : null;
@@ -543,7 +543,7 @@ class SharedView extends Singleton {
 	 */
 	static function getProductActivationAndOrInstallationPrice($product, $getOnlyActivationOrInstallation = '', $options = []) {
 		// Get and calculate prices
-		if(empty($product)) {
+		if (empty($product)) {
 			return '';
 		}
 		$activation_fee = Hash::get($product, 'activation_fee', false);
@@ -633,42 +633,47 @@ class SharedView extends Singleton {
 		if (isset($exploded_price[1])) {
 			$price = $exploded_price[0] . '<span class="decimal">' . ',' . $exploded_price[1] . '</span>';
 		}
-		// debug($price);
 
 		return $price;
 	}
 
-	
-	static function getProductResultSummary($product, $preProcessedData = []) {
+
+	static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
+		
+		if ($productForPlugs === null) {
+			$productForPlugs = $product;
+		}
+
 		$Product = Product::getInstance();
 		$cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
-		// debug($cashbackAmount);
 		if ($cashbackAmount != 0) {
-		  $displayed_cashback = __d('product', 'product_table_content_cashback') . ' -' . GeneralHelper::formatPrice($cashbackAmount);
+
+			$displayed_cashback = Translate::get('product_table_content_cashback', $placeholders = 'test') . ' -' . self::formatPrice($cashbackAmount);
 		} else {
-		  $displayed_cashback = null;
+			$displayed_cashback = null;
 		}
 		$result_summary = [
 			'displayed_price' => self::getDisplayedPrice($product, ['color-css-class' => 'color-operator', 'br-before-during-month' => true]),
 
 			'total_cashback' => $displayed_cashback,
-			'order_url' => $preProcessedData['orderButton'],
-			//'phone_plug' => self::getPlugTag($product),
-			// 'setup' = self::getProductActivationAndOrInstallationPrice($product),
-			'max_activation_time' => '<div class="mt-3">' . __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' => $product['max_activation_time']]) . '</div>',
-			
-			// Product savings
-			// $product_total_savings => $Product->calculateSavings($product);
-			// if ($product_total_savings > 0) {
-			// 	$product['result_summary']['products_total_savings'] => __d('product', 'Total savings: %s €', '<span class="font-weight-bold"><b>' . GeneralHelper::formatPrice($product_total_savings) . '</b></span>');
-			// } else {
-			// 	$product['result_summary']['products_total_savings'] => null;
-			// }
+			// 'order_url' => $preProcessedData['orderButton'],
+			// 'phone_plug' => self::getPlugTag($product),
+			'phone_plug' => self::displayPlugList([$productForPlugs], $blockKey),
+			'setup' => self::getProductActivationAndOrInstallationPrice($product),
+			'max_activation_time' => '<div class="mt-3">' . Translate::get('max_activation_time', ['%operator' => $product['brand_name'], '%activation_time' => $product['max_activation_time']]) . '</div>',
+			'products_total_savings' => self::calculateSavings($product) > 0 ? Translate::get('total_savings', self::calculateSavings($product)) : null,
 		];
+		// Product savings
+		$product_total_savings = self::calculateSavings($product);
+		if ($product_total_savings > 0) {
+			$result_summary['products_total_savings'] = Translate::get('total_savings', self::formatPrice(self::calculateSavings($product)));
+		} else {
+			$result_summary['products_total_savings'] = null;
+		};
 
 		return $result_summary;
 	}
-		
+
 
 	static function getDisplayedPrice($entity, $options = []) {
 		// options handling
@@ -787,10 +792,153 @@ class SharedView extends Singleton {
 		// Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
 
 		// Cashback (product need 'commission' embedded)
-		debug('SharedView');
-		debug(Hash::get($product, 'commission.cashback_amount', 0));
 		$savings += Hash::get($product, 'commission.cashback_amount', 0);
 
 		return $savings;
+	}
+
+	/**
+	 * This function retrieves plug tags from a given array of products.
+	 * Each product can contain multiple tags, and the function organizes these tags by product ID.
+	 *
+	 * @param array $products An array containing product data, where each product can have multiple tags.
+	 * @return array An associative array where the keys are product IDs and the values are arrays of tags.
+	 */
+	private function getPlugTag($products = []) {
+		// debug($products);
+		// Initialize an empty array to store tags by product ID
+		$tags = [];
+
+		// Iterate through each products
+		foreach ($products as $product) {
+			// Initialize an empty array for the current product's tags
+			$tags = [];
+
+			// Iterate through each tag (if the product has any) and add it to the product's tag array
+			if (isset($product['tag'])) {
+				foreach ($product['tag'] as $tag) {
+					$tags[$product['id']][] = $tag;
+				}
+			}
+		}
+
+		// Return the associative array of tags organized by product ID
+		return $tags;
+	}
+
+
+	/**
+	 * This function generates HTML content for displaying a list of plugs in a modal dialog.
+	 * It takes a block of plugs and a modal key as parameters.
+	 *
+	 * @param array $products An array containing products.
+	 * @param string $modalKey A unique key for the modal dialog.
+	 * @return string|null The generated HTML content or null if the block is empty.
+	 */
+	public function displayPlugList($products = [], $modalKey) {
+		$instance = self::getInstance();
+
+		// Retrieve plug tags from the block
+		$blockPlugs = self::getPlugTag($products);
+
+		// Initialize variables for modal link and modal content
+		$plugsModaleLink = "";
+
+		$plugsModale = "";
+
+		// Check if there are any plugs in the block
+		if (!empty($blockPlugs)) {
+			$productsInBlockIndex = 1;
+
+			// Iterate through each block's product
+			foreach ($blockPlugs as $plugsByProduct) {
+				$plugsInProductIndex = 1;
+
+				// Add 'AND' separator if there are multiple products inside the block
+				if ($productsInBlockIndex > 1 && !empty($plugsByProduct)) {
+					$plugsModaleLink .= Translate::get('and') . '<br>';
+
+					$plugsModale .=
+						'<div class="m-5">
+							<hr class="m-0">
+							<div class="centered-axis-x">
+								<span class="font-s-11 bg-white px-3 text-uppercase">' .
+						strtoupper(Translate::get('and')) .
+						'</span>
+							</div>
+						</div>';
+				}
+
+				// Iterate through each plug in the product
+				foreach ($plugsByProduct as $plug) {
+					// Check if the plug belongs to the specific tag group
+					if ($plug['tag_group_id'] == 15) {
+						// Add 'OR' separator if there are multiple plugs in the product
+						if ($plugsInProductIndex > 1) {
+							$plugsModaleLink .= Translate::get('or') . '<br>';
+
+							$plugsModale .=
+								'<div class="m-5">
+									<hr class="m-0">
+									<div class="centered-axis-x">
+										<span class="font-s-11 bg-white px-3 text-uppercase">' .
+								strtoupper(Translate::get('or')) .
+								'</span>
+									</div>
+								</div>';
+						}
+
+						// Add plug details to the modal link and modal content
+						$plugsModaleLink .= Hash::get($plug, 'value_translated.' . $instance->language) . '<br>';
+
+						$plugsModale .= '<h5 class="font-weight-bold text-black">' . Hash::get($plug, 'value_translated.' . $instance->language) . '</h5>';
+						$plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $instance->language) . '</p>';
+						if (Hash::get($plug, 'banner_picture.' . $instance->language, false)) {
+							$plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $instance->language) . '" class="img-fluid"></div>';
+						}
+					}
+
+					$plugsInProductIndex++;
+				}
+
+				$productsInBlockIndex++;
+			}
+
+			// Format the modal link and modal content
+			$formattedModaleLink =
+				'<div class="mb-2 cursor-pointer noUnderline" data-toggle="modal" data-target="#modalPlugs_' . $modalKey . '">
+    			<div class="mb-0">
+						<span class=underlinedTitle>' . Translate::get('plug_used') . '<i class=" pl-2 fa fa-info"></i></span><br>' .
+				$plugsModaleLink .
+				'</div>
+				</div>';
+
+			$formattedModale =
+				'<div class="modal fade" id="modalPlugs_' . $modalKey . '" tabindex="-1" role="dialog" aria-labelledby="modal' . Translate::get('plug_used') . '" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">
+									' . Translate::get('plug_used') . '
+								</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div id="plug_112" class="mb-4">' . $plugsModale . '</div>
+							</div>
+						</div>
+					</div>
+				</div>';
+
+			// Return the combined modal link and modal content
+			$return = $formattedModaleLink . $formattedModale;
+
+			return $return;
+		} else {
+			// Return null if there are no plugs in the block
+			return null;
+		}
 	}
 }
