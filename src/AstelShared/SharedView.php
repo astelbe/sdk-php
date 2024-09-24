@@ -14,11 +14,11 @@ use AstelSDK\Utils\VatCalculation;
 class SharedView extends Singleton {
 
 	private $translator;
-	public $language = 'fr';
+	public $language = 'FR';
 	public $version = 'front'; // 'front' or 'cake', to get the domain name used in translation keys
 
 	public function __construct() {
-		$this->language = AstelContext::getInstance()->getLanguage();
+		// $this->language = AstelContext::getInstance()->getLanguage();
 	}
 
 	public function render($path, $params = []) {
@@ -27,6 +27,9 @@ class SharedView extends Singleton {
 
 	public function setLanguage($language) {
 		$this->language = $language;
+		// We also need to set the language in the context to get the right translations
+		// because issue with COMP : we loose language and get back to FR by default
+		AstelContext::getInstance()->setLanguage($language);
 	}
 
 	public function getLanguage() {
@@ -836,8 +839,8 @@ class SharedView extends Singleton {
 	 * @return string|null The generated HTML content or null if the block is empty.
 	 */
 	public function displayPlugList($products = [], $modalKey) {
-		$instance = self::getInstance();
-
+		$language = AstelContext::getInstance()->getLanguage();
+		
 		// Retrieve plug tags from the block
 		$blockPlugs = self::getPlugTag($products);
 
@@ -889,12 +892,12 @@ class SharedView extends Singleton {
 						}
 
 						// Add plug details to the modal link and modal content
-						$plugsModaleLink .= Hash::get($plug, 'value_translated.' . $instance->language) . '<br>';
+						$plugsModaleLink .= Hash::get($plug, 'value_translated.' . $language) . '<br>';
 
-						$plugsModale .= '<h5 class="font-weight-bold text-black">' . Hash::get($plug, 'value_translated.' . $instance->language) . '</h5>';
-						$plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $instance->language) . '</p>';
-						if (Hash::get($plug, 'banner_picture.' . $instance->language, false)) {
-							$plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $instance->language) . '" class="img-fluid"></div>';
+						$plugsModale .= '<h5 class="font-weight-bold text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</h5>';
+						$plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $language) . '</p>';
+						if (Hash::get($plug, 'banner_picture.' . $language, false)) {
+							$plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid"></div>';
 						}
 					}
 
