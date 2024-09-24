@@ -98,6 +98,7 @@ $SharedView = SharedView::getInstance();
 
   <div class="gridcontainer gridcontainer_listing g100 mt-3 mb-4">
     <?php
+    // LOOP ON PRODUCT CARDS
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
@@ -141,7 +142,9 @@ $SharedView = SharedView::getInstance();
               </a>
             <?php } ?>
             <div class="rounded-15 py-2 px-2 mb-3" style="background-color: <?= $item['brand_bg_color'] ?> ">
-              <?php foreach ($item['plays'] as $k => $play) {
+              <?php 
+              // PLAYS DESCRIPTION
+              foreach ($item['plays'] as $k => $play) {
                 if ($play !== false) { ?>
                   <div class="d-flex pb-1 align-items-center" style="line-height:25px;font-size:0.875rem;">
                     <div class="mr-1" style="min-width:30px;">
@@ -165,7 +168,9 @@ $SharedView = SharedView::getInstance();
           ?>
 
           <div class="results-price d-flex text-center flex-column justify-content-center mt-auto pt-1">
-            <?php if ($result['result_summary']['quality_score'] != '') { ?>
+            <?php 
+            // QUALITY SCORE
+            if ($result['result_summary']['quality_score'] != '') { ?>
               <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
                 <?= $result['result_summary']['quality_score']; ?>
                 <span class="cursor-pointer position-absolute ml-2">
@@ -180,7 +185,9 @@ $SharedView = SharedView::getInstance();
               <div class="mb-0">
                 <?= $SharedView->getProductActivationAndOrInstallationPrice($item); ?>
               </div>
-              <?php if (!empty($result['result_summary']['products_total_savings'])) { ?>
+              <?php 
+              // PRODUCT TOTAL SAVINGS
+              if (!empty($result['result_summary']['products_total_savings'])) { ?>
                 <p class="total-savings modalClick cursor-pointer mb-0" data-toggle="modal"
                   data-target="#modalTotalSavings<?= $params['id'] ?>">
                   <?= $result['result_summary']['products_total_savings'] ?>
@@ -190,7 +197,9 @@ $SharedView = SharedView::getInstance();
                   </span>
                 </p>
               <?php } ?>
-              <?php if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php 
+              // INTERNET PLUG
+              if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <?= $result['result_summary']['max_activation_time']; ?>
@@ -207,6 +216,7 @@ $SharedView = SharedView::getInstance();
               <?php } ?>
             </div>
             <div class="my-3">
+              <?php // ORDER BUTTON ?>
               <?= $result['result_summary']['order_button']; ?>
             </div>
           </div>
