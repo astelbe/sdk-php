@@ -105,7 +105,7 @@ $SharedView = SharedView::getInstance();
       <div class="product-card">
         <div class="px-3 pt-3 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php if ($cashback) { ?>
-            <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick bg-pink" data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; margin:0 auto;">
+            <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick hoverUnderline bg-pink" data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; margin:0 auto;">
               <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
             </div>
           <?php } ?>
@@ -188,7 +188,7 @@ $SharedView = SharedView::getInstance();
               <?php 
               // PRODUCT TOTAL SAVINGS
               if (!empty($result['result_summary']['products_total_savings'])) { ?>
-                <p class="total-savings modalClick cursor-pointer mb-0" data-toggle="modal"
+                <p class="total-savings modalClick hoverUnderline cursor-pointer mb-0" data-toggle="modal"
                   data-target="#modalTotalSavings<?= $params['id'] ?>">
                   <?= $result['result_summary']['products_total_savings'] ?>
                   <?= $result['products']['total_savings'] ?>
