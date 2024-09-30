@@ -96,19 +96,24 @@ $SharedView = SharedView::getInstance();
     </div>
   </div>
 
-  <div class="gridcontainer gridcontainer_listing g100 mt-3 mb-4">
+  <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4">
     <?php
     // LOOP ON PRODUCT CARDS
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
-      <div class="product-card">
-        <div class="px-3 pt-3 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
-          <?php if ($cashback) { ?>
-            <div class="py-2 px-3 mb-3 text-center cursor-pointer rounded-xl plugin-hidden-optional-element cashback-amount modalClick hoverUnderline bg-pink" data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; margin:0 auto;">
-              <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
-            </div>
+      <div class="product-card position-relative">
+        <?php if(isset($result['result_index'])) { ?>
+          <div class="result-index ml-2">
+            <?= $result['result_index'] ?>
+          </div>
+        <?php } ?>
+        <?php if ($cashback) { ?>
+        <div class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick " data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+          <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+          </div>
           <?php } ?>
+        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $subkey => $item) {

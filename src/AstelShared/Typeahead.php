@@ -32,10 +32,11 @@ class Typeahead extends Singleton {
 	public $show_button_validate = false;
 	public $translation_domain = 'CoreAstelBe';
 	public $error_message = '';
+	public $hide_label = false;
 
 	public function assignAttributes($options = []) {
 		$attributes_as_options = [
-			'typeahead_id', 'label', 'placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value', 'show_button_validate', 'translation_domain', 'error_message'
+			'typeahead_id', 'label', 'placeholder', 'input_value', 'disabled', 'show_clear_button', 'hidden_input_name', 'hidden_input_value', 'show_button_validate', 'translation_domain', 'error_message', 'hide_label'
 		];
 		foreach ($attributes_as_options as $option) {
 			if (isset($options[$option])) {
@@ -91,7 +92,7 @@ class Typeahead extends Singleton {
 
 	public function getHtml() {
 		$random_string = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(5 / strlen($x)))), 1, 7);
-		$label = $this->label ? '<label for="' . $random_string . '">' . $this->label . '</label>' : '';
+		$label = $this->label ? '<label for="' . $random_string . '"'. ($this->hide_label == true ? ' class="sr-only"' : '') .'>' . $this->label . '</label>' : '';
 		$html = '
 			<div class="mb-2">' . $label . '</div>
 			<div class="d-flex mb-2">
