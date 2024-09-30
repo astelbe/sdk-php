@@ -199,7 +199,7 @@ $SharedView = SharedView::getInstance();
               <?php } ?>
               <?php 
               // INTERNET PLUG
-              if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time']))) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <?= $result['result_summary']['max_activation_time']; ?>
