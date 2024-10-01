@@ -21,6 +21,7 @@ $SharedView = SharedView::getInstance();
   $params = [
         'title' => 'Title of the result',
         'id' => 'list_id', // for toggle details
+        'product_link_in_new_tab' => true, // default false, to open product link in new tab
         'options' => [
             'display_operator_in_product_name' => true/false, // default true, to noyt display logo in operator page
         'productCards' => [
@@ -132,7 +133,7 @@ $SharedView = SharedView::getInstance();
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $subkey => $item) {
             if ($cpt > 1) { ?>
-              <svg class="w-100 mb-3" width="260" height="30" viewBox="0 0 260 30" fill="none"
+              <svg class="w-100 mb-2" width="260" height="15" viewBox="0 0 260 30" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
                 <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8" />
@@ -150,13 +151,14 @@ $SharedView = SharedView::getInstance();
 
               </div>
             <?php } ?>
-            <?php if ($item['product_sheet_url'] != '') { ?>
+            <?php if ($item['product_sheet_url'] != '') { 
+              ?>
               <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>"
-                title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name'] ?>"
+                title="<?= $item['brand_name']; ?> <?= $item['name'] ?>"<?= ($params['product_link_in_new_tab'] == true ? ' target="_blank"' : '') ?> data-name="<?= $item['name'] ?>"
                 data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
               <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>"
-                style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+                style="font-size: 1.1rem!important;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
                 <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                 <span class="text-<?= $item['brand_slug']; ?>">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
@@ -165,7 +167,7 @@ $SharedView = SharedView::getInstance();
               <?php if ($item['product_sheet_url'] != '') { ?>
               </a>
             <?php } ?>
-            <div class="rounded-15 py-2 px-2 mb-3" style="background-color: <?= $item['brand_bg_color'] ?> ">
+            <div class="rounded-15 py-2 px-2 mb-2" style="background-color: <?= $item['brand_bg_color'] ?> ">
               <?php
               // PLAYS DESCRIPTION
               foreach ($item['plays'] as $k => $play) {
