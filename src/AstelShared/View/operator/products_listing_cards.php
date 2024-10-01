@@ -17,8 +17,8 @@ $SharedView = SharedView::getInstance();
 
   This listings is composed of cards. (productCard)
   Every cards is composed of one or more products (one in operator pages and more in comparator results) and a a card summary of the product(s)
-	This template received $params :	array of productCards with products and pricings
-	$params = [
+  This template received $params :	array of productCards with products and pricings
+  $params = [
         'title' => 'Title of the result',
         'id' => 'list_id', // for toggle details
         'options' => [
@@ -50,8 +50,10 @@ $SharedView = SharedView::getInstance();
 // debug($params);
 ?>
 
-<div class="container px-0 toggleProductListingDetails__container" id="toggleProductListingDetails__container_<?= $params['id'] ?>">
-  <div class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center bg-lightblue p-2 brad100 g100">
+<div class="container px-0 toggleProductListingDetails__container"
+  id="toggleProductListingDetails__container_<?= $params['id'] ?>">
+  <div
+    class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center bg-lightblue p-2 brad100 g100">
     <?php
     if (isset($params['title'])) {
     ?>
@@ -62,7 +64,8 @@ $SharedView = SharedView::getInstance();
     }
     ?>
 
-    <div class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
+    <div
+      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
       <?php
       if (isset($params['display_best_seller_filter'])) {
       ?>
@@ -76,10 +79,14 @@ $SharedView = SharedView::getInstance();
           $bestsellersUrl = $baseUrl;
           $allUrl = $baseUrl . "?display=all";
           ?>
-          <a href="<?= htmlspecialchars($bestsellersUrl); ?>" class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap" rel="nofollow">
+          <a href="<?= htmlspecialchars($bestsellersUrl); ?>"
+            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
+            rel="nofollow">
             <?= Translate::get('ficheOperateur_display_bestsellers'); ?>
           </a>
-          <a href="<?= htmlspecialchars($allUrl); ?>" class="underlineWhenHovered <?= $currentUrl === $allUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap" rel="nofollow">
+          <a href="<?= htmlspecialchars($allUrl); ?>"
+            class="underlineWhenHovered <?= $currentUrl === $allUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
+            rel="nofollow">
             <?= Translate::get('ficheOperateur_display_all'); ?>
           </a>
         </div>
@@ -88,8 +95,11 @@ $SharedView = SharedView::getInstance();
       ?>
 
       <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0">
-        <input type="checkbox" class="toggleProductListingDetails__button mr-2" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
-        <label for="toggle-product-listing-button-<?= $params['id'] ?>" class="m-0 toggleProductListingDetails__detailsLabel cursor-pointer">
+        <input type="checkbox" class="toggleProductListingDetails__button mr-2"
+          id="toggle-product-listing-button-<?= $params['id'] ?>"
+          onclick="toggleProductListingCards('<?= $params['id'] ?>')">
+        <label for="toggle-product-listing-button-<?= $params['id'] ?>"
+          class="m-0 toggleProductListingDetails__detailsLabel cursor-pointer">
           <?= Translate::get('switch_details'); ?>
         </label>
       </div>
@@ -103,22 +113,27 @@ $SharedView = SharedView::getInstance();
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="product-card position-relative">
-        <?php if(isset($result['result_index'])) { ?>
+        <?php if (isset($result['result_index'])) { ?>
           <div class="result-index ml-2">
             <?= $result['result_index'] ?>
           </div>
         <?php } ?>
         <?php if ($cashback) { ?>
-        <div class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick " data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-          <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+          <div
+            class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
+            data-toggle="modal" data-target="#pluginModalCashback"
+            style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+            <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
           </div>
-          <?php } ?>
-        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end" style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
+        <?php } ?>
+        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end"
+          style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $subkey => $item) {
             if ($cpt > 1) { ?>
-              <svg class="w-100 mb-3" width="260" height="30" viewBox="0 0 260 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg class="w-100 mb-3" width="260" height="30" viewBox="0 0 260 30" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
                 <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
                 <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8" />
                 <rect x="128" width="4" height="30" fill="#1F438C" />
@@ -130,14 +145,18 @@ $SharedView = SharedView::getInstance();
             $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
               <div class="my-2 text-center" style="height: 36px">
-                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;" title="<?= $productTitles ?>">
+                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;"
+                  title="<?= $productTitles ?>">
 
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { ?>
-              <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name']  ?>" data-brand="<?= $item['brand_name'] ?>">
+              <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>"
+                title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" target="_blank" data-name="<?= $item['name'] ?>"
+                data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
-              <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>" style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
+              <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>"
+                style="font-size: 1.1rem;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
                 <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                 <span class="text-<?= $item['brand_slug']; ?>">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
@@ -147,7 +166,7 @@ $SharedView = SharedView::getInstance();
               </a>
             <?php } ?>
             <div class="rounded-15 py-2 px-2 mb-3" style="background-color: <?= $item['brand_bg_color'] ?> ">
-              <?php 
+              <?php
               // PLAYS DESCRIPTION
               foreach ($item['plays'] as $k => $play) {
                 if ($play !== false) { ?>
@@ -159,7 +178,8 @@ $SharedView = SharedView::getInstance();
                       <?= $play['details'] ?>
                     </div>
                   </div>
-                  <p class="position-relative toggleProductListingDetails__content sub-details-infos" style="padding-left:40px;">
+                  <p class="position-relative toggleProductListingDetails__content sub-details-infos"
+                    style="padding-left:40px;">
                     <?= $play['description'] ?>
                   </p>
               <?php
@@ -173,7 +193,7 @@ $SharedView = SharedView::getInstance();
           ?>
 
           <div class="results-price d-flex text-center flex-column justify-content-center mt-auto pt-1">
-            <?php 
+            <?php
             // QUALITY SCORE
             if ($result['result_summary']['quality_score'] != '') { ?>
               <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
@@ -190,7 +210,7 @@ $SharedView = SharedView::getInstance();
               <div class="mb-0">
                 <?= $SharedView->getProductActivationAndOrInstallationPrice($item); ?>
               </div>
-              <?php 
+              <?php
               // PRODUCT TOTAL SAVINGS
               if (!empty($result['result_summary']['products_total_savings'])) { ?>
                 <p class="total-savings modalClick hoverUnderline cursor-pointer mb-0" data-toggle="modal"
@@ -202,7 +222,7 @@ $SharedView = SharedView::getInstance();
                   </span>
                 </p>
               <?php } ?>
-              <?php 
+              <?php
               // INTERNET PLUG
               if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time']))) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
@@ -221,7 +241,8 @@ $SharedView = SharedView::getInstance();
               <?php } ?>
             </div>
             <div class="my-3">
-              <?php // ORDER BUTTON ?>
+              <?php // ORDER BUTTON 
+              ?>
               <?= $result['result_summary']['order_button']; ?>
             </div>
           </div>
@@ -231,7 +252,8 @@ $SharedView = SharedView::getInstance();
   </div>
 </div>
 <!-- Modal Total Savings -->
-<div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="modal total savings" aria-hidden="true">
+<div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog"
+  aria-labelledby="modal total savings" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
