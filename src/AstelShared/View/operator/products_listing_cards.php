@@ -107,13 +107,13 @@ $SharedView = SharedView::getInstance();
     </div>
   </div>
 
-  <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4">
+  <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4" style="gap-row:1.2rem;">
     <?php
     // LOOP ON PRODUCT CARDS
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
-      <div class="product-card position-relative">
+      <div class="product-card position-relative mb-3">
         <?php if (isset($result['result_index'])) { ?>
           <div class="result-index ml-2">
             <?= $result['result_index'] ?>
@@ -145,8 +145,8 @@ $SharedView = SharedView::getInstance();
             // Display brand name only if 1st product , and also 2dn result if multi brand result
             $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
-              <div class="my-2 text-center" style="height: 36px">
-                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:28px;"
+              <div class="my-2 text-center" style="height: 30px">
+                <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:24px;"
                   title="<?= $productTitles ?>">
 
               </div>
@@ -198,17 +198,19 @@ $SharedView = SharedView::getInstance();
             <?php
             // QUALITY SCORE
             if ($result['result_summary']['quality_score'] != '') { ?>
-              <div class="cursor-pointer modalClick mb-3" data-toggle="modal" data-target="#modalQuality">
+              <div class="cursor-pointer modalClick mb-2" data-toggle="modal" data-target="#modalQuality">
                 <?= $result['result_summary']['quality_score']; ?>
                 <span class="cursor-pointer position-absolute ml-2">
                   <i class="fa fa-info pl-2"></i>
                 </span>
               </div>
-            <?php } ?>
-            <p class="mb-2" style="min-height: 80px; line-height: 28px">
+            <?php } 
+            // PRICE
+            ?>
+            <p class="my-1" style="min-height: 60px; line-height: 20px">
               <?php echo $result['result_summary']['displayed_price']; ?>
             </p>
-            <div class="setup-wrapper mb-1">
+            <div class="setup-wrapper mb-2">
               <div class="mb-0">
                 <?= $SharedView->getProductActivationAndOrInstallationPrice($item); ?>
               </div>
@@ -225,20 +227,19 @@ $SharedView = SharedView::getInstance();
                 </p>
               <?php } ?>
               <?php
-              // INTERNET PLUG
+              // MAX ACTIVATION TIME & INTERNET PLUG - Product details
               if ((!empty($result['result_summary']['plug']) || !empty($result['result_summary']['max_activation_time']))) { ?>
                 <div class="position-relative sub-details-infos toggleProductListingDetails__content">
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
-                    <?= $result['result_summary']['max_activation_time']; ?>
-                    <?php if (!empty($result['result_summary']['plug'])) { ?>
-                      <br>
-                    <?php } ?>
+                    <p class="fs087 my-1">
+                      <?= $result['result_summary']['max_activation_time']; ?>
+                  </p>
                   <?php } ?>
-                  <?php if (!empty($result['result_summary']['plug'])) { ?>
-                    <?= $result['result_summary']['plug']; ?>
-                  <?php
-                  }
-                  ?>
+                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                    <!-- <p class="mb-1"> -->
+                      <?= $result['result_summary']['phone_plug']; ?>
+                    <!-- </p> -->
+                  <?php }?>
                 </div>
               <?php } ?>
             </div>
@@ -256,7 +257,7 @@ $SharedView = SharedView::getInstance();
 <!-- Modal Total Savings -->
 <div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog"
   aria-labelledby="modal total savings" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">

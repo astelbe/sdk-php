@@ -634,45 +634,47 @@ class SharedView extends Singleton {
     $price = $language == 'NL' ? '<span class="currency-symbol">€</span>' . $price : $price . '&nbsp<span class="currency-symbol">€</span>';
     $exploded_price = explode(',', $price);
     if (isset($exploded_price[1])) {
-      $price = $exploded_price[0] . '<span class="decimal">' . ',' . $exploded_price[1] . '</span>';
+      if($exploded_price[1] != '00') {
+        $price = $exploded_price[0] . '<span class="decimal">' . ',' . $exploded_price[1] . '</span>';
+      } else {
+        $price = $exploded_price[0];
+      }
+
     }
 
     return $price;
   }
 
 
+  /**
+   * @param $product
+   * Prepare the summary of a product to be displayed in a card - Used for front, not for COMP
+   */
   static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
 
     if ($productForPlugs === null) {
       $productForPlugs = $product;
     }
 
-    $Product = Product::getInstance();
+    // Cashback
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
     if ($cashbackAmount != 0) {
-
       $displayed_cashback = Translate::get('product_table_content_cashback', $placeholders = 'test') . ' -' . self::formatPrice($cashbackAmount);
     } else {
       $displayed_cashback = null;
     }
+
+    // product savings
+    $savings = self::calculateSavings($product);
+
     $result_summary = [
       'displayed_price'        => self::getDisplayedPrice($product, ['color-css-class' => 'color-operator', 'br-before-during-month' => true]),
-
       'total_cashback'         => $displayed_cashback,
-      // 'order_url' => $preProcessedData['orderButton'],
-      // 'phone_plug' => self::getPlugTag($product),
       'phone_plug'             => self::displayPlugList([$productForPlugs], $blockKey),
       'setup'                  => self::getProductActivationAndOrInstallationPrice($product),
-      'max_activation_time'    => '<div class="mt-3">' . Translate::get('max_activation_time', ['%operator' => $product['brand_name'], '%activation_time' => $product['max_activation_time']]) . '</div>',
-      'products_total_savings' => self::calculateSavings($product) > 0 ? Translate::get('total_savings', self::calculateSavings($product)) : null,
+      'max_activation_time'    => Translate::get('max_activation_time', [$product['brand_name'], $product['max_activation_time']]),
+      'products_total_savings' => $savings > 0 ? Translate::get('total_savings', self::formatPrice($savings)) : null,
     ];
-    // Product savings
-    $product_total_savings = self::calculateSavings($product);
-    if ($product_total_savings > 0) {
-      $result_summary['products_total_savings'] = Translate::get('total_savings', self::formatPrice(self::calculateSavings($product)));
-    } else {
-      $result_summary['products_total_savings'] = null;
-    };
 
     return $result_summary;
   }
@@ -779,7 +781,6 @@ class SharedView extends Singleton {
   public function calculateSavings($product) {
     // Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
     $discounted_price_period_in_month = 12;
-
     $savings = 0;
     // Calculate savings on setup
     $total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
@@ -787,7 +788,7 @@ class SharedView extends Singleton {
     $savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
 
     // Add price promo savings
-    // For a lifetime promo, we calculate only on 24 months
+    // For a lifetime promo, we calculate only on discounted_price_period_in_month
     if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
       $product['discounted_price_period'] = $discounted_price_period_in_month;
     }
@@ -796,7 +797,6 @@ class SharedView extends Singleton {
 
     // Cashback (product need 'commission' embedded)
     $savings += Hash::get($product, 'commission.cashback_amount', 0);
-
     return $savings;
   }
 
@@ -808,14 +808,12 @@ class SharedView extends Singleton {
    * @return array An associative array where the keys are product IDs and the values are arrays of tags.
    */
   private function getPlugTag($products = []) {
-    // debug($products);
     // Initialize an empty array to store tags by product ID
     $tags = [];
 
     // Iterate through each products
     foreach ($products as $product) {
       // Initialize an empty array for the current product's tags
-      $tags = [];
 
       // Iterate through each tag (if the product has any) and add it to the product's tag array
       if (isset($product['tag'])) {
@@ -843,6 +841,7 @@ class SharedView extends Singleton {
 
     // Retrieve plug tags from the block
     $blockPlugs = self::getPlugTag($products);
+    // debug($blockPlugs);
 
     // Initialize variables for modal link and modal content
     $plugsModaleLink = "";
@@ -909,16 +908,14 @@ class SharedView extends Singleton {
 
       // Format the modal link and modal content
       $formattedModaleLink =
-        '<div class="mb-2 cursor-pointer noUnderline" data-toggle="modal" data-target="#modalPlugs_' . $modalKey . '">
-    			<div class="mb-0">
-						<span class=underlinedTitle>' . Translate::get('plug_used') . '<i class=" pl-2 fa fa-info"></i></span><br>' .
-        $plugsModaleLink .
-        '</div>
-				</div>';
+        '<p class="fs087 mt-1 mb-2 cursor-pointer noUnderline" data-toggle="modal" data-target="#modalPlugs_' . $modalKey . '">
+						<span class=underlinedTitle>' . Translate::get('plug_used') . '<i class=" pl-2 fa fa-info"></i></span><br>' 
+          . $plugsModaleLink .
+        '</p>';
 
       $formattedModale =
         '<div class="modal fade" id="modalPlugs_' . $modalKey . '" tabindex="-1" role="dialog" aria-labelledby="modal' . Translate::get('plug_used') . '" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title">
