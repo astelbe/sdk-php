@@ -100,6 +100,7 @@ class HardwareShop extends AbstractWebIntegration {
       'username'         => $username,
       'partnerID'        => $override_partner_id,
     ];
+    $params['selected_tab'] = Hash::get($_GET, 'selectedTab');
 
     // encrypt params
     if (empty($encryptionKey)) {
