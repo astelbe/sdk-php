@@ -8,7 +8,7 @@ use CakeUtility\Set;
 
 
 class Product extends SDKModel {
-	
+
 	const CONSUMER_TYPE_SMALL = 'SMALL';
 	const CONSUMER_TYPE_MEDIUM = 'MEDIUM';
 	const CONSUMER_TYPE_HEAVY = 'HEAVY';
@@ -26,19 +26,19 @@ class Product extends SDKModel {
 		'mobile_heavy_int_qt' => 0,
 	];
 	const AVAILABILITY_ZONE_ALL_COUNTRY = ['BE' => 10];
-	
+
 	protected $associated_instance_name = '\AstelSDK\API\Product';
-	
+
 	public function isProductAvailableAllCountry($product) {
 		if (!empty($product)) {
 			$productAvailabilityZone = Hash::get($product, 'availability_zone_id');
-			
+
 			return $productAvailabilityZone === self::AVAILABILITY_ZONE_ALL_COUNTRY['BE'];
 		}
-		
+
 		return false;
 	}
-	
+
 	public function isAllProductsAvailableAllCountry(array $products) {
 		$nbrProducts = count($products);
 		$isAvailable = 0;
@@ -47,10 +47,10 @@ class Product extends SDKModel {
 				$isAvailable++;
 			}
 		}
-		
+
 		return $isAvailable === $nbrProducts;
 	}
-	
+
 	public function isProductAvailableTmpProcessing($product_id, $searchTxt) {
 		$availablePostalCodes = $this->isAvailableSearch($product_id, $searchTxt);
 		// First postcode found should be available for sale
@@ -62,29 +62,29 @@ class Product extends SDKModel {
 				// Get only the first one
 				break;
 			}
-			
+
 			return $isAvailable;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function getProductNameById($id, $language) {
 		if (isset($id) && $id != '' && is_numeric($id)) {
 			$product = $this->find('first', ['id' => $id]);
-			
+
 			return Hash::get($product, 'name.' . strtoupper($language), '');
 		}
-		
+
 		return '';
 	}
-	
+
 	public function productSelectListWithID($conditions = []) {
 		$prodDB = $this->findAll($conditions);
-		
+
 		return $this->productArrayToSelectableList($prodDB);
 	}
-	
+
 	/**
 	 * @param $prodDB
 	 *
@@ -102,16 +102,16 @@ class Product extends SDKModel {
 			// Order by product name
 			asort($outList);
 		}
-		
+
 		return $outList;
 	}
-	
+
 	public function productVariableSelectListWithID() {
 		$prodDB = $this->findAll(['is_hardware' => 1, 'is_variable' => 1]);
-		
+
 		return $this->productArrayToSelectableList($prodDB);
 	}
-	
+
 	public function isType($product, $type) {
 		if (null === $product || empty($product)) {
 			return false;
@@ -131,10 +131,10 @@ class Product extends SDKModel {
 		if (strtoupper($type) === 'H' && Hash::get($product, 'is_hardware')) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function getMfitType($product) {
 		$MFIT = '';
 		if ($this->isType($product, 'M')) {
@@ -152,10 +152,10 @@ class Product extends SDKModel {
 		if ($this->isType($product, 'H')) {
 			$MFIT .= 'H';
 		}
-		
+
 		return $MFIT;
 	}
-	
+
 	/**
 	 * @param array $product
 	 *
@@ -164,39 +164,39 @@ class Product extends SDKModel {
 	public function hasProductFixPackPlayPart($product) {
 		return $this->isType($product, 'F') || $this->isType($product, 'I') || $this->isType($product, 'T');
 	}
-	
+
 	public function isMobileSolo($product) {
 		if ($this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function isFixSolo($product) {
 		if (!$this->isType($product, 'M') && $this->isType($product, 'F') && !$this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function isInternetSolo($product) {
 		if (!$this->isType($product, 'M') && !$this->isType($product, 'F') && $this->isType($product, 'I') && !$this->isType($product, 'T')) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function isTvSolo($product) {
 		if (!$this->isType($product, 'M') && !$this->isType($product, 'F') && !$this->isType($product, 'I') && $this->isType($product, 'T')) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	public function getBiggerUsageType($type = Product::CONSUMER_TYPE_SMALL) {
 		switch ($type) {
 			case Product::CONSUMER_TYPE_SMALL:
@@ -208,10 +208,10 @@ class Product extends SDKModel {
 			case Product::CONSUMER_TYPE_HEAVYINT:
 				return null;
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * @param array $product . Required to give product with embeded subscription_periods/discounts
 	 */
@@ -226,10 +226,10 @@ class Product extends SDKModel {
 				}
 			}
 		}
-		
+
 		return $countValidDiscounts;
 	}
-	
+
 	public function isUsageType($product, $play, $usage) {
 		$getPath = 'play_description.';
 		if ($play === 'M') {
@@ -240,14 +240,14 @@ class Product extends SDKModel {
 			$getPath .= 'internet.consumer_profile';
 		}
 		$usageArray = Hash::get($product, $getPath, []);
-		
+
 		return in_array($usage, $usageArray);
 	}
-	
+
 	public function isFeatured(array $product) {
 		return Hash::get($product, 'is_featured', false);
 	}
-	
+
 	public function getOptionRelationsGroupedByType($product, $sort = []) {
 		$options = Hash::get($product, 'option_relations', []);
 		$group = [];
@@ -262,10 +262,10 @@ class Product extends SDKModel {
 				$group[$play] = $optionsPlay;
 			}
 		}
-		
+
 		return $group;
 	}
-	
+
 	public function getOptionGroupsGroupedByType($product, $sort = []) {
 		$options = Hash::get($product, 'option_group_relations', []);
 		$group = [];
@@ -275,7 +275,6 @@ class Product extends SDKModel {
 					$group[Hash::get($option, 'option_group.type')][] = $option;
 				}
 			}
-			
 		}
 		if (!empty($sort)) {
 			foreach ($group as $play => $optionGroupsPlay) {
@@ -284,16 +283,15 @@ class Product extends SDKModel {
 					$optionGroupPlay = TypeTransform::sortTwoLevel($optionGroupPlay, $sort['first'], $sort['second'], $sort['first_dir'], $sort['second_dir']);
 					$group[$play][$tmpID]['option_group']['options'] = $optionGroupPlay;
 				}
-				
 			}
 		}
-		
+
 		return $group;
 	}
-	
+
 	public function getBiggestUsageInArray($usages) {
 		$biggest = null;
-		
+
 		foreach ($usages as $tmp => $usage) {
 			if ($biggest === null) {
 				$biggest = $usage;
@@ -307,10 +305,10 @@ class Product extends SDKModel {
 				$biggest = $usage;
 			}
 		}
-		
+
 		return $biggest;
 	}
-	
+
 	/**
 	 * @param array $productData Need _embed "play_description" data
 	 * @param array $_GET_params
@@ -363,10 +361,10 @@ class Product extends SDKModel {
 		if ($this->isType($productData, 'T')) {
 			$_GET_params['tv'] = 1;
 		}
-		
+
 		return $_GET_params;
 	}
-	
+
 	/*
 	 * Used to determine get comparator param for a whole caddie. Each product data pass via  this->determineComparatorGetParamsFromUsage
 	 * then results are merged using this function
@@ -391,7 +389,7 @@ class Product extends SDKModel {
 		if (isset($get2['internet_usage']) && $get2['internet_usage'] !== '') {
 			$get1['internet_usage'] = $get2['internet_usage'];
 		}
-		
+
 		return $get1;
 	}
 
@@ -400,24 +398,25 @@ class Product extends SDKModel {
 	 *
 	 * @return mixed
 	 */
-	public function orderByDisplayedPrice ($products) {
+	public function orderByDisplayedPrice($products) {
 		// Order by displayed price
 		foreach ($products as $k => $product) {
 
+			// Greg asked to order by price only in ticket #3156 front trier produit par prix plein 
 			// Regular price by default
 			$products[$k]['displayed_price'] = $product['price'];
 
 			// Ex 20€/month during 6 months instead of 25€
 			// If discounted price period is superior to 0
-			if($product['discounted_price_period'] > 0) {			
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if($product['discounted_price_period'] > 0) {			
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 
 			// Ex 20€/month instead of 25€ forever
 			// If discounted price is superior to 0 and inferior to price
-			if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
-				$products[$k]['displayed_price'] = $product['discounted_price'];
-			};
+			// if((int) $product['discounted_price'] !== 0 && $product['discounted_price'] < $product['price'] ) {
+			// 	$products[$k]['displayed_price'] = $product['discounted_price'];
+			// };
 		}
 		$ordered_products = Hash::sort($products, '{n}.displayed_price', 'asc');
 		return $ordered_products;
@@ -429,16 +428,52 @@ class Product extends SDKModel {
 	 *
 	 * return mixed (bool) false if empty | (array) tags
 	 */
-	public function getTags( $tag_group_id, $product) {
+	public function getTags($tag_group_id, $product) {
 		$tags = false;
 		$product_tags = Hash::get($product, 'tag', null);
-		if(is_array($product_tags)) {
+		if (is_array($product_tags)) {
 			foreach ($product_tags as $tag) {
-				if(Hash::get($tag, 'tag_group_id', null) == $tag_group_id) {
+				if (Hash::get($tag, 'tag_group_id', null) == $tag_group_id) {
 					$tags[] = $tag;
 				}
 			}
 		}
 		return $tags;
+	}
+
+
+	/**
+	 * @param $product
+	 *
+	 * @return float
+	 *
+	 * Product savings is monthly discount + installation and activation fee discounts + cashback.
+	 *
+	 * For cashback, product must be passed with 'commission' embedded, as value comes from partner info
+	 */
+	public function calculateSavings($product) {
+
+		// Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
+		$discounted_price_period_in_month = 12;
+
+		$savings = 0;
+		// Calculate savings on setup
+		$total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
+		$reduced_total_setup_price = Hash::get($product, 'activation_fee_reduced', 0) + Hash::get($product, 'installation_fee_reduced', 0);
+		$savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
+
+		// Add price promo savings
+		// For a lifetime promo, we calculate only on 24 months
+		if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
+			$product['discounted_price_period'] = $discounted_price_period_in_month;
+		}
+		$savings += ($product['price'] - $product['discounted_price']) * $product['discounted_price_period'];
+		// Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
+
+		// Cashback (product need 'commission' embedded)
+		$savings += Hash::get($product, 'commission.cashback_amount', 0);
+		// debug(Hash::get($product, 'commission.cashback_amount', 0));
+
+		return $savings;
 	}
 }
