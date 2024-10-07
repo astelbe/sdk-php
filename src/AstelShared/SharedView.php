@@ -559,7 +559,7 @@ class SharedView extends Singleton {
     } else {
       $setup_fee = 0;
     }
-
+   
     $css_classes = $options['css_classes'] ?: 'font-weight-bold';
 
     $html = '';
@@ -573,8 +573,8 @@ class SharedView extends Singleton {
         $html .= self::getHtmlForPriceWithPossibleReduction($installation_fee, $installation_fee_reduced, $css_classes);
         break;
       default:
-        // Get both
-        $is_solo_mobile = !empty($product['is_mobile']) && empty($product['is_fix']) && empty($product['is_internet']) && empty($product['is_tv']);
+        // Get both. From comparator, is_solo_mobile
+        $is_solo_mobile = (!empty($product['is_mobile']) && empty($product['is_fix']) && empty($product['is_internet']) && empty($product['is_tv'])) || $product['is_solo_mobile'] == true;
         if ($is_solo_mobile) {
           $html .= Translate::get('starting_costs_mobile');
         } else {
@@ -594,7 +594,7 @@ class SharedView extends Singleton {
    */
   static function getHtmlForPriceWithPossibleReduction($full_price, $reduced_price, $css_classes = '') {
     $html = '';
-    if ($full_price > $reduced_price) {
+        if ($full_price > $reduced_price) {
       $html .= '<del class="pr-2 text-crossedgrey">' . self::formatPrice($full_price) . '</del>';
       if ($reduced_price > 0) {
         $html .= '<span class="' . $css_classes . '">' . self::formatPrice($reduced_price) . '</span>';
@@ -779,7 +779,7 @@ class SharedView extends Singleton {
    * For cashback, product must be passed with 'commission' embedded, as value comes from partner info
    */
   public function calculateSavings($product) {
-    // Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
+        // Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
     $discounted_price_period_in_month = 12;
     $savings = 0;
     // Calculate savings on setup

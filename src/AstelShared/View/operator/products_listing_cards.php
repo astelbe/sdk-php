@@ -212,7 +212,7 @@ $SharedView = SharedView::getInstance();
             </p>
             <div class="setup-wrapper mb-2">
               <div class="mb-0">
-                <?= $SharedView->getProductActivationAndOrInstallationPrice($item); ?>
+              <?php echo $result['result_summary']['setup']; ?>
               </div>
               <?php
               // PRODUCT TOTAL SAVINGS
