@@ -509,7 +509,7 @@ class SharedView extends Singleton {
     $formatted_product['brand_name'] = Hash::get($product, 'brand_name');
     $formatted_product['brand_slug'] = Hash::get($product, 'brand_slug');
     $formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');
-    $formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' . $this->language, '');
+        $formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' . $this->language, '');
     $formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
     // $formatted_product['total_savings'] = $this->calculateSavings($product) ? Translate::get('total_savings', self::formatPrice($this->calculateSavings($product))) : null;
 
@@ -651,19 +651,20 @@ class SharedView extends Singleton {
    * Prepare the summary of a product to be displayed in a card - Used for front, not for COMP
    */
   static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
-
+    $AstelContext = AstelContext::getInstance();
+   
     if ($productForPlugs === null) {
       $productForPlugs = $product;
     }
-
+    
     // Cashback
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
+    $partner_name = Hash::get($AstelContext->getSession()->sessionGet('partner'), 'contact_name.' . $AstelContext->getLanguage(), '');
     if ($cashbackAmount != 0) {
-      $displayed_cashback = Translate::get('product_table_content_cashback', $placeholders = 'test') . ' -' . self::formatPrice($cashbackAmount);
+      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' -' . self::formatPrice($cashbackAmount);
     } else {
       $displayed_cashback = null;
     }
-
     // product savings
     $savings = self::calculateSavings($product);
 

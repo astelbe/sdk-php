@@ -243,7 +243,7 @@ $SharedView = SharedView::getInstance();
                 </div>
               <?php } ?>
             </div>
-            <div class="my-3">
+            <div class="my-1">
               <?php // ORDER BUTTON 
               ?>
               <?= $result['result_summary']['order_button']; ?>
