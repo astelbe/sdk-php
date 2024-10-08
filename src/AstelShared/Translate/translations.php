@@ -58,7 +58,7 @@ return [
   ],
   'switch_details'                         => [
     'FR' => "Voir les détails",
-    'NL' => "Bekijk de details",
+    'NL' => "Zie details",
   ],
   'max_activation_time'                    => [
     'FR' => "Délais moyen actuel de %s :<br>%s jours ouvrables",
