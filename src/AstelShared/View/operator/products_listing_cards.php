@@ -54,7 +54,7 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center bg-lightblue p-2 brad100 g100">
+    class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center<?= (!empty($params['title']) ? ' bg-lightblue' : '') ?> p-2 brad100 g100">
     <?php
     if (isset($params['title'])) {
     ?>
@@ -68,7 +68,7 @@ $SharedView = SharedView::getInstance();
     <div
       class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
       <?php
-      if (isset($params['display_best_seller_filter'])) {
+      if ($params['display_best_seller_filter'] == 1) {
       ?>
         <div class="d-flex g100 mr-0 mr-sm-4">
           <?php
