@@ -41,7 +41,7 @@ class OrderForm extends AbstractWebIntegration
     $out = '';
     $cssList = $this->getCSSList($allRequired);
     foreach ($cssList as $css) {
-      $out .= '<link rel="stylesheet" href="' . $css . '" />';
+      $out .= '<link rel="stylesheet" href="' . $css . '">';
     }
 
     return $out;
@@ -52,7 +52,7 @@ class OrderForm extends AbstractWebIntegration
     $out = '';
     $jsList = $this->getJSList();
     foreach ($jsList as $js) {
-      $out .= '<script type="text/javascript" src="' . $js . '"></script>';
+      $out .= '<script src="' . $js . '"></script>';
     }
 
     return $out;
