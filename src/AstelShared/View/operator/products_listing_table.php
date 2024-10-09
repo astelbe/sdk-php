@@ -176,16 +176,14 @@ $params['bonus_header'] = [
 						<?php } ?>
 
 						<?php if (Hash::Get($params, 'options.display_activation_time', false)) { ?>
-							<div class="mb-3">
+							<div class="mb-2">
 								<?= __d('product', 'Max activation time', ['%operator' => $product['brand_name'], '%activation_time' => $product['max_activation_time']]) ?>
 							</div>
 						<?php } ?>
-
-							<div class="mt-3">
-
+							<div class="mb-1">
 								<?= $product['order_button'] ?>
 							</div>
-						<div class="font-s-08 mt-3">
+						<div class="font-s-08">
 							<?= $product['activation_price'] ?>
 						</div>
 
