@@ -21,7 +21,8 @@ class AstelContext extends Singleton {
 	public $Cacher = null;
 	protected $cacheTTL = 10800; // 3 hours
 	protected $session = null;
-  protected $encryptionKey;
+  	protected $encryptionKey;
+  	protected $partner_user_id = null;
 
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null, $encryptionKey = null) {
 		if ($env === 'prod') {
@@ -162,6 +163,16 @@ class AstelContext extends Singleton {
 	public function setIsPrivate($isPrivate) {
 		$this->isPrivate = $isPrivate;
 	}
+	
+	
+	public function getPartnerUserId() {
+		return $this->partner_user_id;
+	}
+
+	public function setPartnerUserId($partner_user_id) {
+		$this->partner_user_id = $partner_user_id;
+	}
+
 	
 	/**
 	 * @return string

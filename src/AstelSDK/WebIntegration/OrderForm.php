@@ -58,6 +58,12 @@ class OrderForm extends AbstractWebIntegration
 		return $out;
 	}
 
+	/**
+	 * @param $productID
+	 * 
+	 * TODO bad design, duplicata avec getScriptOrderToken
+	 * regourper les deux fonctions en une seule ou au moins les parties commune
+	 */
 	public function getScriptOrderProduct($productID)
 	{
 		global $_GET;
@@ -85,10 +91,12 @@ class OrderForm extends AbstractWebIntegration
 			$params['data']['username'] = $username;
 		}
 
-		$partner_user_id = Hash::get($_GET, 'partner_user_id');
-		if ($partner_user_id !== null) {
-			$params['data']['partner_user_id'] = $partner_user_id;
+		// Partner user id
+		// From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
+		if(!empty($this->context->getPartnerUserId())) {
+			$params['data']['partner_user_id'] = $this->context->getPartnerUserId();
 		}
+
 		$overridePartnerId = Hash::get($_GET, 'partnerID');
 		if ($overridePartnerId !== null) {
 			$params['data']['override_partner_id'] = $overridePartnerId;
@@ -109,6 +117,12 @@ class OrderForm extends AbstractWebIntegration
 		</script>';
 	}
 
+	/**
+	 * @param $extraParams
+	 * 
+	 * TODO bad design, duplicata avec getScriptOrderToken
+	 * regourper les deux fonctions en une seule ou au moins les parties commune
+	 */
 	public function getScriptOrderToken($extraParams = [])
 	{
 		global $_GET;
@@ -130,10 +144,13 @@ class OrderForm extends AbstractWebIntegration
 		if ($username !== null) {
 			$params['data']['username'] = $username;
 		}
-		$partner_user_id = Hash::get($_GET, 'partner_user_id');
-		if ($partner_user_id !== null) {
-			$params['data']['partner_user_id'] = $partner_user_id;
+		
+		// Partner user id
+		// From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
+		if(!empty($this->context->getPartnerUserId())) {
+			$params['data']['partner_user_id'] = $this->context->getPartnerUserId();
 		}
+
 		foreach ($extraParams as $paramName => $paramValue) {
 			$params['data'][$paramName] = $paramValue;
 		}
