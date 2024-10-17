@@ -52,7 +52,7 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getScriptLoadComparator($title = null, $encryptionKey = null) {
 		global $_GET;
-
+	
     // Get the encryption key from the context if it is not provided
     if(!$encryptionKey) {
       $encryptionKey = $this->context->getEncryptionKey();
@@ -196,7 +196,7 @@ class Comparator extends AbstractWebIntegration {
 
 		if (isset($_GET['partnerID'])) {
 			$getParams['partnerID'] = $_GET['partnerID'];
-		}
+		} 
     
 		$getParams['page_title'] = $title;
 
