@@ -23,6 +23,7 @@ class AstelContext extends Singleton {
 	protected $session = null;
   	protected $encryptionKey;
   	protected $partner_user_id = null;
+	protected $partner_username = null;
 
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null, $encryptionKey = null) {
 		if ($env === 'prod') {
@@ -171,6 +172,13 @@ class AstelContext extends Singleton {
 
 	public function setPartnerUserId($partner_user_id) {
 		$this->partner_user_id = $partner_user_id;
+	}
+
+	public function getPartnerUsername() {
+		return $this->partner_username;
+	}
+	public function setPartnerUsername($partner_username) {
+		$this->partner_username = $partner_username;
 	}
 
 	
