@@ -84,17 +84,24 @@ class OrderForm extends AbstractWebIntegration {
 		$has_user_cookie_consent = $extraParams['has_user_cookie_consent'];
 	}
 
+    // Old way by url params. To be DEPRECATED
     $username = Hash::get($_GET, 'username');
     if ($username !== null) {
       $params['data']['username'] = $username;
 
     }
+   
+    // Partner username
+    // From the "espace partner", we need the partner username of the connected user to associate the order to the right user
+    if (!empty($this->context->getPartnerUsername())) {
+      $params['data']['username'] = $this->context->getPartnerUsername();
+    }
 
-	// Partner user id
-	// From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
-	if(!empty($this->context->getPartnerUserId())) {
-		$params['data']['partner_user_id'] = $this->context->getPartnerUserId();
-	}
+    // Partner user id
+    // From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
+    if (!empty($this->context->getPartnerUserId())) {
+      $params['data']['partner_user_id'] = $this->context->getPartnerUserId();
+    }
 
     $overridePartnerId = Hash::get($_GET, 'partnerID');
     if ($overridePartnerId !== null) {
@@ -138,16 +145,24 @@ class OrderForm extends AbstractWebIntegration {
     if ($hardware_product_id !== null) {
       $params['data']['hardware_product_id'] = $hardware_product_id;
     }
+
+    // Old way by url params. To be DEPRECATED
     $username = Hash::get($_GET, 'username');
     if ($username !== null) {
       $params['data']['username'] = $username;
     }
 
-	// Partner user id
-	// From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
-	if(!empty($this->context->getPartnerUserId())) {
-		$params['data']['partner_user_id'] = $this->context->getPartnerUserId();
-	}
+    // Partner username
+    // From the "espace partner", we need the partner username of the connected user to associate the order to the right user
+    if (!empty($this->context->getPartnerUsername())) {
+      $params['data']['username'] = $this->context->getPartnerUsername();
+    }
+
+    // Partner user id
+    // From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
+    if (!empty($this->context->getPartnerUserId())) {
+      $params['data']['partner_user_id'] = $this->context->getPartnerUserId();
+    }
 
     $overridePartnerId = Hash::get($_GET, 'partnerID');
     if ($overridePartnerId !== null) {
