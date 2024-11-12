@@ -895,7 +895,7 @@ class SharedView extends Singleton {
             // Add plug details to the modal link and modal content
             $plugsModaleLink .= Hash::get($plug, 'value_translated.' . $language) . '<br>';
 
-            $plugsModale .= '<h5 class="font-weight-bold text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</h5>';
+            $plugsModale .= '<p class="font-weight-bold h5 text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</p>';
             $plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $language) . '</p>';
             if (Hash::get($plug, 'banner_picture.' . $language, false)) {
               $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid"></div>';
@@ -920,9 +920,9 @@ class SharedView extends Singleton {
 					<div class="modal-dialog modal-dialog-centered modal-md" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title">
+								<div class="h5 text-black modal-title">
 									' . Translate::get('plug_used') . '
-								</h5>
+								</div>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
