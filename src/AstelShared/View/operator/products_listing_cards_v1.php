@@ -2,8 +2,8 @@
 
 use CakeUtility\Hash;
 // debug($params);
-
 /*
+  TEMPLATE LA FIBRE
 	This template received $params :	array of results with products and pricings
 	$params = [
         'title' => 'Title of the result',

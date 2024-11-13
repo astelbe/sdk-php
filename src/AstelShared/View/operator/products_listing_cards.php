@@ -1,14 +1,13 @@
 <?php
 
+/**
+ * TEMPLATE ASTEL
+ */
+
 use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
 use AstelShared\SharedView;
-
 $SharedView = SharedView::getInstance();
-// debug($SharedView);
-
-// $translator = Translate::getInstance();
-
 
 /*
   From operator pages public_html_v1/www/public_html/app/view/helper/ProductsListingCards.php
