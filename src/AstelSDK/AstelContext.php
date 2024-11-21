@@ -277,7 +277,7 @@ class AstelContext extends Singleton {
 	/**
 	 * @param string $token
 	 */
-	public static function setPartnerReferralId($partnerId) {
+	public function setPartnerReferralId($partnerId) {
 		$this->partner_referral_id = $partnerId;
 	}
 
