@@ -96,7 +96,6 @@ class ProductCompare extends APIModel {
 		}
 	}
 	
-	
 	public function paramTv($is_tv = true, $usage = 'WITH_DECODER') {
 		if (empty($this->default_params)) {
 			$this->prepare();
@@ -154,6 +153,70 @@ class ProductCompare extends APIModel {
 		}
 		$this->default_params['count'] = $limit;
 	}
+
+  /**
+   * Prepare requete from crontroller
+   * @param $params array
+   * Should contain order_by, usages, 
+   */
+	public function prepareCompareRequest($params) {
+    // Order
+    if (isset($params['order_by'])) {
+      $this->setOrder($params['order_by']);
+    }
+    // Usages
+    if (isset($params['usages'])) {
+      $this->setUsages($params['usages']);
+    }
+    // Limit
+    if (isset($params['results_count'])) {
+      $this->paramLimit($params['results_count']);
+    }
+    debug($this->default_params);
+  }
+
+	public function setOrder($orderParam) {
+		switch ($orderParam) {
+		  case 'quality_price':
+			$this->paramOrderByQualityPrice();
+			break;
+		  case 'price':
+			$this->paramOrderByPrice();
+			break;
+		  case 'quality':
+			$this->paramOrderByQuality();
+			break;
+		  case 'delay':
+			$this->paramOrderByDelay();
+			break;
+		}
+	}
+
+  public function setUsages($usages) {
+    foreach ($usages as $play_type => $usage) {
+      switch ($play_type) {
+        case 'mobile':
+          $small = Hash::get($usage, 'SMALL', 0);
+          $medium = Hash::get($usage, 'MEDIUM', 0);
+          $heavy = Hash::get($usage, 'HEAVY', 0);
+          $heavy_int = Hash::get($usage, 'HEAVY_INT', 0);
+          $this->paramMobile(true, $small, $medium, $heavy, $heavy_int);
+          break;
+        case 'internet':
+          $this->paramInternet(true, $usage);
+          break;
+        case 'tv':
+          $this->paramTv(true, $usage);
+          break;
+        case 'fix':
+          if ($usage == 1) {
+            $this->paramFix(true);
+          }
+          break;
+      }
+    }
+    // debug($this->default_params);
+  }
 	
 	public function paramOrderByPrice() {
 		if (empty($this->default_params)) {
