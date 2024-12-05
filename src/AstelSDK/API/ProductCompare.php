@@ -172,7 +172,7 @@ class ProductCompare extends APIModel {
     if (isset($params['results_count'])) {
       $this->paramLimit($params['results_count']);
     }
-    debug($this->default_params);
+    // debug($this->default_params);
   }
 
 	public function setOrder($orderParam) {
