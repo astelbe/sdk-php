@@ -55,6 +55,10 @@ use CakeUtility\Hash;
 
   <div class="row mt-4 no-gutters">
     <?php foreach ($params['products'] as $key => $result) {
+      // Limited to 12 results
+      if($key >= 12) {
+        break;
+      }
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-4 product-card">
