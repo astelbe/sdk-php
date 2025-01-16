@@ -2,6 +2,9 @@
 
 use CakeUtility\Hash;
 // debug($params);
+
+
+
 /*
   TEMPLATE LA FIBRE
 	This template received $params :	array of results with products and pricings
@@ -55,8 +58,8 @@ use CakeUtility\Hash;
 
   <div class="row mt-4 no-gutters">
     <?php foreach ($params['products'] as $key => $result) {
-      // Limited to 12 results
-      if($key >= 12) {
+      // Limited to x results. set in site Config
+      if($key >= Config::read('Product.limit_products_to_display')) {
         break;
       }
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
