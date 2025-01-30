@@ -158,7 +158,7 @@ $SharedView = SharedView::getInstance();
               <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>"
                 style="font-size: 1.1rem!important;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
                 <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
-                <span class="text-<?= $item['brand_slug']; ?>">
+                <span class="text-<?= $item['brand_slug']; ?> mobile-underline">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
                 </span>
               </h3>
@@ -348,6 +348,10 @@ $SharedView = SharedView::getInstance();
   @media screen and (max-width: 720px) {
     .information-box {
       box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .mobile-underline {
+      text-decoration: underline;
     }
   }
 </style>
