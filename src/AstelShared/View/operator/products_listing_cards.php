@@ -135,8 +135,6 @@ $SharedView = SharedView::getInstance();
             if ($cpt > 1) { ?>
               <svg class="w-100 mb-2" width="260" height="15" viewBox="0 0 260 30" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
-                <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
-                <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8" />
                 <rect x="128" width="4" height="30" fill="#1F438C" />
                 <rect x="115" y="13" width="30" height="4" fill="#1F438C" />
               </svg>
