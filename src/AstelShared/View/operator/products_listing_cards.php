@@ -54,7 +54,7 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center<?= (!empty($params['title']) ? ' bg-lightblue' : '') ?> p-2 brad100 g100">
+    class="d-flex flex-xl-row justify-content-between align-items-start align-items-xl-center<?= (!empty($params['title']) ? ' bg-lightblue border-blue' : '') ?> p-2 brad100 g100 information-box">
     <?php
     if (isset($params['title'])) {
     ?>
@@ -344,6 +344,12 @@ $SharedView = SharedView::getInstance();
   @media screen and (min-width: 576px) {
     .w-sm-auto {
       width: auto !important;
+    }
+  }
+
+  @media screen and (max-width: 720px) {
+    .information-box {
+      box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
     }
   }
 </style>
