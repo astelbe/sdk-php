@@ -114,18 +114,24 @@ $SharedView = SharedView::getInstance();
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="product-card position-relative mb-3">
-        <?php if (isset($result['result_index'])) { ?>
+        <?php if (isset($result['result_index'])) { 
+          ?>
           <div class="result-index ml-2">
             <?= $result['result_index'] ?>
           </div>
+          <?php } else {
+            $result_index = $key + 1; ?>
+            <div class="result-index ml-2">
+              <?= $result_index  ?>
+            </div>
         <?php } ?>
         <?php if ($cashback) { ?>
           <div
-            class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
-            data-toggle="modal" data-target="#pluginModalCashback"
-            style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-            <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
-          </div>
+          class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
+          data-toggle="modal" data-target="#pluginModalCashback"
+          style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+          <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+        </div>
         <?php } ?>
         <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end"
           style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
