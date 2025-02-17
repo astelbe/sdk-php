@@ -632,7 +632,7 @@ class SharedView extends Singleton {
       return $show_free_text;
     }
     // add class around decimal
-    $price = $language == 'NL' ? '<span class="currency-symbol">€</span>' . $price : $price . '&nbsp<span class="currency-symbol">€</span>';
+    $price = $language == 'NL' ? '<span class="currency-symbol">€</span>' . -$price : -$price . '&nbsp<span class="currency-symbol">€</span>';
     $exploded_price = explode(',', $price);
     if (isset($exploded_price[1])) {
       if($exploded_price[1] != '00') {
