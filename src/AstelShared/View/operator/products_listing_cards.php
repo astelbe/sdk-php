@@ -54,7 +54,7 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-lg-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue border-blue' : '') ?> p-2 brad100 g100 information-box">
+    class="d-lg-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue ' : '') ?> p-2 brad100 g100">
     <?php
     if (isset($params['title'])) {
     ?>
@@ -356,8 +356,8 @@ $SharedView = SharedView::getInstance();
 
   @media screen and (max-width: 720px) {
     .information-box {
+      border: 1px solid #dee2e6;
       box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
-      border: 1px solid #6cc1f0;
     }
 
     .mobile-underline {
