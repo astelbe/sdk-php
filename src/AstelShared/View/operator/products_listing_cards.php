@@ -133,8 +133,7 @@ $SharedView = SharedView::getInstance();
           <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
         </div>
         <?php } ?>
-        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end"
-          style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
+        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end information-box">
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $subkey => $item) {
@@ -333,6 +332,10 @@ $SharedView = SharedView::getInstance();
     grid-template-columns: repeat(4, 1fr);
   }
 
+  .information-box {
+    box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);
+  }
+
   @media screen and (max-width: 1200px) {
     .gridcontainer_listing {
       grid-template-columns: repeat(2, 1fr);
@@ -354,6 +357,7 @@ $SharedView = SharedView::getInstance();
   @media screen and (max-width: 720px) {
     .information-box {
       box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
+      border: 1px solid #6cc1f0;
     }
 
     .mobile-underline {
