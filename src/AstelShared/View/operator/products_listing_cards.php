@@ -54,11 +54,11 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-flex flex-xl-row justify-content-between align-items-start align-items-xl-center<?= (!empty($params['title']) ? ' bg-lightblue border-blue' : '') ?> p-2 brad100 g100 information-box">
+    class="d-lg-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue border-blue' : '') ?> p-2 brad100 g100 information-box">
     <?php
     if (isset($params['title'])) {
     ?>
-      <h2 class="m-0 fs125">
+      <h2 class="m-0 fs125 align-content-center">
         <?= $params['title']; ?>
       </h2>
     <?php
@@ -66,11 +66,11 @@ $SharedView = SharedView::getInstance();
     ?>
 
     <div
-      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
+      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto g100">
       <?php
       if ($params['display_best_seller_filter'] == 1) {
       ?>
-        <div class="d-flex g100 mr-0 mr-sm-4">
+        <div class="d-md-flex g100 mr-0 mr-sm-4">
           <?php
           $currentUrl = $params['url'];
           // Remove any existing query parameters
@@ -81,7 +81,7 @@ $SharedView = SharedView::getInstance();
           $allUrl = $baseUrl . "?display=all";
           ?>
           <a href="<?= htmlspecialchars($bestsellersUrl); ?>"
-            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
+            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap mr-2"
             rel="nofollow">
             <?= Translate::get('ficheOperateur_display_bestsellers'); ?>
           </a>
@@ -95,7 +95,7 @@ $SharedView = SharedView::getInstance();
       }
       ?>
 
-      <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0">
+      <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-2 mt-sm-0">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
           id="toggle-product-listing-button-<?= $params['id'] ?>"
           onclick="toggleProductListingCards('<?= $params['id'] ?>')">
