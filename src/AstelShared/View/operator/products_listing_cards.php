@@ -70,7 +70,7 @@ $SharedView = SharedView::getInstance();
       <?php
       if ($params['display_best_seller_filter'] == 1) {
       ?>
-        <div class="d-md-flex g100 mr-0 mr-sm-4">
+        <div class="bestseller-filters d-md-flex g100 mr-0 mr-sm-4">
           <?php
           $currentUrl = $params['url'];
           // Remove any existing query parameters
@@ -353,13 +353,17 @@ $SharedView = SharedView::getInstance();
       width: auto !important;
     }
   }
-
+  
   @media screen and (max-width: 720px) {
     .information-box {
       border: 1px solid #dee2e6;
       box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
     }
-
+    
+    .bestseller-filters {
+      margin-top: 1rem;
+    }
+    
     .mobile-underline {
       text-decoration: underline;
     }
