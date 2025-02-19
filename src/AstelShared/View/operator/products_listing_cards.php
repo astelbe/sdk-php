@@ -54,7 +54,7 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-lg-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue ' : '') ?> p-2 brad100 g100">
+    class="d-xl-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue ' : '') ?> p-2 brad100 g100">
     <?php
     if (isset($params['title'])) {
     ?>
@@ -66,7 +66,7 @@ $SharedView = SharedView::getInstance();
     ?>
 
     <div
-      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto g100">
+      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
       <?php
       if ($params['display_best_seller_filter'] == 1) {
       ?>
@@ -95,7 +95,7 @@ $SharedView = SharedView::getInstance();
       }
       ?>
 
-      <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-2 mt-sm-0">
+      <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
           id="toggle-product-listing-button-<?= $params['id'] ?>"
           onclick="toggleProductListingCards('<?= $params['id'] ?>')">
