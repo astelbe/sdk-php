@@ -662,7 +662,7 @@ class SharedView extends Singleton {
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
     $partner_name = Hash::get($AstelContext->getSession()->sessionGet('partner'), 'contact_name.' . $AstelContext->getLanguage(), '');
     if ($cashbackAmount != 0) {
-      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' -' . self::formatPrice($cashbackAmount);
+      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' ' . self::formatPrice("-".$cashbackAmount);
     } else {
       $displayed_cashback = null;
     }

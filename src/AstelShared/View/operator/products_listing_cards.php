@@ -54,11 +54,11 @@ $SharedView = SharedView::getInstance();
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
   <div
-    class="d-flex flex-column flex-xl-row justify-content-between align-items-start align-items-xl-center<?= (!empty($params['title']) ? ' bg-lightblue' : '') ?> p-2 brad100 g100">
+    class="d-xl-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue ' : '') ?> p-2 brad100 g100">
     <?php
     if (isset($params['title'])) {
     ?>
-      <h2 class="m-0 fs125">
+      <h2 class="m-0 fs125 align-content-center">
         <?= $params['title']; ?>
       </h2>
     <?php
@@ -70,7 +70,7 @@ $SharedView = SharedView::getInstance();
       <?php
       if ($params['display_best_seller_filter'] == 1) {
       ?>
-        <div class="d-flex g100 mr-0 mr-sm-4">
+        <div class="bestseller-filters d-md-flex g100 mr-0 mr-sm-4">
           <?php
           $currentUrl = $params['url'];
           // Remove any existing query parameters
@@ -81,7 +81,7 @@ $SharedView = SharedView::getInstance();
           $allUrl = $baseUrl . "?display=all";
           ?>
           <a href="<?= htmlspecialchars($bestsellersUrl); ?>"
-            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
+            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap mr-2"
             rel="nofollow">
             <?= Translate::get('ficheOperateur_display_bestsellers'); ?>
           </a>
@@ -95,7 +95,7 @@ $SharedView = SharedView::getInstance();
       }
       ?>
 
-      <div class="d-flex align-items-center toggleProductListingDetails mt-2 mt-sm-0">
+      <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
           id="toggle-product-listing-button-<?= $params['id'] ?>"
           onclick="toggleProductListingCards('<?= $params['id'] ?>')">
@@ -114,29 +114,32 @@ $SharedView = SharedView::getInstance();
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="product-card position-relative mb-3">
-        <?php if (isset($result['result_index'])) { ?>
+        <?php if (isset($result['result_index'])) { 
+          ?>
           <div class="result-index ml-2">
             <?= $result['result_index'] ?>
           </div>
+          <?php } else {
+            $result_index = $key + 1; ?>
+            <div class="result-index ml-2">
+              <?= $result_index  ?>
+            </div>
         <?php } ?>
         <?php if ($cashback) { ?>
           <div
-            class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
-            data-toggle="modal" data-target="#pluginModalCashback"
-            style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-            <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
-          </div>
+          class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
+          data-toggle="modal" data-target="#pluginModalCashback"
+          style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+          <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+        </div>
         <?php } ?>
-        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end"
-          style="box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);">
+        <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end information-box">
           <?php
           $cpt = 1; // To display "+"
           foreach ($result['products'] as $subkey => $item) {
             if ($cpt > 1) { ?>
               <svg class="w-100 mb-2" width="260" height="15" viewBox="0 0 260 30" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
-                <line y1="15.5" x2="110" y2="15.5" stroke="#D8D8D8" />
-                <line x1="150" y1="15.5" x2="260" y2="15.5" stroke="#D8D8D8" />
                 <rect x="128" width="4" height="30" fill="#1F438C" />
                 <rect x="115" y="13" width="30" height="4" fill="#1F438C" />
               </svg>
@@ -160,7 +163,7 @@ $SharedView = SharedView::getInstance();
               <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>"
                 style="font-size: 1.1rem!important;<?= ($cpt == 1 ? 'min-height: 46px;' : '') ?>">
                 <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
-                <span class="text-<?= $item['brand_slug']; ?>">
+                <span class="text-<?= $item['brand_slug']; ?> mobile-underline">
                   <?= $item['brand_name']; ?> <?= $item['short_name']; ?>
                 </span>
               </h3>
@@ -329,6 +332,10 @@ $SharedView = SharedView::getInstance();
     grid-template-columns: repeat(4, 1fr);
   }
 
+  .information-box {
+    box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.1);
+  }
+
   @media screen and (max-width: 1200px) {
     .gridcontainer_listing {
       grid-template-columns: repeat(2, 1fr);
@@ -344,6 +351,21 @@ $SharedView = SharedView::getInstance();
   @media screen and (min-width: 576px) {
     .w-sm-auto {
       width: auto !important;
+    }
+  }
+  
+  @media screen and (max-width: 720px) {
+    .information-box {
+      border: 1px solid #dee2e6;
+      box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
+    }
+    
+    .bestseller-filters {
+      margin-top: 1rem;
+    }
+    
+    .mobile-underline {
+      text-decoration: underline;
     }
   }
 </style>
