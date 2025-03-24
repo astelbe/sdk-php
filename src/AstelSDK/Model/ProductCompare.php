@@ -56,6 +56,9 @@ class ProductCompare extends SDKModel {
 		}
 	}
 	
+	/**
+	 * Keep only results composed by 1 single product
+	 */
 	public function resultsExtractOnly1ProductResult(array $results, $paramFindProduct = []) {
 		$Product = Product::getInstance();
 		$extracted = [];
@@ -64,12 +67,16 @@ class ProductCompare extends SDKModel {
 				$product_id = array_keys($result['product_ids'])[0];
 				$thisProduct = [];
 				$paramFindProduct = Hash::merge($paramFindProduct, ['id' => $product_id]);
-				$thisProduct['product'] = $Product->find('first', $paramFindProduct);
-				$thisProduct['result'] = $result;
-				$extracted[] = $thisProduct;
+				unset($paramFindProduct['tag_ids']); // tag_ids causes no results...		
+				$get_product = $Product->find('all', $paramFindProduct);
+				// Some product may be escape because of the restricted brand per partner
+				if(!empty($get_product)){
+					$thisProduct['product'] = $Product->find('first', $paramFindProduct);
+					$thisProduct['result'] = $result;
+					$extracted[] = $thisProduct;
+				}
 			}
 		}
-		
 		return $extracted;
 	}
 
