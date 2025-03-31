@@ -870,4 +870,34 @@ class SharedView extends Singleton {
       return null;
     }
   }
+
+
+  /**
+   * Get the label to be displayed on top of La fibre cards
+   * @param product. Must contain embeded tags
+   * @param plugIds. String List of phone plug tags from website config
+   */
+  public function getPlugTypeLabel ($product, $plugIds) {
+    $plugTypeLabel = null;
+    $plugIds = explode(',', $plugIds);
+    $tags = Hash::get($product, 'tag', null);
+    if (is_array($tags)) {
+      $plugs = [];
+      foreach ($tags as $tag) {
+        // Check if tag is a used phone plug
+        if ($tag['tag_group_id'] == 15 && in_array($tag['id'], $plugIds)) {
+          if ($tag['id'] == 117) { // proximus
+            $plugTypeLabel =  Translate::get('fiber_to_the_home');
+            break;
+          }
+          if ($tag['id'] == 113 || $tag['id'] == 137) { // voo & telenet
+            $plugTypeLabel =  Translate::get('hybrid_fiber_coax');
+            break;
+          }
+        }
+      }
+    }
+
+    return $plugTypeLabel;
+  }
 }

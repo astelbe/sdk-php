@@ -52,6 +52,14 @@ return [
     'FR' => "Prise nécessaire :",
     'NL' => "Stopcontact vereist :",
   ],
+  'fiber_to_the_home'                      => [
+    'FR' => "Fiber-to-the-home",
+    'NL' => "Fiber-to-the-home",
+  ],
+  'hybrid_fiber_coax'                      => [
+    'FR' => "Hybrid Fiber-Coax",
+    'NL' => "Hybrid Fiber-Coax",
+  ],
   'product_table_content_cashback'         => [
     'FR' => "+ Promo %s",
     'NL' => "+ %s-promo",
