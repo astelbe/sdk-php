@@ -145,7 +145,7 @@ return [
     'NL' => "<span class=\"\">Onbeperkt</span> bellen",
   ],
   'included_minutes_calls'                 => [
-    'FR' => "Appels <span class=\"\">%s</span> min",
+    'FR' => "<span class=\"\">%s</span> min",
     'NL' => "<span class=\"\">%s</span> min",
   ],
   'included_data_volume_unlimited'         => [
@@ -161,8 +161,8 @@ return [
     'NL' => "<span class=\"\">Onbeperkt</span> smsen",
   ],
   'included_sms'                           => [
-    'FR' => "SMS inclus",
-    'NL' => "",
+    'FR' => "%s SMS",
+    'NL' => "%s SMS",
   ],
 
 
