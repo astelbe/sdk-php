@@ -221,7 +221,7 @@ class SharedView extends Singleton {
       $data['bandwidth_volume'] = self::translatePlayDescription('play_description.internet.bandwidth_volume', $product);
       // display upload speed in summary for la fibre
       if ($version == 'laFibre') {
-        $data['bandwidth_upload'] = self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
+        $data['bandwidth_upload'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
       }
       $extra_data = [];
       //  display upload speed in details for Astel
@@ -876,6 +876,7 @@ class SharedView extends Singleton {
    * Get the label to be displayed on top of La fibre cards
    * @param product. Must contain embeded tags
    * @param plugIds. String List of phone plug tags from website config
+   * return
    */
   public function getPlugTypeLabel ($product, $plugIds) {
     $plugTypeLabel = null;
@@ -887,11 +888,17 @@ class SharedView extends Singleton {
         // Check if tag is a used phone plug
         if ($tag['tag_group_id'] == 15 && in_array($tag['id'], $plugIds)) {
           if ($tag['id'] == 117) { // proximus
-            $plugTypeLabel =  Translate::get('fiber_to_the_home');
+            $plugTypeLabel =  [
+              'content' => Translate::get('fiber_to_the_home'),
+              'color' => 'bg-success',
+            ];
             break;
           }
           if ($tag['id'] == 113 || $tag['id'] == 137) { // voo & telenet
-            $plugTypeLabel =  Translate::get('hybrid_fiber_coax');
+            $plugTypeLabel =  [
+              'content' => Translate::get('hybrid_fiber_coax'),
+              'color' => 'bg-grey',
+            ];
             break;
           }
         }
