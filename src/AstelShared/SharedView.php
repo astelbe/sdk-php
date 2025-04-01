@@ -41,7 +41,7 @@ class SharedView extends Singleton {
   }
 
   /**
-   * TODO Deprecated replaced by translatePlayDescription
+   * TODO Deprecated replaced by translatePlayDescription - but still used for internet-bruxelles and table style display (vs card)
    * @param $playDescriptionPath in $product array
    * @param $product
    * @param string $version. 'front' or 'cake', to get the domain name used in translation keys
@@ -134,84 +134,7 @@ class SharedView extends Singleton {
     }
   }
 
-  // TODO deprecated with getMobileDetails
-  static function getMobileData($product, $version = 'front', $language = 'fr') {
-    $Product = Product::getInstance();
-    if ($Product->isType($product, 'M')) {
-      $data = [];
-      $data['included_data_volume'] = self::getTranslatedPlayDescription(
-        'play_description.mobile.included_data_volume',
-        $product,
-        $version
-      );
-      $data['included_sms'] = self::getTranslatedPlayDescription(
-        'play_description.mobile.included_sms',
-        $product,
-        $version
-      );
-      $data['included_minutes_calls'] = self::getTranslatedPlayDescription(
-        'play_description.mobile.included_minutes_calls',
-        $product,
-        $version
-      );
-      $data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-' . $key . '">' . Hash::get($product, 'play_description.mobile.price_description.' . $language) . '</p>';
-      return $data;
-    } else {
-      return false;
-    }
-  }
-
-  // TODO deprecated with getInternetDetails
-  static function getInternetData($product, $version = 'front', $language = 'fr') {
-    $Product = Product::getInstance();
-    if ($Product->isType($product, 'I')) {
-      $data = [];
-      $data['bandwidth_download'] = self::getTranslatedPlayDescription('play_description.internet.bandwidth_download', $product, $version);
-      $data['bandwidth_volume'] = self::getTranslatedPlayDescription('play_description.internet.bandwidth_volume', $product, $version);
-      $data['bandwidth_upload'] = self::getTranslatedPlayDescription('play_description.internet.bandwidth_upload', $product, $version);
-      // $data['is_wifi_modem_provided'] = self::getTranslatedPlayDescription( 'play_description.internet.is_wifi_modem_provided', $product, $version);
-      $is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
-      $data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-' . $key . '">' . Hash::get($product, 'play_description.internet.price_description.' . $language) . '</p>';
-      return $data;
-    } else {
-      return false;
-    }
-  }
-  // TODO deprecated with getTVDetails
-  static function getTVData($product, $version = 'front', $language = 'fr') {
-    $Product = Product::getInstance();
-    if ($Product->isType($product, 'T')) {
-      $data = [];
-      //			$max_tv_channel = Hash::get($product, 'play_description.tv.size_number_tv_max');
-      $decoderApplication = Hash::get($product, 'play_description.tv.decoder_application');
-      $data['number_tv_channel'] = self::getTranslatedPlayDescription('play_description.tv.number_tv_channel', $product, $version);
-      if (Hash::get($product, 'play_description.tv.decoder_application')) {
-        $data['decoder_application'] = self::getTranslatedPlayDescription('play_description.tv.decoder_application', $product, $version, $decoderApplication);
-      } elseif (Hash::get($product, 'play_description.tv.decoder_only')) {
-        //				$data['decoder_only'] = self::getTranslatedPlayDescription( 'play_description.tv.decoder_only', $product, $version, $decoderApplication);
-        $data['decoder_only'] = "<span> Décodeur (max 1) (pas d'application TV) </span>";
-      } else {
-        $data['application_only'] = self::getTranslatedPlayDescription('play_description.tv.application_only', $product, $version, $decoderApplication);
-      }
-      $data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-' . $key . '">' . Hash::get($product, 'play_description.tv.price_description.' . $language) . '</p>';
-      return $data;
-    } else {
-      return false;
-    }
-  }
-
-  // TODO deprecated with getFixDetails
-  static function getFixData($product, $version = 'front', $language = 'fr') {
-    $Product = Product::getInstance();
-    if ($Product->isType($product, 'F')) {
-      $data = [];
-      $data['included_minutes_calls'] = self::getTranslatedPlayDescription('play_description.fix.included_minutes_calls', $product, $version);
-      $data['price_description'] = '<p class="sub-details-infos toggle-details toggle-details-' . $key . '">' . Hash::get($product, 'play_description.fix.price_description.' . $language) . '</p>';
-      return $data;
-    } else {
-      return false;
-    }
-  }
+ 
 
 
   /**
@@ -238,13 +161,11 @@ class SharedView extends Singleton {
 
   public function renderStar($quality_score) {
 
-
     $html = '<div class="d-inline">';
 
     $quality = $quality_score / 20;
     $quality = ceil($quality * 2) / 2;
-?>
-    <?php
+
     $s = 0;
     $fullStars = floor($quality);
     while ($s < $fullStars) {
@@ -269,8 +190,6 @@ class SharedView extends Singleton {
     return $html;
   }
 
-
-
   public function getGsmDetails($product) {
     $Product = Product::getInstance();
     if ($Product->isType($product, 'M')) {
@@ -294,14 +213,21 @@ class SharedView extends Singleton {
     }
   }
 
-  public function getInternetDetails($product) {
+  public function getInternetDetails($product, $version = null) {
     $Product = Product::getInstance();
     if ($Product->isType($product, 'I')) {
       $data = [];
       $data['bandwidth_download'] = self::translatePlayDescription('play_description.internet.bandwidth_download', $product);
       $data['bandwidth_volume'] = self::translatePlayDescription('play_description.internet.bandwidth_volume', $product);
+      // display upload speed in summary for la fibre
+      if ($version == 'laFibre') {
+        $data['bandwidth_upload'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
+      }
       $extra_data = [];
-      $extra_data['bandwidth_upload'] = self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
+      //  display upload speed in details for Astel
+      if ($version != 'laFibre') {
+        $extra_data['bandwidth_upload'] = self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
+      }
       $is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
       if ($is_wifi_modem_provided != 0) {
         $extra_data['is_wifi_modem_provided'] = "Modem Wi-Fi";
@@ -495,10 +421,11 @@ class SharedView extends Singleton {
   /**
    * Format a product to be displayed in a card
    * @param $product
+   * @param $version. Used for la-fibre, to have differetn display
    * @return array
    * Used in operator page and Compare page
    */
-  public function formatProductForCard($product) {
+  public function formatProductForCard($product, $version = null) {
     $language = AstelContext::getInstance()->getLanguage();
     $formatted_product = [];
 
@@ -515,7 +442,7 @@ class SharedView extends Singleton {
     // $formatted_product['total_savings'] = $this->calculateSavings($product) ? Translate::get('total_savings', self::formatPrice($this->calculateSavings($product))) : null;
 
     // Product play details
-    $formatted_product['plays']['internet'] = $this->getInternetDetails($product);
+    $formatted_product['plays']['internet'] = $this->getInternetDetails($product, $version);
     $formatted_product['plays']['tv'] = $this->getTVDetails($product);
     $formatted_product['plays']['fix'] = $this->getFixDetails($product);
     $formatted_product['plays']['mobile'] = $this->getGsmDetails($product);
@@ -942,5 +869,42 @@ class SharedView extends Singleton {
       // Return null if there are no plugs in the block
       return null;
     }
+  }
+
+
+  /**
+   * Get the label to be displayed on top of La fibre cards
+   * @param product. Must contain embeded tags
+   * @param plugIds. String List of phone plug tags from website config
+   * return
+   */
+  public function getPlugTypeLabel ($product, $plugIds) {
+    $plugTypeLabel = null;
+    $plugIds = explode(',', $plugIds);
+    $tags = Hash::get($product, 'tag', null);
+    if (is_array($tags)) {
+      $plugs = [];
+      foreach ($tags as $tag) {
+        // Check if tag is a used phone plug
+        if ($tag['tag_group_id'] == 15 && in_array($tag['id'], $plugIds)) {
+          if ($tag['id'] == 117) { // proximus
+            $plugTypeLabel =  [
+              'content' => Translate::get('fiber_to_the_home'),
+              'color' => 'bg-success',
+            ];
+            break;
+          }
+          if ($tag['id'] == 113 || $tag['id'] == 137) { // voo & telenet
+            $plugTypeLabel =  [
+              'content' => Translate::get('hybrid_fiber_coax'),
+              'color' => 'bg-grey',
+            ];
+            break;
+          }
+        }
+      }
+    }
+
+    return $plugTypeLabel;
   }
 }
