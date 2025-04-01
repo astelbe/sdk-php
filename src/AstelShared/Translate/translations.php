@@ -52,6 +52,14 @@ return [
     'FR' => "Prise nécessaire :",
     'NL' => "Stopcontact vereist :",
   ],
+  'fiber_to_the_home'                      => [
+    'FR' => "Fiber-to-the-home",
+    'NL' => "Fiber-to-the-home",
+  ],
+  'hybrid_fiber_coax'                      => [
+    'FR' => "Hybrid Fiber-Coax",
+    'NL' => "Hybrid Fiber-Coax",
+  ],
   'product_table_content_cashback'         => [
     'FR' => "+ Promo %s",
     'NL' => "+ %s-promo",
@@ -137,7 +145,7 @@ return [
     'NL' => "<span class=\"\">Onbeperkt</span> bellen",
   ],
   'included_minutes_calls'                 => [
-    'FR' => "Appels <span class=\"\">%s</span> min",
+    'FR' => "<span class=\"\">%s</span> min",
     'NL' => "<span class=\"\">%s</span> min",
   ],
   'included_data_volume_unlimited'         => [
@@ -153,8 +161,8 @@ return [
     'NL' => "<span class=\"\">Onbeperkt</span> smsen",
   ],
   'included_sms'                           => [
-    'FR' => "SMS inclus",
-    'NL' => "",
+    'FR' => "%s SMS",
+    'NL' => "%s SMS",
   ],
 
 

@@ -58,6 +58,7 @@ use CakeUtility\Hash;
 
   <div class="row mt-4 no-gutters">
     <?php foreach ($params['products'] as $key => $result) {
+      // debug($result);
       // Limited to x results. set in site Config
       if($key >= Config::read('Product.limit_products_to_display')) {
         break;
@@ -71,9 +72,9 @@ use CakeUtility\Hash;
           </div>
         <?php } ?>
         <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
-          <?php if ($cashback) { ?>
-            <div class="mt-n3 ml-3 py-0 px-3 shadow cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount modalClick " data-toggle="modal" data-target="#pluginModalCashback" style="color:#fff; background-color: #f23078; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-              <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+          <?php if (!empty($result['result_summary']['phone_plug_label'])) { ?>
+            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color']?>"  style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+              <?= $result['result_summary']['phone_plug_label']['content'] ?> 
             </div>
           <?php } ?>
           <div class="<?= $cashback ? 'mt-4' : 'mt-1' ?>">
