@@ -421,7 +421,7 @@ class SharedView extends Singleton {
   /**
    * Format a product to be displayed in a card
    * @param $product
-   * @param $version. Used for la-fibre, to have differetn display
+   * @param $version. Used for la-fibre, to have different display
    * @return array
    * Used in operator page and Compare page
    */
@@ -439,13 +439,16 @@ class SharedView extends Singleton {
     $formatted_product['brand_logo'] = Hash::get($product, 'brand.fact_sheet.logo.small');
     $formatted_product['product_sheet_url'] = Hash::get($product, 'web.product_sheet_url.' . $language, '');
     $formatted_product['brand_bg_color'] = $this->getBrandColorBg(Hash::get($product, 'brand.fact_sheet.color_code'));
-    // $formatted_product['total_savings'] = $this->calculateSavings($product) ? Translate::get('total_savings', self::formatPrice($this->calculateSavings($product))) : null;
 
     // Product play details
     $formatted_product['plays']['internet'] = $this->getInternetDetails($product, $version);
     $formatted_product['plays']['tv'] = $this->getTVDetails($product);
     $formatted_product['plays']['fix'] = $this->getFixDetails($product);
     $formatted_product['plays']['mobile'] = $this->getGsmDetails($product);
+
+    // Pricing
+    // Done in summary (getProductResultSummary)
+
     return $formatted_product;
   }
 
@@ -468,6 +471,7 @@ class SharedView extends Singleton {
   }
 
   /**
+   * Get setup fee (activation + installation) to be displayed in the product card
    * @param $product
    * @param $getOnlyActivationOrInstallation must be 'activation' or 'installation'. Used to get only one of those prices
    * @return string html of prices to be displayed
@@ -477,10 +481,19 @@ class SharedView extends Singleton {
     if (empty($product)) {
       return '';
     }
-    $activation_fee = Hash::get($product, 'activation_fee', false);
-    $installation_fee = Hash::get($product, 'installation_fee', false);
-    $activation_fee_reduced = Hash::get($product, 'activation_fee_reduced', 0);
-    $installation_fee_reduced = Hash::get($product, 'installation_fee_reduced', 0);
+
+    // Handle vat
+    $VatCalculation = VatCalculation::getInstance();
+    $websiteScopeProfessional = AstelContext::getInstance()->getIsProfessional();
+    $productIsEncodedHTVA = Hash::get($product, 'is_htva', 0);
+    
+    // Get activation and installation fees
+    $activation_fee = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'activation_fee', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+    $installation_fee = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'installation_fee', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+    $activation_fee_reduced = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'activation_fee_reduced', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+    $installation_fee_reduced = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'installation_fee_reduced', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
+    
+    // Calculate setup fee
     $setup_fee_reduced = $activation_fee_reduced + $installation_fee_reduced;
     if ($activation_fee || $installation_fee) {
       $setup_fee = $activation_fee + $installation_fee;
@@ -539,6 +552,13 @@ class SharedView extends Singleton {
     return $html;
   }
 
+  /**
+   * Format a price to be displayed in a card.
+   * It will add the euro symbol and format the decimal part
+   * @param $price
+   * @param string $show_free_text. Alternatively, display 'free' if price is 0
+   * @return string
+   */
   static function formatPrice($price, $show_free_text = '') {
     $language = AstelContext::getInstance()->getLanguage();
     $price = floatval($price);
@@ -547,14 +567,9 @@ class SharedView extends Singleton {
     if ($floatingpart == 0) {
       $price = $intPart;
     } else {
-      // purpose of this condition ?
-      if ($language == 'FR') {
-        $price = number_format(round($price, 2), 2, ',', '.');
-      } elseif ($language == 'NL') {
-        $price = number_format(round($price, 2), 2, ',', '.');
-      }
+      $price = number_format(round($price, 2), 2, ',', '.');
     }
-
+    // if price is 0, display $show_free_text
     if ($price == 0 && $show_free_text != '') {
       return $show_free_text;
     }
@@ -708,14 +723,20 @@ class SharedView extends Singleton {
    * For cashback, product must be passed with 'commission' embedded, as value comes from partner info
    */
   public function calculateSavings($product) {
-        // Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
+
+    // Handle vat
+    $VatCalculation = VatCalculation::getInstance();
+    $websiteScopeProfessional = AstelContext::getInstance()->getIsProfessional();
+    $productIsEncodedHTVA = Hash::get($product, 'is_htva', 0);
+
+    // Config default price period if promo are unlimited - we calculate promo savings only for a restricted period
     $discounted_price_period_in_month = 12;
     $savings = 0;
     // Calculate savings on setup
     $total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
     $reduced_total_setup_price = Hash::get($product, 'activation_fee_reduced', 0) + Hash::get($product, 'installation_fee_reduced', 0);
     $savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
-
+    
     // Add price promo savings
     // For a lifetime promo, we calculate only on discounted_price_period_in_month
     if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
@@ -723,8 +744,11 @@ class SharedView extends Singleton {
     }
     $savings += ($product['price'] - $product['discounted_price']) * $product['discounted_price_period'];
     // Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
+    
+    // Adjust savings for HTVA if needed, before adding cashback
+    $savings = $VatCalculation->calculatePriceForceHTVA($savings, $productIsEncodedHTVA, $websiteScopeProfessional);
 
-    // Cashback (product need 'commission' embedded)
+    // Cashback (product need 'commission' embedded) Cashback always TVAC
     $savings += Hash::get($product, 'commission.cashback_amount', 0);
     return $savings;
   }
