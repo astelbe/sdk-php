@@ -26,7 +26,7 @@ return [
   ],
   'EVAT'                                   => [
     'FR' => " HTVA",
-    'NL' => " exl BTW",
+    'NL' => " excl. BTW",
   ],
   'during_months'                          => [
     'FR' => "pendant %s mois",
@@ -72,15 +72,6 @@ return [
     'FR' => "Délais moyen actuel de %s :<br>%s jours ouvrables",
     'NL' => "Huidige gemiddelde termijn van %s:<br>%s werkdagen",
   ],
-  ''                                       => [
-    'FR' => "",
-    'NL' => "",
-  ],
-  ''                                       => [
-    'FR' => "",
-    'NL' => "",
-  ],
-
 
   // PLAYS
   // Internet
