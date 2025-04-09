@@ -210,7 +210,19 @@ class Comparator extends AbstractWebIntegration {
 	public function getScriptLoadComparatorParameterBar($encryptionKey = null) {
 		$paramsURL = $this->getParamsUrl(null, $encryptionKey);
 		return '<script>
-			getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			// Make sure script works when navigating back to the page
+			var comparatorBarIsLoaded = false;
+			
+			// Ensure script is loaded even when navigating back to the page
+			window.addEventListener("pageshow", function(event) {
+				getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+				comparatorBarIsLoaded = true;
+			});
+
+			// Ensure script is loaded if event pageshow is not supported
+			if (!comparatorBarIsLoaded) {
+				getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			}
 		</script>';
 	}
 	
