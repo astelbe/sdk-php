@@ -29,6 +29,7 @@ class OrderForm extends AbstractWebIntegration {
     $order_form_js = [
       'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
       'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
+      'https://maps.googleapis.com/maps/api/js?key=AIzaSyD8NIuA9OgEe-UvCB5ITr_83hucmvukkrs&libraries=places&loading=async',
     ];
     return array_merge($typeahead_js, $order_form_js);
   }
