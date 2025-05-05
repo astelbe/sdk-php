@@ -24,6 +24,7 @@ class AstelContext extends Singleton {
   	protected $encryptionKey;
   	protected $partner_user_id = null;
 	protected $partner_username = null;
+	public $apiKeyGooglePlace = 'AIzaSyD8NIuA9OgEe-UvCB5ITr_83hucmvukkrs';
 
 	public function __construct($env = 'sta', $partnerToken = '', $debug = false, $logPath = '', $cacherObject = null, $encryptionKey = null) {
 		if ($env === 'prod') {
