@@ -241,9 +241,9 @@ return [
     'FR' => "TV + Téléphone",
     'NL' => "TV + Telefonie",
   ],
-  ''                                       => [
-    'FR' => "",
-    'NL' => "",
+  'for life'                               => [
+    'FR' => "à vie",
+    'NL' => "voor het leven",
   ],
 
 

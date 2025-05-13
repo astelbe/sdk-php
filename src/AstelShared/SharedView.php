@@ -731,7 +731,7 @@ class SharedView extends Singleton {
         $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' .  $freeText . ' </b></span>';
       } else {
         // "20 € / month"
-        $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($discountedPrice) . ' </b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' fs125 font-weight-bold ' . (!$linebreak_after_main_price ? 'pr-2' : '') . '">' . $priceTypeText . '</span> ';
+        $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($discountedPrice) . ' </b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . '  ' . (!$linebreak_after_main_price ? 'pr-2' : '') . '">' . $priceTypeText . '</span> ';
       }
       // linebreak
       if ($linebreak_after_main_price) {
@@ -746,6 +746,8 @@ class SharedView extends Singleton {
         }
         // "then"
         $displayedPriceText .= ' <span>' . Translate::get('price_after') . '</span> ';
+      } else {
+        $displayedPriceText .= '<span class="pr-1">' . Translate::get('for life') . ' </span>';
       }
       // "30€ /month"
       $crossPriceIfDuration = !$isDuration; // del price if discount is forever
