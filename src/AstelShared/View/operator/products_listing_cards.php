@@ -94,6 +94,7 @@ $SharedView = SharedView::getInstance();
       }
       ?>
 
+     
       <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
           id="toggle-product-listing-button-<?= $params['id'] ?>"
@@ -187,9 +188,16 @@ $SharedView = SharedView::getInstance();
                     <?= $play['description'] ?>
                   </p>
               <?php
-                  // echo $item['total_savings'];
                 }
               } ?>
+                <a href="#" onclick="toggleProductListingCards('<?= $params['id'] ?>'); return false;"
+                  role="button"
+                  aria-expanded="false"
+                  aria-controls="toggleProductListingDetails__content"
+                  class="d-block w-100 text-center text-blue toggleProductListingDetails">
+                  <?= Translate::get('switch_details'); ?> <i class="fa fa-chevron-down"></i>
+
+                </a>
             </div>
           <?php
             $cpt++;
