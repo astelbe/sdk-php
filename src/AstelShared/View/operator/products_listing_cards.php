@@ -194,9 +194,15 @@ $SharedView = SharedView::getInstance();
                   role="button"
                   aria-expanded="false"
                   aria-controls="toggleProductListingDetails__content"
-                  class="d-block w-100 text-center text-blue toggleProductListingDetails">
-                  <?= Translate::get('switch_details'); ?> <i class="fa fa-chevron-down"></i>
-
+                  class="d-block w-100 p-0 text-center text-blue toggleProductListingDetails"
+                >
+                  <span class="showDetails">
+                    <?= Translate::get('switch_details'); ?> <i class="fa fa-chevron-down"></i>
+                  </span>
+                  <span class="hideDetails d-none">
+                    <?= Translate::get('hide_details'); ?> <i class="fa fa-chevron-up"></i>
+                  </span>
+                  
                 </a>
             </div>
           <?php
