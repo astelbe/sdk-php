@@ -219,15 +219,9 @@ class SharedView extends Singleton {
       $data = [];
       $data['bandwidth_download'] = self::translatePlayDescription('play_description.internet.bandwidth_download', $product);
       $data['bandwidth_volume'] = self::translatePlayDescription('play_description.internet.bandwidth_volume', $product);
-      // display upload speed in summary for la fibre
-      if ($version == 'laFibre') {
-        $data['bandwidth_upload'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
-      }
+      $data['bandwidth_upload'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
       $extra_data = [];
       //  display upload speed in details for Astel
-      if ($version != 'laFibre') {
-        $extra_data['bandwidth_upload'] = self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
-      }
       $is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
       if ($is_wifi_modem_provided != 0) {
         $extra_data['is_wifi_modem_provided'] = "Modem Wi-Fi";
@@ -736,7 +730,7 @@ class SharedView extends Singleton {
         $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' .  $freeText . ' </b></span>';
       } else {
         // "20 € / month"
-        $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($discountedPrice) . ' </b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' fs125 font-weight-bold ' . (!$linebreak_after_main_price ? 'pr-2' : '') . '">' . $priceTypeText . '</span> ';
+        $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($discountedPrice) . ' </b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . '  ' . (!$linebreak_after_main_price ? 'pr-2' : '') . '">' . $priceTypeText . '</span> ';
       }
       // linebreak
       if ($linebreak_after_main_price) {
@@ -751,6 +745,8 @@ class SharedView extends Singleton {
         }
         // "then"
         $displayedPriceText .= ' <span>' . Translate::get('price_after') . '</span> ';
+      } else {
+        $displayedPriceText .= '<span class="pr-1">' . Translate::get('for life') . ' </span>';
       }
       // "30€ /month"
       $crossPriceIfDuration = !$isDuration; // del price if discount is forever

@@ -34,21 +34,23 @@ class ProductCompare extends SDKModel {
 			$this->paramMobile(true, $isSmall, $isMedium, $isHeavy, $isHeavyInt);
 		}
 		if ($Product->isType($product, 'F')) {
-			if ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_HEAVYINT)) {
-				$this->paramFix(true, Product::CONSUMER_TYPE_HEAVYINT);
-			} elseif ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_HEAVY)) {
-				$this->paramFix(true, Product::CONSUMER_TYPE_HEAVY);
-			} elseif ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_MEDIUM)) {
+			if ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_MEDIUM)) {
 				$this->paramFix(true, Product::CONSUMER_TYPE_MEDIUM);
 			}
+			elseif ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_HEAVY)) {
+				$this->paramFix(true, Product::CONSUMER_TYPE_HEAVY);
+			} 
+			elseif ($Product->isUsageType($product, 'F', Product::CONSUMER_TYPE_HEAVYINT)) {
+				$this->paramFix(true, Product::CONSUMER_TYPE_HEAVYINT);
+			} 
 		}
 		if ($Product->isType($product, 'I')) {
-			if ($Product->isUsageType($product, 'I', Product::CONSUMER_TYPE_HEAVYINT)) {
-				$this->paramInternet(true, Product::CONSUMER_TYPE_HEAVYINT);
+			if ($Product->isUsageType($product, 'I', Product::CONSUMER_TYPE_MEDIUM)) {
+				$this->paramInternet(true, Product::CONSUMER_TYPE_MEDIUM);
 			} elseif ($Product->isUsageType($product, 'I', Product::CONSUMER_TYPE_HEAVY)) {
 				$this->paramInternet(true, Product::CONSUMER_TYPE_HEAVY);
-			} elseif ($Product->isUsageType($product, 'I', Product::CONSUMER_TYPE_MEDIUM)) {
-				$this->paramInternet(true, Product::CONSUMER_TYPE_MEDIUM);
+			} elseif ($Product->isUsageType($product, 'I', Product::CONSUMER_TYPE_HEAVYINT)) {
+				$this->paramInternet(true, Product::CONSUMER_TYPE_HEAVYINT);
 			}
 		}
 		if ($Product->isType($product, 'T')) {

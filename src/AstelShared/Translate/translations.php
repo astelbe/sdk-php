@@ -68,6 +68,10 @@ return [
     'FR' => "Voir les détails",
     'NL' => "Zie details",
   ],
+  'hide_details'                           => [
+    'FR' => "Cacher les détails",
+    'NL' => "Details verbergen",
+  ],
   'max_activation_time'                    => [
     'FR' => "Délais moyen actuel de %s :<br>%s jours ouvrables",
     'NL' => "Huidige gemiddelde termijn van %s:<br>%s werkdagen",
@@ -241,9 +245,9 @@ return [
     'FR' => "TV + Téléphone",
     'NL' => "TV + Telefonie",
   ],
-  ''                                       => [
-    'FR' => "",
-    'NL' => "",
+  'for life'                               => [
+    'FR' => "à vie",
+    'NL' => "voor het leven",
   ],
 
 
