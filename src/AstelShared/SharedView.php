@@ -746,7 +746,8 @@ class SharedView extends Singleton {
         // "then"
         $displayedPriceText .= ' <span>' . Translate::get('price_after') . '</span> ';
       } else {
-        $displayedPriceText .= '<span class="pr-1">' . Translate::get('for life') . ' </span>';
+        // Life discount - Greg don't want to display anything. 
+        // $displayedPriceText .= '<span class="pr-1">' . Translate::get('for life') . ' </span>';
       }
       // "30€ /month"
       $crossPriceIfDuration = !$isDuration; // del price if discount is forever
