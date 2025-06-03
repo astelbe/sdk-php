@@ -38,7 +38,7 @@ class EmulatedSession {
 					}
 				}
 				if (!$isIgnored) {
-					$this->context->log('The customer has deactivated his cookies - User Agent: ' . $userAgent);
+					//$this->context->log('The customer has deactivated his cookies - User Agent: ' . $userAgent);
 				}
 			}
 		} else {
