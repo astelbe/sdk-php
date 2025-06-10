@@ -47,7 +47,30 @@ $SharedView = SharedView::getInstance();
         ],
     ];
 */
-// debug($params);
+//  debug($params);
+
+
+/*
+ * Handle bestSellers and allProducts urls
+ **/
+$currentUrl = $params['url'];
+// Parse the URL
+$urlParts = parse_url($currentUrl);
+$path = $urlParts['path'] ?? '';
+$query = [];
+// Parse existing query parameters
+if (isset($urlParts['query'])) {
+    parse_str($urlParts['query'], $query);
+}
+// BESTSELLERS: remove 'display' from query
+$bestsellerQuery = $query;
+unset($bestsellerQuery['display']);
+$bestsellersUrl = $path . (!empty($bestsellerQuery) ? '?' . http_build_query($bestsellerQuery) : '');
+// ALL: add or keep 'display=all'
+$allQuery = $query;
+$allQuery['display'] = 'all';
+$allUrl = $path . '?' . http_build_query($allQuery);
+
 ?>
 
 <div class="container px-0 toggleProductListingDetails__container"
@@ -70,22 +93,13 @@ $SharedView = SharedView::getInstance();
       if ($params['display_best_seller_filter'] == 1) {
       ?>
         <div class="bestseller-filters d-md-flex g100 mr-0 mr-sm-4">
-          <?php
-          $currentUrl = $params['url'];
-          // Remove any existing query parameters
-          $baseUrl = strtok($currentUrl, '?');
-
-          // URLs for the links
-          $bestsellersUrl = $baseUrl;
-          $allUrl = $baseUrl . "?display=all";
-          ?>
           <a href="<?= htmlspecialchars($bestsellersUrl); ?>"
-            class="underlineWhenHovered <?= $currentUrl === $bestsellersUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap mr-2"
+            class="underlineWhenHovered <?= strpos($currentUrl, 'display=all') == false ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap mr-2"
             rel="nofollow">
             <?= Translate::get('ficheOperateur_display_bestsellers'); ?>
           </a>
           <a href="<?= htmlspecialchars($allUrl); ?>"
-            class="underlineWhenHovered <?= $currentUrl === $allUrl ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
+            class="underlineWhenHovered <?= strpos($currentUrl, 'display=all') !== false ? 'fw700' : 'fw400'; ?> text-darkblue text-nowrap"
             rel="nofollow">
             <?= Translate::get('ficheOperateur_display_all'); ?>
           </a>
@@ -93,7 +107,6 @@ $SharedView = SharedView::getInstance();
       <?php
       }
       ?>
-
      
       <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
