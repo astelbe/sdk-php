@@ -32,7 +32,6 @@ class APIQuery {
 	public function __construct($apiParticle, $Cacher = null, $cacheTTL = null) {
 		$this->apiParticle = $apiParticle;
 		$this->context = AstelContext::getInstance();
-		
 		$this->Cacher = $Cacher;
 		if ($this->Cacher !== null && is_object($this->Cacher)) {
 			$this->cacheActive = true;
@@ -42,10 +41,11 @@ class APIQuery {
 	
 	public function isCacheActive() {
 		// We write DATA, no cache for that
-		if ($this->method === self::HTTP_DELETE || $this->method === self::HTTP_POST) {
+		if ($this->method === self::HTTP_DELETE || $this->method === self::HTTP_POST || $this->method === self::HTTP_PATCH) {
 			return false;
 		}
 		
+		// Method is GET, we can use cache
 		return $this->cacheActive;
 	}
 	
