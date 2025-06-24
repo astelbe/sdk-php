@@ -26,6 +26,7 @@ class APIQuery {
 	const RETURN_CONTENT = 2;
 	const HTTP_GET = 'GET';
 	const HTTP_POST = 'POST';
+	const HTTP_PATCH = 'PATCH';
 	const HTTP_DELETE = 'DELETE';
 	
 	public function __construct($apiParticle, $Cacher = null, $cacheTTL = null) {
@@ -82,6 +83,11 @@ class APIQuery {
 		$this->setHTTPMethod(self::HTTP_POST);
 	}
 	
+	public function addPATCHParams(array $params) {
+		$this->postParams = array_merge($this->postParams, $params);
+		$this->setHTTPMethod(self::HTTP_PATCH);
+	}
+	
 	public function setHTTPMethod($method = self::HTTP_GET) {
 		$this->method = $method;
 	}
@@ -93,6 +99,12 @@ class APIQuery {
 	public function setCurlPost() {
 		$this->lastPostData = $this->postParams;
 		curl_setopt($this->ch, CURLOPT_POST, true);
+		curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($this->postParams));
+	}
+	
+	public function setCurlPatch() {
+		$this->lastPostData = $this->postParams;
+        curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "PATCH");
 		curl_setopt($this->ch, CURLOPT_POSTFIELDS, http_build_query($this->postParams));
 	}
 	
@@ -160,6 +172,8 @@ class APIQuery {
 				// we already set params with setCurlUrl()
 			} elseif ($this->method === self::HTTP_POST) {
 				$this->setCurlPost();
+			} elseif ($this->method === self::HTTP_PATCH) {
+				$this->setCurlPatch();
 			} elseif ($this->method === self::HTTP_DELETE) {
 				$this->setCurlDelete();
 			}
