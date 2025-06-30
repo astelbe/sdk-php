@@ -2,6 +2,7 @@
 
 /**
  * TEMPLATE ASTEL
+ * Used by astel.be
  */
 
 use AstelShared\Translate\Translate;
@@ -51,25 +52,36 @@ $SharedView = SharedView::getInstance();
 
 
 /*
- * Handle bestSellers and allProducts urls
- **/
+ * Handle bestSellers and allProducts urls with tab id anchor
+ */
 $currentUrl = $params['url'];
+$tabId = $params['id'] ?? ''; // ex: 'mobile', 'internet-tv'
+
 // Parse the URL
 $urlParts = parse_url($currentUrl);
 $path = $urlParts['path'] ?? '';
 $query = [];
+
 // Parse existing query parameters
 if (isset($urlParts['query'])) {
     parse_str($urlParts['query'], $query);
 }
+
 // BESTSELLERS: remove 'display' from query
 $bestsellerQuery = $query;
 unset($bestsellerQuery['display']);
 $bestsellersUrl = $path . (!empty($bestsellerQuery) ? '?' . http_build_query($bestsellerQuery) : '');
+if ($tabId !== '') {
+    $bestsellersUrl .= '#nav-' . $tabId;
+}
+
 // ALL: add or keep 'display=all'
 $allQuery = $query;
 $allQuery['display'] = 'all';
 $allUrl = $path . '?' . http_build_query($allQuery);
+if ($tabId !== '') {
+    $allUrl .= '#nav-' . $tabId;
+}
 
 ?>
 
