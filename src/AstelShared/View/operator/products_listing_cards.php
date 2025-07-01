@@ -52,36 +52,49 @@ $SharedView = SharedView::getInstance();
 
 
 /*
- * Handle bestSellers and allProducts urls with tab id anchor
+ * Handle bestSellers and allProducts urls with full param and tab hash support
  */
-$currentUrl = $params['url'];
-$tabId = $params['id'] ?? ''; // ex: 'mobile', 'internet-tv'
 
-// Parse the URL
+// Utilise l'URL complète réellement affichée dans le navigateur
+$currentUrl = $_SERVER['REQUEST_URI']; // ex: /operateurs-disponibles/5500/dinant?id=648#nav-internet
+
+// Optionnel : si tu veux un chemin absolu
+$baseUrl = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+
+// ID du tab actuel (fourni depuis $params ou extrait du hash)
+$tabId = $params['id'] ?? '';
+
+// Décomposition de l'URL
 $urlParts = parse_url($currentUrl);
 $path = $urlParts['path'] ?? '';
-$query = [];
+$queryString = $urlParts['query'] ?? '';
+$fragment = $tabId ?: ($urlParts['fragment'] ?? '');
 
-// Parse existing query parameters
-if (isset($urlParts['query'])) {
-    parse_str($urlParts['query'], $query);
-}
+// Parsing des paramètres ?id=648&display=all
+parse_str($queryString, $query);
 
-// BESTSELLERS: remove 'display' from query
+// BESTSELLERS = tous les paramètres sauf "display"
 $bestsellerQuery = $query;
 unset($bestsellerQuery['display']);
-$bestsellersUrl = $path . (!empty($bestsellerQuery) ? '?' . http_build_query($bestsellerQuery) : '');
-if ($tabId !== '') {
-    $bestsellersUrl .= '#nav-' . $tabId;
+$bestsellersUrl = $path;
+if (!empty($bestsellerQuery)) {
+    $bestsellersUrl .= '?' . http_build_query($bestsellerQuery);
+}
+if (!empty($fragment)) {
+    $bestsellersUrl .= '#nav-' . $fragment;
 }
 
-// ALL: add or keep 'display=all'
+// ALL = tous les paramètres + display=all
 $allQuery = $query;
 $allQuery['display'] = 'all';
 $allUrl = $path . '?' . http_build_query($allQuery);
-if ($tabId !== '') {
-    $allUrl .= '#nav-' . $tabId;
+if (!empty($fragment)) {
+    $allUrl .= '#nav-' . $fragment;
 }
+
+// Exemple complet avec base
+// $bestsellersUrl = $baseUrl . $bestsellersUrl;
+// $allUrl = $baseUrl . $allUrl;
 
 ?>
 
