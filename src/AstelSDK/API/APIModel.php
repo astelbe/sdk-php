@@ -87,6 +87,10 @@ abstract class APIModel extends Singleton {
     $this->lastFindParams = ['type' => $type, 'params' => $params];
 
     $response = null;
+
+    if ($params['nocache']) {
+			$this->disableCache = true;
+		}
     if ($type === self::FIND_TYPE_FIRST) {
       $response = $this->getFirst($params);
     } elseif ($type === self::FIND_TYPE_ALL) {
@@ -97,6 +101,9 @@ abstract class APIModel extends Singleton {
     }
     $this->handlesResponseThrows($response);
     $return = $this->returnResponse($response, $type);
+    
+    // Reset the cache disable flag after the find operation to avoid disabled cache for all other requests of the same model
+    $this->disableCache = false; 
 
     return $return;
   }
@@ -261,7 +268,8 @@ abstract class APIModel extends Singleton {
    */
   protected function newQuery() {
     if ($this->disableCache) {
-      $this->lastQueryObject = new APIQuery($this->apiParticle, $this->Cacher, $ttl);
+      // If the cache is disabled, we create a new APIQuery without Cacher
+      $this->lastQueryObject = new APIQuery($this->apiParticle, null, $ttl);
     } else {
       $ttl = $this->context->getCacheTTL();
       if ($this->customCacheTTL !== null) {
