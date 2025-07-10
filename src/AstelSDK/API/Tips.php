@@ -27,7 +27,22 @@ class Tips extends APIModel {
 		unset($params['id']);
 		$query->setUrl('v2_00/tips/' . $id);
 		$query->addGETParams($params);
+		return $query->exec();
+	}
+
+	/**
+	 * Request to increment the view counter of a tip.
+	 * Call a PATCH method on the API endpoint v2_00/tips/{id}/increment_counter_view
+	 */
+	public function incrementCounterView(array $params = []) {
+		$query = $this->newQuery();
+		$id = Hash::get($params, 'id');
+		if ($id === null || !is_numeric($id)) {
+			return false;
+		}
+		$query->setUrl('v2_00/tips/' . $id . '/increment_counter_view');
 		
+		$query->addPATCHParams($params);
 		return $query->exec();
 	}
 }
