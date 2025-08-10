@@ -6,17 +6,20 @@ use CakeUtility\Hash;
 
 class FiberEligibilityCheck extends APIModel {
 	
-  public function check( array $params = []) {
+  protected $disableCache = true;
 
-      $response = null;
-  
+  /**
+   * Method to send POST data to check fiber eligibility form proximus api
+   * params needed : 
+   * - street1 (same name as backend order form...)
+   * - street_number
+   * - postal_code
+   * - city
+   */
+  public function check( array $params = []) {
       $query = $this->newQuery();
 		  $query->setUrl('v2_00/fiber_eligibility_check');
-		  $query->addGETParams($params);
-		  $response = $query->exec();
-      $this->handlesResponseThrows($response);
-      $return = $this->returnResponse($response, $type);
-
-      return $return;
+		  $query->addPOSTParams($params);
+		  return $query->exec();
   }
 }
