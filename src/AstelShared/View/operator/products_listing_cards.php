@@ -122,6 +122,8 @@ $allUrl = $path . '?' . http_build_query($allQuery);
   </div>
 
   <?php
+  // === Message uniquement sur la 1ʳᵉ carte (PRODUCT OPERATOR VIEW) ===
+  // --- afficher le label seulement si la card contient le produit courant
   // Libellé "produit que vous regardez" AVANT la grille (pas un item du grid)
   if (!empty($params['show_current_label'])) {
     $ok = true; // par défaut on suppose que la 1ʳᵉ card est le produit courant
@@ -144,8 +146,8 @@ $allUrl = $path . '?' . http_build_query($allQuery);
       $label = ($lang === 'NL')
         ? "Het abonnement waar u naar kijkt:"
         : "L'abonnement que vous regardez :";
-      echo '<h3 class="current-product-label mb-2" style="font-weight:600;color:#1F438C;">'
-        . h($label) . '</h3>';
+      echo '<div class="current-product-label mb-2 mt-2 p-2 bg-lightblue brad100" style="font-weight:600;color:#1F438C; display: inline-block;">'
+        . h($label) . '</div>';
     }
   }
   ?>
@@ -155,28 +157,6 @@ $allUrl = $path . '?' . http_build_query($allQuery);
     // LOOP ON PRODUCT CARDS
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
-
-      // === Message uniquement sur la 1ʳᵉ carte ===
-      // --- afficher le label seulement si la card contient le produit courant
-      // if (!$labelPrinted && !empty($params['show_current_label']) && $currentId !== '' && !empty($result['products'])) {
-      //   $containsCurrent = false;
-      //   foreach ($result['products'] as $it) {
-      //     if (isset($it['id']) && (string)$it['id'] === $currentId) {
-      //       $containsCurrent = true;
-      //       break;
-      //     }
-      //   }
-      //   if ($containsCurrent) {
-      //     $lang = Config::read('App.language') ?? 'FR';
-      //     $label = ($lang === 'NL')
-      //       ? "Het abonnement waar u naar kijkt:"
-      //       : "L'abonnement que vous regardez :";
-      //     echo '<h2 class="current-product-label mb-2" style="font-weight:600;color:#1F438C;">'
-      //       . h($label) . '</h2>';
-      //     $labelPrinted = true;
-      //   }
-      // }
-
     ?>
       <div class="product-card position-relative mb-3">
         <?php if (isset($result['result_index'])) {
