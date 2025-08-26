@@ -314,9 +314,9 @@ if (!empty($fragment)) {
   <div class="modal-dialog modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">
+        <div class="modal-title fs125 font-weight-bold text-darkblue">
           <?= Translate::get('total_savings_modal_title'); ?>
-        </h5>
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
