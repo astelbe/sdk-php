@@ -7,6 +7,7 @@
 use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
 use AstelShared\SharedView;
+
 $SharedView = SharedView::getInstance();
 
 /*
@@ -60,7 +61,7 @@ $path = $urlParts['path'] ?? '';
 $query = [];
 // Parse existing query parameters
 if (isset($urlParts['query'])) {
-    parse_str($urlParts['query'], $query);
+  parse_str($urlParts['query'], $query);
 }
 // BESTSELLERS: remove 'display' from query
 $bestsellerQuery = $query;
@@ -107,7 +108,7 @@ $allUrl = $path . '?' . http_build_query($allQuery);
       <?php
       }
       ?>
-     
+
       <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
         <input type="checkbox" class="toggleProductListingDetails__button mr-2"
           id="toggle-product-listing-button-<?= $params['id'] ?>"
@@ -120,31 +121,82 @@ $allUrl = $path . '?' . http_build_query($allQuery);
     </div>
   </div>
 
+  <?php
+  // Libellé "produit que vous regardez" AVANT la grille (pas un item du grid)
+  if (!empty($params['show_current_label'])) {
+    $ok = true; // par défaut on suppose que la 1ʳᵉ card est le produit courant
+    // Si on a l'id courant, on vérifie que la 1ʳᵉ card le contient
+    if (!empty($params['current_product_id'])) {
+      $ok = false;
+      if (!empty($params['productCards'][0]['products'])) {
+        $currentId = (string)$params['current_product_id'];
+        foreach ($params['productCards'][0]['products'] as $it) {
+          if (isset($it['id']) && (string)$it['id'] === $currentId) {
+            $ok = true;
+            break;
+          }
+        }
+      }
+    }
+
+    if ($ok) {
+      $lang  = Config::read('App.language') ?? 'FR';
+      $label = ($lang === 'NL')
+        ? "Het abonnement waar u naar kijkt:"
+        : "L'abonnement que vous regardez :";
+      echo '<h3 class="current-product-label mb-2" style="font-weight:600;color:#1F438C;">'
+        . h($label) . '</h3>';
+    }
+  }
+  ?>
+
   <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4" style="gap-row:1.2rem;">
     <?php
     // LOOP ON PRODUCT CARDS
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
+
+      // === Message uniquement sur la 1ʳᵉ carte ===
+      // --- afficher le label seulement si la card contient le produit courant
+      // if (!$labelPrinted && !empty($params['show_current_label']) && $currentId !== '' && !empty($result['products'])) {
+      //   $containsCurrent = false;
+      //   foreach ($result['products'] as $it) {
+      //     if (isset($it['id']) && (string)$it['id'] === $currentId) {
+      //       $containsCurrent = true;
+      //       break;
+      //     }
+      //   }
+      //   if ($containsCurrent) {
+      //     $lang = Config::read('App.language') ?? 'FR';
+      //     $label = ($lang === 'NL')
+      //       ? "Het abonnement waar u naar kijkt:"
+      //       : "L'abonnement que vous regardez :";
+      //     echo '<h2 class="current-product-label mb-2" style="font-weight:600;color:#1F438C;">'
+      //       . h($label) . '</h2>';
+      //     $labelPrinted = true;
+      //   }
+      // }
+
     ?>
       <div class="product-card position-relative mb-3">
-        <?php if (isset($result['result_index'])) { 
-          ?>
+        <?php if (isset($result['result_index'])) {
+        ?>
           <div class="result-index ml-2">
             <?= $result['result_index'] ?>
           </div>
-          <?php } else {
-            $result_index = $key + 1; ?>
-            <div class="result-index ml-2">
-              <?= $result_index  ?>
-            </div>
+        <?php } else {
+          $result_index = $key + 1; ?>
+          <div class="result-index ml-2">
+            <?= $result_index  ?>
+          </div>
         <?php } ?>
         <?php if ($cashback) { ?>
           <div
-          class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
-          data-toggle="modal" data-target="#pluginModalCashback"
-          style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-          <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
-        </div>
+            class="mt-n3 ml-3 py-0 px-3 cursor-pointer position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-pink hoverUnderline modalClick "
+            data-toggle="modal" data-target="#pluginModalCashback"
+            style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+            <?= $cashback ?> <i class="fa fa-info pl-1" style="font-size:1rem"></i>
+          </div>
         <?php } ?>
         <div class="px-3 pt-4 pb-2 rounded-15 d-flex h-100 flex-column justify-content-between align-item-end information-box">
           <?php
@@ -167,10 +219,10 @@ $allUrl = $path . '?' . http_build_query($allQuery);
 
               </div>
             <?php } ?>
-            <?php if ($item['product_sheet_url'] != '') { 
-              ?>
+            <?php if ($item['product_sheet_url'] != '') {
+            ?>
               <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>"
-                title="<?= $item['brand_name']; ?> <?= $item['name'] ?>"<?= ($params['product_link_in_new_tab'] == true ? ' target="_blank"' : '') ?> data-name="<?= $item['name'] ?>"
+                title="<?= $item['brand_name']; ?> <?= $item['name'] ?>" <?= ($params['product_link_in_new_tab'] == true ? ' target="_blank"' : '') ?> data-name="<?= $item['name'] ?>"
                 data-brand="<?= $item['brand_name'] ?>">
               <?php } ?>
               <h3 class="px-1 d-flex underlineWhenHovered text-<?= $item['brand_slug']; ?>"
@@ -203,20 +255,19 @@ $allUrl = $path . '?' . http_build_query($allQuery);
               <?php
                 }
               } ?>
-                <a href="#" onclick="toggleProductListingCards('<?= $params['id'] ?>'); return false;"
-                  role="button"
-                  aria-expanded="false"
-                  aria-controls="toggleProductListingDetails__content"
-                  class="d-block w-100 p-0 text-center text-blue toggleProductListingDetails"
-                >
-                  <span class="showDetails">
-                    <?= Translate::get('switch_details'); ?> <i class="fa fa-chevron-down"></i>
-                  </span>
-                  <span class="hideDetails d-none">
-                    <?= Translate::get('hide_details'); ?> <i class="fa fa-chevron-up"></i>
-                  </span>
-                  
-                </a>
+              <a href="#" onclick="toggleProductListingCards('<?= $params['id'] ?>'); return false;"
+                role="button"
+                aria-expanded="false"
+                aria-controls="toggleProductListingDetails__content"
+                class="d-block w-100 p-0 text-center text-blue toggleProductListingDetails">
+                <span class="showDetails">
+                  <?= Translate::get('switch_details'); ?> <i class="fa fa-chevron-down"></i>
+                </span>
+                <span class="hideDetails d-none">
+                  <?= Translate::get('hide_details'); ?> <i class="fa fa-chevron-up"></i>
+                </span>
+
+              </a>
             </div>
           <?php
             $cpt++;
@@ -233,7 +284,7 @@ $allUrl = $path . '?' . http_build_query($allQuery);
                   <i class="fa fa-info pl-2"></i>
                 </span>
               </div>
-            <?php } 
+            <?php }
             // PRICE
             ?>
             <p class="my-1" style="min-height: 60px; line-height: 20px">
@@ -241,7 +292,7 @@ $allUrl = $path . '?' . http_build_query($allQuery);
             </p>
             <div class="setup-wrapper mb-2">
               <div class="mb-0">
-              <?php echo $result['result_summary']['setup']; ?>
+                <?php echo $result['result_summary']['setup']; ?>
               </div>
               <?php
               // PRODUCT TOTAL SAVINGS
@@ -262,13 +313,13 @@ $allUrl = $path . '?' . http_build_query($allQuery);
                   <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
                     <p class="fs087 my-1">
                       <?= $result['result_summary']['max_activation_time']; ?>
-                  </p>
+                    </p>
                   <?php } ?>
                   <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
                     <!-- <p class="mb-1"> -->
-                      <?= $result['result_summary']['phone_plug']; ?>
+                    <?= $result['result_summary']['phone_plug']; ?>
                     <!-- </p> -->
-                  <?php }?>
+                  <?php } ?>
                 </div>
               <?php } ?>
             </div>
@@ -379,17 +430,17 @@ $allUrl = $path . '?' . http_build_query($allQuery);
       width: auto !important;
     }
   }
-  
+
   @media screen and (max-width: 720px) {
     .information-box {
       border: 1px solid #dee2e6;
       box-shadow: 0 2px 30px 0 rgba(0, 0, 0, 0.3);
     }
-    
+
     .bestseller-filters {
       margin-top: 1rem;
     }
-    
+
     .mobile-underline {
       text-decoration: underline;
     }
