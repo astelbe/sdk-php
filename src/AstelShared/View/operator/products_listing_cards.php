@@ -121,42 +121,11 @@ $allUrl = $path . '?' . http_build_query($allQuery);
     </div>
   </div>
 
-  <?php
-  // === Message uniquement sur la 1ʳᵉ carte (PRODUCT OPERATOR VIEW) ===
-  // --- afficher le label seulement si la card contient le produit courant
-  // Libellé "produit que vous regardez" AVANT la grille (pas un item du grid)
-  // if (!empty($params['show_current_label'])) {
-  //   $label = !empty($params['current_label_text'])
-  //     ? $params['current_label_text']
-  //     : "current_product_being_watched"; // fallback
-  //   echo '<h3 class="current-product-label mb-2 mt-4 p-2 bg-lightblue brad100" ' .
-  //     'style="font-weight:600;color:#1F438C; display:inline-block;">' .
-  //     h($label) . '</h3>';
-  // }
-
-  ?>
-
   <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4" style="gap-row:1.2rem;">
     <?php
     // LOOP ON PRODUCT CARDS
-    // $currentId = isset($params['current_product_id']) ? (string)$params['current_product_id'] : '';
-
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
-
-      // $isCurrent = false;
-
-
-      // if ($currentId !== '' && !empty($result['products'])) {
-      //   foreach ($result['products'] as $it) {
-      //     if (isset($it['id']) && (string)$it['id'] === $currentId) {
-      //       // debug($it);
-      //       $isCurrent = true;
-      //       break;
-      //     }
-      //   }
-      // }
-
     ?>
 
       <?php
