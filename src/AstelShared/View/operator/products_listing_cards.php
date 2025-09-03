@@ -2,6 +2,7 @@
 
 /**
  * TEMPLATE ASTEL
+ * Used by astel.be
  */
 
 use AstelShared\Translate\Translate;
@@ -51,25 +52,49 @@ $SharedView = SharedView::getInstance();
 
 
 /*
- * Handle bestSellers and allProducts urls
- **/
-$currentUrl = $params['url'];
-// Parse the URL
+ * Handle bestSellers and allProducts urls with full param and tab hash support
+ */
+
+// Utilise l'URL complète réellement affichée dans le navigateur
+$currentUrl = $_SERVER['REQUEST_URI']; // ex: /operateurs-disponibles/5500/dinant?id=648#nav-internet
+
+// Optionnel : si tu veux un chemin absolu
+$baseUrl = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+
+// ID du tab actuel (fourni depuis $params ou extrait du hash)
+$tabId = $params['id'] ?? '';
+
+// Décomposition de l'URL
 $urlParts = parse_url($currentUrl);
 $path = $urlParts['path'] ?? '';
-$query = [];
-// Parse existing query parameters
-if (isset($urlParts['query'])) {
-    parse_str($urlParts['query'], $query);
-}
-// BESTSELLERS: remove 'display' from query
+$queryString = $urlParts['query'] ?? '';
+$fragment = $tabId ?: ($urlParts['fragment'] ?? '');
+
+// Parsing des paramètres ?id=648&display=all
+parse_str($queryString, $query);
+
+// BESTSELLERS = tous les paramètres sauf "display"
 $bestsellerQuery = $query;
 unset($bestsellerQuery['display']);
-$bestsellersUrl = $path . (!empty($bestsellerQuery) ? '?' . http_build_query($bestsellerQuery) : '');
-// ALL: add or keep 'display=all'
+$bestsellersUrl = $path;
+if (!empty($bestsellerQuery)) {
+    $bestsellersUrl .= '?' . http_build_query($bestsellerQuery);
+}
+if (!empty($fragment)) {
+    $bestsellersUrl .= '#nav-' . $fragment;
+}
+
+// ALL = tous les paramètres + display=all
 $allQuery = $query;
 $allQuery['display'] = 'all';
 $allUrl = $path . '?' . http_build_query($allQuery);
+if (!empty($fragment)) {
+    $allUrl .= '#nav-' . $fragment;
+}
+
+// Exemple complet avec base
+// $bestsellersUrl = $baseUrl . $bestsellersUrl;
+// $allUrl = $baseUrl . $allUrl;
 
 ?>
 
@@ -289,9 +314,9 @@ $allUrl = $path . '?' . http_build_query($allQuery);
   <div class="modal-dialog modal-dialog-centered modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">
+        <div class="modal-title fs125 font-weight-bold text-darkblue">
           <?= Translate::get('total_savings_modal_title'); ?>
-        </h5>
+        </div>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
