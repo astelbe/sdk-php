@@ -238,7 +238,7 @@ class Comparator extends AbstractWebIntegration {
 	
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
-				<div class="loadingImg text-center">
+				<div class="loadingImg text-center" style="height:80vh;">
 					<div class="spinner-border text-blue" style="width: 5rem; height: 5rem;margin-top:3rem;" role="status">
 						<span class="sr-only">Loading...</span>
 					</div>
