@@ -64,17 +64,16 @@ class Typeahead extends Singleton {
 		];
 	}
 
-	public function getTypeaheadScripts() {
+	 public function getTypeaheadScripts($defer = false) {
 		$out = '';
-		$jsList = $this->getJSList();
+		$jsList = $this->getJSList($defer);
 		foreach ($jsList as $js) {
 			if (is_array($js)) {
 				$src = $js['src'];
-				$asyncAttr = !empty($js['async']) ? ' async' : '';
-				$deferAttr = (!empty($js['defer']) && empty($js['async'])) ? ' defer' : '';
-				$out .= '<script src="' . $src . '"' . $asyncAttr . $deferAttr . '></script>';
+				$deferAttr = !empty($js['defer']) ? ' defer' : '';
+				$out .= '<script src="' . $src . '"' . $deferAttr . '></script>';
 			} else {
-				// BC: string means no defer/async
+				// BC: string means no defer
 				$out .= '<script src="' . $js . '"></script>';
 			}
 		}
