@@ -45,20 +45,39 @@ class Typeahead extends Singleton {
 		}
 	}
 
-	public function getJsList() {
+	/**
+	 * Get list of JS to include
+	 * If called with $defer = true, will add defer attribute to scripts
+	 * Usefull when loaded from Comparator
+	 */
+	public function getJsList($defer = false) {
 		$Context = AstelContext::getInstance();
 		return [
-			'https://files' . $Context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $Context->getLanguage() . '.js?v=' . $Context->getVersionData(),
-			'https://files' . $Context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $Context->getVersion(),
+			[
+				'src' => 'https://files' . $Context->getEnv() . '.astel.be/DJs/astelPostalCodes/postal_codes_' . $Context->getLanguage() . '.js?v=' . $Context->getVersionData(),
+				'defer' => $defer
+			],
+			[
+				'src' => 'https://files' . $Context->getEnv() . '.astel.be/DJs/typeahead.js?v=' . $Context->getVersion(),
+				'defer' => $defer
+			],
 		];
 	}
 
 	public function getTypeaheadScripts() {
 		$out = '';
-		foreach ($this->getJsList() as $js) {
-			$out .= '<script type="text/javascript" src="' . $js . '"></script>';
+		$jsList = $this->getJSList();
+		foreach ($jsList as $js) {
+			if (is_array($js)) {
+				$src = $js['src'];
+				$asyncAttr = !empty($js['async']) ? ' async' : '';
+				$deferAttr = (!empty($js['defer']) && empty($js['async'])) ? ' defer' : '';
+				$out .= '<script src="' . $src . '"' . $asyncAttr . $deferAttr . '></script>';
+			} else {
+				// BC: string means no defer/async
+				$out .= '<script src="' . $js . '"></script>';
+			}
 		}
-
 		return $out;
 	}
 

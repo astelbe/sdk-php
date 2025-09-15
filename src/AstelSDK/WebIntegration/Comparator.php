@@ -20,13 +20,23 @@ class Comparator extends AbstractWebIntegration {
 		return $cssList;
 	}
 	
-	public function getJSList() {
+	public function getJSList($defer = false) {
 		$Typeahead = Typeahead::getInstance();
-		$typeahead_js = $Typeahead->getJsList();
+		$typeahead_js = $Typeahead->getJsList(true); // Get typeahead js, with defer true
+
 		$comparator_js = [
-			'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
-			'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
+			// Example: astelContentInjector.js is required immediately, inject.js can be deferred
+			// On homepage, can be defer, but not in comparator pages
+			[
+				'src' => 'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
+				'defer' => $defer
+			],
+			[
+				'src' => 'https://compare' . $this->context->getEnv() . '.astel.be/comparator/inject.js?v=' . $this->context->getVersion(),
+				'defer' => $defer
+			],
 		];
+		// Merge: keep BC for typeahead_js (strings), but allow array for comparator_js
 		return array_merge($typeahead_js, $comparator_js);
 	}
 	
@@ -40,25 +50,22 @@ class Comparator extends AbstractWebIntegration {
 		return $out;
 	}
 	
-	public function getJS() {
-		$out = '';
-		$jsList = $this->getJSList();
-		foreach ($jsList as $js) {
-			$out .= '<script src="' . $js . '"></script>';
-		}
-		
-		return $out;
-	}
-	
-	public function getScriptLoadComparator($title = null, $encryptionKey = null) {
+	  
+	/**
+	 * Prepare script for comparator display
+	 * If $useDefer = true, will prepare inline script to be used with defer loading of comparator script
+	 * (in astel.js, the script is then loaded with getAstelComparator)
+	 * If $useDefer = false, will prepare regular script to load comparator directly
+	 */
+	public function getScriptLoadComparator($title = null, $encryptionKey = null, $useDefer = false) {
 		global $_GET;
 	
-    // Get the encryption key from the context if it is not provided
-    if(!$encryptionKey) {
-      $encryptionKey = $this->context->getEncryptionKey();
-    }
+		// Get the encryption key from the context if it is not provided
+		if(!$encryptionKey) {
+		$encryptionKey = $this->context->getEncryptionKey();
+		}
 
-    $getParams = [];
+		$getParams = [];
 
 		// Process $_GET params
         // Be aware that $_GET param names are not the same in comparator scripts
@@ -202,9 +209,22 @@ class Comparator extends AbstractWebIntegration {
 
 		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
 
-		return '<script>
-			getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
-		</script>';
+
+		$script = '';
+		if ($useDefer) {
+			// Use defer to load comparator script
+			// In astel.js, the script is then loaded with getAstelComparator. Inline script does not work with defer
+			$script = '<script>
+				var comparator_paramsURL = "' . $paramsURL . '";
+				var comparator_language = "' . $this->context->getLanguage() . '";
+			</script>';
+		} else {
+			// Regular script loading, i.e for partner integration
+			$script = '<script>
+				getAstelComparator("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
+			</script>';
+		}
+		return $script;
 	}
 	
 	public function getScriptLoadComparatorParameterBar($encryptionKey = null) {
@@ -236,6 +256,9 @@ class Comparator extends AbstractWebIntegration {
 		return $encryptedGetParams;
 	}
 	
+	/**
+	 * HTML to display in body, where comparator will be loaded
+	 */
 	public function getBodyLoadHtml() {
 		return '<div id="comparatorDiv">
 				<div class="loadingImg text-center" style="height:80vh;">
@@ -246,4 +269,6 @@ class Comparator extends AbstractWebIntegration {
 				</div>
 			</div>';
 	}
+	
+	
 }

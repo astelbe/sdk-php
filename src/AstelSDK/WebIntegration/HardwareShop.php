@@ -20,11 +20,16 @@ class HardwareShop extends AbstractWebIntegration {
     return $cssList;
   }
 
-  public function getJSList() {
+  public function getJSList($defer = false) {
     return [
-      'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' .
-        $this->context->getVersion(),
-      'https://hardware' . $this->context->getEnv() . '.astel.be/hardware/inject.js?v=' . $this->context->getVersion(),
+      [
+        'src' => 'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
+        'defer' => $defer
+      ],
+      [
+        'src' => 'https://hardware' . $this->context->getEnv() . '.astel.be/hardware/inject.js?v=' . $this->context->getVersion(),
+        'defer' => $defer
+      ],
     ];
   }
 
@@ -38,17 +43,10 @@ class HardwareShop extends AbstractWebIntegration {
     return $out;
   }
 
-  public function getJS() {
-    $out = '';
-    $jsList = $this->getJSList();
-    foreach ($jsList as $js) {
-      $out .= '<script src="' . $js . '"></script>';
-    }
-
-    return $out;
-  }
-
-  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null) {
+  /**
+   * Prepare script for hardware listing display
+   */
+  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null, $useDefer = false) {
     global $_GET;
 
     $params = [];
@@ -79,12 +77,31 @@ class HardwareShop extends AbstractWebIntegration {
     $getParamsStr = json_encode($params);
     $encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
-    return '<script>
-			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
-		</script>';
+
+    $script = '';
+		if ($useDefer) {
+			// Use defer to load comparator script
+			// In astel.js, the script is then loaded with getAstelComparator. Inline script does not work with defer
+			$script = '<script>
+        var hardware_is_single_product_page = false;
+				var hardware_paramsURL = "' . $encryptedGetParams . '";
+				var hardware_language = "' . $this->context->getLanguage() . '";
+			</script>';
+		} else {
+			// Regular script loading, i.e for partner integration
+			$script = '<script>
+        getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
+      </script>';
+		}
+		return $script;
+
+
   }
 
-  public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null, $encryptionKey = null) {
+  /**
+   * Prepare script for single hardware display
+   */
+  public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null, $encryptionKey = null, $useDefer = false) {
     global $_GET;
     $username = Hash::get($_GET, 'username');
 
@@ -109,11 +126,28 @@ class HardwareShop extends AbstractWebIntegration {
     $getParamsStr = json_encode($params);
     $encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
-    return '<script>
-			getHardwareDisplay("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
-		</script>';
+    $script = '';
+    if ($useDefer) {
+      // Use defer to load comparator script
+      // In astel.js, the script is then loaded with getAstelComparator. Inline script does not work with defer
+      $script = '<script>
+        var hardware_is_single_product_page = true;
+        var hardware_paramsURL = "' . $encryptedGetParams . '";
+        var hardware_language = "' . $this->context->getLanguage() . '";
+      </script>';
+    } else {
+      // Regular script loading, i.e for partner integration
+      $script = '<script>
+        getHardwareDisplay("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
+      </script>';
+    }
+
+    return $script;
   }
 
+  /**
+   * HTML to display in body, where hardware will be loaded
+   */
   public function getBodyLoadHtml() {
     return '<article id="hardwareDiv" class="container">
 				<div class="loadingImg text-center" style="height:80vh;">
