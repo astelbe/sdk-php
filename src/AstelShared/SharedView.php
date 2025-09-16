@@ -893,7 +893,7 @@ class SharedView extends Singleton {
             $plugsModale .= '<p class="font-weight-bold h5 text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</p>';
             $plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $language) . '</p>';
             if (Hash::get($plug, 'banner_picture.' . $language, false)) {
-              $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid"></div>';
+              $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid" loading="lazy"></div>';
             }
           }
 

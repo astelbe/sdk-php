@@ -188,8 +188,7 @@ if (!empty($fragment)) {
             if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
               <div class="my-2 text-center" style="height: 30px">
                 <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:24px;"
-                  title="<?= $productTitles ?>">
-
+                  title="<?= $productTitles ?>" loading="lazy">
               </div>
             <?php } ?>
             <?php if ($item['product_sheet_url'] != '') { 
