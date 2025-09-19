@@ -23,9 +23,9 @@ class OrderForm extends AbstractWebIntegration {
     return $cssList;
   }
 
-  public function getJSList() {
+  public function getJSList($defer) {
     $Typeahead = Typeahead::getInstance();
-    $typeahead_js = $Typeahead->getJsList();
+    $typeahead_js = $Typeahead->getJsList($defer);
     $order_form_js = [
       'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
       'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
@@ -44,17 +44,8 @@ class OrderForm extends AbstractWebIntegration {
     return $out;
   }
 
-  public function getJS() {
-    $out = '';
-    $jsList = $this->getJSList();
-    foreach ($jsList as $js) {
-      $out .= '<script src="' . $js . '"></script>';
-    }
 
-    return $out;
-  }
-
-  	/**
+  /**
 	 * @param $productID
 	 * 
 	 * TODO bad design, duplicata avec getScriptOrderToken
