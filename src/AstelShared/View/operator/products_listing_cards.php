@@ -66,7 +66,7 @@ $tabId = $params['id'] ?? '';
 
 // Décomposition de l'URL
 $urlParts = parse_url($currentUrl);
-$path = $urlParts['path'] ?? '';
+$path = rtrim($urlParts['path'] ?? '', '/'); // Remove trailing slash if any, it leads to wrong route
 $queryString = $urlParts['query'] ?? '';
 $fragment = $tabId ?: ($urlParts['fragment'] ?? '');
 
