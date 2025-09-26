@@ -48,7 +48,7 @@ class HardwareShop extends AbstractWebIntegration {
     return $out;
   }
 
-  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null) {
+  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $customOptions = null, $defer = false) {
     global $_GET;
 
     $params = [];
@@ -59,6 +59,30 @@ class HardwareShop extends AbstractWebIntegration {
     if ($view !== null) {
       $params['view'] = $view;
     }
+
+    // Handle custom options for news_view context
+    if (is_array($customOptions)) {
+      if (isset($customOptions['context'])) {
+        $params['context'] = $customOptions['context'];
+      }
+      if (isset($customOptions['title'])) {
+        $params['custom_title'] = $customOptions['title'];
+      }
+      if (isset($customOptions['hideFilter'])) {
+        $params['hide_filter'] = $customOptions['hideFilter'];
+      }
+      if (isset($customOptions['hideTitle'])) {
+        $params['hide_title'] = $customOptions['hideTitle'];
+      }
+      // For backward compatibility, if customOptions is string (encryptionKey)
+      if (is_string($customOptions)) {
+        $encryptionKey = $customOptions;
+      }
+    } elseif (is_string($customOptions)) {
+      // Backward compatibility: third parameter was encryptionKey
+      $encryptionKey = $customOptions;
+    }
+
     $params['session_id'] = $this->context->getSessionID();
     $params['page_url'] = $this->getPageURL();
 
@@ -77,11 +101,18 @@ class HardwareShop extends AbstractWebIntegration {
       $encryptionKey = $this->context->getEncryptionKey();
     }
     $getParamsStr = json_encode($params);
+
     $encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
-    return '<script>
+    $scriptTag = '<script';
+    if ($defer) {
+      $scriptTag .= ' defer';
+    }
+    $scriptTag .= '>
 			getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
 		</script>';
+
+    return $scriptTag;
   }
 
   public function getScriptLoadHardwareDisplay($hardware_slug, $hardware_id = null, $hardwareIndexUrl = false, $offers_brand = null, $encryptionKey = null) {
