@@ -69,7 +69,10 @@ class EmulatedSession {
 		if(isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== ''){
 			return true;
 		} else {
-			setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/','',true,false);
+			// Only set cookie if headers haven't been sent yet
+			if (!headers_sent()) {
+				setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/','',true,false);
+			}
 		}
 		
 		return isset($_COOKIE['cookieconsent_status']) && $_COOKIE['cookieconsent_status'] !== '';
