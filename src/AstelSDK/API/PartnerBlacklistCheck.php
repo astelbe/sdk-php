@@ -11,7 +11,7 @@ class PartnerBlacklistCheck extends APIModel {
   public function check(array $params = []) {
     $query = $this->newQuery();
     // $query->addGETParams($params);
-    $query->setUrl('v2_00/PartnerBlacklistCheck');
+    $query->setUrl('v2_00/partner_blacklist_check');
     $query->addPOSTParams($params);
     return $query->exec();
   }
