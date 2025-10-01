@@ -46,7 +46,8 @@ class HardwareShop extends AbstractWebIntegration {
   /**
    * Prepare script for hardware listing display
    */
-  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null, $useDefer = false) {
+  public function getScriptLoadHardwareSelect($brand_slug = null, $view = null, $encryptionKey = null, $customOptions = null, $useDefer = false) {
+
     global $_GET;
 
     $params = [];
@@ -57,6 +58,16 @@ class HardwareShop extends AbstractWebIntegration {
     if ($view !== null) {
       $params['view'] = $view;
     }
+    // Handle custom options for news_view context
+    if (is_array($customOptions)) {
+      if (isset($customOptions['hideFilter'])) {
+        $params['hide_filter'] = $customOptions['hideFilter'];
+      }
+      if (isset($customOptions['hideTitle'])) {
+        $params['hide_title'] = $customOptions['hideTitle'];
+      }
+    } 
+
     $params['session_id'] = $this->context->getSessionID();
     $params['page_url'] = $this->getPageURL();
 
@@ -75,6 +86,7 @@ class HardwareShop extends AbstractWebIntegration {
       $encryptionKey = $this->context->getEncryptionKey();
     }
     $getParamsStr = json_encode($params);
+
     $encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
 
