@@ -76,6 +76,11 @@ class HardwareShop extends AbstractWebIntegration {
       $params['username'] = $username;
     }
 
+    $brandIds = Hash::get($_GET, 'brand_ids');
+    if ($brandIds !== null) {
+      $params['brand_ids'] = $brandIds;
+    }
+
     $overridePartnerId = Hash::get($_GET, 'partnerID');
     if ($overridePartnerId !== null) {
       $params['data']['override_partner_id'] = $overridePartnerId;
@@ -86,28 +91,25 @@ class HardwareShop extends AbstractWebIntegration {
       $encryptionKey = $this->context->getEncryptionKey();
     }
     $getParamsStr = json_encode($params);
-
     $encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 
 
     $script = '';
-		if ($useDefer) {
-			// Use defer to load comparator script
-			// In astel.js, the script is then loaded with getAstelComparator. Inline script does not work with defer
-			$script = '<script>
+    if ($useDefer) {
+      // Use defer to load comparator script
+      // In astel.js, the script is then loaded with getAstelComparator. Inline script does not work with defer
+      $script = '<script>
         var hardware_is_single_product_page = false;
 				var hardware_paramsURL = "' . $encryptedGetParams . '";
 				var hardware_language = "' . $this->context->getLanguage() . '";
 			</script>';
-		} else {
-			// Regular script loading, i.e for partner integration
-			$script = '<script>
+    } else {
+      // Regular script loading, i.e for partner integration
+      $script = '<script>
         getHardwareSelect("hardwareDiv", "' . $this->context->getLanguage() . '", "' . $encryptedGetParams . '");
       </script>';
-		}
-		return $script;
-
-
+    }
+    return $script;
   }
 
   /**
