@@ -67,13 +67,14 @@ $tabId = $params['id'] ?? '';
 
 // Décomposition de l'URL
 $urlParts = parse_url($currentUrl);
-$path = $urlParts['path'] ?? '';
-$query = [];
-// Parse existing query parameters
-if (isset($urlParts['query'])) {
-  parse_str($urlParts['query'], $query);
-}
-// BESTSELLERS: remove 'display' from query
+$path = rtrim($urlParts['path'] ?? '', '/'); // Remove trailing slash if any, it leads to wrong route
+$queryString = $urlParts['query'] ?? '';
+$fragment = $tabId ?: ($urlParts['fragment'] ?? '');
+
+// Parsing des paramètres ?id=648&display=all
+parse_str($queryString, $query);
+
+// BESTSELLERS = tous les paramètres sauf "display"
 $bestsellerQuery = $query;
 unset($bestsellerQuery['display']);
 $bestsellersUrl = $path;
