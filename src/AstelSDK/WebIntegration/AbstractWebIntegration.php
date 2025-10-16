@@ -28,6 +28,27 @@ abstract class AbstractWebIntegration extends Singleton {
 //		}
 		return '';
 	}
+
+	/**
+	 * Get list of CSS to include
+	 * Can give an array scripts urls as strings (no defer)
+	 * or an array of [ 'src' => ..., 'defer' => true/false ]
+	 */
+	 public function getJS($defer = false) {
+		$out = '';
+		$jsList = $this->getJSList($defer);
+		foreach ($jsList as $js) {
+			if (is_array($js)) {
+				$src = $js['src'];
+				$deferAttr = !empty($js['defer']) ? ' defer' : '';
+				$out .= '<script src="' . $src . '"' . $deferAttr . '></script>';
+			} else {
+				// BC: string means no defer
+				$out .= '<script src="' . $js . '"></script>';
+			}
+		}
+		return $out;
+	}
 	
 	public function getPageURL(){
 		return $_SERVER['HTTP_X_FORWARDED_PROTO'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];

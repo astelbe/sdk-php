@@ -21,7 +21,17 @@ class SharedView extends Singleton {
     // $this->language = AstelContext::getInstance()->getLanguage();
   }
 
-  public function render($path, $params = []) {
+  /**
+   * Render a view file from /src/AstelShared/View/
+   * @param $path string Path to the view file, relative to /src/AstelShared/View/, without .php extension
+   * @param $params array Parameters to be extracted as variables in the view file
+   * @param $overrideVariableName string If set, the $params will be available in the view file under this variable name instead of being extracted as individual variables
+   */
+  public function render($path, $params = [], $overrideVariableName = null) {
+    // For productCard, we want to have direct access to $result var 
+    if ($overrideVariableName) {
+      $$overrideVariableName = $params;
+    }
     include __DIR__ . '/../AstelShared/View/' . $path . '.php';
   }
 
@@ -63,7 +73,7 @@ class SharedView extends Singleton {
 
     switch ($playDescriptionPath) {
 
-        // MOBILE
+      // MOBILE
       case 'play_description.mobile.included_minutes_calls':
         if ($description == 'UNLIMITED') {
           return self::getTranslation($translation_domain, 'tab_mobile_unlimited_call', $version);
@@ -85,7 +95,7 @@ class SharedView extends Singleton {
           return self::getTranslation($translation_domain, 'tab_mobile_sms', $version, $description);
         }
         break;
-        // INTERNET
+      // INTERNET
       case 'play_description.internet.bandwidth_download':
         return self::getTranslation($translation_domain, 'tab_internet_mbps', $version, $description);
         break;
@@ -134,7 +144,7 @@ class SharedView extends Singleton {
     }
   }
 
- 
+
 
 
   /**
@@ -308,7 +318,7 @@ class SharedView extends Singleton {
 
     switch ($playDescriptionPath) {
 
-        // MOBILE
+      // MOBILE
       case 'play_description.mobile.included_minutes_calls':
         if ($description == 'UNLIMITED') {
           // return self::getTranslation($translation_domain, 'included_minutes_calls_unlimited', $this->version);
@@ -484,7 +494,7 @@ class SharedView extends Singleton {
     $installation_fee = Hash::get($product, 'installation_fee', 0);
     $activation_fee_reduced = Hash::get($product, 'activation_fee_reduced', 0);
     $installation_fee_reduced = Hash::get($product, 'installation_fee_reduced', 0);
-    
+
     // Calculate setup fee
     $setup_fee_reduced = $activation_fee_reduced + $installation_fee_reduced;
     if ($activation_fee || $installation_fee) {
@@ -492,7 +502,7 @@ class SharedView extends Singleton {
     } else {
       $setup_fee = 0;
     }
-   
+
     $css_classes = $options['css_classes'] ?: 'font-weight-bold';
 
     $html = '';
@@ -527,7 +537,7 @@ class SharedView extends Singleton {
    */
   static function getHtmlForPriceWithPossibleReduction($full_price, $reduced_price, $css_classes = '') {
     $html = '';
-        if ($full_price > $reduced_price) {
+    if ($full_price > $reduced_price) {
       $html .= '<del class="pr-2 text-crossedgrey">' . self::formatPrice($full_price) . '</del>';
       if ($reduced_price > 0) {
         $html .= '<span class="' . $css_classes . '">' . self::formatPrice($reduced_price) . '</span>';
@@ -569,12 +579,11 @@ class SharedView extends Singleton {
     $price = $language == 'NL' ? '<span class="currency-symbol">€</span>' . $price : $price . '&nbsp<span class="currency-symbol">€</span>';
     $exploded_price = explode(',', $price);
     if (isset($exploded_price[1])) {
-      if($exploded_price[1] != '00') {
+      if ($exploded_price[1] != '00') {
         $price = $exploded_price[0] . '<span class="decimal">' . ',' . $exploded_price[1] . '</span>';
       } else {
         $price = $exploded_price[0];
       }
-
     }
 
     return $price;
@@ -587,28 +596,28 @@ class SharedView extends Singleton {
    */
   static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
     $AstelContext = AstelContext::getInstance();
-   
+
     if ($productForPlugs === null) {
       $productForPlugs = $product;
     }
-    
+
     // Cashback
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
     $partner_name = Hash::get($AstelContext->getSession()->sessionGet('partner'), 'contact_name.' . $AstelContext->getLanguage(), '');
     if ($cashbackAmount != 0) {
-      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' ' . self::formatPrice("-".$cashbackAmount);
+      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' ' . self::formatPrice("-" . $cashbackAmount);
     } else {
       $displayed_cashback = null;
     }
 
     // Get the product price with the VAT processed
     $product = self::updateProductWithVat($product);
-   
+
     // product savings
     $savings = self::calculateSavings($product);
 
     $result_summary = [
-      'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process'=> true, 'color-css-class' => 'color-operator', 'br-before-during-month' => true]),
+      'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process' => true, 'color-css-class' => 'color-operator', 'br-before-during-month' => true]),
       'total_cashback'         => $displayed_cashback,
       'phone_plug'             => self::displayPlugList([$productForPlugs], $blockKey),
       'setup'                  => self::getProductActivationAndOrInstallationPrice($product),
@@ -628,7 +637,7 @@ class SharedView extends Singleton {
     $VatCalculation = VatCalculation::getInstance();
     $websiteScopeProfessional = AstelContext::getInstance()->getIsProfessional();
     $productIsEncodedHTVA = Hash::get($product, 'is_htva', 0);
-    
+
     // Reassign prices with the VAT processed to avoid handling it in savings et setups calculation
     $product['price'] = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'price', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
     $product['discounted_price'] = $VatCalculation->calculatePriceForceHTVA(Hash::get($product, 'discounted_price', 0), $productIsEncodedHTVA, $websiteScopeProfessional);
@@ -692,13 +701,13 @@ class SharedView extends Singleton {
     $productIsEncodedHTVA = Hash::get($entity, 'is_htva', 0);
 
     if ($websiteScopeProfessional || $options['is_pro'] == 1) {
-			$display_EVAT = true; // Display HTVA if pro
+      $display_EVAT = true; // Display HTVA if pro
     } else {
       $display_EVAT = false; // No TTC displayed when private
     }
 
     // Bypass vat process. In COMP, the vat is already removed, per product, if needed.
-    if($options['bypass_vat_process'] == true) {
+    if ($options['bypass_vat_process'] == true) {
       $websiteScopeProfessional = 0;
       $productIsEncodedHTVA = 0;
     }
@@ -753,14 +762,14 @@ class SharedView extends Singleton {
       $crossPriceIfDuration = !$isDuration; // del price if discount is forever
       $displayedPriceText .= '<span class="regular-product-price font-weight-bold' . ($crossPriceIfDuration ? ' crossed' : '') . '">' . self::formatPrice($price) . '</span>' . ' ' . Translate::get('per_month');
       if ($display_EVAT) {
-				$displayedPriceText .= '<span class="vat">' . Translate::get('EVAT') . '</span>';
-			}
+        $displayedPriceText .= '<span class="vat">' . Translate::get('EVAT') . '</span>';
+      }
     } else {
       // No discount : "20 €/month"
       $displayedPriceText .= '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' big-product-price"><b>' . self::formatPrice($price) . '</b></span>' . '<span class="' . ($removeTextColor ? '' : 'text-astelpink') . ' fs094 ml-1">' . $priceTypeText . '</span>';
       if ($display_EVAT) {
-				$displayedPriceText .= '<span class="vat">' . Translate::get('EVAT') . '</span>';
-			}
+        $displayedPriceText .= '<span class="vat">' . Translate::get('EVAT') . '</span>';
+      }
     }
     return $displayedPriceText;
   }
@@ -783,7 +792,7 @@ class SharedView extends Singleton {
     $total_setup_price = Hash::get($product, 'activation_fee', 0) + Hash::get($product, 'installation_fee', 0);
     $reduced_total_setup_price = Hash::get($product, 'activation_fee_reduced', 0) + Hash::get($product, 'installation_fee_reduced', 0);
     $savings += ($total_setup_price > $reduced_total_setup_price ? $total_setup_price - $reduced_total_setup_price : 0);
-    
+
     // Add price promo savings
     // For a lifetime promo, we calculate only on discounted_price_period_in_month
     if ($product['discounted_price'] > 0 && $product['discounted_price_period'] == 0) {
@@ -791,7 +800,7 @@ class SharedView extends Singleton {
     }
     $savings += ($product['price'] - $product['discounted_price']) * $product['discounted_price_period'];
     // Note: If no promo, product has discounted_price at 0 and duration at 0, as it multiply by 0 it still 0
-    
+
     // Cashback (product need 'commission' embedded) Cashback always TVAC
     $savings += Hash::get($product, 'commission.cashback_amount', 0);
     return $savings;
@@ -893,7 +902,7 @@ class SharedView extends Singleton {
             $plugsModale .= '<p class="font-weight-bold h5 text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</p>';
             $plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $language) . '</p>';
             if (Hash::get($plug, 'banner_picture.' . $language, false)) {
-              $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid"></div>';
+              $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid" loading="lazy"></div>';
             }
           }
 
@@ -906,8 +915,8 @@ class SharedView extends Singleton {
       // Format the modal link and modal content
       $formattedModaleLink =
         '<p class="fs087 mt-1 mb-2 cursor-pointer noUnderline" data-toggle="modal" data-target="#modalPlugs_' . $modalKey . '">
-						<span class=underlinedTitle>' . Translate::get('plug_used') . '<i class=" pl-2 fa fa-info"></i></span><br>' 
-          . $plugsModaleLink .
+						<span class=underlinedTitle>' . Translate::get('plug_used') . '<i class=" pl-2 fa fa-info"></i></span><br>'
+        . $plugsModaleLink .
         '</p>';
 
       $formattedModale =
@@ -946,7 +955,7 @@ class SharedView extends Singleton {
    * @param plugIds. String List of phone plug tags from website config
    * return
    */
-  public function getPlugTypeLabel ($product, $plugIds) {
+  public function getPlugTypeLabel($product, $plugIds) {
     $plugTypeLabel = null;
     $plugIds = explode(',', $plugIds);
     $tags = Hash::get($product, 'tag', null);
