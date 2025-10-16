@@ -2,7 +2,7 @@
 
 use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
-
+// debug($result);
 ?>
 
 <div class="product-card position-relative mb-3<?= $isCurrent ? ' current-highlight' : '' ?>">
@@ -83,7 +83,7 @@ use CakeUtility\Hash;
         <?php
           }
         } ?>
-        <a href="#" onclick="toggleProductListingCards('<?= $params['id'] ?>'); return false;"
+        <a href="#" onclick="toggleProductListingCards('<?= $result['id'] ?>'); return false;"
           role="button"
           aria-expanded="false"
           aria-controls="toggleProductListingDetails__content"
