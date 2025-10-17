@@ -83,7 +83,8 @@ use CakeUtility\Hash;
         <?php
           }
         } ?>
-        <a href="#" onclick="toggleProductListingCards('<?= $result['id'] ?>'); return false;"
+
+        <a href="#" onclick="toggleProductListingCards('<?= isset($params['id']) ? $params['id'] : '' ?>', this); return false;"
           role="button"
           aria-expanded="false"
           aria-controls="toggleProductListingDetails__content"
