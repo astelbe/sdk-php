@@ -79,10 +79,10 @@ $bestsellerQuery = $query;
 unset($bestsellerQuery['display']);
 $bestsellersUrl = $path;
 if (!empty($bestsellerQuery)) {
-    $bestsellersUrl .= '?' . http_build_query($bestsellerQuery);
+  $bestsellersUrl .= '?' . http_build_query($bestsellerQuery);
 }
 if (!empty($fragment)) {
-    $bestsellersUrl .= '#nav-' . $fragment;
+  $bestsellersUrl .= '#nav-' . $fragment;
 }
 
 // ALL = tous les paramètres + display=all
@@ -90,7 +90,7 @@ $allQuery = $query;
 $allQuery['display'] = 'all';
 $allUrl = $path . '?' . http_build_query($allQuery);
 if (!empty($fragment)) {
-    $allUrl .= '#nav-' . $fragment;
+  $allUrl .= '#nav-' . $fragment;
 }
 
 // Exemple complet avec base
@@ -152,7 +152,7 @@ if (!empty($fragment)) {
     foreach ($params['productCards'] as $key => $result) {
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
       include __DIR__ . '/_product_card.php';
-    } 
+    }
     ?>
   </div>
 </div>
