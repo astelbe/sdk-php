@@ -202,7 +202,26 @@ return [
     'FR' => "Application TV (pas de décodeur)",
     'NL' => "Tv-applicatie (geen decoder)",
   ],
-
+  'internet'                              => [
+    'FR' => "Internet",
+    'NL' => "Internet",
+  ],
+  'gsm'                                   => [
+    'FR' => "GSM",
+    'NL' => "Gsm",
+  ],
+  'mobile'                                => [
+    'FR' => "GSM",
+    'NL' => "Gsm",
+  ],
+  'fix'                                   => [      
+    'FR' => "Fixe",
+    'NL' => "Vast",
+  ],
+  'tv'                                    => [
+    'FR' => "TV",
+    'NL' => "Tv",
+  ],
 
   // Fix
   'tab_fixe_EWE'                           => [
@@ -215,35 +234,35 @@ return [
   ],
   'tab_button_pack_internet_tv_mobile'     => [
     'FR' => "Internet + TV + GSM",
-    'NL' => "Internet + TV + GSM",
+    'NL' => "Internet + Tv + Gsm",
   ],
   'tab_button_pack_internet_tv'            => [
     'FR' => "Internet + TV",
-    'NL' => "Internet + TV",
+    'NL' => "Internet + Tv",
   ],
   'tab_button_pack_internet_mobile'        => [
     'FR' => "Internet + GSM",
-    'NL' => "Internet + GSM",
+    'NL' => "Internet + Gsm",
   ],
   'tab_button_pack_internet_tv_fix_mobile' => [
     'FR' => "Internet + TV + Téléphone + GSM",
-    'NL' => "Internet + TV + Telefonie + GSM",
+    'NL' => "Internet + Tv + Telefoon + Gsm",
   ],
   'tab_button_pack_internet_tv_fix'        => [
     'FR' => "Internet + TV + Téléphone",
-    'NL' => "Internet + TV + Telefonie",
+    'NL' => "Internet + Tv + Telefoon",
   ],
   'tab_button_pack_internet_fix_mobile'    => [
     'FR' => "Internet + Téléphone + GSM",
-    'NL' => "Internet + Telefonie + GSM",
+    'NL' => "Internet + Telefoon + Gsm",
   ],
   'tab_button_pack_internet_fix'           => [
     'FR' => "Internet + Téléphone",
-    'NL' => "Internet + Telefonie",
+    'NL' => "Internet + Telefoon",
   ],
   'tab_button_pack_tv_fix'                 => [
     'FR' => "TV + Téléphone",
-    'NL' => "TV + Telefonie",
+    'NL' => "Tv + Telefoon",
   ],
   'for life'                               => [
     'FR' => "à vie",
