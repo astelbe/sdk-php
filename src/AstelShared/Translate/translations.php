@@ -300,4 +300,34 @@ return [
       </ul>
       <p>Dat wil zeggen, <span class='text-pink'>alles wat u bespaart</span> door dit abonnement op Astel te bestellen.</p>",
   ],
+
+  // Google Place Autocomplete
+  'autocomplete_address_label'            => [
+    'FR' => "Tapez vos rue, numéro, code postal et commune",
+    'NL' => "Voer je straat, nummer, postcode en gemeente in",
+  ],
+  'autocomplete-found-street'              => [
+    'FR' => "Trouvé comme rue : ",
+    'NL' => "Gevonden als straat: ",
+  ],
+  'autocomplete-found-street-number'       => [
+    'FR' => "Trouvé comme numéro : ",
+    'NL' => "Gevonden als nummer: ",
+  ],
+  'autocomplete-found-postal-code'        => [
+    'FR' => "Trouvé comme code postal : ",
+    'NL' => "Gevonden als postcode: ",
+  ],
+  'autocomplete-found-city'               => [
+    'FR' => "Trouvé comme commune : ",
+    'NL' => "Gevonden als gemeente: ",
+  ],
+  'street_number override placeholder'    => [
+    'FR' => "Entrez le numéro du bâtiment",
+    'NL' => "Voer het huisnummer in",
+  ],
+  'postal_code override placeholder'     => [
+    'FR' => "Entrez le code postal",
+    'NL' => "Voer de postcode in",
+  ],
 ];
