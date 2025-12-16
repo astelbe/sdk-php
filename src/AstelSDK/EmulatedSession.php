@@ -71,7 +71,7 @@ class EmulatedSession {
 		} else {
 			// Only set cookie if headers haven't been sent yet
 			if (!headers_sent()) {
-				setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/','',true,false);
+				setcookie('cookieconsent_status', 'unknown', time() + 60 * 60,'/','',true,true);
 			}
 		}
 		
@@ -136,7 +136,7 @@ class EmulatedSession {
 		} else {
 			$this->sessionId = $session_id;
 		}
-		setcookie('session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, false);
+		setcookie('session_id', $this->sessionId, $sessionTimeout, '/', $cookie_domain, true, true);
 	}
 	
 	protected function destroyRestartSession() {
