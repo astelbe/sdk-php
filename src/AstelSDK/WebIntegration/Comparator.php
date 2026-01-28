@@ -7,19 +7,19 @@ use AstelSDK\Utils\EncryptData;
 use AstelShared\Typeahead;
 
 class Comparator extends AbstractWebIntegration {
-	
+
 	public function getCSSList($allRequired = true) {
 		$cssList = [];
-		
+
 		if ($allRequired) {
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/bootstrap/4.3.1/css/bootstrap.min.css';
 			$cssList[] = 'https://cdn' . $this->context->getEnv() . '.astel.be/libs/font-awesome/4.7.0/css/font-awesome.min.css';
 		}
 		$cssList[] = 'https://compare' . $this->context->getEnv() . '.astel.be/css/compare/comparator.css?v=' . $this->context->getVersion();
-		
+
 		return $cssList;
 	}
-	
+
 	public function getJSList($defer = false) {
 		$Typeahead = Typeahead::getInstance();
 		$typeahead_js = $Typeahead->getJsList(true); // Get typeahead js, with defer true
@@ -39,18 +39,18 @@ class Comparator extends AbstractWebIntegration {
 		// Merge: keep BC for typeahead_js (strings), but allow array for comparator_js
 		return array_merge($typeahead_js, $comparator_js);
 	}
-	
+
 	public function getCSS($allRequired = true) {
 		$out = '';
 		$cssList = $this->getCSSList($allRequired);
 		foreach ($cssList as $css) {
 			$out .= '<link rel="stylesheet" href="' . $css . '">';
 		}
-		
+
 		return $out;
 	}
-	
-	  
+
+
 	/**
 	 * Prepare script for comparator display
 	 * If $useDefer = true, will prepare inline script to be used with defer loading of comparator script
@@ -59,16 +59,16 @@ class Comparator extends AbstractWebIntegration {
 	 */
 	public function getScriptLoadComparator($title = null, $encryptionKey = null, $useDefer = false) {
 		global $_GET;
-	
+
 		// Get the encryption key from the context if it is not provided
-		if(!$encryptionKey) {
-		$encryptionKey = $this->context->getEncryptionKey();
+		if (!$encryptionKey) {
+			$encryptionKey = $this->context->getEncryptionKey();
 		}
 
 		$getParams = [];
 
 		// Process $_GET params
-        // Be aware that $_GET param names are not the same in comparator scripts
+		// Be aware that $_GET param names are not the same in comparator scripts
 		$defaultGET = [
 			'mobile' => 0,
 			'fixe' => 0,
@@ -116,13 +116,12 @@ class Comparator extends AbstractWebIntegration {
 					$getParams['mobile_heavy_int_qt'] = (int)$_GET['mobile_heavy_int_qt'];
 				}
 			}
-			
 		}
 		// Fix
 		// Can use 'fixe' or 'fix'. Comp V2 code send url with 'fix'
-        $is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
-        $is_fix = (int)$is_fix;
-		if($is_fix !== false) {
+		$is_fix = $_GET['fixe'] ?: $_GET['fix'] ?: false;
+		$is_fix = (int)$is_fix;
+		if ($is_fix !== false) {
 			$getParams['is_fix'] = 0;
 			if ($is_fix > 0) {
 				$getParams['is_fix'] = 1;
@@ -166,14 +165,14 @@ class Comparator extends AbstractWebIntegration {
 			$getParams['is_tv'] = 0;
 			if ($is_tv > 0) {
 				$getParams['is_tv'] = 1;
-                switch ($is_tv) {
-                    case 2:
-                        $getParams['tv_usage'] = 'WITH_DECODER';
-                        break;
-                    case 3:
-                        $getParams['tv_usage'] = 'FROM_APPLICATION';
-                        break;
-                }
+				switch ($is_tv) {
+					case 2:
+						$getParams['tv_usage'] = 'WITH_DECODER';
+						break;
+					case 3:
+						$getParams['tv_usage'] = 'FROM_APPLICATION';
+						break;
+				}
 			}
 		}
 
@@ -190,9 +189,9 @@ class Comparator extends AbstractWebIntegration {
 
 		// Is student filter
 		if (isset($_GET['is_student']) && $_GET['is_student'] !== '' && is_numeric($_GET['is_student'])) {
-			$isStudent = (int)$_GET['is_student']; 
+			$isStudent = (int)$_GET['is_student'];
 			$getParams['is_student'] = $isStudent;
-		}  
+		}
 
 		if (isset($_GET['is_static_display'])) {
 			$getParams['is_static_display'] = $_GET['is_static_display'];
@@ -203,8 +202,8 @@ class Comparator extends AbstractWebIntegration {
 
 		if (isset($_GET['partnerID'])) {
 			$getParams['partnerID'] = $_GET['partnerID'];
-		} 
-    
+		}
+
 		$getParams['page_title'] = $title;
 
 		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
@@ -226,7 +225,7 @@ class Comparator extends AbstractWebIntegration {
 		}
 		return $script;
 	}
-	
+
 	public function getScriptLoadComparatorParameterBar($encryptionKey = null) {
 		$paramsURL = $this->getParamsUrl(null, $encryptionKey);
 		return '<script>
@@ -235,6 +234,13 @@ class Comparator extends AbstractWebIntegration {
 			
 			// Ensure script is loaded even when navigating back to the page
 			window.addEventListener("pageshow", function(event) {
+				// FIX: Hide loader and reset state when returning via back/forward
+				var loader = document.getElementById("ajaxLoader");
+				if (loader) {
+					loader.style.display = "none";
+				}
+				isLoading = false;
+				
 				getAstelStandaloneParameterBar("comparatorDiv", "' . $this->context->getLanguage() . '", "' . $paramsURL . '");
 				comparatorBarIsLoaded = true;
 			});
@@ -245,17 +251,17 @@ class Comparator extends AbstractWebIntegration {
 			}
 		</script>';
 	}
-	
+
 	private function getParamsUrl($getParams = [], $encryptionKey = null) {
 		$getParams['page_url'] = $this->getPageURL();
 		$is_professional = ($this->context->getisPrivate() === 1 || $this->context->getisPrivate() === true || $this->context->getisPrivate() === null) ? 0 : 1;
 		$getParams['is_professional'] = $is_professional;
 		$getParams['session_id'] = $this->context->getSessionID();
-    $getParamsStr = json_encode($getParams);
+		$getParamsStr = json_encode($getParams);
 		$encryptedGetParams = EncryptData::encrypt($getParamsStr, $encryptionKey);
 		return $encryptedGetParams;
 	}
-	
+
 	/**
 	 * HTML to display in body, where comparator will be loaded
 	 */
@@ -269,6 +275,4 @@ class Comparator extends AbstractWebIntegration {
 				</div>
 			</div>';
 	}
-	
-	
 }
