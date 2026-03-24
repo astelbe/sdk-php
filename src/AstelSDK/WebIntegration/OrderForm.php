@@ -28,6 +28,7 @@ class OrderForm extends AbstractWebIntegration {
     $typeahead_js = $Typeahead->getJsList($defer);
     $order_form_js = [
       'https://files' . $this->context->getEnv() . '.astel.be/DJs/google_place_autocomplete.js?v=' . $this->context->getVersion(),
+      'https://files' . $this->context->getEnv() . '.astel.be/DJs/autocomplete_address_service.js?v=' . $this->context->getVersion(),
       'https://files' . $this->context->getEnv() . '.astel.be/DJs/astelContentInjector.js?v=' . $this->context->getVersion(),
       'https://order' . $this->context->getEnv() . '.astel.be/orderForms/inject.js?v=' . $this->context->getVersion(),
       'https://maps.googleapis.com/maps/api/js?key=' . $this->context->apiKeyGooglePlace . '&libraries=places&loading=async',
