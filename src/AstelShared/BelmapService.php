@@ -21,6 +21,12 @@ class BelmapService extends Singleton  {
   private $baseUrl = 'https://belmapapi.gim.be/belmap-api/1_0_0/rest';
 
   /**
+   * Base URL for the Belmap Query API
+   * @var string
+   */
+  private $queryApiUrl = 'https://belmapapi.gim.be/api/query/address';
+
+  /**
    * Address search with autocomplete
    * @param array $request Contains the 'address' key with the address to search
    * @param string $token Token for the Belmap API
@@ -66,10 +72,10 @@ class BelmapService extends Singleton  {
   }
 
   /**
-   * Retrieves the details of a Belmap address
+   * Retrieves the details of a Belmap address with subaddresses (box numbers)
    * @param array $request Contains the 'belmapId' key with the Belmap identifier
    * @param string $token Token for the Belmap API
-   * @return array ['code' => int, 'response' => array or 'message' => string]
+   * @return array ['code' => int, 'response' => ['entity' => array, 'subaddresses' => array] or 'message' => string]
    */
   public function getBelmapAddressDetails($request, $token) {
     try {
@@ -91,6 +97,59 @@ class BelmapService extends Singleton  {
       $url = $this->baseUrl . '/entity/' . urlencode($belmapId) . '?countryCode=BEL&token=' . $token;
 
       $response = $this->makeRequest($url);
+
+      if (isset($response['error'])) {
+        return $response;
+      }
+
+      // Fetch subaddresses (box numbers) for this address
+      $subaddresses = [];
+      $subaddressesResponse = $this->getBelmapSubaddresses($belmapId, $token);
+      if ($subaddressesResponse['code'] === 200) {
+        $subaddresses = $subaddressesResponse['response'];
+      }
+  
+      return [
+        'code' => 200,
+        'response' => [
+          'entity' => $response,
+          'subaddresses' => $subaddresses
+        ]
+      ];
+    } catch (Exception $e) {
+      return [
+        'code' => $e->getCode(),
+        'message' => $e->getMessage()
+      ];
+    }
+  }
+
+  /**
+   * Retrieves all active subaddresses (box numbers) for a given address ID
+   * @param string $belmapId The Belmap address identifier (must be a base address ID)
+   * @param string $token Token for the Belmap API
+   * @return array ['code' => int, 'response' => array of subaddresses or 'message' => string]
+   */
+  public function getBelmapSubaddresses($belmapId, $token) {
+    try {
+      if (empty($belmapId) || empty($token)) {
+        return [
+          'code' => 400,
+          'message' => 'BelmapId and Token parameters are required'
+        ];
+      }
+
+      // Query filter for active subaddresses
+      $filter = [
+        'endLifeSpan' => [
+          '$exists' => false
+        ],
+        'subAddressOf' => (int)$belmapId
+      ];
+
+      $url = $this->queryApiUrl . '?countryCode=BEL&requestedFields=stableId&requestedFields=boxNumber&token=' . $token;
+
+      $response = $this->makePostRequest($url, $filter);
 
       if (isset($response['error'])) {
         return $response;
@@ -120,6 +179,42 @@ class BelmapService extends Singleton  {
       CURLOPT_HEADER => false,
       CURLOPT_HTTPHEADER => [
         'Accept: application/json',
+        'Content-Type: application/json'
+      ]
+    ]);
+
+    $response = curl_exec($ch);
+    $errorCode = curl_errno($ch);
+    $errorMsg = curl_error($ch);
+
+    curl_close($ch);
+
+    if ($errorCode) {
+      return [
+        'error' => true,
+        'code' => $errorCode,
+        'message' => $errorMsg
+      ];
+    }
+
+    return json_decode($response, true);
+  }
+
+  /**
+   * Performs an HTTP POST request to the Belmap API
+   * @param string $url The complete request URL
+   * @param array $data The POST data (will be JSON encoded)
+   * @return array The JSON decoded data or an error array
+   */
+  private function makePostRequest($url, $data = []) {
+    $ch = curl_init($url);
+    curl_setopt_array($ch, [
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_HEADER => false,
+      CURLOPT_POST => true,
+      CURLOPT_POSTFIELDS => json_encode($data),
+      CURLOPT_HTTPHEADER => [
+        'Accept: */*',
         'Content-Type: application/json'
       ]
     ]);
