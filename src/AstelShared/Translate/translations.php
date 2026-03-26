@@ -330,4 +330,8 @@ return [
     'FR' => "Entrez le code postal",
     'NL' => "Voer de postcode in",
   ],
+  'autocomplete-found-box'               => [
+    'FR' => "Trouvé comme boîte : ",
+    'NL' => "Gevonden als bus: ",
+  ],
 ];

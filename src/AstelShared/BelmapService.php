@@ -209,6 +209,10 @@ class BelmapService extends Singleton  {
         'varName' => 'street_number',
       ],
       [
+        'label' => 'autocomplete-found-box',
+        'varName' => 'box',
+      ],
+      [
         'label' => 'autocomplete-found-postal-code',
         'varName' => 'postal_code',
       ],
