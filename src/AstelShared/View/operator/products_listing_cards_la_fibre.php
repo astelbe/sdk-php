@@ -80,7 +80,7 @@ use CakeUtility\Hash;
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { 
+                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand'))) { 
                   $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
                   ?>
                   <div class="titleproduct-logo-brand p-2 mb-0">
