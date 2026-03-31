@@ -83,14 +83,14 @@ use CakeUtility\Hash;
                 if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand'))) { 
                   $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
                   ?>
-                  <div class="titleproduct-logo-brand p-2 mb-0">
-                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
+                  <div class="titleproduct-logo-brand mt-2 pt-3 p-2 mb-0 d-flex justify-content-center align-items-center" style="max-width: 100%;">
+                    <img style="max-width: 150px; height:30px" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
                   <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'][strtoupper($this->language)]; ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
                   <?php } ?>
-                  <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
+                  <h3 class="px-1 pt-2 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
                       <?= $item['brand_name']?> <?= $item['short_name']; ?>
                     </span>
