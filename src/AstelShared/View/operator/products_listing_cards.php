@@ -114,7 +114,7 @@ if (!empty($fragment)) {
     ?>
 
     <div
-      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto">
+      class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto p-3">
       <?php
       if ($params['display_best_seller_filter'] == 1) {
       ?>
@@ -134,18 +134,8 @@ if (!empty($fragment)) {
       }
       ?>
 
-      <div class="d-flex align-self-end align-items-center toggleProductListingDetails mt-sm-2 mt-lg-0 mt-2">
-        <input type="checkbox" class="toggleProductListingDetails__button mr-2"
-          id="toggle-product-listing-button-<?= $params['id'] ?>"
-          onclick="toggleProductListingCards('<?= $params['id'] ?>')">
-        <label for="toggle-product-listing-button-<?= $params['id'] ?>"
-          class="m-0 toggleProductListingDetails__detailsLabel cursor-pointer">
-          <?= Translate::get('switch_details'); ?>
-        </label>
-      </div>
     </div>
   </div>
-
   <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4" style="gap-row:1.2rem;">
     <?php
     // LOOP ON PRODUCT CARDS
