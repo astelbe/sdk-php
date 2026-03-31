@@ -46,14 +46,6 @@ use CakeUtility\Hash;
     <h2 class="mt-2 pl-2">
       <?= $params['title']; ?>
     </h2>
-    <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-flex justify-content-center text-nowrap toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
-      <div class="details-hidden">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
-      </div>
-      <div class="details-visible">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
-      </div>
-    </div>
   </div>
 
   <div class="row mt-4 no-gutters">
@@ -157,17 +149,13 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if((!empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos">
                   <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                       <?=$result['result_summary']['max_activation_time'];?>
-                      <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                          <br>
-                      <?php } ?>
+                      
                   <?php } ?>
-                  <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                      <?= $result['result_summary']['phone_plug']?>
-                  <?php } ?>
+                  
                 </div>
               <?php } ?>
             </div>
