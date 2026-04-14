@@ -214,7 +214,7 @@ return [
     'FR' => "GSM",
     'NL' => "Gsm",
   ],
-  'fix'                                   => [      
+  'fix'                                   => [
     'FR' => "Fixe",
     'NL' => "Vast",
   ],
@@ -330,4 +330,63 @@ return [
     'FR' => "Entrez le code postal",
     'NL' => "Voer de postcode in",
   ],
+
+
+  'call_me_request' => [
+    'FR' => "Appelez-moi",
+    'NL' => "Bel me",
+  ],
+  'call_me_request_title' => [
+    'FR' => "Demande de rappel",
+    'NL' => "Terugbelverzoek",
+  ],
+  'call_me_intro_text' => [
+    'FR' => "Laissez-nous votre numéro de téléphone et nous vous rappellerons pour vous aider à choisir l'abonnement qui vous convient le mieux.",
+    'NL' => "Laat ons uw telefoonnummer achter en wij bellen u terug om u te helpen het abonnement te kiezen dat het beste bij u past.",
+  ],
+  'call_me_time_opening' => [
+    'FR' => "Heures d'ouverture : du lundi au vendredi de 9h à 18h",
+    'NL' => "Openingstijden: maandag tot vrijdag van 9u tot 18u",
+  ],
+  'call_me_gender' => [
+    'FR' => "Genre",
+    'NL' => "Geslacht",
+  ],
+  'call_me_gender_select' => [
+    'FR' => "Sélectionnez votre genre",
+    'NL' => "Selecteer uw geslacht",
+  ],
+  'call_me_gender_male' => [
+    'FR' => "Homme",
+    'NL' => "Man",
+  ],
+  'call_me_gender_female' => [
+    'FR' => "Femme",
+    'NL' => "Vrouw",
+  ],
+  'call_me_gender_other' => [
+    'FR' => "Autre",
+    'NL' => "Overig",
+  ],
+  'call_me_firstname' => [
+    'FR' => "Prénom",
+    'NL' => "Voornaam",
+  ],
+  'call_me_lastname' => [
+    'FR' => "Nom",
+    'NL' => "Achternaam",
+  ],
+  'call_me_address_installation' => [
+    'FR' => "Adresse d'installation",
+    'NL' => "Installatieadres",
+  ],
+  'call_me_phone_number' => [
+    'FR' => "Numéro de téléphone",
+    'NL' => "Telefoonnummer",
+  ],
+  'close' => [
+    'FR' => "Fermer",
+    'NL' => "Sluiten",
+  ],
+
 ];

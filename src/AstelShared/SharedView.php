@@ -984,4 +984,100 @@ class SharedView extends Singleton {
 
     return $plugTypeLabel;
   }
+
+  /**
+   * Render a "Call Me" link that opens a modal with a form to request a callback
+   * @param $productCardId string The ID of the product card (used to create unique modal ID)
+   * @param $operatorName string The name of the operator
+   * @return string HTML for the call me link
+   */
+  public function renderCallMeLink($productCardId, $operatorName = '') {
+    $modalId = 'modalCallMe_' . $productCardId;
+
+    $html = '<button type="button" class="btn btn-sm btn-outline-primary callMeButton" data-toggle="modal" data-target="#' . htmlspecialchars($modalId) . '" title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+    $html .= '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
+    $html .= '</button>';
+
+    return $html;
+  }
+
+  /**
+   * Render the "Call Me" modal with form
+   * @param $productCardId string The ID of the product card
+   * @param $operatorName string The name of the operator
+   * @return string HTML for the complete modal with form
+   */
+  public function renderCallMeModal($productCardId, $operatorName = '') {
+    $modalId = 'modalCallMe_' . $productCardId;
+    $operatorText = !empty($operatorName) ? ' ' . htmlspecialchars($operatorName) : '';
+
+    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true">';
+    $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
+    $html .= '    <div class="modal-content">';
+    $html .= '      <div class="modal-header">';
+    $html .= '        <h5 class="modal-title" id="' . htmlspecialchars($modalId) . '_label">' . Translate::get('call_me_request_title') . $operatorText . '</h5>';
+    $html .= '        <button type="button" class="close" data-dismiss="modal" aria-label="' . Translate::get('close') . '">';
+    $html .= '          <span aria-hidden="true">&times;</span>';
+    $html .= '        </button>';
+    $html .= '      </div>';
+    $html .= '      <div class="modal-body">';
+
+    // Intro text
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_intro_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_intro_text') . '</label>';
+    $html .= '          <textarea class="form-control" id="callme_intro_' . htmlspecialchars($productCardId) . '" rows="2" placeholder="' . Translate::get('call_me_intro_placeholder') . '"></textarea>';
+    $html .= '        </div>';
+
+    // Time opening schedules
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
+    $html .= '          <input type="text" class="form-control" id="callme_schedule_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_time_opening_placeholder') . '">';
+    $html .= '        </div>';
+
+    // Gender
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_gender_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_gender') . '</label>';
+    $html .= '          <select class="form-control" id="callme_gender_' . htmlspecialchars($productCardId) . '">';
+    $html .= '            <option value="">' . Translate::get('call_me_gender_select') . '</option>';
+    $html .= '            <option value="M">' . Translate::get('call_me_gender_male') . '</option>';
+    $html .= '            <option value="F">' . Translate::get('call_me_gender_female') . '</option>';
+    $html .= '            <option value="O">' . Translate::get('call_me_gender_other') . '</option>';
+    $html .= '          </select>';
+    $html .= '        </div>';
+
+    // First name and Last name
+    $html .= '        <div class="form-row">';
+    $html .= '          <div class="form-group col-md-6">';
+    $html .= '            <label for="callme_firstname_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_firstname') . '</label>';
+    $html .= '            <input type="text" class="form-control" id="callme_firstname_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_firstname') . '" required>';
+    $html .= '          </div>';
+    $html .= '          <div class="form-group col-md-6">';
+    $html .= '            <label for="callme_lastname_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_lastname') . '</label>';
+    $html .= '            <input type="text" class="form-control" id="callme_lastname_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_lastname') . '" required>';
+    $html .= '          </div>';
+    $html .= '        </div>';
+
+    // Address of installation
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_address_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_address_installation') . '</label>';
+    $html .= '          <input type="text" class="form-control" id="callme_address_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_address_installation_placeholder') . '" required>';
+    $html .= '        </div>';
+
+    // Phone number
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_phone_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_phone_number') . '</label>';
+    $html .= '          <input type="tel" class="form-control" id="callme_phone_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_phone_number_placeholder') . '" required>';
+    $html .= '        </div>';
+
+    $html .= '      </div>';
+    $html .= '      <div class="modal-footer">';
+    $html .= '        <button type="button" class="btn btn-secondary" data-dismiss="modal">' . Translate::get('close') . '</button>';
+    $html .= '        <button type="button" class="btn btn-primary callMeSubmitButton" data-product-card-id="' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_request') . '</button>';
+    $html .= '      </div>';
+    $html .= '    </div>';
+    $html .= '  </div>';
+    $html .= '</div>';
+
+    return $html;
+  }
 }
