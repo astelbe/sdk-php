@@ -159,14 +159,14 @@ use CakeUtility\Hash;
           ?>
           <?= $result['result_summary']['order_button']; ?>
         </div>
-        <div>
-          <?php // CALL ME BUTTON
-          $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
-          if (isset($SharedView)) {
-            echo $SharedView->renderCallMeLink($productCardId, isset($item['brand_name']) ? $item['brand_name'] : '');
-          }
-          ?>
-        </div>
+      </div>
+      <div>
+        <?php // CALL ME BUTTON
+        $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
+        if (isset($SharedView)) {
+          echo $SharedView->renderCallMeLink($productCardId, isset($item['brand_name']) ? $item['brand_name'] : '');
+        }
+        ?>
       </div>
     </div>
   </div>

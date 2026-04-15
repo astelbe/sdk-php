@@ -994,7 +994,7 @@ class SharedView extends Singleton {
   public function renderCallMeLink($productCardId, $operatorName = '') {
     $modalId = 'modalCallMe_' . $productCardId;
 
-    $html = '<button type="button" class="btn btn-sm btn-outline-primary callMeButton" data-toggle="modal" data-target="#' . htmlspecialchars($modalId) . '" title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+    $html = '<button type="button" class="btn btn-sm callMeButton" data-toggle="modal" data-target="#' . htmlspecialchars($modalId) . '" title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
     $html .= '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
     $html .= '</button>';
 
