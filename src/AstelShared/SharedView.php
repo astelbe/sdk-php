@@ -1007,9 +1007,15 @@ class SharedView extends Singleton {
    * @param $operatorName string The name of the operator
    * @return string HTML for the complete modal with form
    */
-  public function renderCallMeModal($productCardId, $operatorName = '') {
+  public function renderCallMeModal($productCardId, $operatorName = '', $callCenterOpen = null) {
     $modalId = 'modalCallMe_' . $productCardId;
     $operatorText = !empty($operatorName) ? ' ' . htmlspecialchars($operatorName) : '';
+
+    $language      = AstelContext::getInstance()->getLanguage();
+    $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
+    $isOpen        = is_array($callCenterOpen) ? ($callCenterOpen['is_open'][$language] ?? null) : null;
+    $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
+    error_log('CCO debug | lang=' . $language . ' | is_array=' . (is_array($callCenterOpen) ? 'yes' : 'no') . ' | keys=' . (is_array($callCenterOpen) ? implode(',', array_keys($callCenterOpen)) : 'n/a') . ' | textToDisplay=' . ($textToDisplay ?? 'NULL') . ' | openingHours=' . ($openingHours ?? 'NULL'));
 
     $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true">';
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
@@ -1021,6 +1027,19 @@ class SharedView extends Singleton {
     $html .= '        </button>';
     $html .= '      </div>';
     $html .= '      <div class="modal-body">';
+
+    // Opening hours block
+    if (!empty($textToDisplay) || !empty($openingHours)) {
+      $statusClass = $isOpen ? 'text-success' : 'text-danger';
+      $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
+      if (!empty($textToDisplay)) {
+        $html .= '<p class="font-weight-bold ' . $statusClass . ' mb-1">' . htmlspecialchars($textToDisplay) . '</p>';
+      }
+      if (!empty($openingHours)) {
+        $html .= '<p class="mb-0">' . nl2br(htmlspecialchars(str_replace('</br>', "\n", $openingHours))) . '</p>';
+      }
+      $html .= '</div>';
+    }
 
     // Intro text
     $html .= '        <div class="form-group">';

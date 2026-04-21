@@ -345,8 +345,8 @@ return [
     'NL' => "Laat ons uw telefoonnummer achter en wij bellen u terug om u te helpen het abonnement te kiezen dat het beste bij u past.",
   ],
   'call_me_time_opening' => [
-    'FR' => "Heures d'ouverture : du lundi au vendredi de 9h à 18h",
-    'NL' => "Openingstijden: maandag tot vrijdag van 9u tot 18u",
+    'FR' => "Heures d'ouverture : du lundi au vendredi de %su à %s",
+    'NL' => "Openingstijden: maandag tot vrijdag van %su tot %s",
   ],
   'call_me_gender' => [
     'FR' => "Genre",

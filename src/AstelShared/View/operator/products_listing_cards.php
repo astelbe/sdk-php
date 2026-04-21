@@ -158,7 +158,10 @@ if (!empty($fragment)) {
           break;
         }
       }
-      echo $SharedView->renderCallMeModal($productCardId, $operatorName);
+      // echo 'testing ' . $productCardId . ' - ' . $operatorName;
+      // print_r($params);
+      echo $SharedView->renderCallMeModal($productCardId, $operatorName, $params['call_center_open'] ?? null);
+      // echo $SharedView->renderCallMeModal($productCardId, $operatorName);
     }
   }
   ?>
