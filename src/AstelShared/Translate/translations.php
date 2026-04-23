@@ -408,4 +408,12 @@ return [
     'FR' => "Demain",
     'NL' => "Morgen",
   ],
+  'call_me_success' => [
+    'FR' => "Votre demande a bien été envoyée. Nous vous rappellerons dans le créneau choisi.",
+    'NL' => "Uw aanvraag is verzonden. We bellen u terug op het gekozen tijdslot.",
+  ],
+  'call_me_error' => [
+    'FR' => "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
+    'NL' => "Er is een fout opgetreden. Probeer het opnieuw of neem rechtstreeks contact met ons op.",
+  ],
 ];

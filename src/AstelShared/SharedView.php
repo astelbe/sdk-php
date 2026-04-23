@@ -1028,7 +1028,7 @@ class SharedView extends Singleton {
     $isOpen        = is_array($callCenterOpen) ? ($callCenterOpen['is_open'][$language] ?? null) : null;
     $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
 
-    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true">';
+    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '">';
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
     $html .= '    <div class="modal-content">';
     $html .= '      <div class="modal-header">';
@@ -1117,9 +1117,20 @@ class SharedView extends Singleton {
     $html .= '        </div>';
 
     $html .= '      </div>';
-    $html .= '      <div class="modal-footer">';
-    $html .= '        <button type="button" class="btn btn-secondary" data-dismiss="modal">' . Translate::get('close') . '</button>';
-    $html .= '        <button type="button" class="btn btn-primary callMeSubmitButton" data-product-card-id="' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_request') . '</button>';
+    $html .= '      <div class="modal-footer flex-column align-items-stretch">';
+    $html .= '        <div id="callme_feedback_' . htmlspecialchars($productCardId) . '" class="callme-feedback w-100 mb-2"></div>';
+    $html .= '        <div class="d-flex justify-content-end w-100">';
+    $html .= '          <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">' . Translate::get('close') . '</button>';
+    $html .= '          <button type="button" class="btn btn-primary"'
+      . ' onclick="callMeHandleSubmit(this)"'
+      . ' data-card-id="' . htmlspecialchars($productCardId) . '"'
+      . ' data-language="' . htmlspecialchars($language) . '"'
+      . ' data-operator-name="' . htmlspecialchars($operatorName) . '"'
+      . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
+      . ' data-success-msg="' . htmlspecialchars(Translate::get('call_me_success')) . '"'
+      . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
+      . '>' . Translate::get('call_me_request') . '</button>';
+    $html .= '        </div>';
     $html .= '      </div>';
     $html .= '    </div>';
     $html .= '  </div>';
