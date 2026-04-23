@@ -1045,21 +1045,38 @@ class SharedView extends Singleton {
     $html .= '        </div>';
 
     // Time opening schedules
-    $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
-    // $html .= '          <input type="text" class="form-control" id="callme_schedule_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_time_opening_placeholder') . '">';
-    $html .= '        </div>';
-
-    // Opening hours block
-    if (!empty($textToDisplay) || !empty($openingHours)) {
-      $statusClass = $isOpen ? 'text-success' : 'text-danger';
+    // Preferred callback time slot
+    $availableSlots = is_array($callCenterOpen) ? ($callCenterOpen['available_slots'][$language] ?? []) : [];
+    if (!empty($availableSlots)) {
       $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
+      $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
+      $html .= '<div class="form-group">';
+      $html .= '<label>' . Translate::get('call_me_preferred_slot') . '</label>';
+      $html .= '<div class="call-me-slots mt-1">';
+
       if (!empty($textToDisplay)) {
-        $html .= '<p class="font-weight-bold ' . $statusClass . ' mb-1">' . htmlspecialchars($textToDisplay) . '</p>';
+        if (!empty($openingHours)) {
+          $html .= '<p class="mb-0">' . nl2br(htmlspecialchars(str_replace('</br>', "\n", $openingHours))) . '</p>';
+        }
       }
-      if (!empty($openingHours)) {
-        $html .= '<p class="mb-0">' . nl2br(htmlspecialchars(str_replace('</br>', "\n", $openingHours))) . '</p>';
+
+      foreach ($availableSlots as $i => $slot) {
+        $inputId = 'callme_slot_' . htmlspecialchars($productCardId) . '_' . $i;
+        if ($slot['is_today']) {
+          $dayLabel = Translate::get('call_me_today');
+        } elseif ($slot['is_tomorrow']) {
+          $dayLabel = Translate::get('call_me_tomorrow');
+        } else {
+          $dayLabel = htmlspecialchars($slot['day_label']);
+        }
+        $slotLabel = $dayLabel . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
+        $html .= '<div class="form-check">';
+        $html .= '<input class="form-check-input" type="radio" name="callme_slot_' . htmlspecialchars($productCardId) . '" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '"' . ($i === 0 ? ' checked' : '') . '>';
+        $html .= '<label class="form-check-label" for="' . $inputId . '">' . $slotLabel . '</label>';
+        $html .= '</div>';
       }
+      $html .= '</div>';
+      $html .= '</div>';
       $html .= '</div>';
     }
 

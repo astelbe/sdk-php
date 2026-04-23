@@ -345,8 +345,8 @@ return [
     'NL' => "Laat ons uw telefoonnummer achter en wij bellen u terug om u te helpen het abonnement te kiezen dat het beste bij u past.",
   ],
   'call_me_time_opening' => [
-    'FR' => "Heures d'ouverture : ",
-    'NL' => "Openingstijden: ",
+    'FR' => "Time Slots : ",
+    'NL' => "Time Slots: ",
   ],
   'call_me_gender' => [
     'FR' => "Genre",
@@ -395,5 +395,17 @@ return [
   'close' => [
     'FR' => "Fermer",
     'NL' => "Sluiten",
+  ],
+  'call_me_preferred_slot' => [
+    'FR' => "Choisissez un créneau pour être rappelé(e)",
+    'NL' => "Kies een tijdslot om teruggebeld te worden",
+  ],
+  'call_me_today' => [
+    'FR' => "Aujourd'hui",
+    'NL' => "Vandaag",
+  ],
+  'call_me_tomorrow' => [
+    'FR' => "Demain",
+    'NL' => "Morgen",
   ],
 ];
