@@ -153,10 +153,20 @@ use CakeUtility\Hash;
           </div>
         <?php } ?>
       </div>
-      <div class="my-1">
-        <?php // ORDER BUTTON 
+      <div class="my-1 d-flex gap-2">
+        <div class="flex-grow-1">
+          <?php // ORDER BUTTON 
+          ?>
+          <?= $result['result_summary']['order_button']; ?>
+        </div>
+      </div>
+      <div>
+        <?php // CALL ME BUTTON
+        $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
+        if (isset($SharedView)) {
+          echo $SharedView->renderCallMeLink($productCardId, isset($item['brand_name']) ? $item['brand_name'] : '', $params['call_center_open'] ?? null);
+        }
         ?>
-        <?= $result['result_summary']['order_button']; ?>
       </div>
     </div>
   </div>

@@ -145,6 +145,34 @@ if (!empty($fragment)) {
     }
     ?>
   </div>
+
+  <!-- Call Me Modals -->
+  <?php
+  if (isset($SharedView)) {
+    foreach ($params['productCards'] as $key => $result) {
+      $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
+      $operatorName = '';
+      $productName  = '';
+      $productUrl   = '';
+      if (!empty($result['products'])) {
+        $productNames = [];
+        foreach ($result['products'] as $product) {
+          if (empty($operatorName)) {
+            $operatorName = isset($product['brand_name']) ? $product['brand_name'] : '';
+          }
+          if (!empty($product['name'])) {
+            $productNames[] = $product['brand_name'] . ' ' . $product['name'];
+          }
+          if (empty($productUrl) && !empty($product['product_sheet_url'])) {
+            $productUrl = $product['product_sheet_url'];
+          }
+        }
+        $productName = implode(' + ', $productNames);
+      }
+      echo $SharedView->renderCallMeModal($productCardId, $operatorName, $params['call_center_open'] ?? null, $productName, $productUrl);
+    }
+  }
+  ?>
 </div>
 <!-- Modal Total Savings -->
 <div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog"

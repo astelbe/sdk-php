@@ -8,9 +8,9 @@ use CakeUtility\Hash;
 use AstelSDK\Utils\URL;
 
 class WebsiteConnection extends APIModel {
-	
+
 	protected $disableCache = true;
-	
+
 	protected function getFirst(array $params = []) {
 		$default_params = [
 			'user_agent' => URL::base64url_encode(AstelContext::getUserAgent()),
@@ -25,16 +25,15 @@ class WebsiteConnection extends APIModel {
 			$default_params['no_trace'] = 0;
 		}
 
-		if($params['session_id'] && isset($this->context->partner_referral_id)) {
+		if ($params['session_id'] && isset($this->context->partner_referral_id)) {
 			$params['partner_referral_id'] = $this->context->partner_referral_id;
 		}
 
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
 			// there is already a current session open
 			$params['session_id'] = $this->context->getSession()->getSessionID();
-			
 		}
-		
+
 		if (!isset($params['session_id']) && $this->context->getSession() !== null) {
 			// there is already a current session open
 			$params['session_id'] = $this->context->getSession()->getSessionID();
@@ -42,15 +41,15 @@ class WebsiteConnection extends APIModel {
 				$params['session_salt'] = $this->context->getSession()->getSessionSalt();
 			}
 		}
-		
+
 		$params = Hash::merge($default_params, $params);
 		$query = $this->newQuery();
 		$query->addGETParams($params);
 		$query->setUrl('v2_00/website_connection/');
-		
+
 		return $query->exec();
 	}
-	
+
 	public function clearCart(array $params = []) {
 		$default_params = [];
 		if ($this->context->getSession() !== null) {
@@ -65,11 +64,11 @@ class WebsiteConnection extends APIModel {
 		$query->setUrl('v2_00/website_connection/cart');
 		$query->addGETParams($params);
 		$query->setHTTPMethod(APIQuery::HTTP_DELETE);
-		
+
 		return $query->exec();
 	}
 
-	public function updateSessionPostalCode (array $params = []) {
+	public function updateSessionPostalCode(array $params = []) {
 		$postal_code = Hash::get($params, 'postal_code_id', false);
 		if ($postal_code && ctype_digit($postal_code) && strlen($postal_code) == 4) {
 			$default_params = [];
@@ -93,5 +92,14 @@ class WebsiteConnection extends APIModel {
 
 			return ['error' => 'no postal code founded'];
 		}
+	}
+
+	public function callMeNotify(array $params = []) {
+		$query = $this->newQuery();
+		$query->setUrl('v2_00/call_me_notify/');
+		$query->addPOSTParams($params);
+		$query->setHTTPMethod(APIQuery::HTTP_POST);
+
+		return $query->exec();
 	}
 }
