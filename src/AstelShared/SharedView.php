@@ -1021,7 +1021,8 @@ class SharedView extends Singleton {
     }
 
     $modalId = 'modalCallMe_' . $productCardId;
-    $operatorText = !empty($operatorName) ? ' ' . htmlspecialchars($operatorName) : '';
+    $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
+    $operatorText = !empty($partnerName) ? ' ' . htmlspecialchars($partnerName) : '';
 
     $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
     $isOpen        = is_array($callCenterOpen) ? ($callCenterOpen['is_open'][$language] ?? null) : null;
