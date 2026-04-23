@@ -152,16 +152,24 @@ if (!empty($fragment)) {
     foreach ($params['productCards'] as $key => $result) {
       $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
       $operatorName = '';
+      $productName  = '';
+      $productUrl   = '';
       if (!empty($result['products'])) {
+        $productNames = [];
         foreach ($result['products'] as $product) {
-          $operatorName = isset($product['brand_name']) ? $product['brand_name'] : '';
-          break;
+          if (empty($operatorName)) {
+            $operatorName = isset($product['brand_name']) ? $product['brand_name'] : '';
+          }
+          if (!empty($product['name'])) {
+            $productNames[] = $product['brand_name'] . ' ' . $product['name'];
+          }
+          if (empty($productUrl) && !empty($product['product_sheet_url'])) {
+            $productUrl = $product['product_sheet_url'];
+          }
         }
+        $productName = implode(' + ', $productNames);
       }
-      // echo 'testing ' . $productCardId . ' - ' . $operatorName;
-      // print_r($params);
-      echo $SharedView->renderCallMeModal($productCardId, $operatorName, $params['call_center_open'] ?? null);
-      // echo $SharedView->renderCallMeModal($productCardId, $operatorName);
+      echo $SharedView->renderCallMeModal($productCardId, $operatorName, $params['call_center_open'] ?? null, $productName, $productUrl);
     }
   }
   ?>

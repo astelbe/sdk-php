@@ -1013,7 +1013,7 @@ class SharedView extends Singleton {
    * @param $operatorName string The name of the operator
    * @return string HTML for the complete modal with form
    */
-  public function renderCallMeModal($productCardId, $operatorName = '', $callCenterOpen = null) {
+  public function renderCallMeModal($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '') {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
     if (!$timeslotsActive) {
@@ -1129,6 +1129,8 @@ class SharedView extends Singleton {
       . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
       . ' data-success-msg="' . htmlspecialchars(Translate::get('call_me_success')) . '"'
       . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
+      . ' data-product-name="' . htmlspecialchars($productName) . '"'
+      . ' data-product-url="' . htmlspecialchars($productUrl) . '"'
       . '>' . Translate::get('call_me_request') . '</button>';
     $html .= '        </div>';
     $html .= '      </div>';
