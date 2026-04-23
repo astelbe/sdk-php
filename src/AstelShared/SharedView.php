@@ -991,7 +991,13 @@ class SharedView extends Singleton {
    * @param $operatorName string The name of the operator
    * @return string HTML for the call me link
    */
-  public function renderCallMeLink($productCardId, $operatorName = '') {
+  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null) {
+    $language = AstelContext::getInstance()->getLanguage();
+    $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
+    if (!$timeslotsActive) {
+      return '';
+    }
+
     $modalId = 'modalCallMe_' . $productCardId;
 
     $html = '<button type="button" class="btn btn-sm callMeButton" data-toggle="modal" data-target="#' . htmlspecialchars($modalId) . '" title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
@@ -1008,14 +1014,18 @@ class SharedView extends Singleton {
    * @return string HTML for the complete modal with form
    */
   public function renderCallMeModal($productCardId, $operatorName = '', $callCenterOpen = null) {
+    $language = AstelContext::getInstance()->getLanguage();
+    $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
+    if (!$timeslotsActive) {
+      return '';
+    }
+
     $modalId = 'modalCallMe_' . $productCardId;
     $operatorText = !empty($operatorName) ? ' ' . htmlspecialchars($operatorName) : '';
 
-    $language      = AstelContext::getInstance()->getLanguage();
     $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
     $isOpen        = is_array($callCenterOpen) ? ($callCenterOpen['is_open'][$language] ?? null) : null;
     $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
-    error_log('CCO debug | lang=' . $language . ' | is_array=' . (is_array($callCenterOpen) ? 'yes' : 'no') . ' | keys=' . (is_array($callCenterOpen) ? implode(',', array_keys($callCenterOpen)) : 'n/a') . ' | textToDisplay=' . ($textToDisplay ?? 'NULL') . ' | openingHours=' . ($openingHours ?? 'NULL'));
 
     $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true">';
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
@@ -1027,6 +1037,18 @@ class SharedView extends Singleton {
     $html .= '        </button>';
     $html .= '      </div>';
     $html .= '      <div class="modal-body">';
+
+
+    // Intro text
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_intro_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_intro_text') . '</label>';
+    $html .= '        </div>';
+
+    // Time opening schedules
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
+    // $html .= '          <input type="text" class="form-control" id="callme_schedule_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_time_opening_placeholder') . '">';
+    $html .= '        </div>';
 
     // Opening hours block
     if (!empty($textToDisplay) || !empty($openingHours)) {
@@ -1040,18 +1062,6 @@ class SharedView extends Singleton {
       }
       $html .= '</div>';
     }
-
-    // Intro text
-    $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_intro_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_intro_text') . '</label>';
-    $html .= '          <textarea class="form-control" id="callme_intro_' . htmlspecialchars($productCardId) . '" rows="2" placeholder="' . Translate::get('call_me_intro_placeholder') . '"></textarea>';
-    $html .= '        </div>';
-
-    // Time opening schedules
-    $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
-    $html .= '          <input type="text" class="form-control" id="callme_schedule_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_time_opening_placeholder') . '">';
-    $html .= '        </div>';
 
     // Gender
     $html .= '        <div class="form-group">';
