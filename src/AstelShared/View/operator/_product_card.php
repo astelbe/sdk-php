@@ -164,7 +164,21 @@ use CakeUtility\Hash;
         <?php // CALL ME BUTTON
         $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
         if (isset($SharedView)) {
-          echo $SharedView->renderCallMeLink($productCardId, isset($item['brand_name']) ? $item['brand_name'] : '', $params['call_center_open'] ?? null);
+          $productName = '';
+          $productUrl = '';
+          if (isset($item['brand_name']) && isset($item['name'])) {
+            $productName = $item['brand_name'] . ' ' . $item['name'];
+          }
+          if (isset($item['product_sheet_url'])) {
+            $productUrl = $item['product_sheet_url'];
+          }
+          echo $SharedView->renderCallMeLink(
+            $productCardId,
+            isset($item['brand_name']) ? $item['brand_name'] : '',
+            $params['call_center_open'] ?? null,
+            $productName,
+            $productUrl
+          );
         }
         ?>
       </div>

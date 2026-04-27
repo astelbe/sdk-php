@@ -416,4 +416,8 @@ return [
     'FR' => "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
     'NL' => "Er is een fout opgetreden. Probeer het opnieuw of neem rechtstreeks contact met ons op.",
   ],
+  'next_week' => [
+    'FR' => "(Semaine prochaine)",
+    'NL' => "(Volgende week)",
+  ],
 ];

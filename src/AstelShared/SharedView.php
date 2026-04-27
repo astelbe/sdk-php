@@ -986,21 +986,32 @@ class SharedView extends Singleton {
   }
 
   /**
-   * Render a "Call Me" link that opens a modal with a form to request a callback
-   * @param $productCardId string The ID of the product card (used to create unique modal ID)
+   * Render a "Call Me" button that opens the shared modal with form
+   * @param $productCardId string The ID of the product card
    * @param $operatorName string The name of the operator
-   * @return string HTML for the call me link
+   * @param $callCenterOpen array|null Call center configuration
+   * @param $productName string The name of the product
+   * @param $productUrl string The URL of the product
+   * @return string HTML for the call me button
    */
-  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null) {
+  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '') {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
-    if (!$timeslotsActive) {
+    
+    if (!$timeslotsActive || $callCenterOpen['is_available_time_slot'][$language] == 0) {
       return '';
     }
 
-    $modalId = 'modalCallMe_' . $productCardId;
+    $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
 
-    $html = '<button type="button" class="btn btn-sm callMeButton" data-toggle="modal" data-target="#' . htmlspecialchars($modalId) . '" title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+    $html = '<button type="button" class="btn btn-sm callMeButton" data-toggle="modal" data-target="#modalCallMeShared" ';
+    $html .= 'data-card-id="' . htmlspecialchars($productCardId) . '" ';
+    $html .= 'data-operator-name="' . htmlspecialchars($operatorName) . '" ';
+    $html .= 'data-partner-name="' . htmlspecialchars($partnerName) . '" ';
+    $html .= 'data-language="' . htmlspecialchars($language) . '" ';
+    $html .= 'data-product-name="' . htmlspecialchars($productName) . '" ';
+    $html .= 'data-product-url="' . htmlspecialchars($productUrl) . '" ';
+    $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
     $html .= '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
     $html .= '</button>';
 
@@ -1008,24 +1019,23 @@ class SharedView extends Singleton {
   }
 
   /**
-   * Render the "Call Me" modal with form
-   * @param $productCardId string The ID of the product card
-   * @param $operatorName string The name of the operator
+   * Render the shared "Call Me" modal with form
+   * @param $callCenterOpen array|null Call center configuration
    * @return string HTML for the complete modal with form
    */
-  public function renderCallMeModal($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '') {
+  public function renderCallMeModal($callCenterOpen = null) {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
     if (!$timeslotsActive) {
       return '';
     }
 
-    $modalId = 'modalCallMe_' . $productCardId;
+    $modalId = 'modalCallMeShared';
+    $elementIdPrefix = 'callme_shared';
     $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
     $operatorText = !empty($partnerName) ? ' ' . htmlspecialchars($partnerName) : '';
 
     $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
-    $isOpen        = is_array($callCenterOpen) ? ($callCenterOpen['is_open'][$language] ?? null) : null;
     $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
 
     $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '">';
@@ -1039,10 +1049,9 @@ class SharedView extends Singleton {
     $html .= '      </div>';
     $html .= '      <div class="modal-body">';
 
-
     // Intro text
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_intro_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_intro_text') . '</label>';
+    $html .= '          <p class="mb-0">' . Translate::get('call_me_intro_text') . '</p>';
     $html .= '        </div>';
 
     // Time opening schedules
@@ -1050,7 +1059,7 @@ class SharedView extends Singleton {
     $availableSlots = is_array($callCenterOpen) ? ($callCenterOpen['available_slots'][$language] ?? []) : [];
     if (!empty($availableSlots)) {
       $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
-      $html .= '          <label for="callme_schedule_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_time_opening') . '</label>';
+      $html .= '          <label>' . Translate::get('call_me_time_opening') . '</label>';
       $html .= '<div class="form-group">';
       $html .= '<label>' . Translate::get('call_me_preferred_slot') . '</label>';
       $html .= '<div class="call-me-slots mt-1">';
@@ -1062,17 +1071,19 @@ class SharedView extends Singleton {
       }
 
       foreach ($availableSlots as $i => $slot) {
-        $inputId = 'callme_slot_' . htmlspecialchars($productCardId) . '_' . $i;
+        $inputId = 'callme_slot_' . $i;
         if ($slot['is_today']) {
           $dayLabel = Translate::get('call_me_today');
         } elseif ($slot['is_tomorrow']) {
           $dayLabel = Translate::get('call_me_tomorrow');
+        } elseif (!empty($slot['is_next_week']) && $slot['is_next_week']) {
+          $dayLabel = Translate::get('next_week') . ' ' . htmlspecialchars($slot['day_label']);
         } else {
           $dayLabel = htmlspecialchars($slot['day_label']);
         }
         $slotLabel = $dayLabel . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
         $html .= '<div class="form-check">';
-        $html .= '<input class="form-check-input" type="radio" name="callme_slot_' . htmlspecialchars($productCardId) . '" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '"' . ($i === 0 ? ' checked' : '') . '>';
+        $html .= '<input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_slot" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '"' . ($i === 0 ? ' checked' : '') . '>';
         $html .= '<label class="form-check-label" for="' . $inputId . '">' . $slotLabel . '</label>';
         $html .= '</div>';
       }
@@ -1083,8 +1094,8 @@ class SharedView extends Singleton {
 
     // Gender
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_gender_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_gender') . '</label>';
-    $html .= '          <select class="form-control" id="callme_gender_' . htmlspecialchars($productCardId) . '">';
+    $html .= '          <label for="' . $elementIdPrefix . '_gender">' . Translate::get('call_me_gender') . '</label>';
+    $html .= '          <select class="form-control" id="' . $elementIdPrefix . '_gender">';
     $html .= '            <option value="">' . Translate::get('call_me_gender_select') . '</option>';
     $html .= '            <option value="M">' . Translate::get('call_me_gender_male') . '</option>';
     $html .= '            <option value="F">' . Translate::get('call_me_gender_female') . '</option>';
@@ -1095,35 +1106,34 @@ class SharedView extends Singleton {
     // First name and Last name
     $html .= '        <div class="form-row">';
     $html .= '          <div class="form-group col-md-6">';
-    $html .= '            <label for="callme_firstname_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_firstname') . '</label>';
-    $html .= '            <input type="text" class="form-control" id="callme_firstname_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_firstname') . '" required>';
+    $html .= '            <label for="' . $elementIdPrefix . '_firstname">' . Translate::get('call_me_firstname') . '</label>';
+    $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_firstname" placeholder="' . Translate::get('call_me_firstname') . '" required>';
     $html .= '          </div>';
     $html .= '          <div class="form-group col-md-6">';
-    $html .= '            <label for="callme_lastname_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_lastname') . '</label>';
-    $html .= '            <input type="text" class="form-control" id="callme_lastname_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_lastname') . '" required>';
+    $html .= '            <label for="' . $elementIdPrefix . '_lastname">' . Translate::get('call_me_lastname') . '</label>';
+    $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_lastname" placeholder="' . Translate::get('call_me_lastname') . '" required>';
     $html .= '          </div>';
     $html .= '        </div>';
 
     // Address of installation
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_address_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_address_installation') . '</label>';
-    $html .= '          <input type="text" class="form-control" id="callme_address_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_address_installation_placeholder') . '" required>';
+    $html .= '          <label for="' . $elementIdPrefix . '_address">' . Translate::get('call_me_address_installation') . '</label>';
+    $html .= '          <input type="text" class="form-control" id="' . $elementIdPrefix . '_address" placeholder="' . Translate::get('call_me_address_installation_placeholder') . '" required>';
     $html .= '        </div>';
 
     // Phone number
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="callme_phone_' . htmlspecialchars($productCardId) . '">' . Translate::get('call_me_phone_number') . '</label>';
-    $html .= '          <input type="tel" class="form-control" id="callme_phone_' . htmlspecialchars($productCardId) . '" placeholder="' . Translate::get('call_me_phone_number_placeholder') . '" required>';
+    $html .= '          <label for="' . $elementIdPrefix . '_phone">' . Translate::get('call_me_phone_number') . '</label>';
+    $html .= '          <input type="tel" class="form-control" id="' . $elementIdPrefix . '_phone" placeholder="' . Translate::get('call_me_phone_number_placeholder') . '" required>';
     $html .= '        </div>';
 
     $html .= '      </div>';
     $html .= '      <div class="modal-footer flex-column align-items-stretch">';
-    $html .= '        <div id="callme_feedback_' . htmlspecialchars($productCardId) . '" class="callme-feedback w-100 mb-2"></div>';
+    $html .= '        <div id="' . $elementIdPrefix . '_feedback" class="callme-feedback w-100 mb-2"></div>';
     $html .= '        <div class="d-flex justify-content-end w-100">';
     $html .= '          <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">' . Translate::get('close') . '</button>';
     $html .= '          <button type="button" class="btn btn-primary"'
       . ' onclick="callMeHandleSubmit(this)"'
-      . ' data-card-id="' . htmlspecialchars($productCardId) . '"'
       . ' data-language="' . htmlspecialchars($language) . '"'
       . ' data-operator-name="' . htmlspecialchars($operatorName) . '"'
       . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
@@ -1131,6 +1141,7 @@ class SharedView extends Singleton {
       . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
       . ' data-product-name="' . htmlspecialchars($productName) . '"'
       . ' data-product-url="' . htmlspecialchars($productUrl) . '"'
+      . ' data-is-shared-modal="true"'
       . '>' . Translate::get('call_me_request') . '</button>';
     $html .= '        </div>';
     $html .= '      </div>';
