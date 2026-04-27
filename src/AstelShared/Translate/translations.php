@@ -214,7 +214,7 @@ return [
     'FR' => "GSM",
     'NL' => "Gsm",
   ],
-  'fix'                                   => [      
+  'fix'                                   => [
     'FR' => "Fixe",
     'NL' => "Vast",
   ],
@@ -329,5 +329,95 @@ return [
   'postal_code override placeholder'     => [
     'FR' => "Entrez le code postal",
     'NL' => "Voer de postcode in",
+  ],
+
+
+  'call_me_request' => [
+    'FR' => "Appelez-moi",
+    'NL' => "Bel me",
+  ],
+  'call_me_request_title' => [
+    'FR' => "Demande de rappel",
+    'NL' => "Terugbelverzoek",
+  ],
+  'call_me_intro_text' => [
+    'FR' => "Laissez-nous votre numéro de téléphone et nous vous rappellerons pour vous aider à choisir l'abonnement qui vous convient le mieux.",
+    'NL' => "Laat ons uw telefoonnummer achter en wij bellen u terug om u te helpen het abonnement te kiezen dat het beste bij u past.",
+  ],
+  'call_me_time_opening' => [
+    'FR' => "Time Slots : ",
+    'NL' => "Time Slots: ",
+  ],
+  'call_me_gender' => [
+    'FR' => "Genre",
+    'NL' => "Geslacht",
+  ],
+  'call_me_gender_select' => [
+    'FR' => "Sélectionnez votre genre",
+    'NL' => "Selecteer uw geslacht",
+  ],
+  'call_me_gender_male' => [
+    'FR' => "Homme",
+    'NL' => "Man",
+  ],
+  'call_me_gender_female' => [
+    'FR' => "Femme",
+    'NL' => "Vrouw",
+  ],
+  'call_me_gender_other' => [
+    'FR' => "Autre",
+    'NL' => "Overig",
+  ],
+  'call_me_firstname' => [
+    'FR' => "Prénom",
+    'NL' => "Voornaam",
+  ],
+  'call_me_lastname' => [
+    'FR' => "Nom",
+    'NL' => "Achternaam",
+  ],
+  'call_me_address_installation' => [
+    'FR' => "Adresse d'installation",
+    'NL' => "Installatieadres",
+  ],
+  'call_me_phone_number' => [
+    'FR' => "Numéro de téléphone",
+    'NL' => "Telefoonnummer",
+  ],
+  'call_me_address_installation_placeholder' => [
+    'FR' => "Entrez l'adresse où le service doit être installé",
+    'NL' => "Voer het adres in waar de dienst moet worden geïnstalleerd",
+  ],
+  'call_me_phone_number_placeholder' => [
+    'FR' => "Entrez votre numéro de téléphone",
+    'NL' => "Voer uw telefoonnummer in",
+  ],
+  'close' => [
+    'FR' => "Fermer",
+    'NL' => "Sluiten",
+  ],
+  'call_me_preferred_slot' => [
+    'FR' => "Choisissez un créneau pour être rappelé(e)",
+    'NL' => "Kies een tijdslot om teruggebeld te worden",
+  ],
+  'call_me_today' => [
+    'FR' => "Aujourd'hui",
+    'NL' => "Vandaag",
+  ],
+  'call_me_tomorrow' => [
+    'FR' => "Demain",
+    'NL' => "Morgen",
+  ],
+  'call_me_success' => [
+    'FR' => "Votre demande a bien été envoyée. Nous vous rappellerons dans le créneau choisi.",
+    'NL' => "Uw aanvraag is verzonden. We bellen u terug op het gekozen tijdslot.",
+  ],
+  'call_me_error' => [
+    'FR' => "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
+    'NL' => "Er is een fout opgetreden. Probeer het opnieuw of neem rechtstreeks contact met ons op.",
+  ],
+  'next_week' => [
+    'FR' => "(Semaine prochaine)",
+    'NL' => "(Volgende week)",
   ],
 ];
