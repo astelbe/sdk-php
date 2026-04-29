@@ -77,10 +77,10 @@ use CakeUtility\Hash;
                 <?= $play['details'] ?>
               </div>
             </div>
-            <p class="position-relative toggleProductListingDetails__content sub-details-infos"
+            <div class="position-relative toggleProductListingDetails__content sub-details-infos"
               style="padding-left:40px;">
               <?= $play['description'] ?>
-            </p>
+            </div>
         <?php
           }
         } ?>
