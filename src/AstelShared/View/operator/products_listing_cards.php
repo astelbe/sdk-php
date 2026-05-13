@@ -145,6 +145,16 @@ if (!empty($fragment)) {
     }
     ?>
   </div>
+
+  <!-- Call Me Modals - Single Shared Modal -->
+  <?php
+  if (isset($SharedView)) {
+    // Render shared modal once at the bottom
+    echo $SharedView->renderCallMeModal(
+      $params['call_center_open'] ?? null
+    );
+  }
+  ?>
 </div>
 <!-- Modal Total Savings -->
 <div class="modal fade" id="modalTotalSavings<?= $params['id'] ?>" tabindex="-1" role="dialog"

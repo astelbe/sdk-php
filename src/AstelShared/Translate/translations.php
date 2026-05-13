@@ -214,7 +214,7 @@ return [
     'FR' => "GSM",
     'NL' => "Gsm",
   ],
-  'fix'                                   => [      
+  'fix'                                   => [
     'FR' => "Fixe",
     'NL' => "Vast",
   ],
