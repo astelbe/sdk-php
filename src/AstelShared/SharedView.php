@@ -1059,9 +1059,8 @@ class SharedView extends Singleton {
     $availableSlots = is_array($callCenterOpen) ? ($callCenterOpen['available_slots'][$language] ?? []) : [];
     if (!empty($availableSlots)) {
       $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
-      $html .= '          <label>' . Translate::get('call_me_time_opening') . '</label>';
       $html .= '<div class="form-group">';
-      $html .= '<label>' . Translate::get('call_me_preferred_slot') . '</label>';
+      $html .= '<div>' . Translate::get('call_me_preferred_slot') . '</div>';
       $html .= '<div class="call-me-slots mt-1">';
 
       if (!empty($textToDisplay)) {
@@ -1094,13 +1093,20 @@ class SharedView extends Singleton {
 
     // Gender
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="' . $elementIdPrefix . '_gender">' . Translate::get('call_me_gender') . '</label>';
-    $html .= '          <select class="form-control" id="' . $elementIdPrefix . '_gender">';
-    $html .= '            <option value="">' . Translate::get('call_me_gender_select') . '</option>';
-    $html .= '            <option value="M">' . Translate::get('call_me_gender_male') . '</option>';
-    $html .= '            <option value="F">' . Translate::get('call_me_gender_female') . '</option>';
-    $html .= '            <option value="O">' . Translate::get('call_me_gender_other') . '</option>';
-    $html .= '          </select>';
+    $html .= '          <div class="d-flex">';
+    $html .= '            <div class="form-check pl-0 mr-3">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_M" value="M">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_M">' . Translate::get('call_me_gender_male') . '</label>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-check mr-3">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_F" value="F">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_F">' . Translate::get('call_me_gender_female') . '</label>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-check">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_O" value="O">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_O">' . Translate::get('call_me_gender_other') . '</label>';
+    $html .= '            </div>';
+    $html .= '          </div>';
     $html .= '        </div>';
 
     // First name and Last name
@@ -1130,9 +1136,8 @@ class SharedView extends Singleton {
     $html .= '      </div>';
     $html .= '      <div class="modal-footer flex-column align-items-stretch">';
     $html .= '        <div id="' . $elementIdPrefix . '_feedback" class="callme-feedback w-100 mb-2"></div>';
-    $html .= '        <div class="d-flex justify-content-end w-100">';
-    $html .= '          <button type="button" class="btn btn-secondary mr-2" data-dismiss="modal">' . Translate::get('close') . '</button>';
-    $html .= '          <button type="button" class="btn btn-primary"'
+    $html .= '        <div class="d-flex justify-content-center w-100">';
+    $html .= '          <button type="button" class="astel-btn"'
       . ' onclick="callMeHandleSubmit(this)"'
       . ' data-language="' . htmlspecialchars($language) . '"'
       . ' data-operator-name="' . htmlspecialchars($operatorName) . '"'
