@@ -46,14 +46,6 @@ use CakeUtility\Hash;
     <h2 class="mt-2 pl-2">
       <?= $params['title']; ?>
     </h2>
-    <div class="btn btn-outline-secondary text-uppercase cursor-pointer d-flex justify-content-center text-nowrap toggleProductListingDetails__button" id="toggle-product-listing-button-<?= $params['id'] ?>" onclick="toggleProductListingCards('<?= $params['id'] ?>')">
-      <div class="details-hidden">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_details', $this->version) ?>&nbsp;<i class="fa fa-chevron-down ml-2" aria-hidden="true"></i>
-      </div>
-      <div class="details-visible">
-        <?= self::getTranslation(['cake' => 'CompareAstelBe', 'front' => 'product'], 'switch_resume', $this->version) ?>&nbsp;<i class="fa fa-chevron-up ml-2" aria-hidden="true"></i>
-      </div>
-    </div>
   </div>
 
   <div class="row mt-4 no-gutters">
@@ -66,18 +58,16 @@ use CakeUtility\Hash;
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
     ?>
       <div class="col-12 col-xl-3 col-lg-4 col-md-6 mb-5 px-1 mb-5 mt-4 product-card">
-        <?php if ($result['result_index']) { ?>
-          <div class="result-index ml-2">
-            <?= $result['result_index'] ?>
+          <div class="result-index ml-2 bg-<?= $result['products'][0]['brand_slug'] ?>">
+            <?= $key+1 ?>
           </div>
-        <?php } ?>
         <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
           <?php if (!empty($result['result_summary']['phone_plug_label'])) { ?>
-            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color']?>"  style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount bg-<?= $result['products'][0]['brand_slug'] ?>"  style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
               <?= $result['result_summary']['phone_plug_label']['content'] ?> 
             </div>
           <?php } ?>
-          <div class="<?= $cashback ? 'mt-4' : 'mt-1' ?>">
+          <div class="<?= $cashback ? 'mt-4' : 'mt-3' ?>">
             <?php
             $cpt = 1; // To display "+"
             foreach ($result['products'] as $key => $item) {
@@ -90,17 +80,17 @@ use CakeUtility\Hash;
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { 
+                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand'))) { 
                   $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
                   ?>
-                  <div class="titleproduct-logo-brand p-2 mb-0">
-                    <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
+                  <div class="titleproduct-logo-brand mt-2 pt-3 p-2 mb-0 d-flex justify-content-center align-items-center" style="max-width: 100%;">
+                    <img style="max-width: 150px; height:30px" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>
                   <a class="gtm-product-detail-link" href="<?= $item['product_sheet_url'] ?>" title="<?= $item['short_name'][strtoupper($this->language)]; ?>" target="_blank" data-name="<?= $item['short_name']  ?>" data-brand="<?= $item['brand_name'] ?>">
                   <?php } ?>
-                  <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
+                  <h3 class="px-1 pt-2 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
                       <?= $item['brand_name']?> <?= $item['short_name']; ?>
                     </span>
@@ -157,17 +147,13 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if((!empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos">
                   <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
                       <?=$result['result_summary']['max_activation_time'];?>
-                      <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                          <br>
-                      <?php } ?>
+                      
                   <?php } ?>
-                  <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                      <?= $result['result_summary']['phone_plug']?>
-                  <?php } ?>
+                  
                 </div>
               <?php } ?>
             </div>
