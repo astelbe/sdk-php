@@ -330,8 +330,10 @@ return [
     'FR' => "Entrez le code postal",
     'NL' => "Voer de postcode in",
   ],
-
-
+  'autocomplete-found-box'               => [
+    'FR' => "Trouvé comme boîte : ",
+    'NL' => "Gevonden als bus: ",
+  ],
   'call_me_request' => [
     'FR' => "Appelez-moi",
     'NL' => "Bel me",
@@ -357,12 +359,12 @@ return [
     'NL' => "Selecteer uw geslacht",
   ],
   'call_me_gender_male' => [
-    'FR' => "Homme",
-    'NL' => "Man",
+    'FR' => "Monsieur",
+    'NL' => "Meneer",
   ],
   'call_me_gender_female' => [
-    'FR' => "Femme",
-    'NL' => "Vrouw",
+    'FR' => "Madame",
+    'NL' => "Mevrouw",
   ],
   'call_me_gender_other' => [
     'FR' => "Autre",

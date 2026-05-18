@@ -77,10 +77,10 @@ use CakeUtility\Hash;
                 <?= $play['details'] ?>
               </div>
             </div>
-            <p class="position-relative toggleProductListingDetails__content sub-details-infos"
+            <div class="position-relative toggleProductListingDetails__content sub-details-infos"
               style="padding-left:40px;">
               <?= $play['description'] ?>
-            </p>
+            </div>
         <?php
           }
         } ?>
@@ -162,6 +162,7 @@ use CakeUtility\Hash;
       </div>
       <div>
         <?php // CALL ME BUTTON
+        /*
         $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
         if (isset($SharedView)) {
           $productName = '';
@@ -180,6 +181,7 @@ use CakeUtility\Hash;
             $productUrl
           );
         }
+          */
         ?>
       </div>
     </div>
