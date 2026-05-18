@@ -1121,11 +1121,61 @@ class SharedView extends Singleton {
     $html .= '          </div>';
     $html .= '        </div>';
 
-    // Address of installation
+    // Address of installation - Google Place Autocomplete
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="' . $elementIdPrefix . '_address">' . Translate::get('call_me_address_installation') . '</label>';
-    $html .= '          <input type="text" class="form-control" id="' . $elementIdPrefix . '_address" placeholder="' . Translate::get('call_me_address_installation_placeholder') . '" required>';
+    $html .= '          <label>' . Translate::get('call_me_address_installation') . '</label>';
+    $html .= '          <div id="autocomplete_wrapper' . $elementIdPrefix . '" class="mb-2"></div>';
+    $html .= '          <input type="hidden" id="' . $elementIdPrefix . '_address" value="">';
+    $html .= '          <input type="hidden" id="' . $elementIdPrefix . '_street1" value="">';
+    $html .= '          <input type="hidden" id="' . $elementIdPrefix . '_street_number" value="">';
+    $html .= '          <input type="hidden" id="' . $elementIdPrefix . '_postal_code" value="">';
+    $html .= '          <input type="hidden" id="' . $elementIdPrefix . '_city" value="">';
+    // Status indicators
+    $html .= '          <div class="d-flex align-items-baseline flex-column flex-sm-row my-1">';
+    $html .= '            <span class="text-nowrap">' . Translate::get('autocomplete-found-street') . '</span>';
+    $html .= '            <span id="' . $elementIdPrefix . '_street1_status" class="pl-1"><i class="fa fa-close" style="color:#ce0000d1;"></i></span>';
+    $html .= '          </div>';
+    $html .= '          <div class="d-flex align-items-baseline flex-column flex-sm-row my-1">';
+    $html .= '            <span class="text-nowrap">' . Translate::get('autocomplete-found-street-number') . '</span>';
+    $html .= '            <span id="' . $elementIdPrefix . '_street_number_status" class="pl-1"><i class="fa fa-close" style="color:#ce0000d1;"></i></span>';
+    $html .= '            <input id="' . $elementIdPrefix . '_street_number_override" class="ml-2 form-control d-none" type="text" placeholder="' . Translate::get('street_number override placeholder') . '" style="width: 250px;">';
+    $html .= '          </div>';
+    $html .= '          <div class="d-flex align-items-baseline flex-column flex-sm-row my-1">';
+    $html .= '            <span class="text-nowrap">' . Translate::get('autocomplete-found-postal-code') . '</span>';
+    $html .= '            <span id="' . $elementIdPrefix . '_postal_code_status" class="pl-1"><i class="fa fa-close" style="color:#ce0000d1;"></i></span>';
+    $html .= '            <input id="' . $elementIdPrefix . '_postal_code_override" class="ml-2 form-control d-none" type="text" placeholder="' . Translate::get('postal_code override placeholder') . '" style="width: 250px;">';
+    $html .= '          </div>';
+    $html .= '          <div class="d-flex align-items-baseline flex-column flex-sm-row my-1">';
+    $html .= '            <span class="text-nowrap">' . Translate::get('autocomplete-found-city') . '</span>';
+    $html .= '            <span id="' . $elementIdPrefix . '_city_status" class="pl-1"><i class="fa fa-close" style="color:#ce0000d1;"></i></span>';
+    $html .= '          </div>';
     $html .= '        </div>';
+    // Script to init Google Place Autocomplete when modal is shown
+    $html .= '<script>';
+    $html .= '(function() {';
+    $html .= '  var modalEl = document.getElementById("' . $modalId . '");';
+    $html .= '  if (modalEl) {';
+    $html .= '    $(modalEl).on("shown.bs.modal", function() {';
+    $html .= '      if (typeof initGooglePlaceAutocomplete === "function") {';
+    $html .= '        initGooglePlaceAutocomplete("' . $elementIdPrefix . '");';
+    $html .= '        setTimeout(function() {';
+    $html .= '          var input = document.getElementById("' . $elementIdPrefix . '_autocomplete_input");';
+    $html .= '          var hidden = document.getElementById("' . $elementIdPrefix . '_address");';
+    $html .= '          if (input && hidden) {';
+    $html .= '            var statusEl = document.getElementById("' . $elementIdPrefix . '_street1_status");';
+    $html .= '            if (statusEl) {';
+    $html .= '              new MutationObserver(function() {';
+    $html .= '                hidden.value = input.value;';
+    $html .= '              }).observe(statusEl, {childList: true, subtree: true});';
+    $html .= '            }';
+    $html .= '            input.addEventListener("change", function() { hidden.value = this.value; });';
+    $html .= '          }';
+    $html .= '        }, 100);';
+    $html .= '      }';
+    $html .= '    });';
+    $html .= '  }';
+    $html .= '})();';
+    $html .= '</script>';
 
     // Phone number
     $html .= '        <div class="form-group">';
