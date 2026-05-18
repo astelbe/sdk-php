@@ -150,9 +150,9 @@ if (!empty($fragment)) {
   <?php
   if (isset($SharedView)) {
     // Render shared modal once at the bottom
-    echo $SharedView->renderCallMeModal(
-      $params['call_center_open'] ?? null
-    );
+    // echo $SharedView->renderCallMeModal(
+    //   $params['call_center_open'] ?? null
+    // );
   }
   ?>
 </div>
