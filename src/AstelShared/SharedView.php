@@ -1042,7 +1042,7 @@ class SharedView extends Singleton {
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
     $html .= '    <div class="modal-content">';
     $html .= '      <div class="modal-header">';
-    $html .= '        <h5 class="modal-title" id="' . htmlspecialchars($modalId) . '_label">' . Translate::get('call_me_request_title') . $operatorText . '</h5>';
+    $html .= '        <div class="modal-title h5" id="' . htmlspecialchars($modalId) . '_label">' . Translate::get('call_me_request_title') . $operatorText . '</div>';
     $html .= '        <button type="button" class="close" data-dismiss="modal" aria-label="' . Translate::get('close') . '">';
     $html .= '          <span aria-hidden="true">&times;</span>';
     $html .= '        </button>';
