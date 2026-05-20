@@ -15,6 +15,7 @@ class EmulatedSession {
 	protected $connection;
 	
 	protected $navigatorAcceptCookies = true;
+	protected $isBot = false;
 	
 	public function __construct(AstelContext $context) {
 		$this->context = $context;
@@ -29,16 +30,12 @@ class EmulatedSession {
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
 				$userAgent = AstelContext::getUserAgent();
-				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS', 'UptimeRobot', 'MojeekBot','YandexBot'];
-				$isIgnored = false;
+				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS', 'UptimeRobot', 'MojeekBot', 'YandexBot', 'AhrefsBot', 'GPTBot', 'ClaudeBot', 'DotBot', 'Bytespider', 'PetalBot', 'AppleBot', 'ChatGPT-User', 'facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'Slurp', 'Baiduspider', 'ia_archiver', 'Sogoubot', 'Exabot', 'MJ12bot', 'DataForSeoBot', 'serpstatbot', 'Screaming Frog', 'ZoominfoBot', 'CCBot'];
 				foreach ($ignoreUserAgentContain as $ignored) {
 					if (strpos($userAgent, $ignored) !== false) {
-						$isIgnored = true;
+						$this->isBot = true;
 						break;
 					}
-				}
-				if (!$isIgnored) {
-					//$this->context->log('The customer has deactivated his cookies - User Agent: ' . $userAgent);
 				}
 			}
 		} else {
@@ -108,17 +105,20 @@ class EmulatedSession {
 			if ($this->sessionSalt !== null) {
 				$connectParams['session_salt'] = $this->sessionSalt;
 			}
+			if ($this->isBot) {
+				$connectParams['no_trace'] = true;
+			}
 			if (isset($params) && !empty($params)) {
 				$params = array_merge($params, $connectParams);
 			} else {
 				$params = $connectParams;
 			}
-			
+
 			return $this->WebsiteConnectionModel->find('first', $params);
 		} catch (Exception $e) {
 			$this->context->log('Error retrieving Website Connection');
 		}
-		
+
 		return [];
 	}
 	
