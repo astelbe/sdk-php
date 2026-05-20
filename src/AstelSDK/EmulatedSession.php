@@ -15,6 +15,7 @@ class EmulatedSession {
 	protected $connection;
 	
 	protected $navigatorAcceptCookies = true;
+	protected $isBot = false;
 	
 	public function __construct(AstelContext $context) {
 		$this->context = $context;
@@ -23,23 +24,13 @@ class EmulatedSession {
 	}
 	
 	protected function sessionInitiate() {
+		$this->isBot = self::detectBot();
+
 		if (!isset($_COOKIE['session_id'])) {
 			// new visitor with new cookie, new session to create directly via websiteconnection
 			$this->setCookieSessionID();
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
-				$userAgent = AstelContext::getUserAgent();
-				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS', 'UptimeRobot', 'MojeekBot','YandexBot'];
-				$isIgnored = false;
-				foreach ($ignoreUserAgentContain as $ignored) {
-					if (strpos($userAgent, $ignored) !== false) {
-						$isIgnored = true;
-						break;
-					}
-				}
-				if (!$isIgnored) {
-					//$this->context->log('The customer has deactivated his cookies - User Agent: ' . $userAgent);
-				}
 			}
 		} else {
 			$this->sessionId = $_COOKIE['session_id'];
@@ -108,17 +99,20 @@ class EmulatedSession {
 			if ($this->sessionSalt !== null) {
 				$connectParams['session_salt'] = $this->sessionSalt;
 			}
+			if ($this->isBot) {
+				$connectParams['no_trace'] = true;
+			}
 			if (isset($params) && !empty($params)) {
 				$params = array_merge($params, $connectParams);
 			} else {
 				$params = $connectParams;
 			}
-			
+
 			return $this->WebsiteConnectionModel->find('first', $params);
 		} catch (Exception $e) {
 			$this->context->log('Error retrieving Website Connection');
 		}
-		
+
 		return [];
 	}
 	
@@ -173,5 +167,73 @@ class EmulatedSession {
 	public function getSessionID() {
 		return $this->sessionId;
 	}
-	
+
+	public static function detectBot() {
+		$userAgent = AstelContext::getUserAgent();
+		if (empty($userAgent)) {
+			return true;
+		}
+		$userAgentLower = strtolower($userAgent);
+		$ignoreUserAgentContain = [
+			'amazon-route53-health-check-service',
+			'bingbot',
+			'semrushbot',
+			'googlebot',
+			'adsbot',
+			'trident',
+			'magpierss',
+			'uptimerobot',
+			'mojeekbot',
+			'yandexbot',
+			'ahrefsbot',
+			'gptbot',
+			'claudebot',
+			'dotbot',
+			'bytespider',
+			'petalbot',
+			'applebot',
+			'chatgpt-user',
+			'facebookexternalhit',
+			'twitterbot',
+			'linkedinbot',
+			'slurp',
+			'baiduspider',
+			'ia_archiver',
+			'sogoubot',
+			'exabot',
+			'mj12bot',
+			'dataforseobot',
+			'serpstatbot',
+			'screaming frog',
+			'zoominfobot',
+			'ccbot',
+			'crawl',
+			'spider',
+			'bot/',
+			'bot;',
+			'headlesschrome',
+			'phantomjs',
+			'python-requests',
+			'curl/',
+			'wget/',
+			'go-http-client',
+			'java/',
+			'httpclient',
+			'okhttp',
+			'libwww-perl',
+			'scrapy',
+			'nutch',
+		];
+		foreach ($ignoreUserAgentContain as $ignored) {
+			if (strpos($userAgentLower, $ignored) !== false) {
+				return true;
+			}
+		}
+		if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || $_SERVER['HTTP_ACCEPT_LANGUAGE'] === '') {
+			return true;
+		}
+
+		return false;
+	}
+
 }
