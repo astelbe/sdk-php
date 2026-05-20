@@ -24,19 +24,13 @@ class EmulatedSession {
 	}
 	
 	protected function sessionInitiate() {
+		$this->isBot = self::detectBot();
+
 		if (!isset($_COOKIE['session_id'])) {
 			// new visitor with new cookie, new session to create directly via websiteconnection
 			$this->setCookieSessionID();
 			if (!isset($_COOKIE['session_id'])) {
 				$this->navigatorAcceptCookies = false;
-				$userAgent = AstelContext::getUserAgent();
-				$ignoreUserAgentContain = ['Amazon-Route53-Health-Check-Service', 'bingbot', 'SemrushBot', 'Googlebot', 'Adsbot', 'Trident', 'MagpieRSS', 'UptimeRobot', 'MojeekBot', 'YandexBot', 'AhrefsBot', 'GPTBot', 'ClaudeBot', 'DotBot', 'Bytespider', 'PetalBot', 'AppleBot', 'ChatGPT-User', 'facebookexternalhit', 'Twitterbot', 'LinkedInBot', 'Slurp', 'Baiduspider', 'ia_archiver', 'Sogoubot', 'Exabot', 'MJ12bot', 'DataForSeoBot', 'serpstatbot', 'Screaming Frog', 'ZoominfoBot', 'CCBot'];
-				foreach ($ignoreUserAgentContain as $ignored) {
-					if (strpos($userAgent, $ignored) !== false) {
-						$this->isBot = true;
-						break;
-					}
-				}
 			}
 		} else {
 			$this->sessionId = $_COOKIE['session_id'];
@@ -173,5 +167,73 @@ class EmulatedSession {
 	public function getSessionID() {
 		return $this->sessionId;
 	}
-	
+
+	public static function detectBot() {
+		$userAgent = AstelContext::getUserAgent();
+		if (empty($userAgent)) {
+			return true;
+		}
+		$userAgentLower = strtolower($userAgent);
+		$ignoreUserAgentContain = [
+			'amazon-route53-health-check-service',
+			'bingbot',
+			'semrushbot',
+			'googlebot',
+			'adsbot',
+			'trident',
+			'magpierss',
+			'uptimerobot',
+			'mojeekbot',
+			'yandexbot',
+			'ahrefsbot',
+			'gptbot',
+			'claudebot',
+			'dotbot',
+			'bytespider',
+			'petalbot',
+			'applebot',
+			'chatgpt-user',
+			'facebookexternalhit',
+			'twitterbot',
+			'linkedinbot',
+			'slurp',
+			'baiduspider',
+			'ia_archiver',
+			'sogoubot',
+			'exabot',
+			'mj12bot',
+			'dataforseobot',
+			'serpstatbot',
+			'screaming frog',
+			'zoominfobot',
+			'ccbot',
+			'crawl',
+			'spider',
+			'bot/',
+			'bot;',
+			'headlesschrome',
+			'phantomjs',
+			'python-requests',
+			'curl/',
+			'wget/',
+			'go-http-client',
+			'java/',
+			'httpclient',
+			'okhttp',
+			'libwww-perl',
+			'scrapy',
+			'nutch',
+		];
+		foreach ($ignoreUserAgentContain as $ignored) {
+			if (strpos($userAgentLower, $ignored) !== false) {
+				return true;
+			}
+		}
+		if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || $_SERVER['HTTP_ACCEPT_LANGUAGE'] === '') {
+			return true;
+		}
+
+		return false;
+	}
+
 }
