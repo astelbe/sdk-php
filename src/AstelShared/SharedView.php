@@ -209,6 +209,7 @@ class SharedView extends Singleton {
       $details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('gsm') . '</span>' . implode(', ', $details),
+        'details_clean' => Translate::get('gsm') . ': ' . strip_tags(implode(', ', $details)),
         'description' => Hash::get($product, 'play_description.mobile.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 20 30" fill="none">
@@ -241,6 +242,7 @@ class SharedView extends Singleton {
       $description_with_extra = $extra_data_string . '<br> ' . $original_description;
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('internet') . '</span>' . implode(', ', $data),
+        'details_clean' => Translate::get('internet') . ': ' . strip_tags(implode(', ', $data)),
         'description' => $description_with_extra,
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
@@ -257,6 +259,7 @@ class SharedView extends Singleton {
     if ($Product->isType($product, 'F')) {
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('fix') . '</span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
+        'details_clean' => Translate::get('fix') . ': ' . strip_tags(implode(', ', self::translatePlayDescription('play_description.fix.included_minutes_calls', $product))),
         'description' => Hash::get($product, 'play_description.fix.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -286,6 +289,7 @@ class SharedView extends Singleton {
       }
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('tv') . '</span> ' . implode(', ', $data),
+        'details_clean' => Translate::get('tv') . ': ' . strip_tags(implode(', ', $data)),
         'description' => Hash::get($product, 'play_description.tv.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
