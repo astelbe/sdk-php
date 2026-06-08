@@ -2,6 +2,7 @@
 
 use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
+
 // debug($result);
 ?>
 
@@ -107,9 +108,19 @@ use CakeUtility\Hash;
     <div class="results-price d-flex text-center flex-column justify-content-center mt-auto pt-1">
       <?php
       // QUALITY SCORE
-      if ($result['result_summary']['quality_score'] != '') { ?>
+      if ($result['result_summary']['quality_score'] != '') {
+        $qualityScoreRaw = (int)Hash::get($result, 'result_summary.quality_score_raw', 0);
+        $ratingCount = 0;
+        foreach ($result['products'] as $fp) {
+          $ratingCount += (int)Hash::get($fp, 'ratingCount', 0);
+        }
+        $ratingValue = $qualityScoreRaw > 0 ? max(1.0, min(5.0, round($qualityScoreRaw / 20, 1))) : 0;
+      ?>
         <div class="cursor-pointer modalClick mb-2" data-toggle="modal" data-target="#modalQuality">
           <?= $result['result_summary']['quality_score']; ?>
+          <?php if ($ratingValue > 0 && $ratingCount > 0): ?>
+            <span class="quality-score-label"><?= $ratingValue ?>/5 (<?= $ratingCount ?>)</span>
+          <?php endif; ?>
           <span class="cursor-pointer position-absolute ml-2">
             <i class="fa fa-info pl-2"></i>
           </span>
