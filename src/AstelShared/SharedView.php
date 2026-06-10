@@ -1026,7 +1026,7 @@ class SharedView extends Singleton {
    * @param $callCenterOpen array|null Call center configuration
    * @return string HTML for the complete modal with form
    */
-  public function renderCallMeModal($callCenterOpen = null) {
+  public function renderCallMeModal($callCenterOpen = null, $recaptchaSiteKey = '') {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
     if (!$timeslotsActive) {
@@ -1041,7 +1041,7 @@ class SharedView extends Singleton {
     $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
     $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
 
-    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '">';
+    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '" data-recaptcha-site-key="' . htmlspecialchars($recaptchaSiteKey) . '">';
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
     $html .= '    <div class="modal-content">';
     $html .= '      <div class="modal-header">';
@@ -1063,7 +1063,7 @@ class SharedView extends Singleton {
     if (!empty($availableSlots)) {
       $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
       $html .= '<div class="form-group">';
-      $html .= '<div>' . Translate::get('call_me_preferred_slot') . '</div>';
+      $html .= '<div>' . Translate::get('call_me_preferred_slot') . ' <span class="text-danger">*</span></div>';
       $html .= '<div class="call-me-slots mt-1">';
 
       if (!empty($textToDisplay)) {
@@ -1090,12 +1090,14 @@ class SharedView extends Singleton {
         $html .= '</div>';
       }
       $html .= '</div>';
+      $html .= '<div class="text-danger small mt-1" id="' . $elementIdPrefix . '_slot_feedback" style="display:none">' . Translate::get('call_me_field_required') . '</div>';
       $html .= '</div>';
       $html .= '</div>';
     }
 
     // Gender
     $html .= '        <div class="form-group">';
+    $html .= '          <label>' . Translate::get('call_me_gender') . ' <span class="text-danger">*</span></label>';
     $html .= '          <div class="d-flex">';
     $html .= '            <div class="form-check pl-0 mr-3">';
     $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_M" value="M">';
@@ -1110,30 +1112,53 @@ class SharedView extends Singleton {
     $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_O">' . Translate::get('call_me_gender_other') . '</label>';
     $html .= '            </div>';
     $html .= '          </div>';
+    $html .= '          <div class="text-danger small mt-1" id="' . $elementIdPrefix . '_gender_feedback" style="display:none">' . Translate::get('call_me_field_required') . '</div>';
     $html .= '        </div>';
 
     // First name and Last name
     $html .= '        <div class="form-row">';
     $html .= '          <div class="form-group col-md-6">';
-    $html .= '            <label for="' . $elementIdPrefix . '_firstname">' . Translate::get('call_me_firstname') . '</label>';
+    $html .= '            <label for="' . $elementIdPrefix . '_firstname">' . Translate::get('call_me_firstname') . ' <span class="text-danger">*</span></label>';
     $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_firstname" placeholder="' . Translate::get('call_me_firstname') . '" required>';
+    $html .= '            <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
     $html .= '          </div>';
     $html .= '          <div class="form-group col-md-6">';
-    $html .= '            <label for="' . $elementIdPrefix . '_lastname">' . Translate::get('call_me_lastname') . '</label>';
+    $html .= '            <label for="' . $elementIdPrefix . '_lastname">' . Translate::get('call_me_lastname') . ' <span class="text-danger">*</span></label>';
     $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_lastname" placeholder="' . Translate::get('call_me_lastname') . '" required>';
+    $html .= '            <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
     $html .= '          </div>';
     $html .= '        </div>';
 
     // Address of installation
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="' . $elementIdPrefix . '_address">' . Translate::get('call_me_address_installation') . '</label>';
-    $html .= '          <input type="text" class="form-control" id="' . $elementIdPrefix . '_address" placeholder="' . Translate::get('call_me_address_installation_placeholder') . '" required>';
+    $html .= '          <label>' . Translate::get('call_me_address_installation') . ' <span class="text-danger">*</span></label>';
+    $html .= '          <div class="form-row">';
+    $html .= '            <div class="form-group col-8">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_street" placeholder="' . Translate::get('call_me_street') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-group col-4">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_street_number" placeholder="' . Translate::get('call_me_street_number') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '          </div>';
+    $html .= '          <div class="form-row">';
+    $html .= '            <div class="form-group col-4">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_postal_code" placeholder="' . Translate::get('call_me_postal_code') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-group col-8">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_city" placeholder="' . Translate::get('call_me_city') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '          </div>';
     $html .= '        </div>';
 
     // Phone number
     $html .= '        <div class="form-group">';
-    $html .= '          <label for="' . $elementIdPrefix . '_phone">' . Translate::get('call_me_phone_number') . '</label>';
+    $html .= '          <label for="' . $elementIdPrefix . '_phone">' . Translate::get('call_me_phone_number') . ' <span class="text-danger">*</span></label>';
     $html .= '          <input type="tel" class="form-control" id="' . $elementIdPrefix . '_phone" placeholder="' . Translate::get('call_me_phone_number_placeholder') . '" required>';
+    $html .= '          <div class="invalid-feedback">' . Translate::get('call_me_phone_number_invalid') . '</div>';
     $html .= '        </div>';
 
     $html .= '      </div>';
@@ -1147,6 +1172,8 @@ class SharedView extends Singleton {
       . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
       . ' data-success-msg="' . htmlspecialchars(Translate::get('call_me_success')) . '"'
       . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
+      . ' data-phone-error-msg="' . htmlspecialchars(Translate::get('call_me_phone_number_invalid')) . '"'
+      . ' data-address-error-msg="' . htmlspecialchars(Translate::get('call_me_address_invalid')) . '"'
       . ' data-product-name="' . htmlspecialchars($productName) . '"'
       . ' data-product-url="' . htmlspecialchars($productUrl) . '"'
       . ' data-is-shared-modal="true"'
