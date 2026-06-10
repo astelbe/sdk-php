@@ -997,29 +997,41 @@ class SharedView extends Singleton {
    * @param $productUrl string The URL of the product
    * @return string HTML for the call me button
    */
-  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '', $productsJson = '') {
+  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '', $productsJson = '', $orderUrl = '', $asLink = false) {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
-    
+
     if (!$timeslotsActive || $callCenterOpen['is_available_time_slot'][$language] == 0) {
       return '';
     }
 
     $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
 
-    $html = '<button type="button" class="btn btn-sm callMeButton" data-toggle="modal" data-target="#modalCallMeShared" ';
-    $html .= 'data-card-id="' . htmlspecialchars($productCardId) . '" ';
-    $html .= 'data-operator-name="' . htmlspecialchars($operatorName) . '" ';
-    $html .= 'data-partner-name="' . htmlspecialchars($partnerName) . '" ';
-    $html .= 'data-language="' . htmlspecialchars($language) . '" ';
-    $html .= 'data-product-name="' . htmlspecialchars($productName) . '" ';
-    $html .= 'data-product-url="' . htmlspecialchars($productUrl) . '" ';
+    $dataAttrs  = 'data-card-id="' . htmlspecialchars($productCardId) . '" ';
+    $dataAttrs .= 'data-operator-name="' . htmlspecialchars($operatorName) . '" ';
+    $dataAttrs .= 'data-partner-name="' . htmlspecialchars($partnerName) . '" ';
+    $dataAttrs .= 'data-language="' . htmlspecialchars($language) . '" ';
+    $dataAttrs .= 'data-product-name="' . htmlspecialchars($productName) . '" ';
+    $dataAttrs .= 'data-product-url="' . htmlspecialchars($productUrl) . '" ';
     if (!empty($productsJson)) {
-      $html .= 'data-products-json="' . htmlspecialchars($productsJson) . '" ';
+      $dataAttrs .= 'data-products-json="' . htmlspecialchars($productsJson) . '" ';
     }
-    $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
-    $html .= '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
-    $html .= '</button>';
+    if (!empty($orderUrl)) {
+      $dataAttrs .= 'data-order-url="' . htmlspecialchars($orderUrl) . '" ';
+    }
+
+    $label = '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
+    $toggle = 'data-toggle="modal" data-target="#modalCallMeShared" ';
+
+    if ($asLink) {
+      $html  = '<a href="#" class="callMeButton small" ' . $toggle . $dataAttrs;
+      $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+      $html .= $label . '</a>';
+    } else {
+      $html  = '<button type="button" class="btn btn-sm callMeButton" ' . $toggle . $dataAttrs;
+      $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+      $html .= $label . '</button>';
+    }
 
     return $html;
   }
