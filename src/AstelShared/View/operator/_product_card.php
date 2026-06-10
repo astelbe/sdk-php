@@ -174,7 +174,7 @@ use CakeUtility\Hash;
       </div>
       <div>
         <?php // CALL ME BUTTON
-        /*
+        
         $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
         if (isset($SharedView)) {
           $productName = '';
@@ -193,7 +193,7 @@ use CakeUtility\Hash;
             $productUrl
           );
         }
-          */
+         
         ?>
       </div>
     </div>
