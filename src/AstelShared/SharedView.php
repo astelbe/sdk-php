@@ -997,7 +997,7 @@ class SharedView extends Singleton {
    * @param $productUrl string The URL of the product
    * @return string HTML for the call me button
    */
-  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '') {
+  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '', $productsJson = '') {
     $language = AstelContext::getInstance()->getLanguage();
     $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
     
@@ -1014,6 +1014,9 @@ class SharedView extends Singleton {
     $html .= 'data-language="' . htmlspecialchars($language) . '" ';
     $html .= 'data-product-name="' . htmlspecialchars($productName) . '" ';
     $html .= 'data-product-url="' . htmlspecialchars($productUrl) . '" ';
+    if (!empty($productsJson)) {
+      $html .= 'data-products-json="' . htmlspecialchars($productsJson) . '" ';
+    }
     $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
     $html .= '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
     $html .= '</button>';

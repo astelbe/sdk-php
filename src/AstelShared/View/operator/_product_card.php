@@ -177,20 +177,24 @@ use CakeUtility\Hash;
         
         $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
         if (isset($SharedView)) {
-          $productName = '';
-          $productUrl = '';
-          if (isset($item['brand_name']) && isset($item['name'])) {
-            $productName = $item['brand_name'] . ' ' . $item['name'];
+          $productNames = [];
+          $productUrls = [];
+          foreach ($result['products'] as $_p) {
+            if (!empty($_p['brand_name']) && !empty($_p['name'])) {
+              $productNames[] = $_p['brand_name'] . ' ' . $_p['name'];
+              $productUrls[] = $_p['product_sheet_url'] ?? '';
+            }
           }
-          if (isset($item['product_sheet_url'])) {
-            $productUrl = $item['product_sheet_url'];
-          }
+          $productName = implode(' + ', $productNames);
+          $productUrl = $productUrls[0] ?? '';
+          $productsJson = json_encode(array_map(null, $productNames, $productUrls));
           echo $SharedView->renderCallMeLink(
             $productCardId,
             isset($item['brand_name']) ? $item['brand_name'] : '',
             $params['call_center_open'] ?? null,
             $productName,
-            $productUrl
+            $productUrl,
+            $productsJson
           );
         }
          
