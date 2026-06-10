@@ -179,19 +179,19 @@ class SharedView extends Singleton {
     $s = 0;
     $fullStars = floor($quality);
     while ($s < $fullStars) {
-      $html .= '<i class="fa fa-star fa-lg"></i>';
+      $html .= ' <i class="fa fa-star"></i> ';
       $s++;
     }
     $halfStars = ceil($quality) - $fullStars;
     $s = 0;
     while ($s < $halfStars) {
-      $html .= '<i class="fa fa-star-half-o fa-lg"></i>';
+      $html .= ' <i class="fa fa-star-half-o"></i> ';
       $s++;
     }
     $emptyStats = 5 - $fullStars - $halfStars;
     $s = 0;
     while ($s < $emptyStats) {
-      $html .= '<i class="fa fa-star-o fa-lg"></i>';
+      $html .= ' <i class="fa fa-star-o"></i> ';
       $s++;
     }
 
@@ -598,12 +598,8 @@ class SharedView extends Singleton {
    * @param $product
    * Prepare the summary of a product to be displayed in a card - Used for front, not for COMP
    */
-  static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
+  static function getProductResultSummary($product, $blockKey = 1) {
     $AstelContext = AstelContext::getInstance();
-
-    if ($productForPlugs === null) {
-      $productForPlugs = $product;
-    }
 
     // Cashback
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
@@ -620,13 +616,17 @@ class SharedView extends Singleton {
     // product savings
     $savings = self::calculateSavings($product);
 
+    $qualityScore = (int)Hash::get($product, 'quality_score', 0);
+
     $result_summary = [
       'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process' => true, 'color-css-class' => 'color-operator', 'br-before-during-month' => true]),
       'total_cashback'         => $displayed_cashback,
-      'phone_plug'             => self::displayPlugList([$productForPlugs], $blockKey),
+      'phone_plug'             => self::displayPlugList([$product], $blockKey),
       'setup'                  => self::getProductActivationAndOrInstallationPrice($product),
       'max_activation_time'    => Translate::get('max_activation_time', [$product['brand_name'], $product['max_activation_time']]),
       'products_total_savings' => $savings > 0 ? Translate::get('total_savings', self::formatPrice($savings)) : null,
+      'quality_score_raw'      => $qualityScore,
+      'quality_score'          => $qualityScore > 0 ? self::renderStar($qualityScore) : '',
     ];
 
     return $result_summary;
@@ -846,12 +846,11 @@ class SharedView extends Singleton {
    * @param string $modalKey A unique key for the modal dialog.
    * @return string|null The generated HTML content or null if the block is empty.
    */
-  public function displayPlugList($products = [], $modalKey) {
+  public function displayPlugList($products, $modalKey) {
     $language = AstelContext::getInstance()->getLanguage();
 
     // Retrieve plug tags from the block
     $blockPlugs = self::getPlugTag($products);
-    // debug($blockPlugs);
 
     // Initialize variables for modal link and modal content
     $plugsModaleLink = "";
