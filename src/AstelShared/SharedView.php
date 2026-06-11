@@ -1144,7 +1144,7 @@ class SharedView extends Singleton {
     $html .= '          </div>';
     $html .= '        </div>';
 
-    // Address of installation
+    // Address of installation - Google Place Autocomplete
     $html .= '        <div class="form-group">';
     $html .= '          <label>' . Translate::get('call_me_address_installation') . ' <span class="text-danger">*</span></label>';
     $html .= '          <div class="form-row">';
@@ -1168,6 +1168,32 @@ class SharedView extends Singleton {
     $html .= '            </div>';
     $html .= '          </div>';
     $html .= '        </div>';
+    // Script to init Google Place Autocomplete when modal is shown
+    $html .= '<script>';
+    $html .= '(function() {';
+    $html .= '  var modalEl = document.getElementById("' . $modalId . '");';
+    $html .= '  if (modalEl) {';
+    $html .= '    $(modalEl).on("shown.bs.modal", function() {';
+    $html .= '      if (typeof initGooglePlaceAutocomplete === "function") {';
+    $html .= '        initGooglePlaceAutocomplete("' . $elementIdPrefix . '");';
+    $html .= '        setTimeout(function() {';
+    $html .= '          var input = document.getElementById("' . $elementIdPrefix . '_autocomplete_input");';
+    $html .= '          var hidden = document.getElementById("' . $elementIdPrefix . '_address");';
+    $html .= '          if (input && hidden) {';
+    $html .= '            var statusEl = document.getElementById("' . $elementIdPrefix . '_street1_status");';
+    $html .= '            if (statusEl) {';
+    $html .= '              new MutationObserver(function() {';
+    $html .= '                hidden.value = input.value;';
+    $html .= '              }).observe(statusEl, {childList: true, subtree: true});';
+    $html .= '            }';
+    $html .= '            input.addEventListener("change", function() { hidden.value = this.value; });';
+    $html .= '          }';
+    $html .= '        }, 100);';
+    $html .= '      }';
+    $html .= '    });';
+    $html .= '  }';
+    $html .= '})();';
+    $html .= '</script>';
 
     // Phone number
     $html .= '        <div class="form-group">';
