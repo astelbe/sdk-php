@@ -148,7 +148,7 @@ if (!empty($fragment)) {
 
   <!-- Call Me Modals - Single Shared Modal -->
   <?php
-  if (isset($SharedView)) {
+  if (isset($SharedView) && ($params['render_call_me_modal'] ?? true)) {
     echo $SharedView->renderCallMeModal(
       $params['call_center_open'] ?? null,
       $params['recaptcha_site_key'] ?? ''
