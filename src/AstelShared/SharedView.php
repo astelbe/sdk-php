@@ -1099,8 +1099,9 @@ class SharedView extends Singleton {
           $dayLabel = htmlspecialchars($slot['day_label']);
         }
         $slotLabel = $dayLabel . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
+        $rawSlotLabel = (!empty($slot['slot_date']) ? ' ' . htmlspecialchars($slot['slot_date']) : '') . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
         $html .= '<div class="form-check">';
-        $html .= '<input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_slot" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '"' . ($i === 0 ? ' checked' : '') . '>';
+        $html .= '<input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_slot" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '" data-slot-raw-label="' . $rawSlotLabel . '"' . ($i === 0 ? ' checked' : '') . '>';
         $html .= '<label class="form-check-label" for="' . $inputId . '">' . $slotLabel . '</label>';
         $html .= '</div>';
       }
