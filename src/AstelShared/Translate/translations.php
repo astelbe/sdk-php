@@ -382,17 +382,41 @@ return [
     'FR' => "Adresse d'installation",
     'NL' => "Installatieadres",
   ],
+  'call_me_street' => [
+    'FR' => "Rue",
+    'NL' => "Straat",
+  ],
+  'call_me_street_number' => [
+    'FR' => "Numéro",
+    'NL' => "Nummer",
+  ],
+  'call_me_postal_code' => [
+    'FR' => "Code postal",
+    'NL' => "Postcode",
+  ],
+  'call_me_city' => [
+    'FR' => "Ville",
+    'NL' => "Gemeente",
+  ],
+  'call_me_address_invalid' => [
+    'FR' => "L'adresse renseignée n'est pas valide.",
+    'NL' => "Het ingevoerde adres is niet geldig.",
+  ],
+  'call_me_field_required' => [
+    'FR' => "Ce champ est obligatoire.",
+    'NL' => "Dit veld is verplicht.",
+  ],
   'call_me_phone_number' => [
     'FR' => "Numéro de téléphone",
     'NL' => "Telefoonnummer",
   ],
-  'call_me_address_installation_placeholder' => [
-    'FR' => "Entrez l'adresse où le service doit être installé",
-    'NL' => "Voer het adres in waar de dienst moet worden geïnstalleerd",
-  ],
   'call_me_phone_number_placeholder' => [
     'FR' => "Entrez votre numéro de téléphone",
     'NL' => "Voer uw telefoonnummer in",
+  ],
+  'call_me_phone_number_invalid' => [
+    'FR' => "Veuillez entrer un numéro de téléphone belge valide (ex: 04xxxxxxxx ou 0xxxxxxxxx)",
+    'NL' => "Voer een geldig Belgisch telefoonnummer in (bv: 04xxxxxxxx of 0xxxxxxxxx)",
   ],
   'close' => [
     'FR' => "Fermer",
