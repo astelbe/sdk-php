@@ -57,7 +57,7 @@ class Comparator extends AbstractWebIntegration {
 	 * (in astel.js, the script is then loaded with getAstelComparator)
 	 * If $useDefer = false, will prepare regular script to load comparator directly
 	 */
-	public function getScriptLoadComparator($title = null, $encryptionKey = null, $useDefer = false) {
+	public function getScriptLoadComparator($seoData = null, $encryptionKey = null, $useDefer = false) {
 		global $_GET;
 
 		// Get the encryption key from the context if it is not provided
@@ -204,7 +204,8 @@ class Comparator extends AbstractWebIntegration {
 			$getParams['partnerID'] = $_GET['partnerID'];
 		}
 
-		$getParams['page_title'] = $title;
+		$getParams['page_title'] = $seoData['title'] ?? null;
+		$getParams['page_description'] = $seoData['description'] ?? null;
 
 		$paramsURL = $this->getParamsUrl($getParams, $encryptionKey);
 
