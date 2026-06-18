@@ -172,7 +172,6 @@ use CakeUtility\Hash;
           <?= $result['result_summary']['order_button']; ?>
         </div>
       </div>
-      <div>
         <?php // CALL ME BUTTON
         
         $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
@@ -191,6 +190,7 @@ use CakeUtility\Hash;
           $productUrl = $productUrls[0] ?? '';
           $productsJson = json_encode(array_map(null, $productNames, $productUrls));
           $brands = rtrim($brands, ' + ');
+          echo '<div class="mt-2 mt-md-1">';
           echo $SharedView->renderCallMeLink(
             $productCardId,
             $brands,
@@ -199,10 +199,11 @@ use CakeUtility\Hash;
             $productUrl,
             $productsJson
           );
+         
+          echo '</div>';
         }
          
         ?>
-      </div>
     </div>
   </div>
 </div>
