@@ -971,6 +971,7 @@ class SharedView extends Singleton {
             $plugTypeLabel =  [
               'content' => Translate::get('fiber_to_the_home'),
               'color' => 'bg-success',
+              'modal_id' => 'modalFTTH',
             ];
             break;
           }
@@ -978,6 +979,7 @@ class SharedView extends Singleton {
             $plugTypeLabel =  [
               'content' => Translate::get('hybrid_fiber_coax'),
               'color' => 'bg-grey',
+              'modal_id' => 'modalHFC',
             ];
             break;
           }

@@ -75,6 +75,11 @@ use CakeUtility\Hash;
           <?php if (!empty($result['result_summary']['phone_plug_label'])) { ?>
             <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color'] ?>" style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
               <?= $result['result_summary']['phone_plug_label']['content'] ?>
+              <?php if (!empty($result['result_summary']['phone_plug_label']['modal_id'])) { ?>
+                <span class="cursor-pointer" data-toggle="modal" data-target="#<?= $result['result_summary']['phone_plug_label']['modal_id'] ?>" style="opacity:0.85;">
+                  <i class="fa fa-info-circle ml-1" aria-hidden="true"></i>
+                </span>
+              <?php } ?>
             </div>
           <?php } ?>
           <div class="<?= $cashback ? 'mt-4' : 'mt-1' ?>">
