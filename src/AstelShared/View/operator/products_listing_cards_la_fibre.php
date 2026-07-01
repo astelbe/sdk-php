@@ -37,7 +37,7 @@ use CakeUtility\Hash;
         ],
     ];
     */
-    // debug($params);
+// debug($params);
 
 ?>
 
@@ -60,7 +60,7 @@ use CakeUtility\Hash;
     <?php foreach ($params['products'] as $key => $result) {
       // debug($result);
       // Limited to x results. set in site Config
-      if($key >= Config::read('Product.limit_products_to_display')) {
+      if ($key >= Config::read('Product.limit_products_to_display')) {
         break;
       }
       $cashback = ($result['result_summary']['total_cashback'] != '' && $result['result_summary']['total_cashback'] !== 0 && $result['cashback_source'] != 'None') ? $result['result_summary']['total_cashback'] : false;
@@ -71,10 +71,10 @@ use CakeUtility\Hash;
             <?= $result['result_index'] ?>
           </div>
         <?php } ?>
-        <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
+        <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important; color:#000;background-color:#fff;">
           <?php if (!empty($result['result_summary']['phone_plug_label'])) { ?>
-            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color']?>"  style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-              <?= $result['result_summary']['phone_plug_label']['content'] ?> 
+            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color'] ?>" style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
+              <?= $result['result_summary']['phone_plug_label']['content'] ?>
             </div>
           <?php } ?>
           <div class="<?= $cashback ? 'mt-4' : 'mt-1' ?>">
@@ -90,9 +90,9 @@ use CakeUtility\Hash;
 
                 <?php
                 // Display brand name only if 1st product , and also 2dn result if multi brand result
-                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { 
+                if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) {
                   $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
-                  ?>
+                ?>
                   <div class="titleproduct-logo-brand p-2 mb-0">
                     <img class="w-100" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
@@ -102,7 +102,7 @@ use CakeUtility\Hash;
                   <?php } ?>
                   <h3 class="px-1 pt-3 d-flex justify-content-between" <?= ($cpt == 1 ? 'style="min-height: 46px; font-size: 1.1rem;"' : '') ?>>
                     <span class="text-<?= $item['brand_slug']; ?>">
-                      <?= $item['brand_name']?> <?= $item['short_name']; ?>
+                      <?= $item['brand_name'] ?> <?= $item['short_name']; ?>
                     </span>
                     <span class="font-weight-bold" style="1.2rem;"><?= self::getDisplayedProductCount($item) ?></span>
                   </h3>
@@ -157,16 +157,16 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos">
-                  <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
-                      <?=$result['result_summary']['max_activation_time'];?>
-                      <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                          <br>
-                      <?php } ?>
+                  <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
+                    <?= $result['result_summary']['max_activation_time']; ?>
+                    <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                      <br>
+                    <?php } ?>
                   <?php } ?>
-                  <?php if(!empty($result['result_summary']['phone_plug'])) { ?>
-                      <?= $result['result_summary']['phone_plug']?>
+                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
+                    <?= $result['result_summary']['phone_plug'] ?>
                   <?php } ?>
                 </div>
               <?php } ?>
