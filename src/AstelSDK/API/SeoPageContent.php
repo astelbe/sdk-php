@@ -54,7 +54,6 @@ class SeoPageContent extends APIModel {
 				'meta_description' => Hash::get($item, 'meta_description_' . $lang),
 				'content_top'      => Hash::get($item, 'content_top_' . $lang),
 				'content_bottom'   => Hash::get($item, 'content_bottom_' . $lang),
-				'answer'           => Hash::get($item, 'answer_' . $lang),
 			];
 		}
 
