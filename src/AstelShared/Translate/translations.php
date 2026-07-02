@@ -84,20 +84,20 @@ return [
     'NL' => "<span class=\"color-operator\">%s</span> Mbps",
   ],
   'bandwidth_download'                     => [
-    'FR' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">Mbps</span>",
-    'NL' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">Mbps</span>",
+    'FR' => "Vitesse <span class=\"emphasis-data\">%s </span><span class=\"text-dark\">Mbps</span>",
+    'NL' => "Snelheid <span class=\"emphasis-data\">%s </span><span class=\"text-dark\">Mbps</span>",
   ],
   'bandwidth_upload'                       => [
     'FR' => "<span>Upload</span><span class=\"emphasis-data\"> %s</span> Mbps",
     'NL' => "<span>Upload</span><span class=\"emphasis-data\"> %s</span> Mbps",
   ],
   'bandwidth_volume_unlimited'             => [
-    'FR' => "illimité",
-    'NL' => "Onbeperkt",
+    'FR' => "Volume illimité",
+    'NL' => "Volume Onbeperkt",
   ],
   'bandwidth_volume'                       => [
-    'FR' => "<span class=\"\"> %s</span> GB",
-    'NL' => "<span class=\"\"> %s</span> GB",
+    'FR' => "Volume<span class=\"\"> %s</span> GB",
+    'NL' => "Volume<span class=\"\"> %s</span> GB",
   ],
 
 

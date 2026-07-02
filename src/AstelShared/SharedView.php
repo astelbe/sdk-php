@@ -229,8 +229,8 @@ class SharedView extends Singleton {
     if ($Product->isType($product, 'I')) {
       $data = [];
       $data['bandwidth_download'] = self::translatePlayDescription('play_description.internet.bandwidth_download', $product);
-      $data['bandwidth_volume'] = self::translatePlayDescription('play_description.internet.bandwidth_volume', $product);
-      $data['bandwidth_upload'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
+      $data['bandwidth_volume'] = '<br>' . self::translatePlayDescription('play_description.internet.bandwidth_volume', $product);
+      $data['bandwidth_upload'] = self::translatePlayDescription('play_description.internet.bandwidth_upload', $product);
       $extra_data = [];
       //  display upload speed in details for Astel
       $is_wifi_modem_provided = Hash::get($product, 'play_description.internet.is_wifi_modem_provided', 0);
