@@ -61,13 +61,12 @@ use CakeUtility\Hash;
           <div class="result-index ml-2 bg-<?= $result['products'][0]['brand_slug'] ?>">
             <?= $key+1 ?>
           </div>
-        <?php } ?>
-        <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important; color:#000;background-color:#fff;">
+        <div class="px-2 pt-1 pb-2 rounded-lg d-flex h-100 flex-column justify-content-between" style="box-shadow: 2px 0rem 1.2rem rgba(0,0,0,.35)!important">
           <?php if (!empty($result['result_summary']['phone_plug_label'])) { ?>
-            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount <?= $result['result_summary']['phone_plug_label']['color'] ?>" style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;">
-              <?= $result['result_summary']['phone_plug_label']['content'] ?>
+            <div class="mt-n3 ml-3 py-0 px-3 shadow position-absolute rounded-sm plugin-hidden-optional-element cashback-amount cursor-pointer bg-<?= $result['products'][0]['brand_slug'] ?>"  style="color:#fff; top:2px; height:32px; line-height: 32px; right: 0.75rem; font-size: 0.9rem;"  data-toggle="modal" data-target="#<?= $result['result_summary']['phone_plug_label']['modal_id'] ?>">
+              <?= $result['result_summary']['phone_plug_label']['content'] ?> 
               <?php if (!empty($result['result_summary']['phone_plug_label']['modal_id'])) { ?>
-                <span class="cursor-pointer" data-toggle="modal" data-target="#<?= $result['result_summary']['phone_plug_label']['modal_id'] ?>" style="opacity:0.85;">
+                <span class="cursor-pointer" style="opacity:0.85;">
                   <i class="fa fa-info-circle ml-1" aria-hidden="true"></i>
                 </span>
               <?php } ?>
@@ -153,18 +152,11 @@ use CakeUtility\Hash;
                   </span>
                 </p>
               <?php } ?>
-              <?php if ((!empty($result['result_summary']['phone_plug']) || !empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
+             <?php if((!empty($result['result_summary']['max_activation_time'])) && !self::isOnlyMobile($result)) { ?>
                 <div class="position-relative sub-details-infos">
-                  <?php if (!empty($result['result_summary']['max_activation_time'])) { ?>
-                    <?= $result['result_summary']['max_activation_time']; ?>
-                    <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
-                      <br>
-                    <?php } ?>
+                  <?php if(!empty($result['result_summary']['max_activation_time'])) { ?>
+                    <?=$result['result_summary']['max_activation_time'];?>
                   <?php } ?>
-                  <?php if (!empty($result['result_summary']['phone_plug'])) { ?>
-                    <?= $result['result_summary']['phone_plug'] ?>
-                  <?php } ?>
-                  
                 </div>
               <?php } ?>
             </div>
