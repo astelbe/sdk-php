@@ -80,8 +80,8 @@ return [
   // PLAYS
   // Internet
   'tab_internet_mbps'                      => [
-    'FR' => "<span class=\"color-operator\">%s</span> Mbps",
-    'NL' => "<span class=\"color-operator\">%s</span> Mbps",
+    'FR' => "<span class=\"text-blue\">%s</span> Mbps",
+    'NL' => "<span class=\"text-blue\">%s</span> Mbps",
   ],
   'bandwidth_download'                     => [
     'FR' => "Vitesse <span class=\"emphasis-data\">%s </span><span class=\"text-dark\">Mbps</span>",
@@ -103,37 +103,37 @@ return [
 
   // GSM
   'tab_mobile_unlimited_call'              => [
-    'FR' => "Appels <span class=\"color-operator\">illimités</span>",
-    'NL' => "<span class=\"color-operator\">Onbeperkt</span> bellen",
+    'FR' => "Appels <span class=\"text-blue\">illimités</span>",
+    'NL' => "<span class=\"text-blue\">Onbeperkt</span> bellen",
   ],
   'tab_mobile_minutes'                     => [
-    'FR' => "<span class=\"color-operator\">%s</span> min",
-    'NL' => "<span class=\"color-operator\">%s</span> min",
+    'FR' => "<span class=\"text-blue\">%s</span> min",
+    'NL' => "<span class=\"text-blue\">%s</span> min",
   ],
   'tab_mobile_unlimited_internet'          => [
-    'FR' => "Data <span class=\"color-operator\">illimité</span>",
-    'NL' => "<span class=\"color-operator\">Onbeperkt</span> data",
+    'FR' => "Data <span class=\"text-blue\">illimité</span>",
+    'NL' => "<span class=\"text-blue\">Onbeperkt</span> data",
   ],
   'tab_mobile_gb_data'                     => [
-    'FR' => "<span class=\"color-operator\">%s</span> GB",
-    'NL' => "<span class=\"color-operator\">%s</span> GB",
+    'FR' => "<span class=\"text-blue\">%s</span> GB",
+    'NL' => "<span class=\"text-blue\">%s</span> GB",
   ],
   'tab_mobile_unlimited_sms'               => [
-    'FR' => "SMS <span class=\"color-operator\">illimités</span>",
-    'NL' => "<span class=\"color-operator\">Onbeperkt</span> smsen",
+    'FR' => "SMS <span class=\"text-blue\">illimités</span>",
+    'NL' => "<span class=\"text-blue\">Onbeperkt</span> smsen",
   ],
   'tab_mobile_sms'                         => [
-    'FR' => "<span class=\"color-operator\">%s</span> SMS",
-    'NL' => "<span class=\"color-operator\">%s</span> SMS",
+    'FR' => "<span class=\"text-blue\">%s</span> SMS",
+    'NL' => "<span class=\"text-blue\">%s</span> SMS",
   ],
 
   'tab_unlimited'                          => [
-    'FR' => "Internet <span class=\"color-operator\">illimité</span>",
-    'NL' => "<span class=\"color-operator\">Onbeperkt</span> surfen",
+    'FR' => "Internet <span class=\"text-blue\">illimité</span>",
+    'NL' => "<span class=\"text-blue\">Onbeperkt</span> surfen",
   ],
   'tab_mobile_gb_data'                     => [
-    'FR' => "<span class=\"color-operator\">%s</span> GB",
-    'NL' => "<span class=\"color-operator\">%s</span> GB",
+    'FR' => "<span class=\"text-blue\">%s</span> GB",
+    'NL' => "<span class=\"text-blue\">%s</span> GB",
   ],
   'included_minutes_calls_unlimited'       => [
     'FR' => "Appels <span class=\"\">illimités</span>",
@@ -225,7 +225,7 @@ return [
 
   // Fix
   'tab_fixe_EWE'                           => [
-    'FR' => "<span class=\"color-operator\">illimité</span> soir & week-end",
+    'FR' => "<span class=\"text-blue\">illimité</span> soir & week-end",
     'NL' => "",
   ],
   'included_minutes_calls_EWE'             => [
