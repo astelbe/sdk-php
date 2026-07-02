@@ -179,19 +179,19 @@ class SharedView extends Singleton {
     $s = 0;
     $fullStars = floor($quality);
     while ($s < $fullStars) {
-      $html .= '<i class="fa fa-star fa-lg"></i>';
+      $html .= ' <i class="fa fa-star"></i> ';
       $s++;
     }
     $halfStars = ceil($quality) - $fullStars;
     $s = 0;
     while ($s < $halfStars) {
-      $html .= '<i class="fa fa-star-half-o fa-lg"></i>';
+      $html .= ' <i class="fa fa-star-half-o"></i> ';
       $s++;
     }
     $emptyStats = 5 - $fullStars - $halfStars;
     $s = 0;
     while ($s < $emptyStats) {
-      $html .= '<i class="fa fa-star-o fa-lg"></i>';
+      $html .= ' <i class="fa fa-star-o"></i> ';
       $s++;
     }
 
@@ -209,6 +209,7 @@ class SharedView extends Singleton {
       $details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('gsm') . '</span>' . implode(', ', $details),
+        'details_clean' => Translate::get('gsm') . ': ' . strip_tags(implode(', ', $details)),
         'description' => Hash::get($product, 'play_description.mobile.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 20 30" fill="none">
@@ -241,6 +242,7 @@ class SharedView extends Singleton {
       $description_with_extra = $extra_data_string . '<br> ' . $original_description;
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('internet') . '</span>' . implode(', ', $data),
+        'details_clean' => Translate::get('internet') . ': ' . strip_tags(implode(', ', $data)),
         'description' => $description_with_extra,
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
@@ -257,6 +259,7 @@ class SharedView extends Singleton {
     if ($Product->isType($product, 'F')) {
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('fix') . '</span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
+        'details_clean' => Translate::get('fix') . ': ' . strip_tags(implode(', ', self::translatePlayDescription('play_description.fix.included_minutes_calls', $product))),
         'description' => Hash::get($product, 'play_description.fix.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -286,6 +289,7 @@ class SharedView extends Singleton {
       }
       return [
         'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('tv') . '</span> ' . implode(', ', $data),
+        'details_clean' => Translate::get('tv') . ': ' . strip_tags(implode(', ', $data)),
         'description' => Hash::get($product, 'play_description.tv.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
@@ -594,12 +598,8 @@ class SharedView extends Singleton {
    * @param $product
    * Prepare the summary of a product to be displayed in a card - Used for front, not for COMP
    */
-  static function getProductResultSummary($product, $preProcessedData = [], $blockKey = 1, $productForPlugs = null) {
+  static function getProductResultSummary($product, $blockKey = 1) {
     $AstelContext = AstelContext::getInstance();
-
-    if ($productForPlugs === null) {
-      $productForPlugs = $product;
-    }
 
     // Cashback
     $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
@@ -616,13 +616,17 @@ class SharedView extends Singleton {
     // product savings
     $savings = self::calculateSavings($product);
 
+    $qualityScore = (int)Hash::get($product, 'quality_score', 0);
+
     $result_summary = [
       'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process' => true, 'color-css-class' => 'color-operator', 'br-before-during-month' => true]),
       'total_cashback'         => $displayed_cashback,
-      'phone_plug'             => self::displayPlugList([$productForPlugs], $blockKey),
+      'phone_plug'             => self::displayPlugList([$product], $blockKey),
       'setup'                  => self::getProductActivationAndOrInstallationPrice($product),
       'max_activation_time'    => Translate::get('max_activation_time', [$product['brand_name'], $product['max_activation_time']]),
       'products_total_savings' => $savings > 0 ? Translate::get('total_savings', self::formatPrice($savings)) : null,
+      'quality_score_raw'      => $qualityScore,
+      'quality_score'          => $qualityScore > 0 ? self::renderStar($qualityScore) : '',
     ];
 
     return $result_summary;
@@ -842,12 +846,11 @@ class SharedView extends Singleton {
    * @param string $modalKey A unique key for the modal dialog.
    * @return string|null The generated HTML content or null if the block is empty.
    */
-  public function displayPlugList($products = [], $modalKey) {
+  public function displayPlugList($products, $modalKey) {
     $language = AstelContext::getInstance()->getLanguage();
 
     // Retrieve plug tags from the block
     $blockPlugs = self::getPlugTag($products);
-    // debug($blockPlugs);
 
     // Initialize variables for modal link and modal content
     $plugsModaleLink = "";
@@ -968,6 +971,7 @@ class SharedView extends Singleton {
             $plugTypeLabel =  [
               'content' => Translate::get('fiber_to_the_home'),
               'color' => 'bg-success',
+              'modal_id' => 'modalFTTH',
             ];
             break;
           }
@@ -975,6 +979,7 @@ class SharedView extends Singleton {
             $plugTypeLabel =  [
               'content' => Translate::get('hybrid_fiber_coax'),
               'color' => 'bg-grey',
+              'modal_id' => 'modalHFC',
             ];
             break;
           }
@@ -983,5 +988,246 @@ class SharedView extends Singleton {
     }
 
     return $plugTypeLabel;
+  }
+
+  /**
+   * Render a "Call Me" button that opens the shared modal with form
+   * @param $productCardId string The ID of the product card
+   * @param $operatorName string The name of the operator
+   * @param $callCenterOpen array|null Call center configuration
+   * @param $productName string The name of the product
+   * @param $productUrl string The URL of the product
+   * @return string HTML for the call me button
+   */
+  public function renderCallMeLink($productCardId, $operatorName = '', $callCenterOpen = null, $productName = '', $productUrl = '', $productsJson = '', $orderUrl = '', $asLink = false) {
+    $language = AstelContext::getInstance()->getLanguage();
+    $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
+
+    if (!$timeslotsActive || $callCenterOpen['is_available_time_slot'][$language] == 0) {
+      return '';
+    }
+
+    $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
+
+    $dataAttrs  = 'data-card-id="' . htmlspecialchars($productCardId) . '" ';
+    $dataAttrs .= 'data-operator-name="' . htmlspecialchars($operatorName) . '" ';
+    $dataAttrs .= 'data-partner-name="' . htmlspecialchars($partnerName) . '" ';
+    $dataAttrs .= 'data-language="' . htmlspecialchars($language) . '" ';
+    $dataAttrs .= 'data-product-name="' . htmlspecialchars($productName) . '" ';
+    $dataAttrs .= 'data-product-url="' . htmlspecialchars($productUrl) . '" ';
+    if (!empty($productsJson)) {
+      $dataAttrs .= 'data-products-json="' . htmlspecialchars($productsJson) . '" ';
+    }
+    if (!empty($orderUrl)) {
+      $dataAttrs .= 'data-order-url="' . htmlspecialchars($orderUrl) . '" ';
+    }
+
+    $label = '<i class="fa fa-phone mr-2"></i>' . Translate::get('call_me_request');
+    $toggle = 'data-toggle="modal" data-target="#modalCallMeShared" ';
+
+    if ($asLink) {
+      $html  = '<a href="#" class="callMeButton small" ' . $toggle . $dataAttrs;
+      $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+      $html .= $label . '</a>';
+    } else {
+      $html  = '<button type="button" class="btn btn-sm callMeButton" ' . $toggle . $dataAttrs;
+      $html .= 'title="' . htmlspecialchars(Translate::get('call_me_request')) . '">';
+      $html .= $label . '</button>';
+    }
+
+    return $html;
+  }
+
+  /**
+   * Render the shared "Call Me" modal with form
+   * @param $callCenterOpen array|null Call center configuration
+   * @return string HTML for the complete modal with form
+   */
+  public function renderCallMeModal($callCenterOpen = null, $recaptchaSiteKey = '') {
+    $language = AstelContext::getInstance()->getLanguage();
+    $timeslotsActive = is_array($callCenterOpen) ? ($callCenterOpen['timeslots_active'][$language] ?? true) : true;
+    if (!$timeslotsActive) {
+      return '';
+    }
+
+    $modalId = 'modalCallMeShared';
+    $elementIdPrefix = 'callme_shared';
+    $partnerName = is_array($callCenterOpen) ? ($callCenterOpen['partner_name'] ?? $operatorName) : $operatorName;
+    $operatorText = !empty($partnerName) ? ' ' . htmlspecialchars($partnerName) : '';
+
+    $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
+    $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
+
+    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '" data-recaptcha-site-key="' . htmlspecialchars($recaptchaSiteKey) . '">';
+    $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
+    $html .= '    <div class="modal-content">';
+    $html .= '      <div class="modal-header">';
+    $html .= '        <div class="modal-title h5" id="' . htmlspecialchars($modalId) . '_label">' . Translate::get('call_me_request_title') . $operatorText . '</div>';
+    $html .= '        <button type="button" class="close" data-dismiss="modal" aria-label="' . Translate::get('close') . '">';
+    $html .= '          <span aria-hidden="true">&times;</span>';
+    $html .= '        </button>';
+    $html .= '      </div>';
+    $html .= '      <div class="modal-body">';
+
+    // Intro text
+    $html .= '        <div class="form-group">';
+    $html .= '          <p class="mb-0">' . Translate::get('call_me_intro_text') . '</p>';
+    $html .= '        </div>';
+
+    // Time opening schedules
+    // Preferred callback time slot
+    $availableSlots = is_array($callCenterOpen) ? ($callCenterOpen['available_slots'][$language] ?? []) : [];
+    if (!empty($availableSlots)) {
+      $html .= '<div class="call-center-hours mb-3 p-2 border rounded">';
+      $html .= '<div class="form-group">';
+      $html .= '<div>' . Translate::get('call_me_preferred_slot') . ' <span class="text-danger">*</span></div>';
+      $html .= '<div class="call-me-slots mt-1">';
+
+      if (!empty($textToDisplay)) {
+        if (!empty($openingHours)) {
+          $html .= '<p class="mb-0">' . nl2br(htmlspecialchars(str_replace('</br>', "\n", $openingHours))) . '</p>';
+        }
+      }
+
+      foreach ($availableSlots as $i => $slot) {
+        $inputId = 'callme_slot_' . $i;
+        if ($slot['is_today']) {
+          $dayLabel = Translate::get('call_me_today');
+        } elseif ($slot['is_tomorrow']) {
+          $dayLabel = Translate::get('call_me_tomorrow');
+        } elseif (!empty($slot['is_next_week']) && $slot['is_next_week']) {
+          $dayLabel = Translate::get('next_week') . ' ' . htmlspecialchars($slot['day_label']);
+        } else {
+          $dayLabel = htmlspecialchars($slot['day_label']);
+        }
+        $slotLabel = $dayLabel . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
+        $rawSlotLabel = (!empty($slot['slot_date']) ? ' ' . htmlspecialchars($slot['slot_date']) : '') . ' · ' . htmlspecialchars($slot['from']) . ' - ' . htmlspecialchars($slot['to']);
+        $html .= '<div class="form-check">';
+        $html .= '<input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_slot" id="' . $inputId . '" value="' . (int)$slot['slot_id'] . '" data-slot-raw-label="' . $rawSlotLabel . '"' . ($i === 0 ? ' checked' : '') . '>';
+        $html .= '<label class="form-check-label" for="' . $inputId . '">' . $slotLabel . '</label>';
+        $html .= '</div>';
+      }
+      $html .= '</div>';
+      $html .= '<div class="text-danger small mt-1" id="' . $elementIdPrefix . '_slot_feedback" style="display:none">' . Translate::get('call_me_field_required') . '</div>';
+      $html .= '</div>';
+      $html .= '</div>';
+    }
+
+    // Gender
+    $html .= '        <div class="form-group">';
+    $html .= '          <label>' . Translate::get('call_me_gender') . ' <span class="text-danger">*</span></label>';
+    $html .= '          <div class="d-flex">';
+    $html .= '            <div class="form-check pl-0 mr-3">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_M" value="M">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_M">' . Translate::get('call_me_gender_male') . '</label>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-check mr-3">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_F" value="F">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_F">' . Translate::get('call_me_gender_female') . '</label>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-check">';
+    $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_O" value="O">';
+    $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_O">' . Translate::get('call_me_gender_other') . '</label>';
+    $html .= '            </div>';
+    $html .= '          </div>';
+    $html .= '          <div class="text-danger small mt-1" id="' . $elementIdPrefix . '_gender_feedback" style="display:none">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '        </div>';
+
+    // First name and Last name
+    $html .= '        <div class="form-row">';
+    $html .= '          <div class="form-group col-md-6">';
+    $html .= '            <label for="' . $elementIdPrefix . '_firstname">' . Translate::get('call_me_firstname') . ' <span class="text-danger">*</span></label>';
+    $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_firstname" placeholder="' . Translate::get('call_me_firstname') . '" required>';
+    $html .= '            <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '          </div>';
+    $html .= '          <div class="form-group col-md-6">';
+    $html .= '            <label for="' . $elementIdPrefix . '_lastname">' . Translate::get('call_me_lastname') . ' <span class="text-danger">*</span></label>';
+    $html .= '            <input type="text" class="form-control" id="' . $elementIdPrefix . '_lastname" placeholder="' . Translate::get('call_me_lastname') . '" required>';
+    $html .= '            <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '          </div>';
+    $html .= '        </div>';
+
+    // Address of installation - Google Place Autocomplete
+    $html .= '        <div class="form-group">';
+    $html .= '          <label>' . Translate::get('call_me_address_installation') . ' <span class="text-danger">*</span></label>';
+    $html .= '          <div class="form-row">';
+    $html .= '            <div class="form-group col-8">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_street" placeholder="' . Translate::get('call_me_street') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-group col-4">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_street_number" placeholder="' . Translate::get('call_me_street_number') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '          </div>';
+    $html .= '          <div class="form-row">';
+    $html .= '            <div class="form-group col-4">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_postal_code" placeholder="' . Translate::get('call_me_postal_code') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '            <div class="form-group col-8">';
+    $html .= '              <input type="text" class="form-control" id="' . $elementIdPrefix . '_city" placeholder="' . Translate::get('call_me_city') . '" data-validate="latinCharNum" required>';
+    $html .= '              <div class="invalid-feedback">' . Translate::get('call_me_field_required') . '</div>';
+    $html .= '            </div>';
+    $html .= '          </div>';
+    $html .= '        </div>';
+    // Script to init Google Place Autocomplete when modal is shown
+    $html .= '<script>';
+    $html .= '(function() {';
+    $html .= '  var modalEl = document.getElementById("' . $modalId . '");';
+    $html .= '  if (modalEl) {';
+    $html .= '    $(modalEl).on("shown.bs.modal", function() {';
+    $html .= '      if (typeof initGooglePlaceAutocomplete === "function") {';
+    $html .= '        initGooglePlaceAutocomplete("' . $elementIdPrefix . '");';
+    $html .= '        setTimeout(function() {';
+    $html .= '          var input = document.getElementById("' . $elementIdPrefix . '_autocomplete_input");';
+    $html .= '          var hidden = document.getElementById("' . $elementIdPrefix . '_address");';
+    $html .= '          if (input && hidden) {';
+    $html .= '            var statusEl = document.getElementById("' . $elementIdPrefix . '_street1_status");';
+    $html .= '            if (statusEl) {';
+    $html .= '              new MutationObserver(function() {';
+    $html .= '                hidden.value = input.value;';
+    $html .= '              }).observe(statusEl, {childList: true, subtree: true});';
+    $html .= '            }';
+    $html .= '            input.addEventListener("change", function() { hidden.value = this.value; });';
+    $html .= '          }';
+    $html .= '        }, 100);';
+    $html .= '      }';
+    $html .= '    });';
+    $html .= '  }';
+    $html .= '})();';
+    $html .= '</script>';
+
+    // Phone number
+    $html .= '        <div class="form-group">';
+    $html .= '          <label for="' . $elementIdPrefix . '_phone">' . Translate::get('call_me_phone_number') . ' <span class="text-danger">*</span></label>';
+    $html .= '          <input type="tel" class="form-control" id="' . $elementIdPrefix . '_phone" placeholder="' . Translate::get('call_me_phone_number_placeholder') . '" required>';
+    $html .= '          <div class="invalid-feedback">' . Translate::get('call_me_phone_number_invalid') . '</div>';
+    $html .= '        </div>';
+
+    $html .= '      </div>';
+    $html .= '      <div class="modal-footer flex-column align-items-stretch">';
+    $html .= '        <div id="' . $elementIdPrefix . '_feedback" class="callme-feedback w-100 mb-2"></div>';
+    $html .= '        <div class="d-flex justify-content-center w-100">';
+    $html .= '          <button type="button" class="astel-btn"'
+      . ' onclick="callMeHandleSubmit(this)"'
+      . ' data-language="' . htmlspecialchars($language) . '"'
+      . ' data-operator-name="' . htmlspecialchars($operatorName) . '"'
+      . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
+      . ' data-success-msg="' . htmlspecialchars(Translate::get('call_me_success')) . '"'
+      . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
+      . ' data-phone-error-msg="' . htmlspecialchars(Translate::get('call_me_phone_number_invalid')) . '"'
+      . ' data-address-error-msg="' . htmlspecialchars(Translate::get('call_me_address_invalid')) . '"'
+      . ' data-product-name="' . htmlspecialchars($productName) . '"'
+      . ' data-product-url="' . htmlspecialchars($productUrl) . '"'
+      . ' data-is-shared-modal="true"'
+      . '>' . Translate::get('call_me_request') . '</button>';
+    $html .= '        </div>';
+    $html .= '      </div>';
+    $html .= '    </div>';
+    $html .= '  </div>';
+    $html .= '</div>';
+
+    return $html;
   }
 }

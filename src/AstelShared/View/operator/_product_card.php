@@ -2,6 +2,7 @@
 
 use AstelShared\Translate\Translate;
 use CakeUtility\Hash;
+
 // debug($result);
 ?>
 
@@ -77,10 +78,10 @@ use CakeUtility\Hash;
                 <?= $play['details'] ?>
               </div>
             </div>
-            <p class="position-relative toggleProductListingDetails__content sub-details-infos"
+            <div class="position-relative toggleProductListingDetails__content sub-details-infos"
               style="padding-left:40px;">
               <?= $play['description'] ?>
-            </p>
+            </div>
         <?php
           }
         } ?>
@@ -107,9 +108,20 @@ use CakeUtility\Hash;
     <div class="results-price d-flex text-center flex-column justify-content-center mt-auto pt-1">
       <?php
       // QUALITY SCORE
-      if ($result['result_summary']['quality_score'] != '') { ?>
+      $showQualityStars = $params['options']['display_quality_stars'] ?? true;
+      if ($showQualityStars && $result['result_summary']['quality_score'] != '') {
+        $qualityScoreRaw = (int)Hash::get($result, 'result_summary.quality_score_raw', 0);
+        $ratingCount = 0;
+        foreach ($result['products'] as $fp) {
+          $ratingCount += (int)Hash::get($fp, 'ratingCount', 0);
+        }
+        $ratingValue = $qualityScoreRaw > 0 ? max(1.0, min(5.0, round($qualityScoreRaw / 20, 1))) : 0;
+      ?>
         <div class="cursor-pointer modalClick mb-2" data-toggle="modal" data-target="#modalQuality">
           <?= $result['result_summary']['quality_score']; ?>
+          <?php if ($ratingValue > 0 && $ratingCount > 0): ?>
+            <?= $ratingValue ?>/5 <span class="text-muted">(<?= $ratingCount ?>)</span>
+          <?php endif; ?>
           <span class="cursor-pointer position-absolute ml-2">
             <i class="fa fa-info pl-2"></i>
           </span>
@@ -153,11 +165,45 @@ use CakeUtility\Hash;
           </div>
         <?php } ?>
       </div>
-      <div class="my-1">
-        <?php // ORDER BUTTON 
-        ?>
-        <?= $result['result_summary']['order_button']; ?>
+      <div class="my-1 d-flex gap-2">
+        <div class="flex-grow-1">
+          <?php // ORDER BUTTON 
+          ?>
+          <?= $result['result_summary']['order_button']; ?>
+        </div>
       </div>
+        <?php // CALL ME BUTTON
+        
+        $productCardId = isset($result['id']) ? $result['id'] : (isset($params['id']) ? $params['id'] . '_' . $key : 'card_' . $key);
+        if (isset($SharedView)) {
+          $productNames = [];
+          $brands = ''; 
+          $productUrls = [];
+          foreach ($result['products'] as $_p) {
+            if (!empty($_p['brand_name']) && !empty($_p['name'])) {
+              $productNames[] = $_p['brand_name'] . ' ' . $_p['name'];
+              $productUrls[] = $_p['product_sheet_url'] ?? '';
+              $brands .= $_p['brand_name'] . ' + ';
+            }
+          }
+          $productName = implode(' + ', $productNames);
+          $productUrl = $productUrls[0] ?? '';
+          $productsJson = json_encode(array_map(null, $productNames, $productUrls));
+          $brands = rtrim($brands, ' + ');
+          echo '<div class="mt-2 mt-md-1">';
+          echo $SharedView->renderCallMeLink(
+            $productCardId,
+            $brands,
+            $params['call_center_open'] ?? null,
+            $productName,
+            $productUrl,
+            $productsJson
+          );
+         
+          echo '</div>';
+        }
+         
+        ?>
     </div>
   </div>
 </div>
