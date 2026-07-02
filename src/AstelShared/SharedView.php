@@ -1056,7 +1056,8 @@ class SharedView extends Singleton {
     $openingHours  = is_array($callCenterOpen) ? ($callCenterOpen['call_center_opening_hours'][$language] ?? null) : null;
     $textToDisplay = is_array($callCenterOpen) ? ($callCenterOpen['text_to_display'][$language] ?? null) : null;
 
-    $html = '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '" data-recaptcha-site-key="' . htmlspecialchars($recaptchaSiteKey) . '">';
+    $html = '<style>@media (max-width: 359px) { #' . htmlspecialchars($modalId) . ' .gender-options { flex-direction: column; } #' . htmlspecialchars($modalId) . ' .gender-options .form-check { margin-right: 0 !important; } }</style>';
+    $html .= '<div class="modal fade" id="' . htmlspecialchars($modalId) . '" tabindex="-1" role="dialog" aria-labelledby="' . htmlspecialchars($modalId) . '_label" aria-hidden="true" data-language="' . htmlspecialchars($language) . '" data-operator-name="' . htmlspecialchars($operatorName) . '" data-partner-name="' . htmlspecialchars($partnerName) . '" data-recaptcha-site-key="' . htmlspecialchars($recaptchaSiteKey) . '">';
     $html .= '  <div class="modal-dialog modal-dialog-centered modal-md" role="document">';
     $html .= '    <div class="modal-content">';
     $html .= '      <div class="modal-header">';
@@ -1114,12 +1115,12 @@ class SharedView extends Singleton {
     // Gender
     $html .= '        <div class="form-group">';
     $html .= '          <label>' . Translate::get('call_me_gender') . ' <span class="text-danger">*</span></label>';
-    $html .= '          <div class="d-flex">';
-    $html .= '            <div class="form-check pl-0 mr-3">';
+    $html .= '          <div class="d-flex gender-options gap-3">';
+    $html .= '            <div class="form-check">';
     $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_M" value="M">';
     $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_M">' . Translate::get('call_me_gender_male') . '</label>';
     $html .= '            </div>';
-    $html .= '            <div class="form-check mr-3">';
+    $html .= '            <div class="form-check">';
     $html .= '              <input class="form-check-input" type="radio" name="' . $elementIdPrefix . '_gender" id="' . $elementIdPrefix . '_gender_F" value="F">';
     $html .= '              <label class="form-check-label" for="' . $elementIdPrefix . '_gender_F">' . Translate::get('call_me_gender_female') . '</label>';
     $html .= '            </div>';
