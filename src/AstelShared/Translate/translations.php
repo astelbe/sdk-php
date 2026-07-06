@@ -131,10 +131,6 @@ return [
     'FR' => "Internet <span class=\"text-blue\">illimité</span>",
     'NL' => "<span class=\"text-blue\">Onbeperkt</span> surfen",
   ],
-  'tab_mobile_gb_data'                     => [
-    'FR' => "<span class=\"text-blue\">%s</span> GB",
-    'NL' => "<span class=\"text-blue\">%s</span> GB",
-  ],
   'included_minutes_calls_unlimited'       => [
     'FR' => "Appels <span class=\"\">illimités</span>",
     'NL' => "<span class=\"\">Onbeperkt</span> bellen",
@@ -148,8 +144,8 @@ return [
     'NL' => "<span class=\"\">Onbeperkt</span> data",
   ],
   'included_data_volume'                   => [
-    'FR' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">GB</span>",
-    'NL' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">GB</span>",
+    'FR' => "<span class=\"emphasis-data\">%s</span> GB",
+    'NL' => "<span class=\"emphasis-data\">%s</span> GB",
   ],
   'included_sms_unlimited'                 => [
     'FR' => "SMS <span class=\"\">illimités</span>",
@@ -183,8 +179,8 @@ return [
     'NL' => "",
   ],
   'number_tv_channel'                      => [
-    'FR' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">chaines</span>",
-    'NL' => "<span class=\"emphasis-data\">%s </span><span class=\"text-blue font-weight-bold\">TV-kanalen</span>",
+    'FR' => "<span class=\"emphasis-data\">%s</span> chaines",
+    'NL' => "<span class=\"emphasis-data\">%s</span> TV-kanalen",
   ],
   'max_tv_channel'                         => [
     'FR' => "Max <span class=\"\">%s</span> chaines",
