@@ -619,7 +619,7 @@ class SharedView extends Singleton {
     $qualityScore = (int)Hash::get($product, 'quality_score', 0);
 
     $result_summary = [
-      'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process' => true, 'color-css-class' => 'color-operator', 'br-before-during-month' => true]),
+      'displayed_price'        => self::getDisplayedPrice($product, ['bypass_vat_process' => true, 'color-css-class' => 'text-blue', 'br-before-during-month' => true]),
       'total_cashback'         => $displayed_cashback,
       'phone_plug'             => self::displayPlugList([$product], $blockKey),
       'setup'                  => self::getProductActivationAndOrInstallationPrice($product),

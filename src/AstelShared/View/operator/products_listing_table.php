@@ -284,4 +284,5 @@ $params['bonus_header'] = [
 				</div>
 			</div>
 		</div>
-	<?php } ?>
+	</div>
+<?php } ?>
