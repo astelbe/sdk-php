@@ -106,6 +106,7 @@ use CakeUtility\Hash;
                 <?php } ?>
                 <div class="pt-2 px-1 mb-1">
                   <?php foreach ($item['plays'] as $k => $play) {
+                    // From $SharedView->formatProductForCard
                     if ($play !== false) { ?>
                       <div class="d-flex align-items-baseline pb-1" style="line-height:25px;font-size:0.875rem;">
                         <div class="mr-1">

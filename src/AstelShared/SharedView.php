@@ -200,7 +200,9 @@ class SharedView extends Singleton {
     return $html;
   }
 
-  public function getGsmDetails($product) {
+  public function getGsmDetails($product, $version = null) {
+    $color = ($version === 'laFibre' ? '#212529' : '#1F438C');
+    $colorClass = ($version === 'laFibre' ? 'text-black' : 'text-darkblue');
     $Product = Product::getInstance();
     if ($Product->isType($product, 'M')) {
       $details = [];
@@ -208,14 +210,14 @@ class SharedView extends Singleton {
       $details['included_sms'] = $this->translatePlayDescription('play_description.mobile.included_sms', $product);
       $details['included_minutes_calls'] = $this->translatePlayDescription('play_description.mobile.included_minutes_calls', $product);
       return [
-        'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('gsm') . '</span>' . implode(', ', $details),
+        'details'     => '<span class="fs100 fw700 ' . $colorClass . ' pr-1">' . Translate::get('gsm') . '</span>' . implode(', ', $details),
         'details_clean' => Translate::get('gsm') . ': ' . strip_tags(implode(', ', $details)),
         'description' => Hash::get($product, 'play_description.mobile.price_description.' . $this->language),
         'label'       =>
         '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="30" viewBox="0 0 20 30" fill="none">
-							<rect x="1.70435" y="1.37024" width="16.5926" height="27.2593" rx="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
-							<path d="M7.03784 4.33313H12.9638" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
-							<circle cx="10.0007" cy="23.2962" r="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="#1F438C"/>
+							<rect x="1.70435" y="1.37024" width="16.5926" height="27.2593" rx="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="' . $color . '"/>
+							<path d="M7.03784 4.33313H12.9638" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="' . $color . '"/>
+							<circle cx="10.0007" cy="23.2962" r="1.77778" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="' . $color . '"/>
 						</svg>',
         'count'       => $product['count'],
       ];
@@ -225,6 +227,8 @@ class SharedView extends Singleton {
   }
 
   public function getInternetDetails($product, $version = null) {
+    $color = ($version === 'laFibre' ? '#212529' : '#1F438C');
+    $colorClass = ($version === 'laFibre' ? 'text-black' : 'text-darkblue');
     $Product = Product::getInstance();
     if ($Product->isType($product, 'I')) {
       $data = [];
@@ -241,11 +245,11 @@ class SharedView extends Singleton {
       $original_description = Hash::get($product, 'play_description.internet.price_description.' . $this->language);
       $description_with_extra = $extra_data_string . '<br> ' . $original_description;
       return [
-        'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('internet') . '</span>' . implode(', ', $data),
+        'details'     => '<span class="fs100 fw700 ' . $colorClass . ' pr-1">' . Translate::get('internet') . '</span>' . implode(', ', $data),
         'details_clean' => Translate::get('internet') . ': ' . strip_tags(implode(', ', $data)),
         'description' => $description_with_extra,
         'label'       =>
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="' . $color . '">
 						<path d="M128 32C92.7 32 64 60.7 64 96V352h64V96H512V352h64V96c0-35.3-28.7-64-64-64H128zM19.2 384C8.6 384 0 392.6 0 403.2C0 445.6 34.4 480 76.8 480H563.2c42.4 0 76.8-34.4 76.8-76.8c0-10.6-8.6-19.2-19.2-19.2H19.2z"/>
 					</svg>',
       ];
@@ -254,11 +258,13 @@ class SharedView extends Singleton {
     }
   }
 
-  public function getFixDetails($product) {
+  public function getFixDetails($product, $version = null) {
+    $color = ($version === 'laFibre' ? '#212529' : '#1F438C');
+    $colorClass = ($version === 'laFibre' ? 'text-black' : 'text-darkblue');
     $Product = Product::getInstance();
     if ($Product->isType($product, 'F')) {
       return [
-        'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('fix') . '</span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
+        'details'     => '<span class="fs100 fw700 ' . $colorClass . ' pr-1">' . Translate::get('fix') . '</span> ' . self::translatePlayDescription('play_description.fix.included_minutes_calls', $product),
         'details_clean' => Translate::get('fix') . ': ' . strip_tags(implode(', ', self::translatePlayDescription('play_description.fix.included_minutes_calls', $product))),
         'description' => Hash::get($product, 'play_description.fix.price_description.' . $this->language),
         'label'       =>
@@ -271,7 +277,9 @@ class SharedView extends Singleton {
     }
   }
 
-  public function getTVDetails($product) {
+  public function getTVDetails($product, $version = null) {
+    $color = ($version === 'laFibre' ? '#212529' : '#1F438C');
+    $colorClass = ($version === 'laFibre' ? 'text-black' : 'text-darkblue');
     $Product = Product::getInstance();
     if ($Product->isType($product, 'T')) {
       $data = [];
@@ -288,11 +296,11 @@ class SharedView extends Singleton {
         $data['application_only'] = self::translatePlayDescription('play_description.tv.application_only', $product);
       }
       return [
-        'details'     => '<span class="fs100 fw700 text-darkblue pr-1">' . Translate::get('tv') . '</span> ' . implode(', ', $data),
+        'details'     => '<span class="fs100 fw700 ' . $colorClass . ' pr-1">' . Translate::get('tv') . '</span> ' . implode(', ', $data),
         'details_clean' => Translate::get('tv') . ': ' . strip_tags(implode(', ', $data)),
         'description' => Hash::get($product, 'play_description.tv.price_description.' . $this->language),
         'label'       =>
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="#1F438C">
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="26" height="26" fill="' . $color . '">
 						<path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
 					</svg>',
       ];
@@ -450,9 +458,9 @@ class SharedView extends Singleton {
 
     // Product play details
     $formatted_product['plays']['internet'] = $this->getInternetDetails($product, $version);
-    $formatted_product['plays']['tv'] = $this->getTVDetails($product);
-    $formatted_product['plays']['fix'] = $this->getFixDetails($product);
-    $formatted_product['plays']['mobile'] = $this->getGsmDetails($product);
+    $formatted_product['plays']['tv'] = $this->getTVDetails($product, $version);
+    $formatted_product['plays']['fix'] = $this->getFixDetails($product, $version);
+    $formatted_product['plays']['mobile'] = $this->getGsmDetails($product, $version);
 
     // Pricing
     // Done in summary (getProductResultSummary)
