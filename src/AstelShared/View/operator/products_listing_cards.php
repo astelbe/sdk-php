@@ -12,9 +12,9 @@ use AstelShared\SharedView;
 $SharedView = SharedView::getInstance();
 
 /*
-  From operator pages public_html_v1/www/public_html/app/view/helper/ProductsListingCards.php
-  From COMP in comparator-engine
-  From ORDER form in mobile-options
+  Can be called from operator pages frontend/www/public_html/app/view/helper/ProductsListingCards.php
+  Can be called the COMP plugin from backend/app/Plugin/CompareAstelBe/View/ComparatorModule/comparator-engine.ctp
+  Can be called the ORDER plugin from backend/app/Plugin/OrderAstelBe/View/OrderForms/mobile_options.ctp
 
   This listings is composed of cards. (productCard)
   Every cards is composed of one or more products (one in operator pages and more in comparator results) and a a card summary of the product(s)
@@ -153,6 +153,13 @@ if (!empty($fragment)) {
       $params['call_center_open'] ?? null,
       $params['recaptcha_site_key'] ?? ''
     );
+  }
+  ?>
+
+  <!-- Plug Modals - Deduplicated, rendered once -->
+  <?php
+  if (isset($SharedView)) {
+    echo $SharedView->renderPlugModals();
   }
   ?>
 </div>

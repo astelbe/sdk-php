@@ -17,6 +17,14 @@ class SharedView extends Singleton {
   public $language = 'FR';
   public $version = 'front'; // 'front' or 'cake', to get the domain name used in translation keys
 
+  // Dedup queue for plug modals: unique modal html keyed by sorted plug tag ids, so identical
+  // plug combinations across cards share a single modal instead of one per card.
+  // Static: some callers (e.g. comparator-engine.ctp) use `new SharedView()` instead of
+  // getInstance(), and getProductResultSummary() calls displayPlugList() via self:: from a
+  // static context with no $this — an instance property would not be reliably shared/usable.
+  private static $plugModalsQueue = [];
+  private static $plugModalsFlushed = [];
+
   public function __construct() {
     // $this->language = AstelContext::getInstance()->getLanguage();
   }
@@ -867,6 +875,21 @@ class SharedView extends Singleton {
 
     // Check if there are any plugs in the block
     if (!empty($blockPlugs)) {
+      // Compute a content-based key from the sorted plug tag ids, so identical plug
+      // combinations always resolve to the same modal id, regardless of which card/index
+      // renders them first. Falls back to the passed-in $modalKey if no tag_group_id 15
+      // tags are found (unreachable in practice, since $blockPlugs would be empty then).
+      $plugTagIds = [];
+      foreach ($blockPlugs as $plugsByProduct) {
+        foreach ($plugsByProduct as $plug) {
+          if ($plug['tag_group_id'] == 15) {
+            $plugTagIds[] = $plug['id'];
+          }
+        }
+      }
+      sort($plugTagIds);
+      $modalKey = !empty($plugTagIds) ? implode('_', $plugTagIds) : $modalKey;
+
       $productsInBlockIndex = 1;
 
       // Iterate through each block's product
@@ -943,20 +966,40 @@ class SharedView extends Singleton {
 								</button>
 							</div>
 							<div class="modal-body">
-								<div id="plug_112" class="mb-4">' . $plugsModale . '</div>
+								<div id="plug_' . $modalKey . '" class="mb-4">' . $plugsModale . '</div>
 							</div>
 						</div>
 					</div>
 				</div>';
 
-      // Return the combined modal link and modal content
-      $return = $formattedModaleLink . $formattedModale;
+      // Queue the modal once per unique plug combination, so multiple cards sharing the
+      // same combination reuse the same modal instead of duplicating it.
+      if (!isset(self::$plugModalsQueue[$modalKey])) {
+        self::$plugModalsQueue[$modalKey] = $formattedModale;
+      }
 
-      return $return;
+      return $formattedModaleLink;
     } else {
       // Return null if there are no plugs in the block
       return null;
     }
+  }
+
+  /**
+   * Render all plug modals queued by displayPlugList() since the last call, then mark them
+   * as flushed so a later call (e.g. another render() pass on the same page/request) doesn't
+   * re-emit them. Safe to call multiple times per page.
+   * @return string HTML of the newly queued modals (empty string if none)
+   */
+  public function renderPlugModals() {
+    $html = '';
+    foreach (self::$plugModalsQueue as $key => $modalHtml) {
+      if (empty(self::$plugModalsFlushed[$key])) {
+        $html .= $modalHtml;
+        self::$plugModalsFlushed[$key] = true;
+      }
+    }
+    return $html;
   }
 
 
