@@ -124,7 +124,7 @@ class OrderForm extends AbstractWebIntegration {
   public function getScriptOrderToken($extraParams = []) {
     global $_GET;
     $params = ['data' => []];
-    $params['data']['product_arrangement_token'] = Hash::get($_GET, 'token', '');
+    $params['data']['product_arrangement_token'] = Hash::get($_GET, 'bundle', Hash::get($_GET, 'token', ''));
     $postal_code = Hash::get($_GET, 'postal_code');
     if ($postal_code !== null) {
       $params['data']['postal_code'] = $postal_code;
@@ -202,7 +202,7 @@ class OrderForm extends AbstractWebIntegration {
   public function getOrderConfirmation() {
     global $_GET;
 
-    $token = Hash::get($_GET, 'token');
+    $token = Hash::get($_GET, 'bundle', Hash::get($_GET, 'token'));
     if (null === $token || !preg_match('/^[a-f0-9]{32}$/', $token)) {
       return 'no_valid_token_given';
     }
