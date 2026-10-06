@@ -1217,6 +1217,7 @@ class SharedView extends Singleton {
       . ' data-partner-name="' . htmlspecialchars($partnerName) . '"'
       . ' data-success-msg="' . htmlspecialchars(Translate::get('call_me_success')) . '"'
       . ' data-error-msg="' . htmlspecialchars(Translate::get('call_me_error')) . '"'
+      . ' data-blacklisted-msg="' . htmlspecialchars(Translate::get('call_me_blacklisted')) . '"'
       . ' data-phone-error-msg="' . htmlspecialchars(Translate::get('call_me_phone_number_invalid')) . '"'
       . ' data-address-error-msg="' . htmlspecialchars(Translate::get('call_me_address_invalid')) . '"'
       . ' data-product-name="' . htmlspecialchars($productName) . '"'
