@@ -595,20 +595,24 @@ class SharedView extends Singleton {
 
 
   /**
+   * Cashback label displayed in a card - Used for front and COMP
+   * @param $cashbackAmount
+   * @return string|null null if there is no cashback
+   */
+  static function getDisplayedCashback($cashbackAmount) {
+    if ($cashbackAmount == 0) {
+      return null;
+    }
+    return self::formatPrice("-" . $cashbackAmount) . ' ' . Translate::get('refunded_by_astel');
+  }
+
+  /**
    * @param $product
    * Prepare the summary of a product to be displayed in a card - Used for front, not for COMP
    */
   static function getProductResultSummary($product, $blockKey = 1) {
-    $AstelContext = AstelContext::getInstance();
-
     // Cashback
-    $cashbackAmount = Hash::get($product, 'commission.cashback_amount', 0);
-    $partner_name = Hash::get($AstelContext->getSession()->sessionGet('partner') ?? [], 'contact_name.' . $AstelContext->getLanguage(), '');
-    if ($cashbackAmount != 0) {
-      $displayed_cashback = Translate::get('product_table_content_cashback', $partner_name) . ' ' . self::formatPrice("-" . $cashbackAmount);
-    } else {
-      $displayed_cashback = null;
-    }
+    $displayed_cashback = self::getDisplayedCashback(Hash::get($product, 'commission.cashback_amount', 0));
 
     // Get the product price with the VAT processed
     $product = self::updateProductWithVat($product);

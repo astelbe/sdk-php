@@ -60,9 +60,9 @@ return [
     'FR' => "Hybrid Fiber-Coax",
     'NL' => "Hybrid Fiber-Coax",
   ],
-  'product_table_content_cashback'         => [
-    'FR' => "+ Promo %s",
-    'NL' => "+ %s-promo",
+  'refunded_by_astel'                      => [
+    'FR' => "remboursés par Astel",
+    'NL' => "terugbetaald door Astel",
   ],
   'switch_details'                         => [
     'FR' => "Voir les détails",
