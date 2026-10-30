@@ -5,6 +5,7 @@ namespace AstelSDK\WebIntegration;
 use AstelSDK\API\APIQuery;
 use AstelSDK\EmulatedSession;
 use AstelSDK\AstelContext;
+use AstelSDK\Utils\EncryptData;
 use CakeUtility\Hash;
 use AstelShared\Typeahead;
 
@@ -76,30 +77,9 @@ class OrderForm extends AbstractWebIntegration {
 		$has_user_cookie_consent = $extraParams['has_user_cookie_consent'];
 	}
 
-    // Old way by url params. To be DEPRECATED
-    $username = Hash::get($_GET, 'username');
-    if ($username !== null) {
-      $params['data']['username'] = $username;
+    $this->addPartnerContext($params);
 
-    }
-   
-    // Partner username
-    // From the "espace partner", we need the partner username of the connected user to associate the order to the right user
-    if (!empty($this->context->getPartnerUsername())) {
-      $params['data']['username'] = $this->context->getPartnerUsername();
-    }
-
-    // Partner user id
-    // From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
-    if (!empty($this->context->getPartnerUserId())) {
-      $params['data']['partner_user_id'] = $this->context->getPartnerUserId();
-    }
-
-    $overridePartnerId = Hash::get($_GET, 'partnerID');
-    if ($overridePartnerId !== null) {
-      $params['data']['override_partner_id'] = $overridePartnerId;
-    }
-
+    $this->addTrustedContext($params);
     $params['data']['page_url'] = $this->getPageURL();
     $urlParams = http_build_query($params);
 
@@ -138,32 +118,17 @@ class OrderForm extends AbstractWebIntegration {
       $params['data']['hardware_product_id'] = $hardware_product_id;
     }
 
-    // Old way by url params. To be DEPRECATED
-    $username = Hash::get($_GET, 'username');
-    if ($username !== null) {
-      $params['data']['username'] = $username;
-    }
+    $this->addPartnerContext($params);
 
-    // Partner username
-    // From the "espace partner", we need the partner username of the connected user to associate the order to the right user
-    if (!empty($this->context->getPartnerUsername())) {
-      $params['data']['username'] = $this->context->getPartnerUsername();
-    }
-
-    // Partner user id
-    // From the "espace partner", we need the partner user id of the connected user to associate the order to the right user
-    if (!empty($this->context->getPartnerUserId())) {
-      $params['data']['partner_user_id'] = $this->context->getPartnerUserId();
-    }
-
-    $overridePartnerId = Hash::get($_GET, 'partnerID');
-    if ($overridePartnerId !== null) {
-      $params['data']['override_partner_id'] = $overridePartnerId;
-    }
-
+    $trustedExtra = [];
     foreach ($extraParams as $paramName => $paramValue) {
+      if (in_array($paramName, ['pos', 'prefill'], true)) {
+        $trustedExtra[$paramName] = $paramValue;
+        continue;
+      }
       $params['data'][$paramName] = $paramValue;
     }
+    $this->addTrustedContext($params, $trustedExtra);
 
     $params['data']['page_url'] = $this->getPageURL();
     $urlParams = http_build_query($params);
@@ -185,6 +150,51 @@ class OrderForm extends AbstractWebIntegration {
 			getAstelOrderForm(\'' . $this->context->getLanguage() . '\', \'' . $urlParams . '\', \'orderForm\', \'' . $this->context->getSessionID() . '\', \'' . $has_user_cookie_consent . '\');
 			</script>
 		';
+  }
+
+  /**
+   * Public context: what a visitor may legitimately choose (affiliation link ?partnerID=).
+   * On the partner portal, the logged in partner is also sent as override: it is backed by the signed context.
+   */
+  private function addPartnerContext(&$params) {
+    $overridePartnerId = Hash::get($_GET, 'partnerID');
+    if ($overridePartnerId === null && !empty($this->context->getSigningKey()) && !empty($this->context->getPartnerUserId()) && !empty($this->context->getPartnerId())) {
+      $overridePartnerId = $this->context->getPartnerId();
+    }
+    if ($overridePartnerId !== null) {
+      $params['data']['override_partner_id'] = $overridePartnerId;
+    }
+  }
+
+  /**
+   * Trusted context (partner_user_id, username, pos, prefill): only produced server side and signed
+   * (HMAC-SHA256) with the secret shared with the backend. Without signing key, nothing trusted is sent.
+   * The backend ignores unsigned / invalid / expired / other partner contexts.
+   */
+  private function addTrustedContext(&$params, array $extra = []) {
+    $secret = $this->context->getSigningKey();
+    if (empty($secret)) {
+      return;
+    }
+    $trusted = [];
+    if (!empty($this->context->getPartnerUserId())) {
+      $trusted['partner_user_id'] = $this->context->getPartnerUserId();
+    }
+    if (!empty($this->context->getPartnerUsername())) {
+      $trusted['username'] = $this->context->getPartnerUsername();
+    }
+    foreach (['pos', 'prefill'] as $key) {
+      if (!empty($extra[$key])) {
+        $trusted[$key] = $extra[$key];
+      }
+    }
+    if (empty($trusted)) {
+      return;
+    }
+    $trusted['partner_id'] = $this->context->getPartnerId();
+    $signed = EncryptData::signContext($trusted, $secret);
+    $params['data']['ctx'] = $signed['ctx'];
+    $params['data']['sig'] = $signed['sig'];
   }
 
   public function getBodyLoadHtml() {
