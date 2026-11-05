@@ -23,6 +23,8 @@ class AstelContext extends Singleton {
 	protected $session = null;
   	protected $encryptionKey;
   	protected $partner_user_id = null;
+	protected $partner_id = null;
+	protected $signingKey = null;
 	protected $partner_username = null;
 	public $apiKeyGooglePlace = 'AIzaSyD8NIuA9OgEe-UvCB5ITr_83hucmvukkrs';
 
@@ -173,6 +175,25 @@ class AstelContext extends Singleton {
 
 	public function setPartnerUserId($partner_user_id) {
 		$this->partner_user_id = $partner_user_id;
+	}
+
+	public function getPartnerId() {
+		return $this->partner_id;
+	}
+
+	public function setPartnerId($partner_id) {
+		$this->partner_id = $partner_id;
+	}
+
+	/**
+	 * Secret shared with the backend (SSM aim.signing_key), used to sign the trusted AIM context.
+	 */
+	public function getSigningKey() {
+		return $this->signingKey;
+	}
+
+	public function setSigningKey($signingKey) {
+		$this->signingKey = $signingKey;
 	}
 
 	public function getPartnerUsername() {
