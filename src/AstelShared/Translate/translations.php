@@ -60,9 +60,9 @@ return [
     'FR' => "Hybrid Fiber-Coax",
     'NL' => "Hybrid Fiber-Coax",
   ],
-  'product_table_content_cashback'         => [
-    'FR' => "+ Promo %s",
-    'NL' => "+ %s-promo",
+  'refunded_by_astel'                      => [
+    'FR' => "remboursés par Astel",
+    'NL' => "terugbetaald door Astel",
   ],
   'switch_details'                         => [
     'FR' => "Voir les détails",
@@ -437,6 +437,10 @@ return [
   'call_me_error' => [
     'FR' => "Une erreur est survenue. Veuillez réessayer ou nous contacter directement.",
     'NL' => "Er is een fout opgetreden. Probeer het opnieuw of neem rechtstreeks contact met ons op.",
+  ],
+  'call_me_blacklisted' => [
+    'FR' => "Nous ne pouvons pas vous téléphoner. Contactez directement l'opérateur chez lequel vous souhaitez vous abonner.",
+    'NL' => "Wij kunnen u niet bellen. Neem rechtstreeks contact op met de provider waarop u zich wilt abonneren.",
   ],
   'next_week' => [
     'FR' => "(Semaine prochaine)",
