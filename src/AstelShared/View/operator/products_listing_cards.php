@@ -101,10 +101,14 @@ if (!empty($fragment)) {
 
 <div class="container px-0 toggleProductListingDetails__container"
   id="toggleProductListingDetails__container_<?= $params['id'] ?>">
+  <?php
+  $displayBestSellerFilter = !empty($params['display_best_seller_filter']) && $params['display_best_seller_filter'] == 1;
+  if (!empty($params['title']) || $displayBestSellerFilter) {
+  ?>
   <div
     class="d-xl-flex justify-content-between align-items-xl-center <?= (!empty($params['title']) ? ' bg-lightblue ' : '') ?> p-2 brad100 g100">
     <?php
-    if (isset($params['title'])) {
+    if (!empty($params['title'])) {
     ?>
       <h2 class="m-0 fs125 align-content-center">
         <?= $params['title']; ?>
@@ -116,7 +120,7 @@ if (!empty($fragment)) {
     <div
       class="d-flex flex-column flex-sm-row align-items-start align-items-sm-center justify-content-center justify-content-sm-between w-100 w-sm-auto p-3">
       <?php
-      if ($params['display_best_seller_filter'] == 1) {
+      if ($displayBestSellerFilter) {
       ?>
         <div class="bestseller-filters d-md-flex g100 mr-0 mr-sm-4">
           <a href="<?= htmlspecialchars($bestsellersUrl); ?>"
@@ -136,6 +140,9 @@ if (!empty($fragment)) {
 
     </div>
   </div>
+  <?php
+  }
+  ?>
   <div class="gridcontainer gridcontainer_listing g100 mt-4 mb-4" style="gap-row:1.2rem;">
     <?php
     // LOOP ON PRODUCT CARDS
