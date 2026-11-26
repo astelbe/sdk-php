@@ -43,7 +43,7 @@ use CakeUtility\Hash;
       $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
       if (($cpt == 1 || ($cpt == 2 && $params['id'] == 'view_multi_brand')) && $params['options']['display_operator_in_product_name'] !== false) { ?>
         <div class="my-2 text-center" style="height: 30px">
-          <img src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" style="max-height:24px;"
+          <img src="<?= \AstelSDK\Utils\URL::cdnImageResize($item['brand_logo'], 340) ?>" alt="<?= $item['brand_name'] ?>" style="max-height:24px;"
             title="<?= $productTitles ?>">
 
         </div>

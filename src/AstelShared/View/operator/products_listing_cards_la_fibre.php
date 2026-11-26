@@ -89,7 +89,7 @@ use CakeUtility\Hash;
                   $productTitles = $result['result_summary']['product_titles'][$item['brand_name']];
                   ?>
                   <div class="titleproduct-logo-brand mt-2 pt-3 p-2 mb-0 d-flex justify-content-center align-items-center" style="max-width: 100%;">
-                    <img style="max-width: 150px; height:30px" src="<?= $item['brand_logo'] ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
+                    <img style="max-width: 150px; height:30px" src="<?= \AstelSDK\Utils\URL::cdnImageResize($item['brand_logo'], 340) ?>" alt="<?= $item['brand_name'] ?>" title="<?= $productTitles ?>">
                   </div>
                 <?php } ?>
                 <?php if ($item['product_sheet_url'] != '') { ?>

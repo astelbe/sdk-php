@@ -115,7 +115,7 @@ $params['bonus_header'] = [
 					<?php if (Hash::get($params, 'options.display_col_logo', false) === true) { ?>
 
 						<div class="col-1">
-							<img width="80" src="<?= Hash::get($product, 'brand.fact_sheet.logo.small') ?>" alt="<?= Hash::get($product, 'brand.name') ?>" />
+							<img width="80" src="<?= \AstelSDK\Utils\URL::cdnImageResize(Hash::get($product, 'brand.fact_sheet.logo.small'), 140) ?>" alt="<?= Hash::get($product, 'brand.name') ?>" />
 						</div>
 					<?php } ?>
 

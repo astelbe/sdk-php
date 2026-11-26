@@ -8,6 +8,7 @@ use CakeUtility\Hash;
 use AstelSDK\AstelContext;
 use AstelShared\Translate\Translate;
 use AstelSDK\Utils\VatCalculation;
+use AstelSDK\Utils\URL;
 
 
 
@@ -909,7 +910,7 @@ class SharedView extends Singleton {
             $plugsModale .= '<p class="font-weight-bold h5 text-black">' . Hash::get($plug, 'value_translated.' . $language) . '</p>';
             $plugsModale .= '<p>' . Hash::get($plug, 'description_translated.' . $language) . '</p>';
             if (Hash::get($plug, 'banner_picture.' . $language, false)) {
-              $plugsModale .= '<div class="text-center"><img src="' . Hash::get($plug, 'banner_picture.' . $language) . '" class="img-fluid" loading="lazy"></div>';
+              $plugsModale .= '<div class="text-center"><img src="' . URL::cdnImageResize(Hash::get($plug, 'banner_picture.' . $language), 820) . '" class="img-fluid" loading="lazy"></div>';
             }
           }
 
