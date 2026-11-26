@@ -70,6 +70,7 @@ class OrderForm extends AbstractWebIntegration {
     }
 
 	// TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+	$has_user_cookie_consent = false;
 	if (Hash::get($_GET, 'has_user_cookie_consent', false)) {
 		$has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
 	} elseif (isset($extraParams['has_user_cookie_consent'])) {
@@ -169,6 +170,7 @@ class OrderForm extends AbstractWebIntegration {
     $urlParams = http_build_query($params);
 
     // TODO add doc about how it is possible to have $_GET['has_user_cookie_consent'] or $extraParams['has_user_cookie_consent']
+    $has_user_cookie_consent = false;
     if (Hash::get($_GET, 'has_user_cookie_consent', false)) {
       $has_user_cookie_consent = Hash::get($_GET, 'has_user_cookie_consent', false);
     } elseif (isset($extraParams['has_user_cookie_consent'])) {
